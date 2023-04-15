@@ -6,7 +6,7 @@ import modules.dataDefinition.impl.number.DoubleDataDefinition;
 import modules.dataDefinition.impl.relation.RelationDataDefinition;
 import modules.dataDefinition.impl.string.StringDataDefinition;
 
-public enum DataDefinitionRegistry implements DataDefinition {
+public enum DataDefinitionRegistry implements DataDefinition {//todo add all of the DD
     STRING(new StringDataDefinition()),
     DOUBLE(new DoubleDataDefinition()),
     RELATION(new RelationDataDefinition());
