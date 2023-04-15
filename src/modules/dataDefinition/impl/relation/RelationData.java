@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RelationData {
-
     private List<String> columns;
     private List<SingleRow> rows;
 
