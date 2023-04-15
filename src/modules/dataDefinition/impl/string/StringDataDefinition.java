@@ -6,6 +6,6 @@ import modules.dataDefinition.api.AbstractDataDefinition;
 public class StringDataDefinition extends AbstractDataDefinition {
 
     public StringDataDefinition() {
-        super("String", true, String.class);
+        super("String", true, StringData.class);
     }
 }

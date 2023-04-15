@@ -33,7 +33,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         // assuming that from the data name we can get to its data definition
         DataDefinition theData = null;
 
-        // we have the DD type so we can make sure that its from the same type
+        // we have the DD type, so we can make sure that its from the same type
         if (theData.getType().isAssignableFrom(value.getClass())) {
             dataValues.put(dataName, value);
         } else {

@@ -25,9 +25,8 @@ public class FLowExecutor {
             System.out.println("Starting to execute step: " + stepUsageDeclaration.getFinalStepName());
             StepResult stepResult = stepUsageDeclaration.getStepDefinition().invoke(context);
             System.out.println("Done executing step: " + stepUsageDeclaration.getFinalStepName() + ". Result: " + stepResult);
-            // check if should continue etc..
+            // check if you should continue etc..
         }
-
 
         System.out.println("End execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]. Status: " + flowExecution.getFlowExecutionResult());
     }

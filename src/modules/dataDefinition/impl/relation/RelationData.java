@@ -15,7 +15,6 @@ public class RelationData {
         this.columns = columns;
         rows = new ArrayList<>();
     }
-
     public List<String> getRowDataByColumnsOrder(int rowId) {
         return new ArrayList<>();
     }

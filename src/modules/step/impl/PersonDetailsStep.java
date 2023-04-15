@@ -8,7 +8,6 @@ import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 
 public class PersonDetailsStep extends AbstractStepDefinition {
-
     public PersonDetailsStep() {
         super("STEP 1", true);
 
@@ -20,7 +19,6 @@ public class PersonDetailsStep extends AbstractStepDefinition {
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("DETAILS", DataNecessity.NA, "Full Person Details", DataDefinitionRegistry.STRING));
     }
-
     @Override
     public StepResult invoke(StepExecutionContext context) {
         // fetch inputs here, somehow
