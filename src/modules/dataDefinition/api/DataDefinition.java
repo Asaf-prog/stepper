@@ -5,3 +5,5 @@ public interface DataDefinition {
     boolean isUserFriendly();
     Class<?> getType();
 }
+ //todo add all of the DataDefinitions mentioned in the word document
+//etc: Number,List,File ,Mapping-map

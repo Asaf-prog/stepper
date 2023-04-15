@@ -10,8 +10,8 @@ public class FlowExecution {
     private final FlowDefinition flowDefinition;
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
+    //todo need to add extra information we would like to have about flow execution
 
-    // lots more data that needed to be stored while flow is being executed...
 
     public FlowExecution(String uniqueId, FlowDefinition flowDefinition) {
         this.uniqueId = uniqueId;
