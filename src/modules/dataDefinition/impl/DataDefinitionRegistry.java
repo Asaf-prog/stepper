@@ -7,10 +7,7 @@ import modules.dataDefinition.impl.relation.RelationDataDefinition;
 import modules.dataDefinition.impl.string.StringDataDefinition;
 
 public enum DataDefinitionRegistry implements DataDefinition {
-    STRING(new StringDataDefinition()),
-    DOUBLE(new DoubleDataDefinition()),
-    RELATION(new RelationDataDefinition());
-
+    STRING(new StringDataDefinition()),DOUBLE(new DoubleDataDefinition()), RELATION(new RelationDataDefinition());
     DataDefinitionRegistry(DataDefinition dataDefinition) {
         this.dataDefinition = dataDefinition;
     }

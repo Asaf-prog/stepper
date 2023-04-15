@@ -1,7 +1,6 @@
 package modules.dataDefinition.api;
 
 public abstract class AbstractDataDefinition implements DataDefinition {
-
     private final String name;
     private final boolean userFriendly;
     private final Class<?> type;

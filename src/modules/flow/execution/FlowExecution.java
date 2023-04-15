@@ -10,8 +10,10 @@ public class FlowExecution {
     private final FlowDefinition flowDefinition;
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
-
+//make sense map from string and relevant value
+    //what is the relevant value? and this is why the map will be Map<String,Object>
     // lots more data that needed to be stored while flow is being executed...
+    //user input
 
     public FlowExecution(String uniqueId, FlowDefinition flowDefinition) {
         this.uniqueId = uniqueId;
