@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RelationData {
-
     private List<String> columns;
     private List<SingleRow> rows;
 
@@ -15,7 +14,6 @@ public class RelationData {
         this.columns = columns;
         rows = new ArrayList<>();
     }
-
     public List<String> getRowDataByColumnsOrder(int rowId) {
         return new ArrayList<>();
     }
@@ -30,5 +28,6 @@ public class RelationData {
         public void addData(String columnName, String value) {
             data.put(columnName, value);
         }
+        // to-do=> add a new line, add a new row
     }
 }

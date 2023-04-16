@@ -1,11 +1,9 @@
 package modules.step.api;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractStepDefinition implements StepDefinition {
-
     private final String stepName;
     private final boolean readonly;
     private final List<DataDefinitionDeclaration> inputs;
@@ -21,16 +19,13 @@ public abstract class AbstractStepDefinition implements StepDefinition {
     protected void addInput(DataDefinitionDeclaration dataDefinitionDeclaration) {
         inputs.add(dataDefinitionDeclaration);
     }
-
     protected void addOutput(DataDefinitionDeclaration dataDefinitionDeclaration) {
         outputs.add(dataDefinitionDeclaration);
     }
-
     @Override
     public String name() {
         return stepName;
     }
-
     @Override
     public boolean isReadonly() {
         return readonly;

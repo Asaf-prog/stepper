@@ -17,6 +17,8 @@ public class FLowExecutor {
 
         // populate context with all free inputs (mandatory & optional) that were given from the user
         // (typically stored on top of the flow execution object)
+        //take all the free input and initialized in the object context
+        // every step have a permission to context object and from the context the steps gets the input (the dd)
 
         // start actual execution
         for (int i = 0; i < flowExecution.getFlowDefinition().getFlowSteps().size(); i++) {
@@ -24,9 +26,8 @@ public class FLowExecutor {
             System.out.println("Starting to execute step: " + stepUsageDeclaration.getFinalStepName());
             StepResult stepResult = stepUsageDeclaration.getStepDefinition().invoke(context);
             System.out.println("Done executing step: " + stepUsageDeclaration.getFinalStepName() + ". Result: " + stepResult);
-            // check if should continue etc..
+            // check if you should continue etc..
         }
-
 
         System.out.println("End execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]. Status: " + flowExecution.getFlowExecutionResult());
     }
