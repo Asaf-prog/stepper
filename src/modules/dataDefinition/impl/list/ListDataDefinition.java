@@ -1,4 +1,4 @@
-package modules.dataDefinition.impl.List;
+package modules.dataDefinition.impl.list;
 
 import modules.dataDefinition.api.AbstractDataDefinition;
 

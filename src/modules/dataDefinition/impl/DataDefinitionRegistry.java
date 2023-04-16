@@ -5,11 +5,21 @@ import modules.dataDefinition.api.DataDefinition;
 import modules.dataDefinition.impl.number.DoubleDataDefinition;
 import modules.dataDefinition.impl.relation.RelationDataDefinition;
 import modules.dataDefinition.impl.string.StringDataDefinition;
+import modules.dataDefinition.impl.file.FileDataDefinition;
+import modules.dataDefinition.impl.mapping.MappingDataDefinition;
+import modules.dataDefinition.impl.json.JsonDataDifinition;
+import modules.dataDefinition.impl.list.ListDataDefinition;
+import modules.dataDefinition.impl.number.NumberDataDefinition;
 
 public enum DataDefinitionRegistry implements DataDefinition {//todo add all of the DD
     STRING(new StringDataDefinition()),
+    NUMBER(new NumberDataDefinition()),
     DOUBLE(new DoubleDataDefinition()),
-    RELATION(new RelationDataDefinition());
+    RELATION(new RelationDataDefinition()),
+    MAPPING(new MappingDataDefinition()),
+    FILE(new FileDataDefinition()),
+    LIST(new ListDataDefinition());
+
 
     DataDefinitionRegistry(DataDefinition dataDefinition) {
         this.dataDefinition = dataDefinition;
