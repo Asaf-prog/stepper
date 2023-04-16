@@ -8,7 +8,7 @@ import modules.step.api.StepResult;
 
 public class FLowExecutor {
 
-    public void executeFlow(FlowExecution flowExecution) {
+    public void executeFlow(FlowExecution flowExecution) {//This class implements the flow
 
         System.out.println("Starting execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]");
 

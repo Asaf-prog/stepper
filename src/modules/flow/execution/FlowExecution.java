@@ -4,7 +4,7 @@ import modules.flow.definition.api.FlowDefinition;
 
 import java.time.Duration;
 
-public class FlowExecution {
+public class FlowExecution {//This class accumulates all the data for the flow
 
     private final String uniqueId;
     private final FlowDefinition flowDefinition;
@@ -15,7 +15,7 @@ public class FlowExecution {
     // lots more data that needed to be stored while flow is being executed...
     //user input
 
-    public FlowExecution(String uniqueId, FlowDefinition flowDefinition) {
+    public FlowExecution(String uniqueId, FlowDefinition flowDefinition) {// Here, I am referring to a specific flow for tracing.
         this.uniqueId = uniqueId;
         this.flowDefinition = flowDefinition;
     }

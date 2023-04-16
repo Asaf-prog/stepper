@@ -9,7 +9,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private final String stepName;
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
-        this(stepDefinition, false, stepDefinition.name());
+        this(stepDefinition, false, stepDefinition.name());//call to my constructor
     }
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition, String name) {

@@ -12,6 +12,12 @@ public class Main {
         FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Hello world");
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
         flow1.validateFlowStructure();
+        FLowExecutor fLowExecutor6 = new FLowExecutor();
+
+        FlowExecution flow2Execution0 = new FlowExecution("6", flow1);
+        // collect all user inputs and store them on the flow execution object
+        fLowExecutor6.executeFlow(flow2Execution0);
+
 
         FlowDefinition flow2 = new FlowDefinitionImpl("Flow 2", "show two person details");
         flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
