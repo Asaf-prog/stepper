@@ -13,6 +13,7 @@ public class FLowExecutor {
         System.out.println("Starting execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]");
 
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
+        //todo get input from user and store it on the flow execution object
 
         // populate context with all free inputs (mandatory & optional) that were given from the user
         // (typically stored on top of the flow execution object)
