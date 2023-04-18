@@ -21,6 +21,18 @@ public class FileData {
         return this._path;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void set_path(String _path) {
+        this._path = _path;
+    }
+
     public FileData(File file) {
         this._path = file.getPath();
         this.name = file.getName();

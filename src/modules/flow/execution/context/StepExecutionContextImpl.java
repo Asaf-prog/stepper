@@ -1,15 +1,15 @@
 package modules.flow.execution.context;
 import modules.dataDefinition.api.DataDefinition;
+import modules.flow.definition.api.StepUsageDeclarationImpl;
+import modules.step.api.DataDefinitionDeclaration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
     private Map<String,List<String>> log;
     private Map<String,String> summaryLine;
+    private StepUsageDeclarationImpl currentStep;
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
         summaryLine = new HashMap<>();
@@ -21,20 +21,32 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         //todo - check if dataName exists in the context
         // assuming that from the data name we can get to its data definition
 
-        DataDefinition theExpectedDataDefinition = null;
+        DataDefinitionDeclaration theExpectedDataDefinition = null;
 
-        if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.getType())) {
-            Object aValue = dataValues.get(dataName);
+        Optional<DataDefinitionDeclaration> expectedDD = currentStep.getStepDefinition()
+                .inputs()
+                .stream()
+                .filter((input)->input.dataDefinition()
+                        .getName() == dataName)
+                .findFirst();
 
-            //todo - what if it cannot convert?
+        if (expectedDD.isPresent()){
+            theExpectedDataDefinition = expectedDD.get();
+            if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.dataDefinition().getType())) {
+                Object aValue = dataValues.get(dataName);
 
-            return expectedDataType.cast(aValue);
+                return expectedDataType.cast(aValue);
 
-        } else {
+            } else {
 
-            //todo - error handling of some sort...
+                //todo - error handling of some sort...
+            }
+        }
+        else {
+            //todo - Error handling
         }
         return null;
+
     }
 
     @Override
@@ -49,7 +61,6 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         else {
             //todo - error handling of some sort...
         }
-
         return false;
     }
     @Override
@@ -75,7 +86,5 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     }
 
     @Override
-    public Map getSummary() {
-        return summaryLine;
-    }
+    public String getSummary(String step) {return summaryLine.get(step);}
 }

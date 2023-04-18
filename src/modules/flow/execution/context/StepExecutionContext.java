@@ -9,7 +9,7 @@ public interface StepExecutionContext {
     List getLog(String step);
     void setLog(String step,String log);
     void addSummaryLine(String step,String summary);
-    Map getSummary();
+    String getSummary(String step);
 
 
     // some more utility methods:

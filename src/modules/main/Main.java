@@ -13,13 +13,21 @@ public class Main {
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
         flow1.validateFlowStructure();
         FLowExecutor fLowExecutor6 = new FLowExecutor();
+        FlowDefinition flowtest = new FlowDefinitionImpl("Flow our First flow", "our first flow");
+        flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.SPEND_SOME_TIME.getStepDefinition()));
+        flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILE_RENAMER_STEP.getStepDefinition()));
+        flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_DELETER.getStepDefinition()));
 
-        FlowExecution flow2Execution0 = new FlowExecution("6", flow1);
-        // collect all user inputs and store them on the flow execution object
-        fLowExecutor6.executeFlow(flow2Execution0);
+        flowtest.validateFlowStructure();
 
+        FLowExecutor fLowExecutorToTest = new FLowExecutor();
 
-        FlowDefinition flow2 = new FlowDefinitionImpl("Flow 2", "show two person details");
+        FlowExecution flowTestExecution1 = new FlowExecution("19",flowtest);
+
+        fLowExecutorToTest.executeFlow(flowTestExecution1);
+
+        /*
+       FlowDefinition flow2 = new FlowDefinitionImpl("Flow 2", "show two person details");
         flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
         flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.PERSON_DETAILS.getStepDefinition(), "Person 1 Details"));
         flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.PERSON_DETAILS.getStepDefinition(), "Person 2 Details"));
@@ -35,6 +43,6 @@ public class Main {
         FlowExecution flow2Execution2 = new FlowExecution("2", flow2);
         //todo collect all user inputs and store them on the flow execution object
         fLowExecutor.executeFlow(flow2Execution1);
-
+        */
     }
 }
