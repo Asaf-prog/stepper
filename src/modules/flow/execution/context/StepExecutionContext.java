@@ -3,6 +3,9 @@ package modules.flow.execution.context;
 public interface StepExecutionContext {
     <T> T getDataValue(String dataName, Class<T> expectedDataType);
     boolean storeDataValue(String dataName, Object value);
+    String getLog(String step);
+    void setLog(String step,String log);
+
 
     // some more utility methods:
     // allow step to store log lines

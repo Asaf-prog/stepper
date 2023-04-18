@@ -1,19 +1,24 @@
 package modules.flow.execution.context;
 import modules.dataDefinition.api.DataDefinition;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+
 
 public class StepExecutionContextImpl implements StepExecutionContext {
 
     private final Map<String, Object> dataValues;
+    private Map<String,String> log;
 
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
+        log = new HashMap<>();
     }
 
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
-         //todo - check if dataName exists in the context
+        //todo - check if dataName exists in the context
         // assuming that from the data name we can get to its data definition
         DataDefinition theExpectedDataDefinition = null;
 
@@ -37,10 +42,20 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         //todo  we have the DD type so we can make sure that its from the same type we are expecting
         if (theData.getType().isAssignableFrom(value.getClass())) {
             dataValues.put(dataName, value);
-        } else {
+        }
+        else {
             //todo - error handling of some sort...
         }
 
         return false;
     }
+    @Override
+    public String getLog(String step){
+        return log.get(step);
+    }
+    @Override
+    public void setLog(String step,String logs){
+        log.put(step,logs);
+    }
+
 }
