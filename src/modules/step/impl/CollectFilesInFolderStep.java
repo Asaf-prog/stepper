@@ -16,11 +16,11 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
 
     public CollectFilesInFolderStep() {
         super("Collect files in folder", true);
-        addInput(new DataDefinitionDeclarationImpl("FOLDER_NAME", DataNecessity.MANDATORY, "folder name", DataDefinitionRegistry.STRING));//full path
-        addInput(new DataDefinitionDeclarationImpl("FILTER", DataNecessity.OPTIONAL, "filter", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FOLDER_NAME", DataNecessity.MANDATORY, "Folder name to scan", DataDefinitionRegistry.STRING));//full path
+        addInput(new DataDefinitionDeclarationImpl("FILTER", DataNecessity.OPTIONAL, "Filter only these files", DataDefinitionRegistry.STRING));
 
-        addOutput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.NA, "file list", DataDefinitionRegistry.LIST));
-        addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND", DataNecessity.NA, "file count", DataDefinitionRegistry.NUMBER));
+        addOutput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.NA, "Files list", DataDefinitionRegistry.LIST));
+        addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND", DataNecessity.NA, "Total files found", DataDefinitionRegistry.NUMBER));
     }
 
     @Override
@@ -51,4 +51,5 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         }
         return StepResult.FAILURE;
     }
+}
 

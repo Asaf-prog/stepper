@@ -1,36 +1,39 @@
 package modules.flow.execution.context;
 import modules.dataDefinition.api.DataDefinition;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 public class StepExecutionContextImpl implements StepExecutionContext {
-
     private final Map<String, Object> dataValues;
-    private Map<String,String> log;
-
+    private Map<String,List<String>> log;
+    private Map<String,String> summaryLine;
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
+        summaryLine = new HashMap<>();
         log = new HashMap<>();
     }
-
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
+
         //todo - check if dataName exists in the context
         // assuming that from the data name we can get to its data definition
+
         DataDefinition theExpectedDataDefinition = null;
 
         if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.getType())) {
             Object aValue = dataValues.get(dataName);
+
             //todo - what if it cannot convert?
 
             return expectedDataType.cast(aValue);
+
         } else {
+
             //todo - error handling of some sort...
         }
-
         return null;
     }
 
@@ -50,12 +53,29 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         return false;
     }
     @Override
-    public String getLog(String step){
+    public List getLog(String step){
         return log.get(step);
     }
     @Override
-    public void setLog(String step,String logs){
-        log.put(step,logs);
+    public void setLog(String step,String logs) {
+        if (log.get(step) == null) {
+            List<String> values = new ArrayList<>();
+            values.add(logs);
+            log.put(step, values);
+
+        } else {
+            List<String> values = log.get(step);
+            values.add(logs);
+            log.put(step, values);
+        }
+    }
+    @Override
+    public void addSummaryLine(String step,String summary) {
+        summaryLine.put(step,summary);
     }
 
+    @Override
+    public Map getSummary() {
+        return summaryLine;
+    }
 }

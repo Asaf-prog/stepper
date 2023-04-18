@@ -1,10 +1,15 @@
 package modules.flow.execution.context;
 
+import java.util.List;
+import java.util.Map;
+
 public interface StepExecutionContext {
     <T> T getDataValue(String dataName, Class<T> expectedDataType);
     boolean storeDataValue(String dataName, Object value);
-    String getLog(String step);
+    List getLog(String step);
     void setLog(String step,String log);
+    void addSummaryLine(String step,String summary);
+    Map getSummary();
 
 
     // some more utility methods:

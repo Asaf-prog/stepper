@@ -2,6 +2,7 @@ package modules.dataDefinition.impl;
 
 
 import modules.dataDefinition.api.DataDefinition;
+import modules.dataDefinition.impl.enumerator.EnumeratorDataDefinition;
 import modules.dataDefinition.impl.number.DoubleDataDefinition;
 import modules.dataDefinition.impl.relation.RelationDataDefinition;
 import modules.dataDefinition.impl.string.StringDataDefinition;
