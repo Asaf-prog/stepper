@@ -15,7 +15,8 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
 
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        String time = context.getDataValue("Time_To_Spend", String.class);
+        String time = context.getDataValue("Time_To_Spend", String.class);//
+        //String time ="3";//
         try{
             int seconds = Integer.parseInt(time);
             if (seconds <= 0) {

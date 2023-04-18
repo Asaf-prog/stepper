@@ -28,7 +28,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         List fileData = context.getDataValue("FILES_LIST", List.class);
         if (fileData.size() ==0 )
             return StepResult.SUCCESS;
-            //summary line
+            //todo summary line
 
         else {
             for (Object runnerFile : fileData) {
