@@ -12,7 +12,6 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
         super("SpendSomeTime", true);
         addInput(new DataDefinitionDeclarationImpl("Time_To_Spend", DataNecessity.MANDATORY, "Time", DataDefinitionRegistry.STRING));
     }
-
     @Override
     public StepResult invoke(StepExecutionContext context) {
         String time = context.getDataValue("Time_To_Spend", String.class);
