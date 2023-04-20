@@ -17,8 +17,12 @@ public class Main {
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
         flow1.validateFlowStructure();
-        /*
-        FLowExecutor fLowExecutor6 = new FLowExecutor();
+
+        FLowExecutor fLowExecutor = new FLowExecutor();
+        FlowExecution flowTestExecution1 = new FlowExecution("19",flow1);
+
+        fLowExecutor.executeFlow(flowTestExecution1);
+       /* FLowExecutor fLowExecutor = new FLowExecutor();
 
         FlowDefinition flowtest = new FlowDefinitionImpl("Flow our First flow", "our first flow");
         flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.SPEND_SOME_TIME.getStepDefinition()));
@@ -32,7 +36,7 @@ public class Main {
         FlowExecution flowTestExecution1 = new FlowExecution("19",flowtest);
 
         fLowExecutorToTest.executeFlow(flowTestExecution1);
- */
+*/
         /*
        FlowDefinition flow2 = new FlowDefinitionImpl("Flow 2", "show two person details");
         flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));

@@ -1,8 +1,10 @@
 package modules.flow.definition.api;
+import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javafx.util.Pair;
 
 public class FlowDefinitionImpl implements FlowDefinition {
 
@@ -10,7 +12,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
     private final String description;
     private final List<String> flowOutputs;
     private final List<StepUsageDeclaration> steps;
-    private List<DataDefinitionDeclaration> freeInputs;
+    private List<Pair<String,DataDefinitionDeclaration>> freeInputs;
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -30,7 +32,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
         createFlowFreeInputs();
     }
     @Override
-    public List<DataDefinitionDeclaration> getFlowFreeInputs() {return freeInputs;}
+    public List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs() {return freeInputs;}
     @Override
     public String getName() {
         return name;
@@ -57,28 +59,32 @@ public class FlowDefinitionImpl implements FlowDefinition {
             for (int i=0; i<currentStep.getStepDefinition().inputs().size() ; i++) {
                 List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
                 for(DataDefinitionDeclaration DD:tempInput) {
-                if (!tempListInputs.contains(DD)){
-                    freeInputs.add(DD);
+                    if (!tempListInputs.contains(DD)){
+                        freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
                     }
                     List<DataDefinitionDeclaration> tempOutput = currentStep.getStepDefinition().outputs();
-                for (DataDefinitionDeclaration DDOut:tempOutput) {
-                    tempListInputs.add(DDOut);
-                }
+                    for (DataDefinitionDeclaration DDOut:tempOutput) {
+                        tempListInputs.add(DDOut);
+                    }
                 }
             }
         }
-        setFreeInputs();
     }
-    public void  setFreeInputs() {
+    public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
-        for(DataDefinitionDeclaration DD:freeInputs) {
-            System.out.println("The DD is: " +DD.getName()+" The Necessity "+ DD.necessity()+" Please enter a "+DD.dataDefinition().getName());
+        for (Pair<String,DataDefinitionDeclaration> DD : freeInputs) {
+            System.out.println("The Step is: "+DD.getKey() +" The DD is: " + DD.getValue().getName() + " The Necessity " + DD.getValue().necessity()
+                    + " Please enter a " + DD.getValue().dataDefinition().getName());
+
             Scanner myScanner = new Scanner(System.in);
             String dataToStore = myScanner.nextLine();
-            //todo check if the data tha't the user enter is the same type of the real data how i need to get
-            //todo check if their is any convertion from string to int 
+
+            //todo check if the data that the user enter is the same type of the real data how i need to get
+            //todo check if their is any conversion from string to int
+
+            context.storeDataValue(DD.getValue().getName(),DD.getValue());
+
         }
-        }
+        return context;
     }
-
-
+}
