@@ -32,6 +32,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         List<String> row = new ArrayList<String>();
         RelationData table= new RelationData(colums);
        if (FileList == null) {
+           context.addSummaryLine("Files Content Extractor ","Their is no files in this folder");
            return StepResult.SUCCESS;
        }
        else {
@@ -45,20 +46,28 @@ public class FilesContentExtractor extends AbstractStepDefinition {
            int index=1;
            for (File specificFile : FileList) {
                //todo add data to row
-
+               context.setLog("Files Content Extractor ","About to start work on file "+specificFile.getName());
+               boolean check = false;
                reader = new BufferedReader(new FileReader(specificFile));
                String line = null;
                for (int i=0; i <lineNumber;i++){
                    line = reader.readLine();
                    if (i == lineNumber){
-
-
+                       row.add(Integer.toString(index));
+                       row.add(specificFile.getName());
+                       row.add(line);
+                       row.add("\n");
+                       index++;
+                       table.SetNumRowFromString(row);
+                       check= true;
                    }
-
                }
+               if (check == false){
+                   System.out.println("Not such line\n");//check if we need to write this in the log
+               }
+
            }
            table.SetNumRowFromString(row);
-
        }
         return StepResult.SUCCESS;
 

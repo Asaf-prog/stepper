@@ -85,7 +85,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
             //todo check if the data that the user enter is the same type of the real data how i need to get
             //todo check if there is any conversion from string to int
 
-            context.storeDataValue(pairOfStringAndDD.getValue().getName(),pairOfStringAndDD.getValue());
+            context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
 
         }
         return context;

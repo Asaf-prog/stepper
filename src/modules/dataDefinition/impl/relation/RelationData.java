@@ -19,8 +19,16 @@ public class RelationData {
     public int getNumColumns() {return columns.size();}
     public int getNumRows(){return rows.size();}
     public void SetNumRowFromString(List<String> tempRow){
-        return;
+        String index= tempRow.get(0);
+        StringBuilder sb = new StringBuilder();
+        for (String item : tempRow) {
+            sb.append(item).append(" ");
         }
+        String concatenatedString = sb.toString().trim();
+        int temp = Integer.parseInt(index)-1;
+        SingleRow line = rows.get(temp);
+        line.addData(index,concatenatedString);
+    }
 
     public String getValueAt(int index1, int index2) {
         SingleRow t = rows.get(index1);
@@ -44,7 +52,6 @@ public class RelationData {
     public List<SingleRow> getRows() {return rows;}
 
     public void setRows(List<SingleRow> rows) {this.rows = rows;}
-    /////////////////////////////////////
     public static class SingleRow {
         private Map<String, String> data;
 
