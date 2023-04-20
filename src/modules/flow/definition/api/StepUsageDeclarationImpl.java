@@ -11,7 +11,6 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
         this(stepDefinition, false, stepDefinition.name());//call to my constructor
     }
-
     public StepUsageDeclarationImpl(StepDefinition stepDefinition, String name) {
         this(stepDefinition, false, name);
     }
@@ -21,7 +20,6 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         this.skipIfFail = skipIfFail;
         this.stepName = stepName;
     }
-
     @Override
     public String getFinalStepName() {
         return stepName;

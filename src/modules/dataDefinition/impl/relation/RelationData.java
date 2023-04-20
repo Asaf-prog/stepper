@@ -18,6 +18,9 @@ public class RelationData {
     public List<String> getRowDataByColumnsOrder(int rowId) {return new ArrayList<>();}
     public int getNumColumns() {return columns.size();}
     public int getNumRows(){return rows.size();}
+    public void SetNumRowFromString(List<String> tempRow){
+        return;
+        }
 
     public String getValueAt(int index1, int index2) {
         SingleRow t = rows.get(index1);

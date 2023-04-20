@@ -3,8 +3,10 @@ import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import javafx.util.Pair;
+import modules.step.api.DataNecessity;
 
 public class FlowDefinitionImpl implements FlowDefinition {
 
@@ -73,11 +75,12 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
         for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
-            System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " + pairOfStringAndDD.getValue().getName() + " The Necessity " + pairOfStringAndDD.getValue().necessity()
+            System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
+                    pairOfStringAndDD.getValue().getName() + " The Necessity " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
 
-            Scanner myScanner = new Scanner(System.in);
-            String dataToStore = myScanner.nextLine();
+                Scanner myScanner = new Scanner(System.in);
+                String dataToStore = myScanner.nextLine();
 
             //todo check if the data that the user enter is the same type of the real data how i need to get
             //todo check if there is any conversion from string to int

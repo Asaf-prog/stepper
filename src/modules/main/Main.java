@@ -13,9 +13,11 @@ public class Main {
     //todo: 3. add all summer lines
     public static void main(String[] args) {
 
-        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "print steps");
-        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
+        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Real flow");
+        //flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
+        //flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
+        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_DELETER.getStepDefinition()));
         flow1.validateFlowStructure();
 
         FLowExecutor fLowExecutor = new FLowExecutor();
