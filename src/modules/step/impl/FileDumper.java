@@ -15,8 +15,8 @@ import java.util.Optional;
 public class FileDumper extends AbstractStepDefinition {
 
 
-    public FileDumper(String stepName) {
-        super(stepName, true);
+    public FileDumper() {
+        super("File Dumper", true);
 
         //inputs and outputs
         addInput(new DataDefinitionDeclarationImpl("CONTENT", DataNecessity.MANDATORY, "Content", DataDefinitionRegistry.STRING));

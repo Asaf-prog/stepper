@@ -8,9 +8,9 @@ import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 
 public class FilesContentExtractor extends AbstractStepDefinition {
-    FilesContentExtractor() {
+    public FilesContentExtractor() {
 
-        super("FilesContentExtractor", true);
+        super("Files Content Extractor", true);
 
         addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to extract", DataDefinitionRegistry.LIST));//full path
         addInput(new DataDefinitionDeclarationImpl("LINE", DataNecessity.MANDATORY, "Line number to extract", DataDefinitionRegistry.NUMBER));//full path
@@ -18,7 +18,6 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         addOutput(new DataDefinitionDeclarationImpl("DATA", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.RELATION));
 
     }
-
     @Override
     public StepResult invoke(StepExecutionContext context) {
         return null;

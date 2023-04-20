@@ -1,5 +1,6 @@
 package modules.flow.execution.context;
 import modules.dataDefinition.api.DataDefinition;
+import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.step.api.DataDefinitionDeclaration;
 
@@ -18,11 +19,9 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
 
-        //todo - check if dataName exists in the context
-        // assuming that from the data name we can get to its data definition
-
         DataDefinitionDeclaration theExpectedDataDefinition = null;
 
+        //this function check if the dd exist in our Map
         Optional<DataDefinitionDeclaration> expectedDD = currentStep.getStepDefinition()
                 .inputs()
                 .stream()

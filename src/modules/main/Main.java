@@ -7,15 +7,22 @@ import modules.flow.execution.FlowExecution;
 import modules.flow.execution.runner.FLowExecutor;
 import modules.step.StepDefinitionRegistry;
 public class Main {
+    
+    //todo: 1. create a flow test
+    //todo: 2. make the UI
+    //todo: 3. add all summer lines
     public static void main(String[] args) {
 
-        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Hello world");
+        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "print steps");
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
+        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
         flow1.validateFlowStructure();
+        /*
         FLowExecutor fLowExecutor6 = new FLowExecutor();
+
         FlowDefinition flowtest = new FlowDefinitionImpl("Flow our First flow", "our first flow");
         flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.SPEND_SOME_TIME.getStepDefinition()));
-        flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILE_RENAMER_STEP.getStepDefinition()));
+        flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_RENAMER.getStepDefinition()));
         flowtest.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_DELETER.getStepDefinition()));
 
         flowtest.validateFlowStructure();
@@ -25,7 +32,7 @@ public class Main {
         FlowExecution flowTestExecution1 = new FlowExecution("19",flowtest);
 
         fLowExecutorToTest.executeFlow(flowTestExecution1);
-
+ */
         /*
        FlowDefinition flow2 = new FlowDefinitionImpl("Flow 2", "show two person details");
         flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
