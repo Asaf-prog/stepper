@@ -72,17 +72,17 @@ public class FlowDefinitionImpl implements FlowDefinition {
     }
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
-        for (Pair<String,DataDefinitionDeclaration> DD : freeInputs) {
-            System.out.println("The Step is: "+DD.getKey() +" The DD is: " + DD.getValue().getName() + " The Necessity " + DD.getValue().necessity()
-                    + " Please enter a " + DD.getValue().dataDefinition().getName());
+        for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
+            System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " + pairOfStringAndDD.getValue().getName() + " The Necessity " + pairOfStringAndDD.getValue().necessity()
+                    + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
 
             Scanner myScanner = new Scanner(System.in);
             String dataToStore = myScanner.nextLine();
 
             //todo check if the data that the user enter is the same type of the real data how i need to get
-            //todo check if their is any conversion from string to int
+            //todo check if there is any conversion from string to int
 
-            context.storeDataValue(DD.getValue().getName(),DD.getValue());
+            context.storeDataValue(pairOfStringAndDD.getValue().getName(),pairOfStringAndDD.getValue());
 
         }
         return context;

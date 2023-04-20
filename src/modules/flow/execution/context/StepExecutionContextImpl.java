@@ -45,9 +45,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
             //todo - Error handling
         }
         return null;
-
     }
-
     @Override
     public boolean storeDataValue(String dataName, Object value) {
         // assuming that from the data name we can get to its data definition
