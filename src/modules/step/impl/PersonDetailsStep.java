@@ -9,12 +9,12 @@ import modules.step.api.StepResult;
 
 public class PersonDetailsStep extends AbstractStepDefinition {
     public PersonDetailsStep() {
-        super("STEP 1", true);
+        super("Person step", true);
 
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("STRING_1", DataNecessity.MANDATORY, "First Name", DataDefinitionRegistry.STRING));
-        addInput(new DataDefinitionDeclarationImpl("STRING_2", DataNecessity.OPTIONAL, "Last Name", DataDefinitionRegistry.STRING));
-        addInput(new DataDefinitionDeclarationImpl("AGE", DataNecessity.MANDATORY, "Age", DataDefinitionRegistry.DOUBLE));
+        addInput(new DataDefinitionDeclarationImpl("Test", DataNecessity.MANDATORY, "First Name", DataDefinitionRegistry.STRING));
+       // addInput(new DataDefinitionDeclarationImpl("STRING_2", DataNecessity.OPTIONAL, "Last Name", DataDefinitionRegistry.STRING));
+        //addInput(new DataDefinitionDeclarationImpl("AGE", DataNecessity.MANDATORY, "Age", DataDefinitionRegistry.DOUBLE));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("DETAILS", DataNecessity.NA, "Full Person Details", DataDefinitionRegistry.STRING));
@@ -22,12 +22,12 @@ public class PersonDetailsStep extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) {
         // fetch inputs here, somehow
-        String firstName = context.getDataValue("STRING_1", String.class);
-        String lastName = context.getDataValue("STRING_2", String.class);
-        Double age = context.getDataValue("AGE", Double.class);
-
+        String firstName = context.getDataValue("Test", String.class);
+       // String lastName = context.getDataValue("STRING_2", String.class);
+       // Double age = context.getDataValue("AGE", Double.class);
+        System.out.println(firstName);
         // do some complex logic...
-        String greeting = "Hello " + firstName.toUpperCase() + " " + lastName.toUpperCase() + "! You were born " + age + " Years ago !";
+        String greeting = "Hello " + firstName.toUpperCase() ;//+ " " + firstName.toUpperCase() + "! You were born ";// + age + " Years ago !"
 
         // add outputs here, somehow
         context.storeDataValue("DETAILS", greeting);

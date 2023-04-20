@@ -27,9 +27,11 @@ public class FLowExecutor {
         context=flowExecution.getFlowDefinition().setFreeInputs(context);
         try {
 
+
             for (int i = 0; i < flowExecution.getFlowDefinition().getFlowSteps().size(); i++) {
                 StepUsageDeclaration stepUsageDeclaration = flowExecution.getFlowDefinition().getFlowSteps().get(i);
                 System.out.println("Starting to execute step: " + stepUsageDeclaration.getFinalStepName());
+                context.setStep(stepUsageDeclaration);
                 StepResult stepResult = stepUsageDeclaration.getStepDefinition().invoke(context);
                 System.out.println("Done executing step: " + stepUsageDeclaration.getFinalStepName() + ". Result: " + stepResult);
                 // check if you should continue etc..

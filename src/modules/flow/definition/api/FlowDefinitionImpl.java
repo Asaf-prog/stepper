@@ -57,34 +57,48 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     public void createFlowFreeInputs() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
-        for (StepUsageDeclaration currentStep: steps) {
-            for (int i=0; i<currentStep.getStepDefinition().inputs().size() ; i++) {
+        for (StepUsageDeclaration currentStep: steps) {//run on all steps
+            System.out.println(currentStep.getFinalStepName());
                 List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
                 for(DataDefinitionDeclaration DD:tempInput) {
-                    if (!tempListInputs.contains(DD)){
+
+                    if (!valueExistsInList(tempListInputs,DD)){
+                        System.out.println(DD.getName());
+                        //tempListInputs.add(DD);
                         freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
                     }
-                    List<DataDefinitionDeclaration> tempOutput = currentStep.getStepDefinition().outputs();
-                    for (DataDefinitionDeclaration DDOut:tempOutput) {
-                        tempListInputs.add(DDOut);
-                    }
+                }
+                List<DataDefinitionDeclaration> tempOutput = currentStep.getStepDefinition().outputs();
+                System.out.println(currentStep.getStepDefinition().outputs().size());
+                for (DataDefinitionDeclaration DDOut:tempOutput) {
+                    System.out.println(DDOut.getName());
+                    tempListInputs.add(DDOut);
                 }
             }
         }
+    public boolean valueExistsInList(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind) {
+        for (DataDefinitionDeclaration obj : myList) {
+            if (obj.getName() == valueToFind.getName() ){
+                return true;
+            }
+        }
+        return false;
     }
+
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
         for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
-                    pairOfStringAndDD.getValue().getName() + " The Necessity " + pairOfStringAndDD.getValue().necessity()
+                    pairOfStringAndDD.getValue().getName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
 
                 Scanner myScanner = new Scanner(System.in);
                 String dataToStore = myScanner.nextLine();
+            System.out.println(dataToStore);
 
             //todo check if the data that the user enter is the same type of the real data how i need to get
             //todo check if there is any conversion from string to int
-
+            System.out.println(pairOfStringAndDD.getValue().getName());
             context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
 
         }
