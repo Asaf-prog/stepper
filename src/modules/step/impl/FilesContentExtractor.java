@@ -58,7 +58,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                        row.add(line);
                        row.add("\n");
                        index++;
-                       table.SetNumRowFromString(row);
+                    //   table.SetNumRowFromString(row);
                        check= true;
                    }
                }
@@ -67,7 +67,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                }
 
            }
-           table.SetNumRowFromString(row);
+          // table.SetNumRowFromString(row);
        }
         return StepResult.SUCCESS;
 

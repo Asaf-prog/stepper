@@ -14,14 +14,15 @@ public class CSVExporter extends AbstractStepDefinition {
         public CSVExporter() {
             super("CSV Exporter", true);
 
-            addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, " Source data", DataDefinitionRegistry.RELATION));
+            addInput(new DataDefinitionDeclarationImpl("RENAME_RESULT", DataNecessity.MANDATORY, " Source data", DataDefinitionRegistry.RELATION));
 
             addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "Result", DataDefinitionRegistry.STRING));
 
         }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        RelationData dataToConvert = context.getDataValue("SOURCE", RelationData.class);
+        RelationData dataToConvert = context.getDataValue("RENAME_RESULT", RelationData.class);
+      dataToConvert.printTable();
         if (dataToConvert.getNumColumns() != 0) {
             StringBuilder csvString = new StringBuilder();
             context.setLog("CSV Exporter", "About to process " + dataToConvert.getRows() + "lines of data");
@@ -46,6 +47,7 @@ public class CSVExporter extends AbstractStepDefinition {
 
                 csvString.append("\n");
             }
+            System.out.println(csvString);
             return StepResult.SUCCESS;
         }
         context.addSummaryLine("CSV Exporter","The table is Empty");

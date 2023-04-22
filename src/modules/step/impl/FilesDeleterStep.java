@@ -2,6 +2,7 @@ package modules.step.impl;
 
 import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.dataDefinition.impl.file.FileData;
+import modules.dataDefinition.impl.mapping.Mapping;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
@@ -54,8 +55,9 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             deletedFiles.add("0");
             //summary line
         }
+        Mapping<Integer,Integer> deletionStats = new Mapping<>(deletedFiles.size(),survivingFiles.size());
         context.storeDataValue("DELETION_STATS",survivingFiles);
-        context.storeDataValue("TOTAL_FOUND",deletedFiles);
+        context.storeDataValue("TOTAL_FOUND",deletionStats);
         //car :number of successfully deleted files
         //cdr :number of unsuccessfully deleted files
         //summary line

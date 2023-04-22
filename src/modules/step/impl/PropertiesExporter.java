@@ -25,9 +25,11 @@ public class PropertiesExporter extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) {
         RelationData relationTable = context.getDataValue("SOURCE", RelationData.class);
-        String fileName = context.getDataValue("FILE_NAME", String.class);
+       // String fileName = context.getDataValue("FILE_NAME", String.class);
         context.setLog("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
-        File file = new File(fileName);
+        RelationData data=relationTable;
+
+        File file = new File("PROP");
         try {
             FileWriter fileWriter = new FileWriter(file);
             // loop through rows and columns to write data in properties format
@@ -51,6 +53,7 @@ public class PropertiesExporter extends AbstractStepDefinition {
         }
         // check if file created
         if (file.exists()) {
+            System.out.println(relationTable);
             context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
             return StepResult.SUCCESS;
         } else {

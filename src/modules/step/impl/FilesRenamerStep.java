@@ -52,24 +52,22 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         context.setLog("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
         for (FileData fileData : filesToRename) {
             String newFileName;
-            String folder =fileData.getFile().getParent() +File.separator;
+            String folder =fileData.getFile().getParent() + File.separator;
             String oldFileName = fileData.getName();
-            System.out.println(oldFileName);
+            //System.out.println(oldFileName);
+
             if (suffix == null && prefix == null) {
-                 newFileName = oldFileName.substring(0, oldFileName.lastIndexOf("."))  + ".txt";
+                 newFileName = oldFileName.substring(0, oldFileName.lastIndexOf(".")) + ".txt";
             }else  if(prefix == null) {
                  newFileName = oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix + ".txt";
             }else if (suffix == null) {
                  newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf("."))  + ".txt";
-            }else if (prefix == null) {
-                 newFileName = oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix + ".txt";
             } else {
-                 newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix + ".txt";
+                 newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix+ ".txt";
             }
+            fileAfterChange.add(newFileName);//check if changed currectly
             String renamedFilePath = folder + newFileName;
-            //update FilesAfterChange
-            fileAfterChange.add(newFileName.substring(0, newFileName.lastIndexOf(File.separator)));//check if changed currectly
-
+            System.out.println(newFileName);
             if (!fileData.getFile().renameTo(new File(renamedFilePath))) {
                //means Warning
                 warning = true;
@@ -88,8 +86,9 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             row.add(String.valueOf(i+1));
             row.add(fileBeforeChange.get(i));
             row.add(fileAfterChange.get(i));
-            //add row to table depends on single row implementation
+            outputTable.addRow(row);
         }
+        context.storeDataValue("RENAME_RESULT", outputTable);
         context.setLog("Files Renamer","All files renamed successfully");
         return StepResult.SUCCESS;
     }
