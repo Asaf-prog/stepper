@@ -48,7 +48,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     @Override
     public boolean storeDataValue(String dataName, Object value) {
             dataValues.put(dataName, value);
-        return true;
+            return true;
     }
     @Override
     public List getLog(String step){

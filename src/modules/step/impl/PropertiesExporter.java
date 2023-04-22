@@ -22,8 +22,6 @@ public class PropertiesExporter extends AbstractStepDefinition {
             addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "Result", DataDefinitionRegistry.STRING));
 
         }
-
-
     @Override
     public StepResult invoke(StepExecutionContext context) {
         RelationData relationTable = context.getDataValue("SOURCE", RelationData.class);

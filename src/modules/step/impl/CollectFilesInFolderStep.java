@@ -67,7 +67,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                 try {
                     fileList = Files.list(path)
                             .filter(Files::isRegularFile)
-                            .filter(p -> p.getFileName().toString().matches(filter))
+                            .filter(p -> p.getFileName().toString().contains(filter))
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {

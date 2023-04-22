@@ -50,5 +50,6 @@ public class FileData {
     public FileData(File file) {
         this._path = Paths.get(file.getPath());
         this.name = file.getName();
+        this.file = file;
     }
 }

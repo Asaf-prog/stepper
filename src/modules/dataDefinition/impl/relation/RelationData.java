@@ -44,7 +44,6 @@ public class RelationData {
         }
         return valToReturn;
     }
-
     public List<String> getColumns() {return columns;}
 
     public void setColumns(List<String> columns) {this.columns = columns;}
@@ -52,8 +51,18 @@ public class RelationData {
     public List<SingleRow> getRows() {return rows;}
 
     public void setRows(List<SingleRow> rows) {this.rows = rows;}
+
+    public void addRow( List<String> row) {
+
+        SingleRow temp = new SingleRow();
+        for (int i = 0; i < row.size(); i++) {
+            temp.addData(columns.get(i), row.get(i));
+        }
+        rows.add(temp);
+    }
+   //////////////////////////////
     public static class SingleRow {
-        private Map<String, String> data;
+        private Map<String,String> data;
 
         public Map<String, String> getData() {return data;}
 
@@ -62,7 +71,6 @@ public class RelationData {
         public SingleRow() {
             data = new HashMap<>();
         }
-
         public void addData(String columnName, String value) {
             data.put(columnName, value);
         }

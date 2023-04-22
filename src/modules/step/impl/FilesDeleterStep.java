@@ -8,6 +8,7 @@ import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,15 @@ public class FilesDeleterStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         List<String> survivingFiles = new ArrayList<>();
         List<String> deletedFiles = new ArrayList<>();
-        List fileData = context.getDataValue("FILES_LIST", List.class);
-        if (fileData.size() ==0 )
+        List <FileData> name = context.getDataValue("FILES_LIST", List.class);
+        if (name.size() ==0 )
             return StepResult.SUCCESS;
             //todo summary line
-
         else {
-            for (Object runnerFile : fileData) {
+            for (FileData filedata : name) {
+                Object runnerFile = filedata.getFile();
                 if (runnerFile instanceof File) {
-                   context.setLog("Files Deleter","About to start delete"+fileData.size() +"files");
+                   context.setLog("Files Deleter","About to start delete"+name.size() +"files");
                     if (((File) runnerFile).exists() && ((File) runnerFile).isFile()) {
                         deletedFiles.add(((File) runnerFile).getName());
                         ((File) runnerFile).delete();
