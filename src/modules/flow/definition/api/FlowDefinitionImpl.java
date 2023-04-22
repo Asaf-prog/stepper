@@ -85,7 +85,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
         }
         return false;
     }
-
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
         Scanner myScanner = new Scanner(System.in);
@@ -120,7 +119,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
             //System.out.println(dataToStore);
             if (!dataToStore.isEmpty())
             {
-                System.out.println(pairOfStringAndDD.getValue().getName());
+               // System.out.println(pairOfStringAndDD.getValue().getName());
                 context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
             }
 

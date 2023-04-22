@@ -28,8 +28,12 @@ public class FilesRenamerStep extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        List<FileData> filesToRename = context.getDataValue("FILES_TO_RENAME", List.class);
+        List<FileData> filesToRename = context.getDataValue("FILES_LIST", List.class);
         boolean warning = false;
+        System.out.println(filesToRename);
+        for (FileData temp:filesToRename){
+            System.out.println(temp.getName());
+        }
         List<String> faileds = new ArrayList<>();//failed files
         //make the next string as optional because they are optional
         String prefix = context.getDataValue("PREFIX", String.class);
@@ -37,8 +41,10 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         context.setLog("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
 
         for (FileData fileData : filesToRename) {
+
             String folder =fileData.getFile().getParent() +File.separator;
             String oldFileName = fileData.getName();
+            System.out.println(oldFileName);
             String newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix + ".txt";
             String renamedFilePath = folder + newFileName;
 

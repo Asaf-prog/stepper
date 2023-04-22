@@ -47,20 +47,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     @Override
     public boolean storeDataValue(String dataName, Object value) {
-        // assuming that from the data name we can get to its data definition
-       // DataDefinition theData = null;//todo here needs to compare between the data name
-
-        //todo  we have the DD type so we can make sure that its from the same type we are expecting
-       // Class<?> myClass = value.getClass();
-        //System.out.println(value.getClass());
-      //  System.out.println(theData.getType());
-        // System.out.println("asaa");
-       // if (DataDefinition.class.isAssignableFrom(myClass)||DataDefinition.class.isInstance(myClass)) {//theData.getType().isAssignableFrom(myClass)
             dataValues.put(dataName, value);
-        //}
-        //else {
-            //todo - error handling of some sort...
-        //}
         return true;
     }
     @Override
