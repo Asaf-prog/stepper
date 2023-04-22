@@ -67,7 +67,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                 try {
                     fileList = Files.list(path)
                             .filter(Files::isRegularFile)
-                            .filter(p -> p.getFileName().toString().matches(filter))
+                            .filter(p -> p.getFileName().toString().contains(filter))
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {
@@ -80,8 +80,12 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
             List<FileData> filesList = new ArrayList<>();
             for (File file : fileList) {
                 if (file.isFile()) {
-                    FileData fileData = new FileData(file);
-                    filesList.add(fileData);
+                    String check = file.getName();
+                    if (!(check.equals(".DS_Store"))) {
+                        FileData fileData = new FileData(file);
+                        filesList.add(fileData);
+                        //  System.out.println(fileData.getName());
+                    }
                 }
             }
             context.storeDataValue("FILES_LIST", filesList);

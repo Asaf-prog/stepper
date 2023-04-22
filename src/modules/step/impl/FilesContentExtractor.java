@@ -1,16 +1,24 @@
 package modules.step.impl;
 
 import modules.dataDefinition.impl.DataDefinitionRegistry;
+import modules.dataDefinition.impl.file.FileData;
+import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 
-public class FilesContentExtractor extends AbstractStepDefinition {
-    FilesContentExtractor() {
+import javax.management.relation.Relation;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-        super("FilesContentExtractor", true);
+public class FilesContentExtractor extends AbstractStepDefinition {
+    public FilesContentExtractor() {
+
+        super("Files Content Extractor", true);
 
         addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to extract", DataDefinitionRegistry.LIST));//full path
         addInput(new DataDefinitionDeclarationImpl("LINE", DataNecessity.MANDATORY, "Line number to extract", DataDefinitionRegistry.NUMBER));//full path
@@ -18,9 +26,48 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         addOutput(new DataDefinitionDeclarationImpl("DATA", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.RELATION));
 
     }
-
     @Override
-    public StepResult invoke(StepExecutionContext context) {
-        return null;
+    public StepResult invoke(StepExecutionContext context) throws IOException {
+        List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);
+        int lineNumber = context.getDataValue("LINE", Integer.class);
+        List<String> colums = new ArrayList<String>();
+
+      if (FileList == null) {
+           context.addSummaryLine("Files Content Extractor ","Their is no files in this folder");
+           return StepResult.SUCCESS;
+       }
+       else {
+          List<String>cols= Arrays.asList(new String[]{"Serial Number", "Name Of File","Data in specific line"});
+          RelationData table= new RelationData(cols);
+          BufferedReader reader = null;
+           int index=1;
+           for (FileData specificFile : FileList) {
+
+               context.setLog("Files Content Extractor ","About to start work on file "+specificFile.getName());
+               boolean check = false;
+               reader = new BufferedReader(new FileReader(specificFile.getFile()));
+               String line = null;
+               for (int i=0; i <lineNumber;i++){
+                   line = reader.readLine();
+                   if (i == lineNumber-1){
+                       List<String> row = new ArrayList<String>();
+                       row.add(Integer.toString(index));
+                       row.add(specificFile.getName());
+                       row.add(line);
+                       index++;
+                       table.addRow(row);
+
+                       check= true;
+                   }
+               }
+               if (check == false){
+                   System.out.println("Not such line\n");//check if we need to write this in the log
+               }
+           }
+           table.printTable();
+           context.storeDataValue("DATA",table);
+       }
+        return StepResult.SUCCESS;
+
     }
 }

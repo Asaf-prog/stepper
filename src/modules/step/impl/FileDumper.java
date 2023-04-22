@@ -10,27 +10,32 @@ import modules.step.api.DataDefinitionDeclarationImpl;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 public class FileDumper extends AbstractStepDefinition {
 
 
-    public FileDumper(String stepName) {
-        super(stepName, true);
+    public FileDumper() {
+        super("File Dumper", true);
 
         //inputs and outputs
         addInput(new DataDefinitionDeclarationImpl("CONTENT", DataNecessity.MANDATORY, "Content", DataDefinitionRegistry.STRING));
         addInput(new DataDefinitionDeclarationImpl("FILE_NAME", DataNecessity.MANDATORY, "Target file path", DataDefinitionRegistry.STRING));
 
         addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "File Creation Result", DataDefinitionRegistry.STRING));
+
     }
 
     @Override
     public StepResult invoke(StepExecutionContext context) {
         String content = context.getDataValue("CONTENT", String.class);
-        String fileName = context.getDataValue("FILE_NAME", String.class);
+        String filePath = context.getDataValue("FILE_NAME", String.class);
+        String fileName=filePath.substring(filePath.lastIndexOf("/")+1);
+
         context.setLog("File Dumper", "About to create file: " + fileName);
-        File file = new File(fileName);
+        File file = new File(filePath);
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(content);

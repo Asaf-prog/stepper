@@ -2,11 +2,13 @@ package modules.step.impl;
 
 import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.dataDefinition.impl.file.FileData;
+import modules.dataDefinition.impl.mapping.Mapping;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,15 +27,15 @@ public class FilesDeleterStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         List<String> survivingFiles = new ArrayList<>();
         List<String> deletedFiles = new ArrayList<>();
-        List fileData = context.getDataValue("FILES_LIST", List.class);
-        if (fileData.size() ==0 )
+        List <FileData> name = context.getDataValue("FILES_LIST", List.class);
+        if (name.size() ==0 )
             return StepResult.SUCCESS;
             //todo summary line
-
         else {
-            for (Object runnerFile : fileData) {
+            for (FileData filedata : name) {
+                Object runnerFile = filedata.getFile();
                 if (runnerFile instanceof File) {
-                   context.setLog("Files Deleter","About to start delete"+fileData.size() +"files");
+                   context.setLog("Files Deleter","About to start delete"+name.size() +"files");
                     if (((File) runnerFile).exists() && ((File) runnerFile).isFile()) {
                         deletedFiles.add(((File) runnerFile).getName());
                         ((File) runnerFile).delete();
@@ -53,8 +55,9 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             deletedFiles.add("0");
             //summary line
         }
+        Mapping<Integer,Integer> deletionStats = new Mapping<>(deletedFiles.size(),survivingFiles.size());
         context.storeDataValue("DELETION_STATS",survivingFiles);
-        context.storeDataValue("TOTAL_FOUND",deletedFiles);
+        context.storeDataValue("TOTAL_FOUND",deletionStats);
         //car :number of successfully deleted files
         //cdr :number of unsuccessfully deleted files
         //summary line

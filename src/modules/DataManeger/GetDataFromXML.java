@@ -1,8 +1,8 @@
-package modules.DataBase;
+package modules.DataManeger;
 
 
-import modules.flow.definition.api.FlowDefinition;
 import modules.flow.execution.FlowExecution;
+import schemeTest.generatepackage.STStepper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -14,28 +14,27 @@ import java.io.File;
 //all generated classes should be generated into FromXML Folder..
 public class GetDataFromXML {
     public static void main(String[] args) {
-            fromXmlFileToObject();
+        String path = "C:\\Users\\User\\Desktop\\stepper-UserInterface\\src\\modules\\DataManeger\\FromXML\\STStepper.xml";
         }
 
-    private static void fromXmlFileToObject() {
-        System.out.println("\nFrom File to Object");
+    public static void fromXmlFileToObject(String path) {
+      //  System.out.println("\nFrom File to Object");
 
         try {
-
-            File file = new File(FILE_NAME);
-            JAXBContext jaxbContext = JAXBContext.newInstance(FlowExecution.class);
+            File file = new File(path);
+            JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            FlowExecution flowExecution = (FlowExecution) jaxbUnmarshaller.unmarshal(file);
+            STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(file);
+            // System.out.println(stStepper);
+
 
             //do this for all flows
             //by the xml
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-
     }
-
     private static void fromObjectToXmlFile(Object obj) {
         try {
 
@@ -53,6 +52,5 @@ public class GetDataFromXML {
             e.printStackTrace();
         }
     }
-
-    public static final String FILE_NAME = "file.xml";
+    public static final String FILE_NAME = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
 }

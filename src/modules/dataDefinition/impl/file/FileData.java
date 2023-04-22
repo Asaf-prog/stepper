@@ -1,23 +1,37 @@
 package modules.dataDefinition.impl.file;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileData {
     String name;
-    String _path;
+    Path _path;
+
+    File file;
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+
 
     //todo add more thing we need about file in our system
 
-    public FileData(String path) {
-        this._path = path;
-    }
-
-    public FileData(String name, String path) {//default constructor
+    public FileData(String name) {
         this.name = name;
-        this._path = path;
     }
 
-    public String getPath() {
+    public FileData(String name,File file) {//default constructor
+        this.name = name;
+        this._path = Paths.get(file.getPath());
+        this.file = file;
+    }
+
+    public Path getPath() {
         return this._path;
     }
 
@@ -30,11 +44,12 @@ public class FileData {
     }
 
     public void set_path(String _path) {
-        this._path = _path;
+        this._path = Paths.get(_path);
     }
 
     public FileData(File file) {
-        this._path = file.getPath();
+        this._path = Paths.get(file.getPath());
         this.name = file.getName();
+        this.file = file;
     }
 }
