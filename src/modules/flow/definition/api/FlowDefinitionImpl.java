@@ -59,20 +59,19 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public void createFlowFreeInputs() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
         for (StepUsageDeclaration currentStep: steps) {//run on all steps
-            System.out.println(currentStep.getFinalStepName());
+            //System.out.println(currentStep.getFinalStepName());
                 List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
                 for(DataDefinitionDeclaration DD:tempInput) {
 
                     if (!valueExistsInList(tempListInputs,DD)){
-                        System.out.println(DD.getName());
-                        //tempListInputs.add(DD);
+                       // System.out.println(DD.getName());
                         freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
                     }
                 }
                 List<DataDefinitionDeclaration> tempOutput = currentStep.getStepDefinition().outputs();
-                System.out.println(currentStep.getStepDefinition().outputs().size());
+                //System.out.println(currentStep.getStepDefinition().outputs().size());
                 for (DataDefinitionDeclaration DDOut:tempOutput) {
-                    System.out.println(DDOut.getName());
+                 //   System.out.println(DDOut.getName());
                     tempListInputs.add(DDOut);
                 }
             }
@@ -93,41 +92,21 @@ public class FlowDefinitionImpl implements FlowDefinition {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
                     pairOfStringAndDD.getValue().getName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
-
-            dataToStore = myScanner.nextLine();
-            //todo need to move this to the UI
-            //todo :need to get input by identification of the type of the data 4example: int, List<FileData> etc.
-
-            //something in the style of:(probably move into func for each DD)
-//            if (pairOfStringAndDD.getValue().dataDefinition() == DataDefinitionRegistry.LIST)
-//            {
-//                System.out.println("Please enter the number of elements in the list");
-//                int numberOfElements = myScanner.nextInt();
-//                List<String> listToStore = new ArrayList<>();
-//                for (int i = 0; i < numberOfElements; i++) {
-//                    System.out.println("Please enter the element number " + i+1);
-//                    myScanner = new Scanner(System.in);
-//                    String temp = myScanner.nextLine();
-//                    listToStore.add(temp);
-//                }
-//                dataToStore = listToStore.toString();
-//
-//            }
-           // else
-
-
-            //System.out.println(dataToStore);
-            if (!dataToStore.isEmpty())
-            {
-               // System.out.println(pairOfStringAndDD.getValue().getName());
-                context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
+            if (pairOfStringAndDD.getValue().getName() == "LINE"){
+                int num = myScanner.nextInt();
+                context.storeDataValue(pairOfStringAndDD.getValue().getName(),num);
+            }else {
+                dataToStore = myScanner.nextLine();
+                if (!dataToStore.isEmpty()) {
+                    context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
+                }
             }
-
-            //todo check if the data that the user enter is the same type of the real data how i need to get
-            //todo check if there is any conversion from string to int
-
-
         }
         return context;
+        //todo need to move this to the UI
+        //todo :need to get input by identification of the type of the data 4example: int, List<FileData> etc.
+        // todo check if the data that the user enter is the same type of the real data how i need to get
+        //todo check if there is any conversion from string to int
+
     }
 }

@@ -41,10 +41,6 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         }
 
         boolean warning = false;
-        System.out.println(filesToRename);
-        for (FileData temp:filesToRename){
-            System.out.println(temp.getName());
-        }
         List<String> faileds = new ArrayList<>();//failed files
         //make the next string as optional because they are optional
         String prefix = context.getDataValue("PREFIX", String.class);
@@ -54,7 +50,6 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             String newFileName;
             String folder =fileData.getFile().getParent() + File.separator;
             String oldFileName = fileData.getName();
-            //System.out.println(oldFileName);
 
             if (suffix == null && prefix == null) {
                  newFileName = oldFileName.substring(0, oldFileName.lastIndexOf(".")) + ".txt";
@@ -67,7 +62,6 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             }
             fileAfterChange.add(newFileName);//check if changed currectly
             String renamedFilePath = folder + newFileName;
-            System.out.println(newFileName);
             if (!fileData.getFile().renameTo(new File(renamedFilePath))) {
                //means Warning
                 warning = true;

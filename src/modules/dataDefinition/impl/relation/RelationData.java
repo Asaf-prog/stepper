@@ -16,16 +16,16 @@ public class RelationData {
         columns = new ArrayList<>();
         rows = new ArrayList<>();
     }
-
+    public boolean isEmpty() {
+        return columns.isEmpty() && rows.isEmpty();
+    }
     public static RelationData Demo() {
         RelationData data = new RelationData();
         List<String> columns = new ArrayList<>();
         columns.add("Column 1");
         columns.add("Column 2");
         data.setColumns(columns);
-
         Random random = new Random();
-
         for (int i = 0; i < 2; i++) {
             List<String> rowData = new ArrayList<>();
             for (int j = 0; j < 2; j++) {

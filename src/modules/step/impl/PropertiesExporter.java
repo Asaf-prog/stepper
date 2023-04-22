@@ -25,41 +25,33 @@ public class PropertiesExporter extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) {
         RelationData relationTable = context.getDataValue("SOURCE", RelationData.class);
-       // String fileName = context.getDataValue("FILE_NAME", String.class);
         context.setLog("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
-        RelationData data=relationTable;
+        boolean warning=false;
+        if (relationTable.getColumns().size() != 2) {
+            context.setLog("Properties Exporter", "Warning: Source table must have 2 columns");
+            warning=true;
+            //continue
+        }
+        if (relationTable.isEmpty()) {
+            context.setLog("Properties Exporter", "Warning: Source table is empty");
+            warning=true;
+            //continue
+        }
+        StringBuilder propertiesBuilder = new StringBuilder();
+        propertiesBuilder.append(relationTable.getColumns().get(0)).append("=").append(relationTable.getColumns().get(1)).append("\n");
 
-        File file = new File("PROP");
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            // loop through rows and columns to write data in properties format
-            for (int i = 0; i < relationTable.getRows().size(); i++) {
-                RelationData.SingleRow row = relationTable.getRows().get(i);
-                for (int j = 0; j < row.getData().size(); j++) {
-                    String key = "Row" + (i+1) + "=Column" + (j+1);
-                    String value = row.getData().get(j);
-                    fileWriter.write(key + "=" + value + "\n");
-                }
-            }
-            fileWriter.close();
-        } catch (IOException e) {
-            context.setLog("Properties Exporter", "Error exporting relation data: " + e.getMessage());
-            return StepResult.FAILURE;
+        for (RelationData.SingleRow row : relationTable.getRows()) {
+            String key = row.getData().get(0);
+            String value = row.getData().get(1);
+            key = key.replace("\\", "\\\\").replace(":", "\\:");
+            value = value.replace("\\", "\\\\").replace("=", "\\=");
+            propertiesBuilder.append(key).append("=").append(value).append("\n");
         }
-        if ( relationTable.getRows().size()==0)  {
-            //empty table means warning
-            context.setLog("Properties Exporter", "Warning: Empty Table=Empty File ! ");
+        if (warning)
             return StepResult.WARNING;
-        }
-        // check if file created
-        if (file.exists()) {
-            System.out.println(relationTable);
-            context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
-            return StepResult.SUCCESS;
-        } else {
-            context.setLog("Properties Exporter", "Error exporting relation data to file: " + fileName);
-            return StepResult.FAILURE;
-        }
+        //System.out.println(relationTable);
+        context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+        return StepResult.SUCCESS;
 
     }
 }

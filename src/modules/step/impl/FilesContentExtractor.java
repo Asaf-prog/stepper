@@ -1,6 +1,7 @@
 package modules.step.impl;
 
 import modules.dataDefinition.impl.DataDefinitionRegistry;
+import modules.dataDefinition.impl.file.FileData;
 import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
@@ -26,12 +27,15 @@ public class FilesContentExtractor extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
-        List<File> FileList = context.getDataValue("FILES_LIST", List.class);
+        List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);
         int lineNumber = context.getDataValue("LINE", Integer.class);
         List<String> colums = new ArrayList<String>();
         List<String> row = new ArrayList<String>();
-        RelationData table= new RelationData(colums);
-       if (FileList == null) {
+        for (FileData f: FileList){
+            System.out.println(f.getFile().getName());
+        }
+
+      if (FileList == null) {
            context.addSummaryLine("Files Content Extractor ","Their is no files in this folder");
            return StepResult.SUCCESS;
        }
@@ -39,16 +43,16 @@ public class FilesContentExtractor extends AbstractStepDefinition {
            colums.add("Serial Number");
            colums.add("Name Of File");
            colums.add("Data in specific line");
+          RelationData table= new RelationData(colums);
 
-           table.setColumns(colums);
 
-           BufferedReader reader = null;
+          BufferedReader reader = null;
            int index=1;
-           for (File specificFile : FileList) {
-               //todo add data to row
+           for (FileData specificFile : FileList) {
+
                context.setLog("Files Content Extractor ","About to start work on file "+specificFile.getName());
                boolean check = false;
-               reader = new BufferedReader(new FileReader(specificFile));
+               reader = new BufferedReader(new FileReader(specificFile.getFile()));
                String line = null;
                for (int i=0; i <lineNumber;i++){
                    line = reader.readLine();
@@ -58,6 +62,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                        row.add(line);
                        row.add("\n");
                        index++;
+                       table.addRow(row);
                     //   table.SetNumRowFromString(row);
                        check= true;
                    }
@@ -67,10 +72,10 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                }
 
            }
+           table.printTable();
           // table.SetNumRowFromString(row);
        }
         return StepResult.SUCCESS;
 
     }
-
 }

@@ -82,7 +82,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                 if (file.isFile()) {
                     FileData fileData = new FileData(file);
                     filesList.add(fileData);
-                    System.out.println(fileData.getName());
+                  //  System.out.println(fileData.getName());
                 }
             }
             context.storeDataValue("FILES_LIST", filesList);
