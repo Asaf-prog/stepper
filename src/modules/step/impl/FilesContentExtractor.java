@@ -30,7 +30,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);
         int lineNumber = context.getDataValue("LINE", Integer.class);
         List<String> colums = new ArrayList<String>();
-        List<String> row = new ArrayList<String>();
+
         for (FileData f: FileList){
             System.out.println(f.getFile().getName());
         }
@@ -56,24 +56,24 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                String line = null;
                for (int i=0; i <lineNumber;i++){
                    line = reader.readLine();
-                   if (i == lineNumber){
+
+                   if (i == lineNumber-1){
+                       List<String> row = new ArrayList<String>();
                        row.add(Integer.toString(index));
                        row.add(specificFile.getName());
                        row.add(line);
-                       row.add("\n");
                        index++;
                        table.addRow(row);
-                    //   table.SetNumRowFromString(row);
+
                        check= true;
                    }
                }
                if (check == false){
                    System.out.println("Not such line\n");//check if we need to write this in the log
                }
-
            }
            table.printTable();
-          // table.SetNumRowFromString(row);
+           context.storeDataValue("DATA",table);
        }
         return StepResult.SUCCESS;
 
