@@ -80,9 +80,12 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
             List<FileData> filesList = new ArrayList<>();
             for (File file : fileList) {
                 if (file.isFile()) {
-                    FileData fileData = new FileData(file);
-                    filesList.add(fileData);
-                  //  System.out.println(fileData.getName());
+                    String check = file.getName();
+                    if (!(check.equals(".DS_Store"))) {
+                        FileData fileData = new FileData(file);
+                        filesList.add(fileData);
+                        //  System.out.println(fileData.getName());
+                    }
                 }
             }
             context.storeDataValue("FILES_LIST", filesList);

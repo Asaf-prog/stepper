@@ -33,7 +33,6 @@ public class RelationData {
             }
             data.addRow(rowData);
         }
-
         return data;
     }
     public void printTable(){
