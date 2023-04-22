@@ -12,6 +12,7 @@ import modules.step.api.StepResult;
 import javax.management.relation.Relation;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FilesContentExtractor extends AbstractStepDefinition {
@@ -31,21 +32,13 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         int lineNumber = context.getDataValue("LINE", Integer.class);
         List<String> colums = new ArrayList<String>();
 
-        for (FileData f: FileList){
-            System.out.println(f.getFile().getName());
-        }
-
       if (FileList == null) {
            context.addSummaryLine("Files Content Extractor ","Their is no files in this folder");
            return StepResult.SUCCESS;
        }
        else {
-           colums.add("Serial Number");
-           colums.add("Name Of File");
-           colums.add("Data in specific line");
-          RelationData table= new RelationData(colums);
-
-
+          List<String>cols= Arrays.asList(new String[]{"Serial Number", "Name Of File","Data in specific line"});
+          RelationData table= new RelationData(cols);
           BufferedReader reader = null;
            int index=1;
            for (FileData specificFile : FileList) {
@@ -56,7 +49,6 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                String line = null;
                for (int i=0; i <lineNumber;i++){
                    line = reader.readLine();
-
                    if (i == lineNumber-1){
                        List<String> row = new ArrayList<String>();
                        row.add(Integer.toString(index));
