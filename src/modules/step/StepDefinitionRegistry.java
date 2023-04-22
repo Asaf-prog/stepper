@@ -8,7 +8,7 @@ public enum StepDefinitionRegistry {
     PERSON_DETAILS(new PersonDetailsStep()),
     SPEND_SOME_TIME(new SpendSomeTimeStep()),
     COLLECT_FILES_IN_FOLDER(new CollectFilesInFolderStep()),
-    FILES_DELETER (new FilesDeleterStep()),
+    FILES_DELETER(new FilesDeleterStep()),
     FILES_RENAMER(new FilesRenamerStep()),
     FILE_DUMPER(new FileDumper()),
     PROPERTIES_EXPORTER(new PropertiesExporter()),

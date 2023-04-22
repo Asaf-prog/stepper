@@ -21,6 +21,8 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
+
+
         //Find of there is an input match
         DataDefinitionDeclaration theExpectedDataDefinition = null;
         Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =

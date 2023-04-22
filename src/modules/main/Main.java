@@ -19,9 +19,13 @@ public class Main {
         //flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
         //flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
 
-        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD.getStepDefinition()));
-        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.PERSON_DETAILS.getStepDefinition()));
+        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
+        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_RENAMER.getStepDefinition()));
+        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILE_DUMPER.getStepDefinition()));
+        //flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_RENAMER.getStepDefinition()));
+
         flow1.validateFlowStructure();
+
 
         FLowExecutor fLowExecutor = new FLowExecutor();
         FlowExecution flowTestExecution1 = new FlowExecution("19",flow1);

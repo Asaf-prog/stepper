@@ -1,4 +1,5 @@
 package modules.flow.definition.api;
+import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 import java.util.ArrayList;
@@ -87,19 +88,45 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
+        Scanner myScanner = new Scanner(System.in);
+        String dataToStore;
         for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
                     pairOfStringAndDD.getValue().getName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
 
-                Scanner myScanner = new Scanner(System.in);
-                String dataToStore = myScanner.nextLine();
-            System.out.println(dataToStore);
+            dataToStore = myScanner.nextLine();
+            //todo need to move this to the UI
+            //todo :need to get input by identification of the type of the data 4example: int, List<FileData> etc.
+
+            //something in the style of:(probably move into func for each DD)
+//            if (pairOfStringAndDD.getValue().dataDefinition() == DataDefinitionRegistry.LIST)
+//            {
+//                System.out.println("Please enter the number of elements in the list");
+//                int numberOfElements = myScanner.nextInt();
+//                List<String> listToStore = new ArrayList<>();
+//                for (int i = 0; i < numberOfElements; i++) {
+//                    System.out.println("Please enter the element number " + i+1);
+//                    myScanner = new Scanner(System.in);
+//                    String temp = myScanner.nextLine();
+//                    listToStore.add(temp);
+//                }
+//                dataToStore = listToStore.toString();
+//
+//            }
+           // else
+
+
+            //System.out.println(dataToStore);
+            if (!dataToStore.isEmpty())
+            {
+                System.out.println(pairOfStringAndDD.getValue().getName());
+                context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
+            }
 
             //todo check if the data that the user enter is the same type of the real data how i need to get
             //todo check if there is any conversion from string to int
-            System.out.println(pairOfStringAndDD.getValue().getName());
-            context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
+
 
         }
         return context;
