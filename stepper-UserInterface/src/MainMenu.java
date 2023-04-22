@@ -1,3 +1,5 @@
+import modules.DataManeger.GetDataFromXML;
+
 import java.util.Scanner;
 
 public class MainMenu implements Menu {
@@ -26,6 +28,7 @@ public class MainMenu implements Menu {
                         break;
                     case LOAD_DATA:
                         System.out.println("LOAD_DATA");
+                        GetXmlDataFromUser();
                         break;
                     case FLOW_DEFINITION_MENU:
                         System.out.println("FLOW_DEFINITION_MENU");
@@ -46,6 +49,16 @@ public class MainMenu implements Menu {
             } while (choice != MenuItems.EXIT);
         input.close();
     }
+
+    private static void GetXmlDataFromUser() {
+        System.out.println("Please enter the path to the xml file");
+        Scanner input = new Scanner(System.in);
+        String path = input.nextLine();
+
+        //todo add logics to get the xml file
+        GetDataFromXML.fromXmlFileToObject(path);
+    }
+
     public static void displayMenu() {
         System.out.println("MainMenu:");
         for (MenuItems item : MenuItems.values()) {

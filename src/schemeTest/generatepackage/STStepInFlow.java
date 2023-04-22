@@ -6,7 +6,8 @@
 //
 
 
-package generatepackage;
+package schemeTest.generatepackage;
+
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -6,7 +6,8 @@
 //
 
 
-package generatepackage;
+package schemeTest.generatepackage;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 /**
  * <p>Java class for anonymous complex type.
@@ -51,7 +51,7 @@ public class STFlows {
      * 
      * <p>
      * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
+     * not a snapshot. Therefore, any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the stFlow property.
      * 
@@ -74,5 +74,4 @@ public class STFlows {
         }
         return this.stFlow;
     }
-
 }

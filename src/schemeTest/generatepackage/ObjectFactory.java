@@ -6,7 +6,7 @@
 //
 
 
-package generatepackage;
+package schemeTest.generatepackage;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;

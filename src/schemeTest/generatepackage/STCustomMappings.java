@@ -6,7 +6,8 @@
 //
 
 
-package generatepackage;
+package schemeTest.generatepackage;
+
 
 import java.util.ArrayList;
 import java.util.List;
