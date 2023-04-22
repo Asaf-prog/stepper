@@ -7,6 +7,6 @@ import modules.dataDefinition.api.AbstractDataDefinition;
 public class MappingDataDefinition extends AbstractDataDefinition {
 
     public MappingDataDefinition() {
-        super("Mapping", false, Map.class);
+        super("Mapping", false, Mapping.class);
     }
 }
