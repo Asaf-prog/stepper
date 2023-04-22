@@ -2,7 +2,7 @@ package Flow;
 
 import java.util.List;
 
-public class ContextFromMainImpl implements getContextFromMainContext{
+public class ContextFromMainImpl implements GetContextFromMainContext {
 
     @Override
     public String inputUser(String inputUserData){

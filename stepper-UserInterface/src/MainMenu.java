@@ -56,7 +56,6 @@ public class MainMenu implements Menu {
         }
 
     }
-
     @Override
     public void displayMenu2() {
 
