@@ -1,4 +1,7 @@
 package modules.flow.definition.api;
+import modules.Map.AutomaticMapping;
+import modules.Map.CustomMapping;
+import modules.Map.FlowLevelAlias;
 import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
@@ -11,11 +14,16 @@ import modules.step.api.DataNecessity;
 
 public class FlowDefinitionImpl implements FlowDefinition {
 
-    private final String name;
-    private final String description;
-    private final List<String> flowOutputs;
-    private final List<StepUsageDeclaration> steps;
-    private List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+    protected final String name;
+    protected final String description;
+    protected final List<String> flowOutputs;
+    protected final List<StepUsageDeclaration> steps;
+    protected final List<CustomMapping> customMappings;
+    protected List <AutomaticMapping> automaticMappings;
+    protected final List<FlowLevelAlias> flowLevelAliases;
+    protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+    //todo add a boolean filed how check if it's automaticMappings or customMappings
+
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -23,6 +31,10 @@ public class FlowDefinitionImpl implements FlowDefinition {
         flowOutputs = new ArrayList<>();
         steps = new ArrayList<>();
         freeInputs = new ArrayList<>();
+        customMappings = new ArrayList<>();
+        automaticMappings = new ArrayList<>();
+        flowLevelAliases = new ArrayList<>();
+
     }
 
     public void addFlowOutput(String outputName) {
@@ -31,7 +43,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     @Override
     public void validateFlowStructure() {
-        //todo do some validation logic...
         createFlowFreeInputs();
     }
     @Override

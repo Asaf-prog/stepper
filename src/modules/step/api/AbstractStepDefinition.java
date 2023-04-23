@@ -40,4 +40,10 @@ public abstract class AbstractStepDefinition implements StepDefinition {
     public List<DataDefinitionDeclaration> outputs() {
         return outputs;
     }
+
+    @Override
+    public String getName() {
+        return stepName;
+    }
+
 }

@@ -12,4 +12,6 @@ public interface StepDefinition {
     List<DataDefinitionDeclaration> inputs();
     List<DataDefinitionDeclaration> outputs();
     StepResult invoke(StepExecutionContext context) throws IOException;
+
+    String getName();
 }

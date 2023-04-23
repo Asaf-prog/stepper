@@ -49,13 +49,13 @@ import javax.xml.bind.annotation.XmlType;
 public class STFlow {
 
     @XmlElement(name = "ST-FlowOutput", required = true)
-    protected String stFlowOutput;
+    protected String stFlowOutput;//in our def its List<String>
     @XmlElement(name = "ST-CustomMappings")
     protected STCustomMappings stCustomMappings;
     @XmlElement(name = "ST-FlowLevelAliasing")
     protected STFlowLevelAliasing stFlowLevelAliasing;
     @XmlElement(name = "ST-StepsInFlow", required = true)
-    protected STStepsInFlow stStepsInFlow;
+    protected STStepsInFlow stStepsInFlow;//in our def its List<Stepusegdecleration>
     @XmlElement(name = "ST-FlowDescription", required = true)
     protected String stFlowDescription;
     @XmlAttribute(name = "name", required = true)

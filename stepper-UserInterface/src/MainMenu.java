@@ -1,3 +1,4 @@
+import modules.DataManeger.DeepCopy;
 import modules.DataManeger.GetDataFromXML;
 
 import java.util.Scanner;
@@ -29,6 +30,7 @@ public class MainMenu implements Menu {
                     case LOAD_DATA:
                         System.out.println("LOAD_DATA");
                         GetXmlDataFromUser();
+
                         break;
                     case FLOW_DEFINITION_MENU:
                         System.out.println("FLOW_DEFINITION_MENU");

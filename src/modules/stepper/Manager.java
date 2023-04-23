@@ -1,6 +1,7 @@
 package modules.stepper;
 
-public interface Maneger {
+public interface Manager {
+
 
     //
 

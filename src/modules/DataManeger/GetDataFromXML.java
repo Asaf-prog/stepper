@@ -2,6 +2,7 @@ package modules.DataManeger;
 
 
 import modules.flow.execution.FlowExecution;
+import modules.stepper.Stepper;
 import schemeTest.generatepackage.STStepper;
 
 import javax.xml.bind.JAXBContext;
@@ -25,17 +26,20 @@ public class GetDataFromXML {
             JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(file);
-            // System.out.println(stStepper);
-
-
-            //do this for all flows
-            //by the xml
+            STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(file);//import all data from xml to stepperDemo
+            DeepCopy deepCopy = new DeepCopy(stStepper);
+            Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
+            sentToStepper(stepperData);//update Data Manager
         } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
-    private static void fromObjectToXmlFile(Object obj) {
+
+    private static void sentToStepper(Stepper stepperData) {
+        DataManager dataManeger = new DataManager(stepperData);
+    }
+
+    private static void fromObjectToXmlFile(Object obj) {//todo read to xml (bonus)
         try {
 
             File file = new File(FILE_NAME);
@@ -53,4 +57,5 @@ public class GetDataFromXML {
         }
     }
     public static final String FILE_NAME = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
+
 }

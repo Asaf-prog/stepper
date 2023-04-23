@@ -24,4 +24,12 @@ public enum StepDefinitionRegistry {
     public StepDefinition getStepDefinition() {
         return stepDefinition;
     }
+    public static StepDefinition getStepDefinitionByName(String name){
+        for (StepDefinitionRegistry stepDefinitionRegistry : StepDefinitionRegistry.values()) {
+            if (stepDefinitionRegistry.getStepDefinition().getName().equals(name)){
+                return stepDefinitionRegistry.getStepDefinition();
+            }
+        }
+        return null;
+    }
 }
