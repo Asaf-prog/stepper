@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/stepper.iml" filepath="$PROJECT_DIR$/stepper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stepper-Engine.iml" filepath="$PROJECT_DIR$/stepper-Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/stepper-UserInterface/stepper-UserInterface.iml" filepath="$PROJECT_DIR$/stepper-UserInterface/stepper-UserInterface.iml" />
     </modules>
   </component>
