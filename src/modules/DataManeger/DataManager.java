@@ -16,4 +16,9 @@ public class DataManager implements Manager {
     public void setStepperData(Stepper stepperData) {
         this.stepperData = stepperData;
     }
+
+    public Stepper getStepperData() {
+        return stepperData;
+    }
+
 }

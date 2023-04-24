@@ -15,7 +15,8 @@ import java.io.File;
 //all generated classes should be generated into FromXML Folder..
 public class GetDataFromXML {
     public static void main(String[] args) {
-        String path = "C:\\Users\\User\\Desktop\\stepper-UserInterface\\src\\modules\\DataManeger\\FromXML\\STStepper.xml";
+        String path = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
+        fromXmlFileToObject(path);
         }
 
     public static void fromXmlFileToObject(String path) {
@@ -30,6 +31,7 @@ public class GetDataFromXML {
             DeepCopy deepCopy = new DeepCopy(stStepper);
             Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
             sentToStepper(stepperData);//update Data Manager
+
         } catch (JAXBException e) {
             e.printStackTrace();
         }

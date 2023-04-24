@@ -25,8 +25,12 @@ public enum StepDefinitionRegistry {
         return stepDefinition;
     }
     public static StepDefinition getStepDefinitionByName(String name){
+        String fixedName = name.replaceAll("[ _]", "").toUpperCase();
+
         for (StepDefinitionRegistry stepDefinitionRegistry : StepDefinitionRegistry.values()) {
-            if (stepDefinitionRegistry.getStepDefinition().getName().equals(name)){
+            String mid=stepDefinitionRegistry.getStepDefinition().getName().replaceAll("[ _]", "").toUpperCase();
+            if (mid.equals(fixedName)){
+
                 return stepDefinitionRegistry.getStepDefinition();
             }
         }

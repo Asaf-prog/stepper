@@ -21,7 +21,7 @@ public class Stepper implements Manager {
     public List<FlowDefinitionImpl> getFlows() {
         return flows;
     }
-    public void copyFlow(STFlow stFlow){
+    public void copyFlowFromXMLObject(STFlow stFlow){
         FlowDefinitionImpl  flowToAdd = new FlowDefinitionImpl(stFlow.getName(),stFlow.getSTFlowDescription());
 
        for (int i = 0; i< stFlow.getSTStepsInFlow().getSTStepInFlow().size(); i++){
