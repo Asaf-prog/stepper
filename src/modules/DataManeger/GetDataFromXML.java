@@ -37,9 +37,7 @@ public class GetDataFromXML {
         }
     }
 
-    private static void sentToStepper(Stepper stepperData) {
-        DataManager dataManeger = new DataManager(stepperData);
-    }
+    private static void sentToStepper(Stepper stepperData) {DataManager dataManeger = new DataManager(stepperData);}//the one and only data manager
 
     private static void fromObjectToXmlFile(Object obj) {//todo read to xml (bonus)
         try {

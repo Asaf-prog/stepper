@@ -1,4 +1,6 @@
-public enum MenuItems {
+package Menu;
+
+public enum MainMenuItems {
     MAIN_MENU("Main Menu"),
     LOAD_DATA("Load Data"),
     FLOW_DEFINITION_MENU("Flow Definition"),
@@ -10,7 +12,7 @@ public enum MenuItems {
 
     private String name;
 
-    MenuItems(String name) {
+    MainMenuItems(String name) {
         this.name = name;
     }
 
@@ -23,8 +25,8 @@ public enum MenuItems {
 
     }
 
-    public static MenuItems getMenuItem(String name) {//get menu item by name
-        for (MenuItems item : MenuItems.values()) {
+    public static MainMenuItems getMenuItem(String name) {//get menu item by name
+        for (MainMenuItems item : MainMenuItems.values()) {
             if (item.getName().equals(name)) {
                 return item;
             }
@@ -32,8 +34,8 @@ public enum MenuItems {
         return null;
     }
 
-    public static MenuItems getMenuItem(int index) {//get menu item by index
-            for (MenuItems item : MenuItems.values()) {
+    public static MainMenuItems getMenuItem(int index) {//get menu item by index
+            for (MainMenuItems item : MainMenuItems.values()) {
                 if (item.ordinal() == index) {
                     return item;
                 }
@@ -41,7 +43,7 @@ public enum MenuItems {
             return null;
         }
     public static int getValuesByName(String name) {//get index by name
-        for (MenuItems item : MenuItems.values()) {
+        for (MainMenuItems item : MainMenuItems.values()) {
             if (item.getName().equals(name)) {
                 return item.ordinal();
             }

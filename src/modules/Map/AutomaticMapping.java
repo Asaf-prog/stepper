@@ -5,7 +5,7 @@ public class AutomaticMapping implements HasSource<String>, HasTarget<String>
     protected String sourceStep;
     protected String sourceData;
     protected String targetStep;
-    protected String targetData;
+    protected String targetData;//input target name
 
     @Override
     public void setSource(String sourceStep)
@@ -46,5 +46,8 @@ public class AutomaticMapping implements HasSource<String>, HasTarget<String>
     {
         return targetData;
     }
+
+
+
 
 }

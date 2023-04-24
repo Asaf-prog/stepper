@@ -27,7 +27,7 @@ private List <STFlow> Flows;
     for (STFlow flow : Flows){
     stepper.copyFlowFromXMLObject(flow);
     }
-    return null;
+    return stepper;
     }
     void copySpecificFlow(FlowDefinitionImpl flow){
     }

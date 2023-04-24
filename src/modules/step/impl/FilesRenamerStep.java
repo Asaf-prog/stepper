@@ -60,7 +60,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             } else {
                  newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix+ ".txt";
             }
-            fileAfterChange.add(newFileName);//check if changed currectly
+            fileAfterChange.add(newFileName);//check if changed correctly
             String renamedFilePath = folder + newFileName;
             if (!fileData.getFile().renameTo(new File(renamedFilePath))) {
                //means Warning

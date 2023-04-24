@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 public class RelationData {
+    public static void main(String[] args) {
+        //RelationData data = RelationData.Demo();
+       // data.printTable();
+    }
     private List<String> columns;
     private List<SingleRow> rows;
     public RelationData(List<String> columns) {

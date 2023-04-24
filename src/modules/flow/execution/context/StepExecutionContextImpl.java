@@ -22,7 +22,6 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
 
-
         //Find of there is an input match
         DataDefinitionDeclaration theExpectedDataDefinition = null;
         Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =
@@ -36,6 +35,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
             theExpectedDataDefinition = maybeTheExpectedDataDefinition.get();
             if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.dataDefinition().getType())) {
                 Object aValue = dataValues.get(dataName);
+                //System.out.println(expectedDataType.cast(aValue).getClass().getName());
                 return expectedDataType.cast(aValue);
             }
         }

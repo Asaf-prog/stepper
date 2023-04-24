@@ -4,7 +4,7 @@ import modules.stepper.Manager;
 import modules.stepper.Stepper;
 
 public class DataManager implements Manager {
-    Stepper stepperData;
+    public static Stepper stepperData;//the one and only steppe!!!
 
     public DataManager(Stepper stepperData){
         this.stepperData = stepperData;
@@ -20,5 +20,11 @@ public class DataManager implements Manager {
     public Stepper getStepperData() {
         return stepperData;
     }
+
+    public static Stepper getData(){
+        return stepperData;
+    }
+
+
 
 }

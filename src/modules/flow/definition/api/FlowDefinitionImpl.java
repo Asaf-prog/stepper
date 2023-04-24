@@ -18,7 +18,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final String description;
     protected final List<String> flowOutputs;
     protected final List<StepUsageDeclaration> steps;
-    protected final List<CustomMapping> customMappings;
+    protected List<CustomMapping> customMappings;
     protected List <AutomaticMapping> automaticMappings;
     protected final List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
@@ -119,5 +119,41 @@ public class FlowDefinitionImpl implements FlowDefinition {
         // todo check if the data that the user enter is the same type of the real data how i need to get
         //todo check if there is any conversion from string to int
 
+    }
+
+    public List<String> getFlowOutputs() {
+        return flowOutputs;
+    }
+
+    public List<StepUsageDeclaration> getSteps() {
+        return steps;
+    }
+
+    public List<CustomMapping> getCustomMappings() {
+        return customMappings;
+    }
+
+    public void setCustomMappings(List<CustomMapping> customMappings) {
+        this.customMappings = customMappings;
+    }
+
+    public List<AutomaticMapping> getAutomaticMappings() {
+        return automaticMappings;
+    }
+
+    public void setAutomaticMappings(List<AutomaticMapping> automaticMappings) {
+        this.automaticMappings = automaticMappings;
+    }
+
+    public List<FlowLevelAlias> getFlowLevelAliases() {
+        return flowLevelAliases;
+    }
+
+    public List<Pair<String, DataDefinitionDeclaration>> getFreeInputs() {
+        return freeInputs;
+    }
+
+    public void setFreeInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputs) {
+        this.freeInputs = freeInputs;
     }
 }

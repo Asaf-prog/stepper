@@ -1,10 +1,16 @@
 package modules.Map;
 
 public class FlowLevelAlias implements HasSource<String> {
+
     protected String step;
     protected String sourceDataName;
     protected String alias;
 
+    public FlowLevelAlias(String step, String sourceDataName, String alias) {//default constructor
+        this.step = step;
+        this.sourceDataName = sourceDataName;
+        this.alias = alias;
+    }
     public boolean isAliasMatch(String alias, String step, String sourceDataName) {
         if(this.alias.equals(alias) && this.step.equals(step) && this.sourceDataName.equals(sourceDataName))
             return true;

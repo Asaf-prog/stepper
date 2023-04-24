@@ -7,6 +7,14 @@ public class CustomMapping implements HasSource<String>, HasTarget<String> //Ste
     protected String targetStep;
     protected String targetData;
 
+    public CustomMapping(String sourceStep, String sourceData, String targetStep, String targetData)
+    {
+        this.sourceStep = sourceStep;
+        this.sourceData = sourceData;
+        this.targetStep = targetStep;
+        this.targetData = targetData;
+    }
+
     public void setSource(String sourceStep)
     {
         this.sourceStep = sourceStep;
