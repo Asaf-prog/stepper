@@ -2,15 +2,14 @@ package modules.flow.definition.api;
 import modules.Map.AutomaticMapping;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
-import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.flow.execution.context.StepExecutionContext;
+import modules.flow.execution.getNameFromAliasDD.getNameFromAliasDDIml;
+import modules.flow.execution.getNameFromAliasStep.getNameFromAliasIml;
 import modules.step.api.DataDefinitionDeclaration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import javafx.util.Pair;
-import modules.step.api.DataNecessity;
 
 public class FlowDefinitionImpl implements FlowDefinition {
 
@@ -22,6 +21,9 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected List <AutomaticMapping> automaticMappings;
     protected final List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+    protected boolean isCustomMappings;
+    protected getNameFromAliasIml mappingFromNameToAlias;
+    protected getNameFromAliasDDIml mappingFromNameToAliasDD;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
 
@@ -34,8 +36,19 @@ public class FlowDefinitionImpl implements FlowDefinition {
         customMappings = new ArrayList<>();
         automaticMappings = new ArrayList<>();
         flowLevelAliases = new ArrayList<>();
+        mappingFromNameToAlias = new getNameFromAliasIml();
+        mappingFromNameToAliasDD = new getNameFromAliasDDIml();
 
     }
+    public void addAnewValToMapOfNamesByKey(String name,String alias){
+        mappingFromNameToAlias.addNewNameToMap(name,alias);
+    }
+    public String getStepByName(String name){return mappingFromNameToAlias.getValByKey(name);}
+    public void addAnewValToMapOfNamesByKeyInDD(String name,String alias){
+        mappingFromNameToAliasDD.addNewNameToMap(name,alias);
+    }
+    public String getStepByNameDD(String name){return mappingFromNameToAliasDD.getValByKey(name);}
+    public void setIsCustomMappings(boolean isCustomMappings){this.isCustomMappings = isCustomMappings;}
 
     public void addFlowOutput(String outputName) {
         flowOutputs.add(outputName);

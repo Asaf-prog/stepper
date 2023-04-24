@@ -18,7 +18,6 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         summaryLine = new HashMap<>();
         log = new HashMap<>();
     }
-
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
 

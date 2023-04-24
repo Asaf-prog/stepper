@@ -15,7 +15,8 @@ import java.io.File;
 //all generated classes should be generated into FromXML Folder..
 public class GetDataFromXML {
     public static void main(String[] args) {
-        String path = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
+        //String path = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
+        String path = "C:\\Users\\asafr\\Desktop\\testForXML\\ex1.xml";
         fromXmlFileToObject(path);
         }
 
