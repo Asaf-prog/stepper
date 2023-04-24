@@ -63,6 +63,7 @@ public class MainMenu implements Menu {
         GetDataFromXML.fromXmlFileToObject(path);
 
         Stepper stepperData= DataManager.getData();
+
     }
     public static void displayMenu() {
         System.out.println("MainMenu:");

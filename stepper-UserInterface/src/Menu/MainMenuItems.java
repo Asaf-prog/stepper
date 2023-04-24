@@ -22,7 +22,6 @@ public enum MainMenuItems {
 
     public int getValue(){
            return this.ordinal();
-
     }
 
     public static MainMenuItems getMenuItem(String name) {//get menu item by name
@@ -33,7 +32,6 @@ public enum MainMenuItems {
         }
         return null;
     }
-
     public static MainMenuItems getMenuItem(int index) {//get menu item by index
             for (MainMenuItems item : MainMenuItems.values()) {
                 if (item.ordinal() == index) {
@@ -50,5 +48,4 @@ public enum MainMenuItems {
         }
         return -1;
     }
-
 }
