@@ -14,7 +14,7 @@ public class FlowExecutionMenu implements Menu {
         Stepper stepperData = DataManager.getData();
         int i=1;
         for(FlowDefinitionImpl flow : stepperData.getFlows()){
-            System.out.println(i+". "+ flow.getName() + "That does: " + flow.getDescription());
+            System.out.println(i+". "+ flow.getName() + " That does: " + flow.getDescription());
             i++;
         }
 

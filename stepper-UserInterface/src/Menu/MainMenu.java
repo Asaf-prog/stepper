@@ -35,6 +35,7 @@ public class MainMenu implements Menu {
                         break;
                     case FLOW_DEFINITION_MENU:
                         System.out.println("FLOW_DEFINITION_MENU");
+                        FlowDefinitionMenu.displayMenu();
                         break;
                     case FLOW_EXECUTION:
                         System.out.println("FLOW_EXECUTION");

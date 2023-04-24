@@ -1,4 +1,5 @@
 package modules.stepper;
+ import com.sun.javafx.scene.control.behavior.OptionalBoolean;
  import modules.Map.CustomMapping;
  import modules.Map.FlowLevelAlias;
  import modules.flow.definition.api.FlowDefinitionImpl;
@@ -11,6 +12,7 @@ package modules.stepper;
 
  import java.util.ArrayList;
  import java.util.List;
+ import java.util.Optional;
 
 public class Stepper implements Manager {
     List<FlowDefinitionImpl> flows;
@@ -39,10 +41,13 @@ public class Stepper implements Manager {
                 declaration.setStepNameAlias(StepNameAlias);//if step have alias set it if not set the step name as the alias
             else
                 declaration.setStepNameAlias(StepName);
+            Boolean stepSkipIfFail = stFlow.getSTStepsInFlow().getSTStepInFlow().get(i).isContinueIfFailing();
+            if (stepSkipIfFail==null)
+                declaration.setSkipIfFail(false);
+            else
+                declaration.setSkipIfFail(stepSkipIfFail);
 
-            declaration.setSkipIfFail(stFlow.getSTStepsInFlow().getSTStepInFlow().get(i).isContinueIfFailing());
             flowToAdd.getFlowSteps().add(declaration);
-
         }
         //adding custom mappings for each step
         if (stFlow.getSTCustomMappings()!=null) {
