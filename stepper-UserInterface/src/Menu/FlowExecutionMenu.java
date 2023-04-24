@@ -4,7 +4,9 @@ import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 
-public class FlowChooserMenu implements Menu {
+import java.util.Scanner;
+
+public class FlowExecutionMenu implements Menu {
 
     public static void displayMenu(){
 
@@ -12,13 +14,13 @@ public class FlowChooserMenu implements Menu {
         Stepper stepperData = DataManager.getData();
         int i=1;
         for(FlowDefinitionImpl flow : stepperData.getFlows()){
-            System.out.println(i+". "+ flow.getName());
+            System.out.println(i+". "+ flow.getName() + "That does: " + flow.getDescription());
             i++;
         }
-//       for (FlowMenuItems item : FlowMenuItems.values()) {
-//
-//
-//            }
+
+        Scanner input = new Scanner(System.in);
+        int choice = input.nextInt();
+
 
 
 
