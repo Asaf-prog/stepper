@@ -3,8 +3,8 @@ import modules.Map.AutomaticMapping;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.execution.context.StepExecutionContext;
-import modules.flow.execution.getNameFromAliasDD.getNameFromAliasDDIml;
-import modules.flow.execution.getNameFromAliasStep.getNameFromAliasIml;
+import modules.flow.execution.getNameFromAliasDD.getNameFromAliasDDImpl;
+import modules.flow.execution.getNameFromAliasStep.getNameFromAliasImpl;
 import modules.step.api.DataDefinitionDeclaration;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
     protected boolean isCustomMappings;
-    protected getNameFromAliasIml mappingFromNameToAlias;
-    protected getNameFromAliasDDIml mappingFromNameToAliasDD;
+    protected getNameFromAliasImpl mappingFromNameToAlias;
+    protected getNameFromAliasDDImpl mappingFromNameToAliasDD;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
 
@@ -36,8 +36,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
         customMappings = new ArrayList<>();
         automaticMappings = new ArrayList<>();
         flowLevelAliases = new ArrayList<>();
-        mappingFromNameToAlias = new getNameFromAliasIml();
-        mappingFromNameToAliasDD = new getNameFromAliasDDIml();
+        mappingFromNameToAlias = new getNameFromAliasImpl();
+        mappingFromNameToAliasDD = new getNameFromAliasDDImpl();
 
     }
     public void addAnewValToMapOfNamesByKey(String name,String alias){
