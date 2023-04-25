@@ -16,7 +16,7 @@ public class FlowDefinitionMenu implements Menu{
         Stepper stepperData = DataManager.getData();
         int i=1;
         for(FlowDefinitionImpl flow : stepperData.getFlows()){
-            System.out.println(i+". "+ flow.getName() + "That does: " + flow.getDescription());
+            System.out.println(i+". "+ flow.getName() + "    ,which " + flow.getDescription());
             i++;
         }
         Scanner input = new Scanner(System.in);
@@ -28,7 +28,7 @@ public class FlowDefinitionMenu implements Menu{
             PresentFlowInformation(stepperData.getFlows().get(choice-1));
         }
         catch (Exception e){
-            System.out.println("Opps,no can do!");
+            System.out.println(" Opps,no can do!");
             return;
         }
         return;
@@ -43,6 +43,14 @@ public class FlowDefinitionMenu implements Menu{
             System.out.println(i+". "+ step.getFinalStepName());
             i++;
         }
+        System.out.println(" thats it! for now... ");
+    }
+
+
+    private static void presentStepInformation(StepUsageDeclaration step) {
+        System.out.println("Step name: " + step.getFinalStepName());
+        System.out.println("Step inputs: ");
+        int i=1;
         System.out.println(" thats it! for now... ");
     }
 

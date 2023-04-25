@@ -54,7 +54,6 @@ public class Stepper implements Manager {
             }
             flowToAdd.getFlowSteps().add(declaration);
         }
-        //adding custom mappings for each step
         if (stFlow.getSTCustomMappings()!=null) { //this step is costume mapping
             flowToAdd.setIsCustomMappings(true);
             List<STCustomMapping> stCustomMappings = stFlow.getSTCustomMappings().getSTCustomMapping();
@@ -84,6 +83,7 @@ public class Stepper implements Manager {
 
                 //add to the map of data definition <origin name, alias name>=>search in context object
                 flowToAdd.addAnewValToMapOfNamesByKeyInDD(temp.getSourceData(),temp.getAlias());
+
                 flowLevelAliasesToAdd.add(k, temp);
             }
         }

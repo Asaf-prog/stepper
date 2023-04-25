@@ -31,8 +31,11 @@ public class GetDataFromXML {
             STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(file);//import all data from xml to stepperDemo
             DeepCopy deepCopy = new DeepCopy(stStepper);
             Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
+            //validation!!!!!
+            //
+         //  Validate
+            //
             sentToStepper(stepperData);//update Data Manager
-
         } catch (JAXBException e) {
             e.printStackTrace();
         }

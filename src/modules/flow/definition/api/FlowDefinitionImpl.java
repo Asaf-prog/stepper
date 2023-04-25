@@ -102,8 +102,11 @@ public class FlowDefinitionImpl implements FlowDefinition {
         }
     public boolean valueExistsInList(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind) {
         for (DataDefinitionDeclaration obj : myList) {
-            if ((obj.getName() == valueToFind.getName()|| mappingFromNameToAliasDD.getValByKey(obj.getName()) == valueToFind.getName())
-                    &&( mappingFromNameToAliasDD.isKeyExist(obj.getName()))){
+            if (mappingFromNameToAliasDD.getValByKey(obj.getName()) == null){
+                if (obj.getName().equals(valueToFind.getName()) == true)
+                    return true;
+            }
+            else if ( mappingFromNameToAliasDD.getValByKey(obj.getName()).equals(valueToFind.getName()) || obj.getName().equals(valueToFind.getName())){
                 return true;
             }
         }

@@ -12,8 +12,6 @@ public class FLowExecutor {
 
     public void executeFlow(FlowExecution flowExecution){//This class implements the flow
 
-
-
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
         //todo get input from user and store it on the flow execution object
 
