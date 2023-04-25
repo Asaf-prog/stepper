@@ -1,5 +1,7 @@
 package modules.step.api;
 
+import modules.dataDefinition.api.DataDefinition;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,15 @@ public abstract class AbstractStepDefinition implements StepDefinition {
     @Override
     public String getName() {
         return stepName;
+    }
+    @Override
+    public DataDefinition getDataDefinitionByName(String DDName) {
+        for (DataDefinitionDeclaration dataDefinitionDeclaration : inputs) {
+            if (dataDefinitionDeclaration.getName().equals(DDName)) {
+                return dataDefinitionDeclaration.dataDefinition();
+            }
+        }
+        return null;
     }
 
 }

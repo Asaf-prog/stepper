@@ -43,9 +43,11 @@ public class MainMenu implements Menu {
                         break;
                     case FLOW_STATISTICS:
                         System.out.println("FLOW_STATISTICS");
+                        FlowStatisticsMenu.displayMenu();
                         break;
                     case STEPPER_STATISTICS:
                         System.out.println("STEPPER_STATISTICS");
+                        StepperStatisticsMenu.displayMenu();
                         break;
                     case EXIT:
                         System.out.println("Exiting... Goodbye!");

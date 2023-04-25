@@ -4,6 +4,7 @@ package modules.stepper;
  import modules.Map.FlowLevelAlias;
  import modules.flow.definition.api.FlowDefinitionImpl;
  import modules.flow.definition.api.StepUsageDeclarationImpl;
+ import modules.flow.execution.FlowExecution;
  import modules.step.StepDefinitionRegistry;
  import schemeTest.generatepackage.STCustomMapping;
  import schemeTest.generatepackage.STFlow;
@@ -15,7 +16,29 @@ package modules.stepper;
  import java.util.Optional;
 
 public class Stepper implements Manager {
+    public static int idCounter = 1000;
+    List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
+
+    public List<FlowExecution> getFlowExecutions() {
+        return flowExecutions;
+    }
+
+    public void setFlowExecutions(List<FlowExecution> flowExecutions) {
+        this.flowExecutions = flowExecutions;
+    }
+    public FlowExecution getFlowExecutionById(int id){
+        Optional<FlowExecution> res = flowExecutions.stream().filter(flowExecution -> flowExecution.getUniqueId() == id).findFirst();
+        if(res.isPresent()){
+            return res.get();
+        }
+        return null;
+    }
+    public static int GetUniqueID(){
+        return ++idCounter;
+    }
+
+
     public Stepper(){
         flows = new ArrayList<>();
     }
@@ -88,5 +111,14 @@ public class Stepper implements Manager {
             }
         }
         flows.add(flowToAdd);
+    }
+
+    public void validateStepperFlows() {
+        for (FlowDefinitionImpl flow : flows) {
+            flow.setReadOnlyState();
+            //todo validate flow
+            flow.validateFlowStructure();
+        }
+
     }
 }

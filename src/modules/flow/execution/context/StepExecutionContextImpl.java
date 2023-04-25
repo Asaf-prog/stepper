@@ -1,4 +1,5 @@
 package modules.flow.execution.context;
+import modules.Map.CustomMapping;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
@@ -11,16 +12,42 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     private Map<String,List<String>> log;
     private Map<String,String> summaryLine;
     private StepUsageDeclaration currentWorkingStep;
-
+    private List<CustomMapping> customMappings;
+    private List<StepUsageDeclaration> steps;
     private StepUsageDeclarationImpl currentStep;
+
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
         summaryLine = new HashMap<>();
         log = new HashMap<>();
+        customMappings = new ArrayList<>();
     }
     @Override
-    public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
+    public void setCustomMappings(List<CustomMapping> customMappings){this.customMappings = customMappings;}
+    @Override
+    public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
 
+    @Override
+    public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
+        for(CustomMapping custome: customMappings){
+            //if target data == source data (type)
+            if(currentWorkingStep.getFinalStepName().equals(custome.getTarget())){
+               String targetName = custome.getTargetData();
+               String sourceName = custome.getSourceData();
+                StepUsageDeclaration sourceStep = null;
+               for (StepUsageDeclaration sur :steps){
+                 if (sur.getFinalStepName().equals(custome.getSource())){
+                     sourceStep = sur;
+                 }
+               }
+                DataDefinition source = sourceStep.getStepDefinition().getDataDefinitionByName(custome.getSourceData());
+                DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByName(targetName);
+                if (target.getType() == source.getType()){ //if these steps are same types
+                    Object aValue = dataValues.get(dataName);
+                    return expectedDataType.cast(aValue);
+                }
+            }
+        }
         //Find of there is an input match
         DataDefinitionDeclaration theExpectedDataDefinition = null;
         Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =

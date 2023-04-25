@@ -6,6 +6,8 @@ import modules.flow.execution.context.StepExecutionContext;
 import modules.flow.execution.getNameFromAliasDD.getNameFromAliasDDImpl;
 import modules.flow.execution.getNameFromAliasStep.getNameFromAliasImpl;
 import modules.step.api.DataDefinitionDeclaration;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,12 +18,18 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final String name;
     protected final String description;
     protected final List<String> flowOutputs;
+
     protected final List<StepUsageDeclaration> steps;
     protected List<CustomMapping> customMappings;
     protected List <AutomaticMapping> automaticMappings;
     protected final List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
     protected boolean isCustomMappings;
+    protected static int timesUsed;
+
+    protected static double avgTime;
+
+    protected boolean readOnly;
     protected getNameFromAliasImpl mappingFromNameToAlias;
     protected getNameFromAliasDDImpl mappingFromNameToAliasDD;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
@@ -38,9 +46,29 @@ public class FlowDefinitionImpl implements FlowDefinition {
         flowLevelAliases = new ArrayList<>();
         mappingFromNameToAlias = new getNameFromAliasImpl();
         mappingFromNameToAliasDD = new getNameFromAliasDDImpl();
-
+        readOnly=true;
+        timesUsed=0;
+        avgTime=0;
     }
-    public void addAnewValToMapOfNamesByKey(String name,String alias){
+
+    public static int getTimesUsed() {
+        return timesUsed;
+    }
+    @Override
+    public void addUsage() {
+            FlowDefinitionImpl.timesUsed++;
+    }
+
+    @Override
+    public double getAvgTime() {return avgTime;}
+
+    @Override
+    public double updateAvgTime(Duration time) {
+        avgTime = (avgTime * (timesUsed-1) + time.toMillis()) / timesUsed;
+        return avgTime;
+    }
+
+    public void addAnewValToMapOfNamesByKey(String name, String alias){
         mappingFromNameToAlias.addNewNameToMap(name,alias);
     }
     public String getStepByName(String name){return mappingFromNameToAlias.getValByKey(name);}
@@ -49,13 +77,15 @@ public class FlowDefinitionImpl implements FlowDefinition {
     }
     public String getStepByNameDD(String name){return mappingFromNameToAliasDD.getValByKey(name);}
     public void setIsCustomMappings(boolean isCustomMappings){this.isCustomMappings = isCustomMappings;}
+    @Override
+    public boolean getIsCustomMappings(){return isCustomMappings;}
 
-    public void addFlowOutput(String outputName) {
-        flowOutputs.add(outputName);
-    }
+    public void addFlowOutput(String outputName) {flowOutputs.add(outputName);}
 
     @Override
     public void validateFlowStructure() {
+        //todo validate of flow structure base on step location,legal customMappings etc.
+
         // createFlowFreeInputs();
     }
     @Override
@@ -80,6 +110,32 @@ public class FlowDefinitionImpl implements FlowDefinition {
         return flowOutputs;
     }
 
+    @Override
+    public void createFreeInputsForCustomeMapping() {
+        List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
+        for (StepUsageDeclaration currentStep: steps) {//run on all steps
+            System.out.println(currentStep.getFinalStepName());
+            List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
+            for(DataDefinitionDeclaration DD:tempInput) {
+
+                if (!valueExistsInListAndConnected(tempListInputs,DD)){
+                    System.out.println(DD.getName());
+                    freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
+                }
+            }
+            List<DataDefinitionDeclaration> tempOutput = currentStep.getStepDefinition().outputs();
+            System.out.println(currentStep.getStepDefinition().outputs().size());
+            for (DataDefinitionDeclaration DDOut:tempOutput) {
+                System.out.println(DDOut.getName());
+                tempListInputs.add(DDOut);
+            }
+        }
+    }
+
+    public boolean valueExistsInListAndConnected(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind) {
+
+        return false;
+    }
     public void createFlowFreeInputs() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
         for (StepUsageDeclaration currentStep: steps) {//run on all steps
@@ -120,6 +176,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
                     pairOfStringAndDD.getValue().getName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
+
             if (pairOfStringAndDD.getValue().getName() == "LINE"){
                 int num = myScanner.nextInt();
                 context.storeDataValue(pairOfStringAndDD.getValue().getName(),num);
@@ -137,18 +194,11 @@ public class FlowDefinitionImpl implements FlowDefinition {
         //todo check if there is any conversion from string to int
 
     }
+    public List<String> getFlowOutputs() {return flowOutputs;}
 
-    public List<String> getFlowOutputs() {
-        return flowOutputs;
-    }
-
-    public List<StepUsageDeclaration> getSteps() {
-        return steps;
-    }
-
-    public List<CustomMapping> getCustomMappings() {
-        return customMappings;
-    }
+    public List<StepUsageDeclaration> getSteps() {return steps;}
+    @Override
+    public List<CustomMapping> getCustomMappings() {return customMappings;}
 
     public void setCustomMappings(List<CustomMapping> customMappings) {
         this.customMappings = customMappings;
@@ -172,5 +222,17 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     public void setFreeInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputs) {
         this.freeInputs = freeInputs;
+    }
+
+    public void setReadOnlyState() {
+        for (StepUsageDeclaration step: steps) {
+            if (step.getStepDefinition().isReadonly() == false){
+                readOnly = false;
+            }
+        }
+    }
+
+    public boolean IsReadOnly() {
+        return readOnly;
     }
 }

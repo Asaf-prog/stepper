@@ -3,13 +3,38 @@ package modules.flow.definition.api;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.StepDefinition;
 
+import java.time.Duration;
+
 public class StepUsageDeclarationImpl implements StepUsageDeclaration {
 
     private final StepDefinition stepDefinition;
     private  boolean skipIfFail;
     private final String stepName;
     private  String stepNameAlias;
+    private static int timeUsage;
+    private static double avgTime;//in ms
 
+
+    @Override
+    public double getAvgTime() {
+        return avgTime;
+    }
+
+    @Override
+    public double updateAvgTime(Duration time) {
+        avgTime = (avgTime * timeUsage + time.toMillis()) / (timeUsage + 1);
+        return avgTime;
+    }
+
+    @Override
+    public int getTimeUsed() {
+        return timeUsage;
+    }
+
+    @Override
+    public void addUsage() {
+        timeUsage++;
+    }
 
 
     public String getStepName() {

@@ -1,5 +1,6 @@
 package modules.flow.execution.context;
 
+import modules.Map.CustomMapping;
 import modules.flow.definition.api.StepUsageDeclaration;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface StepExecutionContext {
     void addSummaryLine(String step,String summary);
     String getSummary(String step);
     public void setStep(StepUsageDeclaration step);
+    void setCustomMappings(List<CustomMapping> customMappings);
+    void setSteps(List<StepUsageDeclaration> steps);
 
 
     // some more utility methods:

@@ -37,25 +37,27 @@ public class FlowDefinitionMenu implements Menu{
     private static void PresentFlowInformation(FlowDefinitionImpl flow) {
         System.out.println("Flow name: " + flow.getName());
         System.out.println("Flow description: " + flow.getDescription());
+
+        System.out.println("Steps Formal Outputs: " + flow.getFlowOutputs());
+        System.out.println("Is the Step ReadOnly? " + flow.IsReadOnly());
+
         System.out.println("Flow steps: ");
         int i=1;
         for(StepUsageDeclaration step : flow.getSteps()){
             System.out.println(i+". "+ step.getFinalStepName());
             i++;
+            PrintStepInformation(step);
         }
-        System.out.println(" thats it! for now... ");
+        System.out.println(" that's it! for now... ");
     }
 
-
-    private static void presentStepInformation(StepUsageDeclaration step) {
+    private static void PrintStepInformation(StepUsageDeclaration step) {
         System.out.println("Step name: " + step.getFinalStepName());
         System.out.println("Step inputs: ");
-        int i=1;
-        System.out.println(" thats it! for now... ");
+        System.out.println("Step Skip if Fail? : "+step.skipIfFail());
     }
 
     @Override
     public void displayMenu2() {
-
     }
 }

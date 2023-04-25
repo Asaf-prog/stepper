@@ -26,8 +26,20 @@ public class FlowExecutionMenu implements Menu {
             i++;
         }
         Scanner input = new Scanner(System.in);
+        //todo if input 0 to main menu
         int choice = input.nextInt();
-        ExecuteFlow(stepperData,choice);
+        if (choice== MainMenuItems.MAIN_MENU.getValue()){
+            return;
+        }try{
+            ExecuteFlow(stepperData,choice);
+        }
+        catch (Exception e){
+            //todo Class Exception for ExecutionException
+            System.out.println(" Opps,no can do!");
+            return;
+        }
+
+
     }
     private static void ExecuteFlow(Stepper stepperData,int choice) {
 
@@ -39,6 +51,8 @@ public class FlowExecutionMenu implements Menu {
 
         FlowExecution flowTestExecution = new FlowExecution(flow);
         fLowExecutor.executeFlow(flowTestExecution);
+        System.out.println("Flow Ended with "+ flowTestExecution.getFlowExecutionResult());
+
     }
 
     @Override

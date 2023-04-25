@@ -1,5 +1,6 @@
 package modules.step.api;
 
+import modules.dataDefinition.api.DataDefinition;
 import modules.flow.execution.context.StepExecutionContext;
 
 import java.io.FileNotFoundException;
@@ -14,4 +15,6 @@ public interface StepDefinition {
     StepResult invoke(StepExecutionContext context) throws IOException;
 
     String getName();
+
+    DataDefinition getDataDefinitionByName(String DDName);
 }
