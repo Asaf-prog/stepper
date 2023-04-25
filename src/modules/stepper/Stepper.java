@@ -78,8 +78,10 @@ public class Stepper implements Manager {
                 FlowLevelAlias temp = new FlowLevelAlias(currStFlowLevelAlias.getStep()
                         , currStFlowLevelAlias.getSourceDataName()
                         , currStFlowLevelAlias.getAlias());
-                System.out.println(temp.getAlias());
-                System.out.println(temp.getSourceData());
+
+                // System.out.println(temp.getAlias());
+                //System.out.println(temp.getSourceData());
+
                 //add to the map of data definition <origin name, alias name>=>search in context object
                 flowToAdd.addAnewValToMapOfNamesByKeyInDD(temp.getSourceData(),temp.getAlias());
                 flowLevelAliasesToAdd.add(k, temp);

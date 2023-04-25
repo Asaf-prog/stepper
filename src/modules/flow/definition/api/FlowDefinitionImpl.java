@@ -3,8 +3,8 @@ import modules.Map.AutomaticMapping;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.execution.context.StepExecutionContext;
-import modules.flow.execution.getNameFromAliasDD.getNameFromAliasDDIml;
-import modules.flow.execution.getNameFromAliasStep.getNameFromAliasIml;
+import modules.flow.execution.getNameFromAliasDD.getNameFromAliasDDImpl;
+import modules.flow.execution.getNameFromAliasStep.getNameFromAliasImpl;
 import modules.step.api.DataDefinitionDeclaration;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
     protected boolean isCustomMappings;
-    protected getNameFromAliasIml mappingFromNameToAlias;
-    protected getNameFromAliasDDIml mappingFromNameToAliasDD;
+    protected getNameFromAliasImpl mappingFromNameToAlias;
+    protected getNameFromAliasDDImpl mappingFromNameToAliasDD;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
 
@@ -36,8 +36,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
         customMappings = new ArrayList<>();
         automaticMappings = new ArrayList<>();
         flowLevelAliases = new ArrayList<>();
-        mappingFromNameToAlias = new getNameFromAliasIml();
-        mappingFromNameToAliasDD = new getNameFromAliasDDIml();
+        mappingFromNameToAlias = new getNameFromAliasImpl();
+        mappingFromNameToAliasDD = new getNameFromAliasDDImpl();
 
     }
     public void addAnewValToMapOfNamesByKey(String name,String alias){
@@ -56,7 +56,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     @Override
     public void validateFlowStructure() {
-        createFlowFreeInputs();
+        // createFlowFreeInputs();
     }
     @Override
     public List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs() {return freeInputs;}
@@ -83,26 +83,27 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public void createFlowFreeInputs() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
         for (StepUsageDeclaration currentStep: steps) {//run on all steps
-            //System.out.println(currentStep.getFinalStepName());
+            System.out.println(currentStep.getFinalStepName());
                 List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
                 for(DataDefinitionDeclaration DD:tempInput) {
 
                     if (!valueExistsInList(tempListInputs,DD)){
-                       // System.out.println(DD.getName());
+                        System.out.println(DD.getName());
                         freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
                     }
                 }
                 List<DataDefinitionDeclaration> tempOutput = currentStep.getStepDefinition().outputs();
-                //System.out.println(currentStep.getStepDefinition().outputs().size());
+                System.out.println(currentStep.getStepDefinition().outputs().size());
                 for (DataDefinitionDeclaration DDOut:tempOutput) {
-                 //   System.out.println(DDOut.getName());
+                    System.out.println(DDOut.getName());
                     tempListInputs.add(DDOut);
                 }
             }
         }
     public boolean valueExistsInList(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind) {
         for (DataDefinitionDeclaration obj : myList) {
-            if (obj.getName() == valueToFind.getName() ){
+            if ((obj.getName() == valueToFind.getName()|| mappingFromNameToAliasDD.getValByKey(obj.getName()) == valueToFind.getName())
+                    &&( mappingFromNameToAliasDD.isKeyExist(obj.getName()))){
                 return true;
             }
         }

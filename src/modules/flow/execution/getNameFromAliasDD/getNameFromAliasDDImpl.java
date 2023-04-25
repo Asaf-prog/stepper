@@ -1,13 +1,12 @@
-package modules.flow.execution.getNameFromAliasStep;
+package modules.flow.execution.getNameFromAliasDD;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class getNameFromAliasIml {
-    //mapping of steps
-    //represent the real name of the step and the aliasing
+public class getNameFromAliasDDImpl {
     private Map<String,String> aliasToName;
-    public getNameFromAliasIml(){aliasToName = new HashMap<>();}
+    public getNameFromAliasDDImpl(){aliasToName = new HashMap<>();}
+    public boolean isKeyExist(String key){return aliasToName.containsKey(key);}
 
     public Map<String, String> getAliasToName() {return aliasToName;}
 

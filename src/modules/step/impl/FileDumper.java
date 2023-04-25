@@ -32,6 +32,7 @@ public class FileDumper extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         String content = context.getDataValue("CONTENT", String.class);
         String filePath = context.getDataValue("FILE_NAME", String.class);
+        System.out.println(filePath);
         String fileName=filePath.substring(filePath.lastIndexOf("/")+1);
 
         context.setLog("File Dumper", "About to create file: " + fileName);

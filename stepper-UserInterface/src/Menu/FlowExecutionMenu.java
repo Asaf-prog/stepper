@@ -20,28 +20,38 @@ public class FlowExecutionMenu implements Menu {
         int i=1;
         for(FlowDefinitionImpl flow : stepperData.getFlows()){
             System.out.println(i+". "+ flow.getName() + " That does: " + flow.getDescription());
-
             //todo => check in the list of the free input(found in the function validateFlowStructure ) the value after aliasing and compare with the real data
             // maybe i will new to hold more Map of data definition <aliasing name,real name>
-            flow.validateFlowStructure();
-
-            FLowExecutor fLowExecutor = new FLowExecutor();
-            String uniqId = Integer.toString((i+1)*(i+1)*13);//random calculator for unique id for flow
-
-            FlowExecution flowTestExecution = new FlowExecution(uniqId,flow);
-
-            fLowExecutor.executeFlow(flowTestExecution);
 
             i++;
         }
-
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
-
-
-
-
+        ExecuteFlow(stepperData,choice);
     }
+    private static void ExecuteFlow(Stepper stepperData,int choice) {
+
+        System.out.println("Executing flow: "+ stepperData.getFlows().get(choice-1).getName());
+
+        // flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
+//        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_CONTENT_EXTRACTOR.getStepDefinition()));
+//        flow1.validateFlowStructure();
+//
+//
+//        FLowExecutor fLowExecutor = new FLowExecutor();
+//        FlowExecution flowTestExecution1 = new FlowExecution("19",flow1);
+
+//        fLowExecutor.executeFlow(flowTestExecution1);
+
+
+        FlowDefinitionImpl flow= stepperData.getFlows().get(choice-1);
+       flow.validateFlowStructure();
+        FLowExecutor fLowExecutor = new FLowExecutor();
+
+        FlowExecution flowTestExecution = new FlowExecution(flow);
+        fLowExecutor.executeFlow(flowTestExecution);
+    }
+
     @Override
     public void displayMenu2() {
         System.out.println("FlowChooserMenu:");

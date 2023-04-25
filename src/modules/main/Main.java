@@ -14,18 +14,18 @@ public class Main {
     //todo: 4. asaf eating dick 8=====D
     public static void main(String[] args) {
 
-        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Real flow");
+//        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Real flow");
+//
+//
+//        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
+//        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_CONTENT_EXTRACTOR.getStepDefinition()));
+//        flow1.validateFlowStructure();
+//
+//
+//        FLowExecutor fLowExecutor = new FLowExecutor();
+//        FlowExecution flowTestExecution1 = new FlowExecution("19",flow1);
 
-
-        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER.getStepDefinition()));
-        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_CONTENT_EXTRACTOR.getStepDefinition()));
-        flow1.validateFlowStructure();
-
-
-        FLowExecutor fLowExecutor = new FLowExecutor();
-        FlowExecution flowTestExecution1 = new FlowExecution("19",flow1);
-
-        fLowExecutor.executeFlow(flowTestExecution1);
+//        fLowExecutor.executeFlow(flowTestExecution1);
        /* FLowExecutor fLowExecutor = new FLowExecutor();
 
 

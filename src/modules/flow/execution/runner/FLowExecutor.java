@@ -12,7 +12,7 @@ public class FLowExecutor {
 
     public void executeFlow(FlowExecution flowExecution){//This class implements the flow
 
-        System.out.println("Starting execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]");
+
 
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
         //todo get input from user and store it on the flow execution object
@@ -21,7 +21,10 @@ public class FLowExecutor {
         // (typically stored on top of the flow execution object)
         //take all the free input and initialized in the object context
         // every step have a permission to context object and from the context the steps gets the input (the dd)
+        flowExecution.getFlowDefinition().createFlowFreeInputs();
         context=flowExecution.getFlowDefinition().setFreeInputs(context);
+
+        System.out.println("Starting execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]");
         try {
             for (int i = 0; i < flowExecution.getFlowDefinition().getFlowSteps().size(); i++) {
                 StepUsageDeclaration stepUsageDeclaration = flowExecution.getFlowDefinition().getFlowSteps().get(i);
