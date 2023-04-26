@@ -27,6 +27,7 @@ public interface FlowDefinition {
     double getAvgTime();
 
     double updateAvgTime(Duration time);
+    void setMappingForStep();
 
 
     }

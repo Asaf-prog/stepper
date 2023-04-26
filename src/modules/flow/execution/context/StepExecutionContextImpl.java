@@ -32,8 +32,8 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         for(CustomMapping custome: customMappings){
             //if target data == source data (type)
             if(currentWorkingStep.getFinalStepName().equals(custome.getTarget())){
-               String targetName = custome.getTargetData();
-               String sourceName = custome.getSourceData();
+               String targetName = custome.getTargetData();//dd
+               String sourceName = custome.getSourceData();//dd
                 StepUsageDeclaration sourceStep = null;
                for (StepUsageDeclaration sur :steps){
                  if (sur.getFinalStepName().equals(custome.getSource())){

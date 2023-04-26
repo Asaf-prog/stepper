@@ -1,8 +1,13 @@
 package modules.flow.definition.api;
 
+import javafx.util.Pair;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.StepDefinition;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import javafx.util.Pair;
 import java.time.Duration;
 
 public class StepUsageDeclarationImpl implements StepUsageDeclaration {
@@ -13,8 +18,14 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private  String stepNameAlias;
     private static int timeUsage;
     private static double avgTime;//in ms
+    private boolean isCustom = false;
+    List<Pair<String,String>> ListOfCustomMapping;
 
 
+    @Override
+    public void isCustomMapping(boolean bool){isCustom = bool;}
+   @Override
+    public boolean getIsCustomMapping(){return isCustom;}
     @Override
     public double getAvgTime() {
         return avgTime;
@@ -60,10 +71,16 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         this.skipIfFail = skipIfFail;
         this.stepName = stepName;
         this.stepNameAlias = stepName;
+        ListOfCustomMapping = new ArrayList<>();
+
     }
     @Override
     public String getFinalStepName() {
         return stepName;
+    }
+    @Override
+    public void addNewValToPairOFName(String myNameDD,String conectedDD){
+        ListOfCustomMapping.add(new Pair<>(myNameDD,conectedDD));
     }
 
     @Override
@@ -74,4 +91,20 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public boolean skipIfFail() {
         return skipIfFail;
     }
+    @Override
+    public void addAnewValOfDDThatConnectedAddToListOFPair(String target,String source){
+        addNewValToPairOFName(target,source);
+    }
+    @Override
+    public boolean thisNameOfValExistInTheListOfPair(String valueToFind)
+    {
+        for (Pair<String,String> runner : ListOfCustomMapping){
+         if(runner.getKey().equals(valueToFind)){
+             return true;
+         }
+        }
+        return false;
+    }
+    @Override
+    public List<Pair<String,String>> getListOfCustomMapping(){return  ListOfCustomMapping;}
 }

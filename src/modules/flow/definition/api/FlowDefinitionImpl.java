@@ -109,16 +109,40 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public List<String> getFlowFormalOutputs() {
         return flowOutputs;
     }
-
+    @Override
+    public void setMappingForStep(){
+        for(StepUsageDeclaration tempStep: steps){
+            //if step exist in list of customMapping create to this step a map and initialized a boolean that represent if is custom or not
+            if(stepExistInListOFCustomMapping(tempStep.getFinalStepName())){
+                tempStep.isCustomMapping(true);
+                for(CustomMapping tempCustomMapping: customMappings) {
+                    if (tempCustomMapping.getTarget().equals(tempStep.getFinalStepName())){
+                        tempStep.addAnewValOfDDThatConnectedAddToListOFPair(tempCustomMapping.getTargetData(),tempCustomMapping.getSourceData());
+                    }
+                }
+            }
+        }
+    }
+public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
+        for(CustomMapping tempCustomMapping: customMappings){
+            if (tempCustomMapping.getTarget().equals(nameOfTargetStep))
+                return true;
+        }
+        return false;
+}
     @Override
     public void createFreeInputsForCustomeMapping() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
         for (StepUsageDeclaration currentStep: steps) {//run on all steps
+
+            //if step exist in target costume mapping:
+            //<String,String><Files List,filesRenamer>
+
             System.out.println(currentStep.getFinalStepName());
             List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
             for(DataDefinitionDeclaration DD:tempInput) {
 
-                if (!valueExistsInListAndConnected(tempListInputs,DD)){
+                if (!valueExistsInListAndConnected(tempListInputs,DD,currentStep)){
                     System.out.println(DD.getName());
                     freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
                 }
@@ -131,10 +155,37 @@ public class FlowDefinitionImpl implements FlowDefinition {
             }
         }
     }
-
-    public boolean valueExistsInListAndConnected(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind) {
-
+    public boolean valueExistsInListAndConnected(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind,StepUsageDeclaration step){
+        if (existInCustom(myList,valueToFind,step)){
+            //true
+            String newValToFind = getNewValToFind(valueToFind.getName(),step);
+            for (DataDefinitionDeclaration runner : myList){
+                if (runner.getName().equals(newValToFind))
+                    return true;
+            }
+        }
+        else {
+            for (DataDefinitionDeclaration obj : myList) {
+                if (mappingFromNameToAliasDD.getValByKey(obj.getName()) == null) {
+                    if (obj.getName().equals(valueToFind.getName()) == true)
+                        return true;
+                } else if (mappingFromNameToAliasDD.getValByKey(obj.getName()).equals(valueToFind.getName()) || obj.getName().equals(valueToFind.getName())) {
+                    return true;
+                }
+            }
+        }
         return false;
+    }
+    public String getNewValToFind(String name,StepUsageDeclaration step){
+        List<Pair<String,String>> tempListOfName = step.getListOfCustomMapping();
+        for (Pair<String,String> runner: tempListOfName){
+            if (runner.getKey().equals(name))
+                return runner.getValue();
+        }
+        return null;//dangerous
+    }
+    public boolean existInCustom(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind,StepUsageDeclaration step){
+        return step.thisNameOfValExistInTheListOfPair(valueToFind.getName());
     }
     public void createFlowFreeInputs() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
