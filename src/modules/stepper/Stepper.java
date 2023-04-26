@@ -3,6 +3,7 @@ package modules.stepper;
  import modules.Map.CustomMapping;
  import modules.Map.FlowLevelAlias;
  import modules.flow.definition.api.FlowDefinitionImpl;
+ import modules.flow.definition.api.StepUsageDeclaration;
  import modules.flow.definition.api.StepUsageDeclarationImpl;
  import modules.flow.execution.FlowExecution;
  import modules.step.StepDefinitionRegistry;
@@ -111,6 +112,15 @@ public class Stepper implements Manager {
 
                 //add to the map of data definition <origin name, alias name>=>search in context object
                 flowToAdd.addAnewValToMapOfNamesByKeyInDD(temp.getSourceData(),temp.getAlias());
+
+                List<StepUsageDeclaration> ListOfSte = flowToAdd.getSteps();
+                StepUsageDeclaration found = null;
+               for(StepUsageDeclaration stepRunner : ListOfSte){
+                   if (stepRunner.getFinalStepName().equals(temp.getSource())){
+                       found = stepRunner;
+                   }
+               }
+               flowToAdd.addAnewValToMapOfNamesByKeyWithObject((StepUsageDeclarationImpl) found,temp.getSourceData(),temp.getAlias());
                 flowLevelAliasesToAdd .add(k, temp);
             }
         }

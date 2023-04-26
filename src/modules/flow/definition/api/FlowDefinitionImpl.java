@@ -31,7 +31,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     protected boolean readOnly;
     protected getNameFromAliasImpl mappingFromNameToAlias;
-    protected getNameFromAliasDDImpl mappingFromNameToAliasDD;
+    public getNameFromAliasDDImpl mappingFromNameToAliasDD;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
 
@@ -179,6 +179,7 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
             //}
        // }
         return mappingFromNameToAliasDD.getValByKey(name);
+        //return  mappingFromNameToAliasDD.getValueByKeyWithObject((StepUsageDeclarationImpl) step,name);
     }
     public boolean valueExistsInListAndConnected(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind,StepUsageDeclaration step){
         if (existInCustom(myList,valueToFind.getName(),step)){

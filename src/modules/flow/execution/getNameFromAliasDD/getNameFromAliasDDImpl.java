@@ -16,6 +16,10 @@ public class getNameFromAliasDDImpl {
     public void addNewNameToMapWithObject(StepUsageDeclarationImpl step,String name,String alias){
         aliasToNameWithObject.put(step,new Pair<>(name,alias));
     }
+    public String getValueByKeyWithObject(StepUsageDeclarationImpl step,String name){
+        Pair<String,String>temp= aliasToNameWithObject.get(step);
+        return temp.getKey();
+    }
     public boolean isKeyExist(String key){return aliasToName.containsKey(key);}
 
     public Map<String, String> getAliasToName() {return aliasToName;}
