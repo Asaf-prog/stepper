@@ -38,7 +38,6 @@ public class Stepper implements Manager {
         return ++idCounter;
     }
 
-
     public Stepper(){
         flows = new ArrayList<>();
     }
@@ -56,10 +55,12 @@ public class Stepper implements Manager {
         //add all steps
         for (int i = 0; i < stFlow.getSTStepsInFlow().getSTStepInFlow().size(); i++) {
             //todo check if it's costume mapping or automatic mapping
+
             STStepInFlow currStStep=stFlow.getSTStepsInFlow().getSTStepInFlow().get(i);
             String StepName = currStStep.getName();
             String StepNameAlias = currStStep.getAlias();
             StepUsageDeclarationImpl declaration =new StepUsageDeclarationImpl(StepDefinitionRegistry.getStepDefinitionByName(StepName));
+
             if (StepNameAlias!=null) {
                 declaration.setStepNameAlias(StepNameAlias);
                 flowToAdd.addAnewValToMapOfNamesByKey(StepName,StepNameAlias);
@@ -67,6 +68,7 @@ public class Stepper implements Manager {
             }//if step have alias set it if not set the step name as the alias
             else {
                 flowToAdd.addAnewValToMapOfNamesByKey(StepName,StepName);
+                //flowToAdd.addAnewValToMapOfNamesByKeyWithObject(declaration,StepName,StepName);
                 declaration.setStepNameAlias(StepName);
                 Boolean stepSkipIfFail = stFlow.getSTStepsInFlow().getSTStepInFlow().get(i).isContinueIfFailing();
 
@@ -79,8 +81,10 @@ public class Stepper implements Manager {
         }
         if (stFlow.getSTCustomMappings()!=null) { //this step is costume mapping
             flowToAdd.setIsCustomMappings(true);
+
             List<STCustomMapping> stCustomMappings = stFlow.getSTCustomMappings().getSTCustomMapping();
             List<CustomMapping> CustomMappingsToAdd = new ArrayList<>();
+
             for (int j = 0; j < stCustomMappings.size(); j++) {
                 STCustomMapping currStCustomMapping = stCustomMappings.get(j);
                 CustomMapping temp = new CustomMapping(currStCustomMapping.getSourceStep()
@@ -89,6 +93,7 @@ public class Stepper implements Manager {
                         , currStCustomMapping.getTargetData());
                 CustomMappingsToAdd.add(j, temp);
             }
+
             flowToAdd.setCustomMappings(CustomMappingsToAdd);
         }
         if (stFlow.getSTFlowLevelAliasing()!=null) {
@@ -106,13 +111,11 @@ public class Stepper implements Manager {
 
                 //add to the map of data definition <origin name, alias name>=>search in context object
                 flowToAdd.addAnewValToMapOfNamesByKeyInDD(temp.getSourceData(),temp.getAlias());
-
-                flowLevelAliasesToAdd.add(k, temp);
+                flowLevelAliasesToAdd .add(k, temp);
             }
         }
         flows.add(flowToAdd);
     }
-
     public void validateStepperFlows() {
         for (FlowDefinitionImpl flow : flows) {
             flow.setReadOnlyState();

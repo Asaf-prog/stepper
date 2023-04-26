@@ -22,4 +22,6 @@ public interface StepUsageDeclaration {
      void addNewValToPairOFName(String myNameDD,String conectedDD);
      boolean thisNameOfValExistInTheListOfPair(String valueToFind);
     List<Pair<String,String>> getListOfCustomMapping();
+    String getName();
+     void setFinalName(String name);
 }

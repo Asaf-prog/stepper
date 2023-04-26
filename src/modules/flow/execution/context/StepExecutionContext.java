@@ -14,7 +14,7 @@ public interface StepExecutionContext {
     void addSummaryLine(String step,String summary);
     String getSummary(String step);
     public void setStep(StepUsageDeclaration step);
-    void setCustomMappings(List<CustomMapping> customMappings);
+    void setCustomMappings(List<CustomMapping> customMappings,Map<String,String> mapOfName);
     void setSteps(List<StepUsageDeclaration> steps);
 
 

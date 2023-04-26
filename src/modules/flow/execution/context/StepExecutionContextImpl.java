@@ -23,7 +23,33 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         customMappings = new ArrayList<>();
     }
     @Override
-    public void setCustomMappings(List<CustomMapping> customMappings){this.customMappings = customMappings;}
+    public void setCustomMappings(List<CustomMapping> customMappings,Map<String,String> mapOfName){
+        this.customMappings = customMappings;
+        //set name of steps
+        for (StepUsageDeclaration tempStep: steps){
+            if (mapOfName.get(tempStep.getName()) != null)
+                tempStep.setFinalName(mapOfName.get(tempStep.getName()));
+        }
+
+        for (CustomMapping run : customMappings) {
+
+            System.out.println("-----------------------------");
+            System.out.println(run.getSource());
+            System.out.println(run.getSourceData());
+            System.out.println(run.getTarget());
+            System.out.println(run.getTargetData());
+            System.out.println("---------------------------------------");
+        }
+
+        for (StepUsageDeclaration stepRunner: steps){
+            for (CustomMapping run : customMappings){
+                if (stepRunner.getFinalStepName().equals(run.getTarget())){
+                    stepRunner.addAnewValOfDDThatConnectedAddToListOFPair(run.getTargetData(), run.getSourceData());
+                }
+            }
+        }
+
+    }
     @Override
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
 

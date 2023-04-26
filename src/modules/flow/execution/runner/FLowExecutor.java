@@ -14,8 +14,8 @@ public class FLowExecutor {
 
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
 
-        context.setCustomMappings(flowExecution.getFlowDefinition().getCustomMappings());
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
+        context.setCustomMappings(flowExecution.getFlowDefinition().getCustomMappings(),flowExecution.getFlowDefinition().getMappingFromNameToAlias().getAliasToName());
 
         // /set the step and check if is included custom mapping (boolean) and if true save in map the custom mapping
        flowExecution.getFlowDefinition().setMappingForStep();

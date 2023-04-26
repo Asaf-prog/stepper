@@ -14,7 +14,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
 
     private final StepDefinition stepDefinition;
     private  boolean skipIfFail;
-    private final String stepName;
+    private  String stepName;
     private  String stepNameAlias;
     private static int timeUsage;
     private static double avgTime;//in ms
@@ -58,7 +58,10 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public void setSkipIfFail(boolean skipIfFail) {this.skipIfFail = skipIfFail;}
 
 
-    public void setStepNameAlias(String stepNameAlias) {this.stepNameAlias = stepNameAlias;}
+    public void setStepNameAlias(String stepNameAlias) {
+        this.stepNameAlias = stepNameAlias;
+        stepName = stepNameAlias;
+    }
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
         this(stepDefinition, false, stepDefinition.name());
@@ -75,9 +78,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
 
     }
     @Override
-    public String getFinalStepName() {
-        return stepName;
-    }
+    public String getFinalStepName() {return stepName;}
     @Override
     public void addNewValToPairOFName(String myNameDD,String conectedDD){
         ListOfCustomMapping.add(new Pair<>(myNameDD,conectedDD));
@@ -107,4 +108,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     }
     @Override
     public List<Pair<String,String>> getListOfCustomMapping(){return  ListOfCustomMapping;}
+    @Override
+    public  String getName(){return stepName;}
+    @Override
+    public void setFinalName(String name){this.stepName = name;}
 }
