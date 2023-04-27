@@ -22,7 +22,6 @@
 				<ST-FlowLevelAlias step="Properties Exporter" source-data-name="RESULT" alias="PROP_RESULT"/>
 			</ST-FlowLevelAliasing>
 			<ST-CustomMappings>
-
 				<ST-CustomMapping source-step="Collect Files In Folder" source-data="FILES_LIST" target-step="Files Renamer" target-data="FILES_TO_RENAME"/>
 				<ST-CustomMapping source-step="CSV Exporter" source-data="CSV_RESULT" target-step="CSV File Dumper" target-data="CONTENT"/>
 				<ST-CustomMapping source-step="Properties Exporter" source-data="PROP_RESULT" target-step="Properties File Dumper" target-data="CONTENT"/>

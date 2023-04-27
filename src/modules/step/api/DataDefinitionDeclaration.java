@@ -9,5 +9,5 @@ public interface DataDefinitionDeclaration {
     DataNecessity necessity();
     String userString();
     DataDefinition dataDefinition();
-    void setNameForAlias(String name);
+    void setFinalName(String name);
 }

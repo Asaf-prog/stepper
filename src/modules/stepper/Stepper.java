@@ -1,5 +1,4 @@
 package modules.stepper;
- import com.sun.javafx.scene.control.behavior.OptionalBoolean;
  import modules.Map.CustomMapping;
  import modules.Map.FlowLevelAlias;
  import modules.flow.definition.api.FlowDefinitionImpl;
@@ -50,7 +49,6 @@ public class Stepper implements Manager {
     public List<FlowDefinitionImpl> getFlows() {
         return flows;
     }
-
     public void copyFlowFromXMLObject(STFlow stFlow) {
         FlowDefinitionImpl flowToAdd = new FlowDefinitionImpl(stFlow.getName(), stFlow.getSTFlowDescription());
         List<FlowLevelAlias> flowLevelAliasesToAdd = new ArrayList<>();
@@ -65,15 +63,10 @@ public class Stepper implements Manager {
 
             if (StepNameAlias!=null) {
                 declaration.setStepNameAlias(StepNameAlias);
-                flowToAdd.addAnewValToMapOfNamesByKey(StepName,StepNameAlias);
-
             }//if step have alias set it if not set the step name as the alias
             else {
-                flowToAdd.addAnewValToMapOfNamesByKey(StepName,StepName);
-                //flowToAdd.addAnewValToMapOfNamesByKeyWithObject(declaration,StepName,StepName);
                 declaration.setStepNameAlias(StepName);
                 Boolean stepSkipIfFail = stFlow.getSTStepsInFlow().getSTStepInFlow().get(i).isContinueIfFailing();
-
                 if (stepSkipIfFail == null)
                     declaration.setSkipIfFail(false);
                 else
@@ -107,32 +100,20 @@ public class Stepper implements Manager {
                 FlowLevelAlias temp = new FlowLevelAlias(currStFlowLevelAlias.getStep()
                         , currStFlowLevelAlias.getSourceDataName()
                         , currStFlowLevelAlias.getAlias());
-
-                // System.out.println(temp.getAlias());
-                //System.out.println(temp.getSourceData());
-
-                //add to the map of data definition <origin name, alias name>=>search in context object
-                flowToAdd.addAnewValToMapOfNamesByKeyInDD(temp.getSourceData(),temp.getAlias());
-
-                List<StepUsageDeclaration> ListOfSte = flowToAdd.getSteps();
-                StepUsageDeclaration found = null;
-//               for(StepUsageDeclaration stepRunner : ListOfSte){
-//                   if (stepRunner.getFinalStepName().equals(temp.getSource())){
-//                       found = stepRunner;
-//                   }
-//               }
-//               flowToAdd.addAnewValToMapOfNamesByKeyWithObject((StepUsageDeclarationImpl) found,temp.getSourceData(),temp.getAlias());
                 flowLevelAliasesToAdd.add(k, temp);
             }
         }
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
     }
-    public void validateStepperFlows() {
+    public void validateStepper() {
+        this.updateAliasesPerStep();
         for (FlowDefinitionImpl flow : flows) {
-            flow.setFinalNames();
+            //todo finish flow definition
+
+            flow.setFinalNames();//finish flow definition
+            flow.createFlowFreeInputs();//including one for user input
             flow.setReadOnlyState();
-            //todo validate flow
             flow.validateFlowStructure();
         }
     }

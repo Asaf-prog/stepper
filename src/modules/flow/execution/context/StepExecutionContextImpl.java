@@ -61,56 +61,60 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     @Override
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
     @Override
-    public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
-        for(CustomMapping custome: customMappings){
-            //if target data == source data (type)
-            if(currentWorkingStep.getFinalStepName().equals(custome.getTarget()) && (dataName.equals(custome.getTargetData()))){
-               String targetName = custome.getTargetData();//dd
-               String sourceName = custome.getSourceData();//dd
-                StepUsageDeclaration sourceStep = null;
-               for (StepUsageDeclaration sur :steps){
-                 if (sur.getFinalStepName().equals(custome.getSource())){
-                     sourceStep = sur;
-                 }
-               }
-                DataDefinition source = sourceStep.getStepDefinition().getDataDefinitionByName(custome.getSourceData());
-              // String nameToSearch=sourceStep.getFlowLevelAliasInStep(targetName);
+    public <T> T getDataValue(String dataName ,Class<T> expectedDataType) {
 
-                DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByNameTarget(custome.getTargetData());
-                if (target.getType() == source.getType()){ //if these steps are same types
-                    Object aValue = dataValues.get(custome.getSourceData());
-                    return expectedDataType.cast(aValue);
-                }
-            }
+//        for(CustomMapping custome: customMappings){
+//            //if target data == source data (type)
+//            if(currentWorkingStep.getFinalStepName().equals(custome.getTarget()) && (dataName.equals(custome.getTargetData()))){
+//               String targetName = custome.getTargetData();//dd
+//               String sourceName = custome.getSourceData();//dd
+//                StepUsageDeclaration sourceStep = null;
+//               for (StepUsageDeclaration sur :steps){
+//                 if (sur.getFinalStepName().equals(custome.getSource())){
+//                     sourceStep = sur;
+//                 }
+//               }
+//                DataDefinition source = sourceStep.getStepDefinition().getDataDefinitionByName(custome.getSourceData());
+//              // String nameToSearch=sourceStep.getFlowLevelAliasInStep(targetName);
+//
+//                DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByNameTarget(custome.getTargetData());
+//                if (target.getType() == source.getType()){ //if these steps are same types
+//                    Object aValue = dataValues.get(custome.getTargetData());
+//                    return expectedDataType.cast(aValue);
+//                }
+//            }
+         Object aValue = dataValues.get(dataName);
+         return expectedDataType.cast(aValue);
         }
-        //Find of there is an input match
-        DataDefinitionDeclaration theExpectedDataDefinition = null;
-
-        Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =
-                currentWorkingStep.getStepDefinition()
-                        .inputs()
-                        .stream()
-                        .filter((input) -> input.getName() == dataName)
-                        .findFirst();
-
-        if(maybeTheExpectedDataDefinition.isPresent()){
-            theExpectedDataDefinition = maybeTheExpectedDataDefinition.get();
-            if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.dataDefinition().getType())) {
-                Object aValue = dataValues.get(dataName);
-                //System.out.println(expectedDataType.cast(aValue).getClass().getName());
-                return expectedDataType.cast(aValue);
-            }
-        }
-        else{
-            //Handle there is no input;
-        }
-        return null;
-    }
+//        //Find of there is an input match
+//        DataDefinitionDeclaration theExpectedDataDefinition = null;
+//
+//        Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =
+//                currentWorkingStep.getStepDefinition()
+//                        .inputs()
+//                        .stream()
+//                        .filter((input) -> input.getName() == dataName)
+//                        .findFirst();
+//
+//        if(maybeTheExpectedDataDefinition.isPresent()){
+//            theExpectedDataDefinition = maybeTheExpectedDataDefinition.get();
+//            if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.dataDefinition().getType())) {
+//                Object aValue = dataValues.get(dataName);
+//                //System.out.println(expectedDataType.cast(aValue).getClass().getName());
+//                return expectedDataType.cast(aValue);
+//            }
+//        }
+//        else{
+//            //Handle there is no input;
+//        }
+//        return null;
+//    }
 
     @Override
     public boolean storeDataValue(String dataName ,Object value) {
         //auto map
         if (currentWorkingStep == null){
+            //String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
             dataValues.put(dataName, value);
         }
         else {

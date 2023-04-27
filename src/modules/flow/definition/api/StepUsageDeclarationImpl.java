@@ -1,6 +1,7 @@
 package modules.flow.definition.api;
 
 import javafx.util.Pair;
+import modules.step.api.DataDefinitionDeclaration;
 import modules.step.api.StepDefinition;
 
 import java.util.*;
@@ -17,8 +18,25 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private static double avgTime;//in ms
     private boolean isCustom = false;
     List<Pair<String,String>> ListOfCustomMapping;
-    Map <String,String> FlowLevelAliasInStepOut;
-    Map <String,String> FlowLevelAliasInStepIn;
+    Map <String,String> FlowLevelAliasInStep;
+
+    public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
+        this(stepDefinition, false, stepDefinition.name());
+    }
+    public StepUsageDeclarationImpl(StepDefinition stepDefinition, String name) {
+        this(stepDefinition, false, name);
+    }
+    public StepUsageDeclarationImpl(StepDefinition stepDefinition, boolean skipIfFail, String stepName ) {
+
+        this.stepDefinition = stepDefinition;
+        this.skipIfFail = skipIfFail;
+        this.stepName = stepName;
+        this.stepNameAlias = stepName;
+        ListOfCustomMapping = new ArrayList<>();
+        FlowLevelAliasInStep = new HashMap<>();
+
+    }
+
 
 
     @Override
@@ -59,23 +77,6 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         this.stepNameAlias = stepNameAlias;
         stepName = stepNameAlias;
     }
-
-    public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
-        this(stepDefinition, false, stepDefinition.name());
-    }
-    public StepUsageDeclarationImpl(StepDefinition stepDefinition, String name) {
-        this(stepDefinition, false, name);
-    }
-    public StepUsageDeclarationImpl(StepDefinition stepDefinition, boolean skipIfFail, String stepName ) {
-        this.stepDefinition = stepDefinition;
-        this.skipIfFail = skipIfFail;
-        this.stepName = stepName;
-        this.stepNameAlias = stepName;
-        ListOfCustomMapping = new ArrayList<>();
-        FlowLevelAliasInStepOut = new HashMap<>();
-        FlowLevelAliasInStepIn = new HashMap<>();
-
-    }
     @Override
     public String getFinalStepName() {return stepName;}
     @Override
@@ -83,16 +84,16 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         ListOfCustomMapping.add(new Pair<>(myNameDD,conectedDD));
     }
 
-    public String getFlowLevelAliasInStep(String name){return FlowLevelAliasInStepOut.get(name);}
+    public String getFlowLevelAliasInStep(String name){return FlowLevelAliasInStep.get(name);}
 
     @Override
     public void setFlowLevelAliasInStep(String keyS, String valS) {
-        FlowLevelAliasInStepOut.put(keyS, valS);}
+        FlowLevelAliasInStep.put(keyS, valS);}
 
     @Override
     public void addAlias(String sourceData, String alias) {
 
-        FlowLevelAliasInStepOut.put(sourceData, alias);
+        FlowLevelAliasInStep.put(sourceData, alias);
     }
 
     @Override
@@ -107,17 +108,11 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     }
     @Override
     public boolean thisNameOfValExistInTheListOfPair(String valueToFind) {
-        for (Pair<String,String> runner : ListOfCustomMapping){
-         if(runner.getKey().equals(valueToFind)){
-             return true;
-         }
+        for (Pair<String,String> runner : ListOfCustomMapping) {
+            if (runner.getKey().equals(valueToFind)) {
+                return true;
+            }
         }
-        //return false;
-//        String temp  = FlowLevelAliasInStepOut.get(valueToFind);
-//        if (temp!=null)
-//            return true;
-//        else
-//            return false;
     return false;
     }
     @Override
@@ -127,6 +122,4 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     @Override
     public void setFinalName(String name){this.stepName = name;}
 
-    //@Override
-    //public void setMapOfAliasToDD(String key,String val){FlowLevelAliasInStep.put(key,val);}
 }

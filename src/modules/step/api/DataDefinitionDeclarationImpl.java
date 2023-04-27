@@ -41,6 +41,6 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
     @Override
    public String getFinalName(){return finalName;}
     @Override
-    public void setNameForAlias(String finalName){finalName = finalName;}
+    public void setFinalName(String finalName){finalName = finalName;}
 
 }

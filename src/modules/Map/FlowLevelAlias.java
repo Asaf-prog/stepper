@@ -4,6 +4,7 @@ public class FlowLevelAlias implements HasSource<String> {
 
     protected String step;
     protected String sourceDataName;
+
     protected String alias;
 
     public FlowLevelAlias(String step, String sourceDataName, String alias) {//default constructor

@@ -1,5 +1,6 @@
 package modules.flow.execution.runner;
 
+import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.flow.execution.context.StepExecutionContext;
@@ -9,21 +10,15 @@ import modules.step.api.StepResult;
 import java.io.IOException;
 import java.util.List;
 public class FLowExecutor {
-
     public void executeFlow(FlowExecution flowExecution){//This class implements the flow
 
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
 
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
-
-        context.setCustomMappings(flowExecution.getFlowDefinition().getCustomMappings(),
-                flowExecution.getFlowDefinition().getMappingFromNameToAlias().getAliasToName(),
-                flowExecution.getFlowDefinition().getFlowLevelAlias());
-
         // /set the step and check if is included custom mapping (boolean) and if true save in map the custom mapping
 
 
-       flowExecution.getFlowDefinition().setMappingForStep();
+       //flowExecution.getFlowDefinition().setMappingForStep();
 
 
         //todo get input from user and store it on the flow execution object
@@ -33,14 +28,8 @@ public class FLowExecutor {
         //take all the free input and initialized in the object context
         // every step have a permission to context object and from the context the steps gets the input (the dd)
 
-        if (!flowExecution.getFlowDefinition().getIsCustomMappings()){
-            flowExecution.getFlowDefinition().createFlowFreeInputs();
-        }
-        else {/// create the FlowFlowFreeInputs for custom Mappings
-             flowExecution.getFlowDefinition().createFreeInputsForCustomeMapping();
-        }
-
-        flowExecution.getFlowDefinition().setFinalNames();
+        flowExecution.getFlowDefinition().createFlowFreeInputs();
+      //  flowExecution.getFlowDefinition().setFinalNames();
 
         context=flowExecution.getFlowDefinition().setFreeInputs(context);
 
