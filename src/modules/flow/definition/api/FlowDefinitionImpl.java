@@ -22,18 +22,23 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final List<StepUsageDeclaration> steps;
     protected List<CustomMapping> customMappings;
     protected List <AutomaticMapping> automaticMappings;
-    protected final List<FlowLevelAlias> flowLevelAliases;
+
+    public void setFlowLevelAliases(List<FlowLevelAlias> flowLevelAliases) {
+        this.flowLevelAliases = flowLevelAliases;
+    }
+
+    protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
     protected boolean isCustomMappings;
     protected static int timesUsed;
-
     protected static double avgTime;
-
     protected boolean readOnly;
     protected getNameFromAliasImpl mappingFromNameToAlias;
     public getNameFromAliasDDImpl mappingFromNameToAliasDD;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
+    @Override
+    public List<FlowLevelAlias> getFlowLevelAlias(){return flowLevelAliases;}
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -141,8 +146,6 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
 
         for (StepUsageDeclaration currentStep: steps) {//run on all steps
 
-            //if step exist in target costume mapping:
-            //<String,String><Files List,filesRenamer>
             System.out.println("---------------------------------------------------------------");
             System.out.println(index+"."+currentStep.getFinalStepName());
             List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
@@ -166,33 +169,35 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
                     tempListInputs.add(DDOut);
                 }
                 System.out.println(DDOut.getNameAfterChange());
-
             }
             index++;
         }
     }
     public String existInCustomDD(StepUsageDeclaration step , String name){
 
-        //for (CustomMapping customRunner : customMappings){
-          //  if (step.getFinalStepName().equals(customRunner.getSource()) && name.equals(customRunner.getSourceData())){
 
+       // List<Pair<String,String>> tempList=step.getListOfCustomMapping();
+        //for (Pair<String,String> runnerOnPair : tempList){
+           // if(runnerOnPair.getKey().equals(name)){
+             //   return runnerOnPair.getValue();
             //}
-       // }
-        return mappingFromNameToAliasDD.getValByKey(name);
+        //}
+        //return mappingFromNameToAliasDD.getValByKey(name);
+        return step.getFlowLevelAliasInStep(name);
         //return  mappingFromNameToAliasDD.getValueByKeyWithObject((StepUsageDeclarationImpl) step,name);
     }
     public boolean valueExistsInListAndConnected(List<DataDefinitionDeclaration> myList, DataDefinitionDeclaration valueToFind,StepUsageDeclaration step){
         if (existInCustom(myList,valueToFind.getName(),step)){
             //true
-            String newValToFind = getNewValToFind(valueToFind.getName(),step);
+            //String newValToFind = getNewValToFind(valueToFind.getName(),step);
 
-            if (existInCustom(myList,newValToFind,step)){
+           // if (existInCustom(myList,valueToFind,step)){
                 return true;
-            }
-            for (DataDefinitionDeclaration runner : myList){
-                if (runner.getName().equals(newValToFind))
-                    return true;
-            }
+            //}
+            //for (DataDefinitionDeclaration runner : myList){
+              //  if (runner.getName().equals(newValToFind))
+                //    return true;
+            //}
         }
         else {
             for (DataDefinitionDeclaration obj : myList) {

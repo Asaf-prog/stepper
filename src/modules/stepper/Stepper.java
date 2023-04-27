@@ -53,6 +53,7 @@ public class Stepper implements Manager {
 
     public void copyFlowFromXMLObject(STFlow stFlow) {
         FlowDefinitionImpl flowToAdd = new FlowDefinitionImpl(stFlow.getName(), stFlow.getSTFlowDescription());
+        List<FlowLevelAlias> flowLevelAliasesToAdd = new ArrayList<>();
         //add all steps
         for (int i = 0; i < stFlow.getSTStepsInFlow().getSTStepInFlow().size(); i++) {
             //todo check if it's costume mapping or automatic mapping
@@ -99,7 +100,7 @@ public class Stepper implements Manager {
         }
         if (stFlow.getSTFlowLevelAliasing()!=null) {
             //adding FlowLevelAlias for each step
-            List<FlowLevelAlias> flowLevelAliasesToAdd = new ArrayList<>();
+
             List<STFlowLevelAlias> stFlowLevelAliases = stFlow.getSTFlowLevelAliasing().getSTFlowLevelAlias();
             for (int k = 0; k < stFlowLevelAliases.size(); k++) {
                 STFlowLevelAlias currStFlowLevelAlias = stFlowLevelAliases.get(k);
@@ -115,16 +116,18 @@ public class Stepper implements Manager {
 
                 List<StepUsageDeclaration> ListOfSte = flowToAdd.getSteps();
                 StepUsageDeclaration found = null;
-               for(StepUsageDeclaration stepRunner : ListOfSte){
-                   if (stepRunner.getFinalStepName().equals(temp.getSource())){
-                       found = stepRunner;
-                   }
-               }
-               flowToAdd.addAnewValToMapOfNamesByKeyWithObject((StepUsageDeclarationImpl) found,temp.getSourceData(),temp.getAlias());
-                flowLevelAliasesToAdd .add(k, temp);
+//               for(StepUsageDeclaration stepRunner : ListOfSte){
+//                   if (stepRunner.getFinalStepName().equals(temp.getSource())){
+//                       found = stepRunner;
+//                   }
+//               }
+//               flowToAdd.addAnewValToMapOfNamesByKeyWithObject((StepUsageDeclarationImpl) found,temp.getSourceData(),temp.getAlias());
+                flowLevelAliasesToAdd.add(k, temp);
             }
         }
+        flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
+
     }
     public void validateStepperFlows() {
         for (FlowDefinitionImpl flow : flows) {

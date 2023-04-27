@@ -24,4 +24,8 @@ public interface StepUsageDeclaration {
     List<Pair<String,String>> getListOfCustomMapping();
     String getName();
      void setFinalName(String name);
+     //void setMapOfAliasToDD(String key,String val);
+
+     String getFlowLevelAliasInStep(String name);
+    void setFlowLevelAliasInStep(String keyS,String valS);
 }

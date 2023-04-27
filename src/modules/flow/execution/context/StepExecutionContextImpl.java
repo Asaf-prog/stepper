@@ -1,5 +1,6 @@
 package modules.flow.execution.context;
 import modules.Map.CustomMapping;
+import modules.Map.FlowLevelAlias;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
@@ -23,12 +24,19 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         customMappings = new ArrayList<>();
     }
     @Override
-    public void setCustomMappings(List<CustomMapping> customMappings,Map<String,String> mapOfName){
+    public void setCustomMappings(List<CustomMapping> customMappings, Map<String,String> mapOfName, List<FlowLevelAlias> FlowLevelAlias){
         this.customMappings = customMappings;
         //set name of steps
         for (StepUsageDeclaration tempStep: steps){
             if (mapOfName.get(tempStep.getName()) != null)
                 tempStep.setFinalName(mapOfName.get(tempStep.getName()));
+        }
+        for (StepUsageDeclaration tempStep: steps){
+            for (FlowLevelAlias alias : FlowLevelAlias){
+                if (tempStep.getFinalStepName().equals(alias.getSource())) {
+                    tempStep.setFlowLevelAliasInStep(alias.getSourceData(), alias.getAlias());
+                }
+            }
         }
 
         for (CustomMapping run : customMappings) {
@@ -43,7 +51,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
         for (StepUsageDeclaration stepRunner: steps){
             for (CustomMapping run : customMappings){
-                if (stepRunner.getFinalStepName().equals(run.getTarget())){
+                if (stepRunner.getFinalStepName().equals(run.getSource())){
                     stepRunner.addAnewValOfDDThatConnectedAddToListOFPair(run.getTargetData(), run.getSourceData());
                 }
             }

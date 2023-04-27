@@ -1,13 +1,10 @@
 package modules.flow.definition.api;
 
 import javafx.util.Pair;
-import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.StepDefinition;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import javafx.util.Pair;
+import java.util.*;
+
 import java.time.Duration;
 
 public class StepUsageDeclarationImpl implements StepUsageDeclaration {
@@ -20,6 +17,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private static double avgTime;//in ms
     private boolean isCustom = false;
     List<Pair<String,String>> ListOfCustomMapping;
+    Map <String,String> FlowLevelAliasInStepOut;
+    Map <String,String> FlowLevelAliasInStepIn;
 
 
     @Override
@@ -75,6 +74,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         this.stepName = stepName;
         this.stepNameAlias = stepName;
         ListOfCustomMapping = new ArrayList<>();
+        FlowLevelAliasInStepOut = new HashMap<>();
+        FlowLevelAliasInStepIn = new HashMap<>();
 
     }
     @Override
@@ -83,6 +84,11 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public void addNewValToPairOFName(String myNameDD,String conectedDD){
         ListOfCustomMapping.add(new Pair<>(myNameDD,conectedDD));
     }
+    public String getFlowLevelAliasInStep(String name){return FlowLevelAliasInStepOut.get(name);}
+
+    @Override
+    public void setFlowLevelAliasInStep(String keyS, String valS) {
+        FlowLevelAliasInStepOut.put(keyS, valS);}
 
     @Override
     public StepDefinition getStepDefinition() {
@@ -97,14 +103,19 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         addNewValToPairOFName(target,source);
     }
     @Override
-    public boolean thisNameOfValExistInTheListOfPair(String valueToFind)
-    {
+    public boolean thisNameOfValExistInTheListOfPair(String valueToFind) {
         for (Pair<String,String> runner : ListOfCustomMapping){
          if(runner.getKey().equals(valueToFind)){
              return true;
          }
         }
-        return false;
+        //return false;
+//        String temp  = FlowLevelAliasInStepOut.get(valueToFind);
+//        if (temp!=null)
+//            return true;
+//        else
+//            return false;
+    return false;
     }
     @Override
     public List<Pair<String,String>> getListOfCustomMapping(){return  ListOfCustomMapping;}
@@ -112,4 +123,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public  String getName(){return stepName;}
     @Override
     public void setFinalName(String name){this.stepName = name;}
+
+    //@Override
+    //public void setMapOfAliasToDD(String key,String val){FlowLevelAliasInStep.put(key,val);}
 }

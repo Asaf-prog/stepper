@@ -49,7 +49,7 @@ public abstract class AbstractStepDefinition implements StepDefinition {
     }
     @Override
     public DataDefinition getDataDefinitionByName(String DDName) {
-        for (DataDefinitionDeclaration dataDefinitionDeclaration : inputs) {
+        for (DataDefinitionDeclaration dataDefinitionDeclaration : outputs) {
             if (dataDefinitionDeclaration.getName().equals(DDName)) {
                 return dataDefinitionDeclaration.dataDefinition();
             }
