@@ -16,7 +16,6 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     private List<CustomMapping> customMappings;
     private List<StepUsageDeclaration> steps;
     private StepUsageDeclarationImpl currentStep;
-
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
         summaryLine = new HashMap<>();
@@ -75,7 +74,6 @@ public class StepExecutionContextImpl implements StepExecutionContext {
                  }
                }
                 DataDefinition source = sourceStep.getStepDefinition().getDataDefinitionByName(custome.getSourceData());
-                //אולי צריך את STEP המקור
               // String nameToSearch=sourceStep.getFlowLevelAliasInStep(targetName);
 
                 DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByNameTarget(custome.getTargetData());
@@ -110,10 +108,14 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     }
 
     @Override
-    public boolean storeDataValue(String dataName, Object value) {
+    public boolean storeDataValue(String dataName ,Object value) {
         //auto map
         if (currentWorkingStep == null){
+            if (dataValues.get(dataName)==null)
             dataValues.put(dataName, value);
+            else {
+                //dataValues.put(name, value);
+            }
         }
         else {
             String lvlAliasData= currentWorkingStep.getFlowLevelAliasInStep(dataName);

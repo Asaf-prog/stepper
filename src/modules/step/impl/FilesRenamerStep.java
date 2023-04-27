@@ -82,7 +82,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             row.add(fileAfterChange.get(i));
             outputTable.addRow(row);
         }
-        context.storeDataValue("RENAME_RESULT", outputTable);
+        context.storeDataValue("RENAME_RESULT",outputTable);
         context.setLog("Files Renamer","All files renamed successfully");
         return StepResult.SUCCESS;
     }

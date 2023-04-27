@@ -47,10 +47,15 @@ public class PropertiesExporter extends AbstractStepDefinition {
             value = value.replace("\\", "\\\\").replace("=", "\\=");
             propertiesBuilder.append(key).append("=").append(value).append("\n");
         }
-        if (warning)
+        if (warning){
+            context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+            context.storeDataValue("RESULT", String.valueOf(propertiesBuilder));
             return StepResult.WARNING;
+        }
+
         //System.out.println(relationTable);
         context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+        context.storeDataValue("RESULT", String.valueOf(propertiesBuilder));
         return StepResult.SUCCESS;
 
     }

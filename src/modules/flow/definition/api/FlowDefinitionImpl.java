@@ -26,7 +26,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public void setFlowLevelAliases(List<FlowLevelAlias> flowLevelAliases) {
         this.flowLevelAliases = flowLevelAliases;
     }
-
     protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
     protected boolean isCustomMappings;
@@ -260,16 +259,16 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
         String dataToStore;
         for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
-                    pairOfStringAndDD.getValue().getName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
+                    pairOfStringAndDD.getValue().getNameAfterChange() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
 
             if (pairOfStringAndDD.getValue().getName() == "LINE"){
                 int num = myScanner.nextInt();
-                context.storeDataValue(pairOfStringAndDD.getValue().getName(),num);
+                context.storeDataValue(pairOfStringAndDD.getValue().getNameAfterChange(),num);
             }else {
                 dataToStore = myScanner.nextLine();
                 if (!dataToStore.isEmpty()) {
-                    context.storeDataValue(pairOfStringAndDD.getValue().getName(),dataToStore);
+                    context.storeDataValue(pairOfStringAndDD.getValue().getNameAfterChange(),dataToStore);
                 }
             }
         }
