@@ -45,7 +45,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         //make the next string as optional because they are optional
         String prefix = context.getDataValue("PREFIX", String.class);
         String suffix = context.getDataValue("SUFFIX", String.class);
-        context.setLog("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
+        context.setLogs("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
         for (FileData fileData : filesToRename) {
             String newFileName;
             String folder =fileData.getFile().getParent() + File.separator;
@@ -66,11 +66,11 @@ public class FilesRenamerStep extends AbstractStepDefinition {
                //means Warning
                 warning = true;
                 faileds.add(oldFileName);
-                context.setLog("Files Renamer","Failed to rename file:"+oldFileName);
+                context.setLogs("Files Renamer","Failed to rename file:"+oldFileName);
             }
         }
         if (warning){
-            context.setLog("Files Renamer","Failed to rename some files:"+faileds);
+            context.setLogs("Files Renamer","Failed to rename some files:"+faileds);
             return StepResult.WARNING;
         }
         //todo add output table with the new file names and store
@@ -83,7 +83,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             outputTable.addRow(row);
         }
         context.storeDataValue("RENAME_RESULT",outputTable);
-        context.setLog("Files Renamer","All files renamed successfully");
+        context.setLogs("Files Renamer","All files renamed successfully");
         return StepResult.SUCCESS;
     }
 }

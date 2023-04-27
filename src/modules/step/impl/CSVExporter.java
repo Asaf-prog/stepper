@@ -25,7 +25,7 @@ public class CSVExporter extends AbstractStepDefinition {
         dataToConvert.printTable();
         if (dataToConvert.getNumColumns() != 0) {
             StringBuilder csvString = new StringBuilder();
-            context.setLog("CSV Exporter", "About to process " + dataToConvert.getRows() + "lines of data");
+            context.setLogs("CSV Exporter", "About to process " + dataToConvert.getRows() + "lines of data");
             for (int i = 0; i < dataToConvert.getNumColumns(); i++) {
                 csvString.append(dataToConvert.getValInList(i));
                 if (i != dataToConvert.getNumColumns() - 1) {
@@ -54,7 +54,7 @@ public class CSVExporter extends AbstractStepDefinition {
             return StepResult.SUCCESS;
         }
         context.addSummaryLine("CSV Exporter","The table is Empty");
-        context.setLog("CSV Exporter","The table is Empty");
+        context.setLogs("CSV Exporter","The table is Empty");
         return StepResult.WARNING;
     }
 }

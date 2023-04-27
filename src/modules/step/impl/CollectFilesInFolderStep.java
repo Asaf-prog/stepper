@@ -36,18 +36,18 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         if (folderNameOptional.isPresent()) {
             String folderName = folderNameOptional.get();
             Path path = Paths.get(folderName);//folder path
-            context.setLog("Collect files in folder", "Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
+            context.setLogs("Collect files in folder", "Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
 
             if (!exists(path)) {
-                context.setLog("Collect files in folder", "Folder " + path.getFileName() + " does not exist");
+                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " does not exist");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().isDirectory()) {
-                context.setLog("Collect files in folder", "Folder " + path.getFileName() + " is not a directory");
+                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " is not a directory");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().canRead()) {
-                context.setLog("Collect files in folder", "Folder " + path.getFileName() + " is not readable");
+                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " is not readable");
                 return StepResult.FAILURE;
             }
 
@@ -59,7 +59,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {
-                    context.setLog("Collect files in folder", "Failed to collect files in folder: " + e.getMessage());
+                    context.setLogs("Collect files in folder", "Failed to collect files in folder: " + e.getMessage());
                     return StepResult.FAILURE;
                 }
             } else {
@@ -71,7 +71,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {
-                    context.setLog("Collect files in folder", "Failed to collect files in folder with filter " + filter + ": " + e.getMessage());
+                    context.setLogs("Collect files in folder", "Failed to collect files in folder with filter " + filter + ": " + e.getMessage());
                     return StepResult.FAILURE;
                 }
             }
@@ -90,11 +90,11 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
             }
             context.storeDataValue("FILES_LIST", filesList);
             context.storeDataValue("TOTAL_FOUND", filesList.size());
-            context.setLog("Collect files in folder", "Found"+filesList.size()+"files in folder matching the filter");
+            context.setLogs("Collect files in folder", "Found"+filesList.size()+"files in folder matching the filter");
             //todo summery line
             return StepResult.SUCCESS;
         } else {
-            context.setLog("Collect files in folder", "Folder name not provided");
+            context.setLogs("Collect files in folder", "Folder name not provided");
             return StepResult.FAILURE;
         }
     }

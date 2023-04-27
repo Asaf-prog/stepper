@@ -35,26 +35,26 @@ public class FileDumper extends AbstractStepDefinition {
         System.out.println(filePath);
         String fileName=filePath.substring(filePath.lastIndexOf("/")+1);
 
-        context.setLog("File Dumper", "About to create file: " + fileName);
+        context.setLogs("File Dumper", "About to create file: " + fileName);
         File file = new File(filePath);
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(content);
             fileWriter.close();
         } catch (IOException e) {//check if it counts as len = 0 exception
-            context.setLog("File Dumper", "Error Crafting the file: " + e.getMessage());
+            context.setLogs("File Dumper", "Error Crafting the file: " + e.getMessage());
             return StepResult.FAILURE;
         }
         // check if file created
         if (file.exists()) {
             if (content.length()==0) {
-                context.setLog("File Dumper", "Warning file created but as Empty file ");
+                context.setLogs("File Dumper", "Warning file created but as Empty file ");
                 return StepResult.WARNING;
             }
-            context.setLog("File Dumper", "File created: " + fileName);
+            context.setLogs("File Dumper", "File created: " + fileName);
             return StepResult.SUCCESS;
         } else {
-            context.setLog("File Dumper", "Error Exporting file: " + fileName);
+            context.setLogs("File Dumper", "Error Exporting file: " + fileName);
             return StepResult.FAILURE;
         }
     }

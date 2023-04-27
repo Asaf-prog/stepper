@@ -25,15 +25,15 @@ public class PropertiesExporter extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) {
         RelationData relationTable = context.getDataValue("SOURCE", RelationData.class);
-        context.setLog("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
+        context.setLogs("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
         boolean warning=false;
         if (relationTable.getColumns().size() != 2) {
-            context.setLog("Properties Exporter", "Warning: Source table must have 2 columns");
+            context.setLogs("Properties Exporter", "Warning: Source table must have 2 columns");
             warning=true;
             //continue
         }
         if (relationTable.isEmpty()) {
-            context.setLog("Properties Exporter", "Warning: Source table is empty");
+            context.setLogs("Properties Exporter", "Warning: Source table is empty");
             warning=true;
             //continue
         }
@@ -48,13 +48,13 @@ public class PropertiesExporter extends AbstractStepDefinition {
             propertiesBuilder.append(key).append("=").append(value).append("\n");
         }
         if (warning){
-            context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+            context.setLogs("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
             context.storeDataValue("RESULT", String.valueOf(propertiesBuilder));
             return StepResult.WARNING;
         }
 
         //System.out.println(relationTable);
-        context.setLog("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+        context.setLogs("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
         context.storeDataValue("RESULT", String.valueOf(propertiesBuilder));
         return StepResult.SUCCESS;
 

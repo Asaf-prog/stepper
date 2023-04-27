@@ -1,4 +1,5 @@
 package modules.flow.execution.context;
+import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.dataDefinition.api.DataDefinition;
@@ -6,11 +7,12 @@ import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.step.api.DataDefinitionDeclaration;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
-    private Map<String,List<String>> log;
+    private Map<String,List<Pair<String,String>>> logs;
     private Map<String,String> summaryLine;
     private StepUsageDeclaration currentWorkingStep;
     private List<CustomMapping> customMappings;
@@ -19,7 +21,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
         summaryLine = new HashMap<>();
-        log = new HashMap<>();
+        logs = new HashMap<>();
         customMappings = new ArrayList<>();
     }
     @Override
@@ -130,19 +132,21 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     }
     @Override
     public List getLog(String step){
-        return log.get(step);
+        return logs.get(step);
     }
     @Override
-    public void setLog(String step,String logs) {
-        if (log.get(step) == null) {
-            List<String> values = new ArrayList<>();
-            values.add(logs);
-            log.put(step, values);
-
+    public void setLogs(String step,String log) {
+        Date date = new Date();
+        if (logs.get(step) == null) {
+            List<Pair<String,String>> values = new ArrayList<>();
+            Pair<String,String> pair = new Pair<>(log, new SimpleDateFormat("HH:mm:ss.SSS").format(date));
+            values.add(pair);
+            logs.put(step, values);
         } else {
-            List<String> values = log.get(step);
-            values.add(logs);
-            log.put(step, values);
+            List<Pair<String,String>> values = logs.get(step);
+            Pair<String,String> pair = new Pair<>(log, new SimpleDateFormat("HH:mm:ss.SSS").format(date));
+            values.add(pair);
+            logs.put(step, values);
         }
     }
     @Override

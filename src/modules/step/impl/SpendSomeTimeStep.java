@@ -23,10 +23,10 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
                 return StepResult.FAILURE;
             }
             try {
-                context.setLog("Spend Some Time","About to sleep for " + seconds + " seconds...");
+                context.setLogs("Spend Some Time","About to sleep for " + seconds + " seconds...");
                 //System.out.println("About to sleep for " + seconds + " seconds...");
                 Thread.sleep(seconds*1000);
-                context.setLog("Spend Some Time","Done sleeping...");
+                context.setLogs("Spend Some Time","Done sleeping...");
                 //System.out.println("Done sleeping...");
             } catch (InterruptedException e) {
                 System.out.println("Error");

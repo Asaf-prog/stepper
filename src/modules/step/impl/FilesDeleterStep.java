@@ -35,14 +35,14 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             for (FileData filedata : name) {
                 Object runnerFile = filedata.getFile();
                 if (runnerFile instanceof File) {
-                   context.setLog("Files Deleter","About to start delete"+name.size() +"files");
+                   context.setLogs("Files Deleter","About to start delete"+name.size() +"files");
                     if (((File) runnerFile).exists() && ((File) runnerFile).isFile()) {
                         deletedFiles.add(((File) runnerFile).getName());
                         ((File) runnerFile).delete();
                     }
                     else {
                         survivingFiles.add(((File) runnerFile).getName());
-                        context.setLog("Files Deleter","Failed to delete file"+((File) runnerFile).getName());
+                        context.setLogs("Files Deleter","Failed to delete file"+((File) runnerFile).getName());
                     }
                 }
                 else

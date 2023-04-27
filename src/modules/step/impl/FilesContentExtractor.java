@@ -43,7 +43,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
            int index=1;
            for (FileData specificFile : FileList) {
 
-               context.setLog("Files Content Extractor ","About to start work on file "+specificFile.getName());
+               context.setLogs("Files Content Extractor ","About to start work on file "+specificFile.getName());
                boolean check = false;
                reader = new BufferedReader(new FileReader(specificFile.getFile()));
                String line = null;
