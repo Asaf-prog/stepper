@@ -6,6 +6,7 @@ package modules.stepper;
  import modules.flow.definition.api.StepUsageDeclarationImpl;
  import modules.flow.execution.FlowExecution;
  import modules.step.StepDefinitionRegistry;
+ import modules.step.api.DataDefinitionDeclaration;
  import schemeTest.generatepackage.STCustomMapping;
  import schemeTest.generatepackage.STFlow;
  import schemeTest.generatepackage.STFlowLevelAlias;
@@ -106,16 +107,67 @@ public class Stepper implements Manager {
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
     }
-    public void validateStepper() {
-        this.updateAliasesPerStep();
-        for (FlowDefinitionImpl flow : flows) {
-            //todo finish flow definition
 
-            flow.setFinalNames();//finish flow definition
+    public void validateStepper() {
+        //this.updateAliasesPerStep();
+        for (FlowDefinitionImpl flow : flows) {
+
+            //flow.setFinalNames();//finish flow definition
+            inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
+
             flow.createFlowFreeInputs();//including one for user input
+
             flow.setReadOnlyState();
             flow.validateFlowStructure();
         }
+    }
+    public void inisilaizedInputAndOutput(List<StepUsageDeclaration> stepOfFlow,List<FlowLevelAlias> flowLevelAliases){
+        for (StepUsageDeclaration step: stepOfFlow){
+            for (FlowLevelAlias alias: flowLevelAliases){
+                if (step.getFinalStepName().equals(alias.getSource())){
+                    if (checkIfNameFoundInInput(step,alias.getSourceData())){
+                        step.addToMapOfInput(alias.getSourceData(), alias.getAlias());
+                    }
+                    else {//is belonging to output map
+                        step.addToMapOfOutput(alias.getSourceData(), alias.getAlias());
+                    }
+                }
+            }
+        }
+        for (StepUsageDeclaration step: stepOfFlow){
+            List<DataDefinitionDeclaration> inputs =  step.getStepDefinition().inputs();
+            for (DataDefinitionDeclaration input:inputs){
+                if (!thisInputExistInTheMapOfInput(step,input.getName())){
+                    step.addToMapOfInput(input.getName(), input.getName());
+                }
+            }
+            List<DataDefinitionDeclaration> outputs = step.getStepDefinition().outputs();
+            for(DataDefinitionDeclaration output: outputs){
+                if (!thisOutputExistInTheMapOfOutputs(step ,output.getName())){
+                    step.addToMapOfOutput(output.getName(), output.getName());
+            }
+        }
+        }
+    }
+    public boolean thisInputExistInTheMapOfInput(StepUsageDeclaration step,String inputName){
+        if (step.thisValueExistInTheMapInput(inputName))
+            return true;
+        else
+            return false;
+    }
+    public boolean thisOutputExistInTheMapOfOutputs(StepUsageDeclaration step,String outputName){
+        if (step.thisValueExistInTheMapOutput(outputName))
+            return true;
+        else
+            return false;
+    }
+    public boolean checkIfNameFoundInInput(StepUsageDeclaration step,String sourceName){
+       List<DataDefinitionDeclaration> inputs =  step.getStepDefinition().inputs();
+       for (DataDefinitionDeclaration input:inputs){
+           if (input.getName().equals(sourceName))
+               return true;
+       }
+       return false;
     }
     public void updateAliasesPerStep() {
         for (FlowDefinitionImpl flow : flows) {

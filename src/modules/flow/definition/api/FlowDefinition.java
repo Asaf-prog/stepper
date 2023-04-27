@@ -8,6 +8,7 @@ import modules.step.api.DataDefinitionDeclaration;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 public interface FlowDefinition {
     String getName();
@@ -21,6 +22,8 @@ public interface FlowDefinition {
     void setIsCustomMappings(boolean isCustomMappings);
     boolean getIsCustomMappings();
     List<CustomMapping> getCustomMappings();
+    Map<DataDefinitionDeclaration, String> getUserInputs();
+    boolean addUserInput(DataDefinitionDeclaration data,String input);
 
     void addUsage();
 

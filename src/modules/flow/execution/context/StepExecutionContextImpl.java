@@ -5,6 +5,7 @@ import modules.Map.FlowLevelAlias;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
+import modules.flow.execution.FlowExecution;
 import modules.step.api.DataDefinitionDeclaration;
 
 import java.text.SimpleDateFormat;
@@ -29,8 +30,8 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         this.customMappings = customMappings;
         //set name of steps
         for (StepUsageDeclaration tempStep: steps){
-            if (mapOfName.get(tempStep.getName()) != null)
-                tempStep.setFinalName(mapOfName.get(tempStep.getName()));
+            if (mapOfName.get(tempStep.getFinalStepName()) != null)
+                tempStep.setFinalName(mapOfName.get(tempStep.getFinalStepName()));
         }
 //        for (StepUsageDeclaration tempStep: steps){
 //            for (FlowLevelAlias alias : FlowLevelAlias){
@@ -49,17 +50,31 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 //            System.out.println(run.getTargetData());
 //            System.out.println("---------------------------------------");
 //        }
-
-        for (StepUsageDeclaration stepRunner: steps){
-            for (CustomMapping run : customMappings){
-                if (stepRunner.getFinalStepName().equals(run.getSource())){
-                    stepRunner.addAnewValOfDDThatConnectedAddToListOFPair(run.getTargetData(), run.getSourceData());
-                }
-            }
+//
+//        for (StepUsageDeclaration stepRunner: steps){
+//            for (CustomMapping run : customMappings){
+//                if (stepRunner.getFinalStepName().equals(run.getSource())){
+//                    stepRunner.addAnewValOfDDThatConnectedAddToListOFPair(run.getTargetData(), run.getSourceData());
+//                }
+//            }
         }
-    }
     @Override
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
+
+    @Override
+    public void setUserInputs(FlowExecution flowExecution) {
+        Map<DataDefinitionDeclaration, String> userInputs = flowExecution.getFlowDefinition().getUserInputs();
+        if (userInputs != null) {
+            for (Map.Entry<DataDefinitionDeclaration, String> entry : userInputs.entrySet()) {
+                DataDefinitionDeclaration dataDefinitionDeclaration = entry.getKey();
+                String userInput = entry.getValue();
+                //convert to object that need to stored
+                dataValues.put(dataDefinitionDeclaration.getFinalName(), userInput);//or regular name
+            }
+        }
+
+    }
+
     @Override
     public <T> T getDataValue(String dataName ,Class<T> expectedDataType) {
 
@@ -119,8 +134,8 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         }
         else {
             //update alias before store into context
-             String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
-             dataValues.put(finalName, value);
+             //String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
+             dataValues.put(dataName, value);
             }
 
         //check if there is a custom mapping}

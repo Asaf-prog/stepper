@@ -11,28 +11,15 @@ import java.io.IOException;
 import java.util.List;
 public class FLowExecutor {
     public void executeFlow(FlowExecution flowExecution){//This class implements the flow
-
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
 
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
-        // /set the step and check if is included custom mapping (boolean) and if true save in map the custom mapping
-
-
-       //flowExecution.getFlowDefinition().setMappingForStep();
-
-
-        //todo get input from user and store it on the flow execution object
-
-        // populate context with all free inputs (mandatory & optional) that were given from the user
-        // (typically stored on top of the flow execution object)
-        //take all the free input and initialized in the object context
-        // every step have a permission to context object and from the context the steps gets the input (the dd)
+        context.setUserInputs(flowExecution);//sets user inputs into the context
 
         flowExecution.getFlowDefinition().createFlowFreeInputs();
       //  flowExecution.getFlowDefinition().setFinalNames();
 
         context=flowExecution.getFlowDefinition().setFreeInputs(context);
-
 
         System.out.println("Starting execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]");
         try {

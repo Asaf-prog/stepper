@@ -17,8 +17,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private static int timeUsage;
     private static double avgTime;//in ms
     private boolean isCustom = false;
-    List<Pair<String,String>> ListOfCustomMapping;
-    Map <String,String> FlowLevelAliasInStep;
+    Map<String,String> inputFromNameToAlias; //<name,alias>
+    Map<String,String> outputFromNameToAlias; //<name,alias>
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
         this(stepDefinition, false, stepDefinition.name());
@@ -32,13 +32,31 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         this.skipIfFail = skipIfFail;
         this.stepName = stepName;
         this.stepNameAlias = stepName;
-        ListOfCustomMapping = new ArrayList<>();
-        FlowLevelAliasInStep = new HashMap<>();
-
+        inputFromNameToAlias = new HashMap<>();
+        outputFromNameToAlias = new HashMap<>();
     }
-
-
-
+    @Override
+    public String getByKeyFromInputMap(String key){return inputFromNameToAlias.get(key);}
+   @Override
+    public String getByKeyFromOutputMap(String key){return outputFromNameToAlias.get(key);}
+    @Override
+    public boolean thisValueExistInTheMapInput(String valToCheck){
+        if (inputFromNameToAlias.containsKey(valToCheck))
+            return true;
+        else
+            return false;
+    }
+    @Override
+    public boolean thisValueExistInTheMapOutput(String valToCheck){
+        if (outputFromNameToAlias.containsKey(valToCheck))
+            return true;
+        else
+            return false;
+    }
+    @Override
+    public void addToMapOfInput(String name,String alias){inputFromNameToAlias.put(name,alias);}
+    @Override
+    public void addToMapOfOutput(String name,String alias){outputFromNameToAlias.put(name,alias);}
     @Override
     public void isCustomMapping(boolean bool){isCustom = bool;}
    @Override
@@ -47,6 +65,16 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public double getAvgTime() {
         return avgTime;
     }
+
+    @Override
+    public void addAlias(String name, String alias) {
+        if (inputFromNameToAlias.containsKey(name))
+            inputFromNameToAlias.put(name,alias);
+        else if (outputFromNameToAlias.containsKey(name))
+            outputFromNameToAlias.put(name,alias);
+
+    }
+
     @Override
     public double updateAvgTime(Duration time) {
         avgTime = (avgTime * timeUsage + time.toMillis()) / (timeUsage + 1);
@@ -62,16 +90,13 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         timeUsage++;
     }
 
-
     public String getStepName() {
         return stepName;
     }
-
     public String getStepNameAlias() {
         return stepNameAlias;
     }
     public void setSkipIfFail(boolean skipIfFail) {this.skipIfFail = skipIfFail;}
-
 
     public void setStepNameAlias(String stepNameAlias) {
         this.stepNameAlias = stepNameAlias;
@@ -79,22 +104,6 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     }
     @Override
     public String getFinalStepName() {return stepName;}
-    @Override
-    public void addNewValToPairOFName(String myNameDD,String conectedDD){
-        ListOfCustomMapping.add(new Pair<>(myNameDD,conectedDD));
-    }
-
-    public String getFlowLevelAliasInStep(String name){return FlowLevelAliasInStep.get(name);}
-
-    @Override
-    public void setFlowLevelAliasInStep(String keyS, String valS) {
-        FlowLevelAliasInStep.put(keyS, valS);}
-
-    @Override
-    public void addAlias(String sourceData, String alias) {
-
-        FlowLevelAliasInStep.put(sourceData, alias);
-    }
 
     @Override
     public StepDefinition getStepDefinition() {return stepDefinition;}
@@ -103,23 +112,5 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         return skipIfFail;
     }
     @Override
-    public void addAnewValOfDDThatConnectedAddToListOFPair(String target,String source){
-        addNewValToPairOFName(target,source);
-    }
-    @Override
-    public boolean thisNameOfValExistInTheListOfPair(String valueToFind) {
-        for (Pair<String,String> runner : ListOfCustomMapping) {
-            if (runner.getKey().equals(valueToFind)) {
-                return true;
-            }
-        }
-    return false;
-    }
-    @Override
-    public List<Pair<String,String>> getListOfCustomMapping(){return  ListOfCustomMapping;}
-    @Override
-    public  String getName(){return stepName;}
-    @Override
     public void setFinalName(String name){this.stepName = name;}
-
 }

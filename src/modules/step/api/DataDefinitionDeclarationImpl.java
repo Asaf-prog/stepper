@@ -18,7 +18,6 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
         this.dataDefinition = dataDefinition;
         finalName = name;
     }
-
     @Override
     public String getName() {
         return name;
@@ -42,5 +41,10 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
    public String getFinalName(){return finalName;}
     @Override
     public void setFinalName(String finalName){finalName = finalName;}
+
+    @Override
+    public boolean isMandatory() {
+        return necessity == DataNecessity.MANDATORY;
+    }
 
 }

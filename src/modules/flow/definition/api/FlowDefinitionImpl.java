@@ -1,13 +1,11 @@
 package modules.flow.definition.api;
-import modules.Map.AutomaticMapping;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 import javafx.util.Pair;
 
 public class FlowDefinitionImpl implements FlowDefinition {
@@ -17,6 +15,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final List<String> flowOutputs;
 
     protected final List<StepUsageDeclaration> steps;
+    protected Map<DataDefinitionDeclaration,String> userInputs;
     protected List<CustomMapping> customMappings;
     protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
@@ -26,9 +25,18 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected boolean readOnly;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
+    public Map<DataDefinitionDeclaration, String> getUserInputs() {
+        return userInputs;
+    }
 
-
-
+    @Override
+    public boolean addUserInput(DataDefinitionDeclaration data,String input) {
+        if (userInputs == null) {
+            userInputs = new HashMap<>();
+        }
+        userInputs.put(data,input);
+        return true;
+    }
 
     @Override
     public List<FlowLevelAlias> getFlowLevelAlias(){return flowLevelAliases;}
@@ -114,9 +122,26 @@ public class FlowDefinitionImpl implements FlowDefinition {
         return false;
     }
     public void createFlowFreeInputs() {
-        List<DataDefinitionDeclaration> ListInputs = new ArrayList<>();
+        List<String> listInputs = new ArrayList<>();
+        // protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+        for (StepUsageDeclaration step: steps){
 
+            List<DataDefinitionDeclaration> inputListOfDD = step.getStepDefinition().inputs();
+
+            for (DataDefinitionDeclaration inputDD:inputListOfDD) {
+                if(!listInputs.contains(step.getByKeyFromInputMap(inputDD.getName()))){
+                    listInputs.add(step.getByKeyFromInputMap(step.getStepDefinition().getName()));
+                    freeInputs.add(new Pair<>(step.getByKeyFromInputMap(inputDD.getName()),inputDD));
+                } else {
+                    List<DataDefinitionDeclaration> outPutList = step.getStepDefinition().outputs();
+                    for (DataDefinitionDeclaration output : outPutList) {
+                        listInputs.add(step.getByKeyFromOutputMap(output.getName()));
+                    }
+                }
+            }
+        }
     }
+
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
         System.out.println("Please fill the free inputs\n");
         Scanner myScanner = new Scanner(System.in);

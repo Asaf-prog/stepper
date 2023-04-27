@@ -14,7 +14,7 @@ import modules.step.api.DataDefinitionDeclaration;
 import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.stepper.Stepper;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class FlowExecutionMenu implements Menu {
 
@@ -49,34 +49,67 @@ public class FlowExecutionMenu implements Menu {
 
     private static void getUserInput(FlowDefinition flow) {
 
-        System.out.println("for Flow :"+ flow.getName()+"Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs " );
-        Scanner input = new Scanner(System.in);
-        int choice = input.nextInt();
-        switch (choice){
-            case 1:
-                System.out.println("Choose one to insert:");
-                for(Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : flow.getFlowFreeInputs()){
+        System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+        List<Pair<String, DataDefinitionDeclaration>> freeInputRemain = new ArrayList<>();
+        freeInputRemain.addAll(flow.getFlowFreeInputs());
+        while (freeInputRemain.size() > 0) {
+            Scanner input = new Scanner(System.in);
+            Map<Integer, DataDefinitionDeclaration>dataOptions = new HashMap<>();
+            int choice = input.nextInt();
+            int i = 1;
+            switch (choice) {
+                case 1:
+                    System.out.println("Choose one to insert:");
+                    for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+                        if (pairOfStringAndDD.getValue().isMandatory()) {
+                            dataOptions.put(i, pairOfStringAndDD.getValue());
+                            System.out.println(i + ". " + pairOfStringAndDD.getKey());
+                            i++;
+                        }
                     }
-                }
-
-                //free inputs print all mandatory
-
-                break;
-            case 2:
-           //free inputs print all optional
-                break;
-            default:
-                System.out.println("Wrong input");
-                break;
+                    input.nextInt();
+                    UpdateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
+                    freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
+                    System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                    //assume it work and now one less data to update
+                    break;
+                case 2:
+                    System.out.println("Choose one to insert:");
+                    for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+                        if (!pairOfStringAndDD.getValue().isMandatory()) {
+                            dataOptions.put(i, pairOfStringAndDD.getValue());
+                            System.out.println(i + ". " + pairOfStringAndDD.getKey());
+                        }
+                    }
+                    input.nextInt();
+                    UpdateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
+                    freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
+                    System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                    //free inputs print all optional
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Wrong input");
+                    System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                    break;
+            }
         }
     }
 
+    private static void UpdateFreeInputs(FlowDefinition flow, DataDefinitionDeclaration value) {
+        System.out.println("Insert value for " + value.getName());
+        Scanner input = new Scanner(System.in);
+        String userInput = input.nextLine();
+        flow.getUserInputs().put(value, userInput);
+    }
+
     private static void ExecuteFlow(Stepper stepperData,int choice) {
-
-        System.out.println("Executing flow: "+ stepperData.getFlows().get(choice-1).getName());
-
+        //if there is no mandatory inputs that the user didn't insert throw exception!!!
         FlowDefinitionImpl flow= stepperData.getFlows().get(choice-1);
-       flow.validateFlowStructure();
+        System.out.println("Executing flow: "+ flow.getName());
+
+        flow.validateFlowStructure();
         FLowExecutor fLowExecutor = new FLowExecutor();
 
         FlowExecution flowTestExecution = new FlowExecution(flow);
@@ -86,13 +119,5 @@ public class FlowExecutionMenu implements Menu {
     }
     @Override
     public void displayMenu2() {
-        System.out.println("Flow Chooser Menu:");
-        // Stepper stepperData = DataManager::getData();
-        for (MainMenuItems item : MainMenuItems.values()) {
-            if (item == MainMenuItems.MAIN_MENU) {//no need to present main menu option in the Main Menu
-                continue;
-            }
-            System.out.println(item.ordinal() + " - " + item.getName());
-        }
     }
 }

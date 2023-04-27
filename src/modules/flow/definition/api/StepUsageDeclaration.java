@@ -8,26 +8,35 @@ import java.util.List;
 
 public interface StepUsageDeclaration {
     String getFinalStepName();
+
     StepDefinition getStepDefinition();
+
     boolean skipIfFail();
+
     double getAvgTime();
+
+    void addAlias(String name, String alias);
 
     double updateAvgTime(Duration time);
 
     int getTimeUsed();
+
     void isCustomMapping(boolean bool);
+
     void addUsage();
-     boolean getIsCustomMapping();
-     void addAnewValOfDDThatConnectedAddToListOFPair(String target,String source);
-     void addNewValToPairOFName(String myNameDD,String conectedDD);
-     boolean thisNameOfValExistInTheListOfPair(String valueToFind);
-    List<Pair<String,String>> getListOfCustomMapping();
-    String getName();
-     void setFinalName(String name);
-     //void setMapOfAliasToDD(String key,String val);
 
-     String getFlowLevelAliasInStep(String name);
-    void setFlowLevelAliasInStep(String keyS,String valS);
+    boolean getIsCustomMapping();
 
-    void addAlias(String sourceData, String alias);
+    void setFinalName(String name);
+
+    void addToMapOfInput(String name, String alias);
+
+    void addToMapOfOutput(String name, String alias);
+
+    boolean thisValueExistInTheMapInput(String valToCheck);
+
+    boolean thisValueExistInTheMapOutput(String valToCheck);
+
+    String getByKeyFromInputMap(String key);
+    String getByKeyFromOutputMap(String key);
 }

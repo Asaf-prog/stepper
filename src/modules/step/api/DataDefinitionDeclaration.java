@@ -10,4 +10,6 @@ public interface DataDefinitionDeclaration {
     String userString();
     DataDefinition dataDefinition();
     void setFinalName(String name);
+
+    boolean isMandatory();
 }
