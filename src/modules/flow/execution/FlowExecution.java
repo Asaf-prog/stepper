@@ -4,10 +4,13 @@ import modules.flow.definition.api.FlowDefinition;
 import modules.stepper.Stepper;
 
 import java.time.Duration;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FlowExecution {//This class accumulates all the data for the flow
     private final int uniqueId;
     private final FlowDefinition flowDefinition;
+    private final SimpleDateFormat startTime;
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
 
@@ -19,6 +22,7 @@ public class FlowExecution {//This class accumulates all the data for the flow
         this.uniqueId = Stepper.GetUniqueID();
         flowDefinition.addUsage();//for stats
         this.flowDefinition = flowDefinition;
+        startTime = new SimpleDateFormat("hh:mm:ss");
 
         //todo get all the info and statistics about the flow execution!!
         //duration, number of steps, number of steps that failed,etc...

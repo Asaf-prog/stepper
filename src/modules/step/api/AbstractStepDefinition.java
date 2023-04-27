@@ -53,6 +53,19 @@ public abstract class AbstractStepDefinition implements StepDefinition {
             if (dataDefinitionDeclaration.getName().equals(DDName)) {
                 return dataDefinitionDeclaration.dataDefinition();
             }
+            else if(dataDefinitionDeclaration.getNameAfterChange()!=null){
+               if (dataDefinitionDeclaration.getNameAfterChange().equals(DDName))
+                   return dataDefinitionDeclaration.dataDefinition();
+            }
+        }
+        return null;
+    }
+    @Override
+    public DataDefinition getDataDefinitionByNameTarget(String DDName) {
+        for (DataDefinitionDeclaration dataDefinitionDeclaration : inputs) {
+            if (dataDefinitionDeclaration.getName().equals(DDName)) {
+                return dataDefinitionDeclaration.dataDefinition();
+            }
         }
         return null;
     }

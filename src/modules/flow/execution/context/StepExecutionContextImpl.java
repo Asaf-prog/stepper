@@ -65,7 +65,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
         for(CustomMapping custome: customMappings){
             //if target data == source data (type)
-            if(currentWorkingStep.getFinalStepName().equals(custome.getTarget())){
+            if(currentWorkingStep.getFinalStepName().equals(custome.getTarget()) && (dataName.equals(custome.getTargetData()))){
                String targetName = custome.getTargetData();//dd
                String sourceName = custome.getSourceData();//dd
                 StepUsageDeclaration sourceStep = null;
@@ -75,15 +75,19 @@ public class StepExecutionContextImpl implements StepExecutionContext {
                  }
                }
                 DataDefinition source = sourceStep.getStepDefinition().getDataDefinitionByName(custome.getSourceData());
-                DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByName(targetName);
+                //אולי צריך את STEP המקור
+              // String nameToSearch=sourceStep.getFlowLevelAliasInStep(targetName);
+
+                DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByNameTarget(custome.getTargetData());
                 if (target.getType() == source.getType()){ //if these steps are same types
-                    Object aValue = dataValues.get(dataName);
+                    Object aValue = dataValues.get(custome.getSourceData());
                     return expectedDataType.cast(aValue);
                 }
             }
         }
         //Find of there is an input match
         DataDefinitionDeclaration theExpectedDataDefinition = null;
+
         Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =
                 currentWorkingStep.getStepDefinition()
                         .inputs()
@@ -107,8 +111,20 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     @Override
     public boolean storeDataValue(String dataName, Object value) {
+        //auto map
+        if (currentWorkingStep == null){
             dataValues.put(dataName, value);
-            return true;
+        }
+        else {
+            String lvlAliasData= currentWorkingStep.getFlowLevelAliasInStep(dataName);
+        if (lvlAliasData != null){
+            dataValues.put(lvlAliasData, value);
+        }//check if there is a custom mapping
+        else {
+            dataValues.put(dataName, value);
+        }
+        }
+        return true;
     }
     @Override
     public List getLog(String step){

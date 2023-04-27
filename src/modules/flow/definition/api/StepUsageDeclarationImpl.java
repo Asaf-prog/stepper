@@ -84,6 +84,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public void addNewValToPairOFName(String myNameDD,String conectedDD){
         ListOfCustomMapping.add(new Pair<>(myNameDD,conectedDD));
     }
+
     public String getFlowLevelAliasInStep(String name){return FlowLevelAliasInStepOut.get(name);}
 
     @Override

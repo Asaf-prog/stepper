@@ -17,4 +17,5 @@ public interface StepDefinition {
     String getName();
 
     DataDefinition getDataDefinitionByName(String DDName);
+    DataDefinition getDataDefinitionByNameTarget(String DDName);
 }

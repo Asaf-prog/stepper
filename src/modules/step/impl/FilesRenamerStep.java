@@ -21,7 +21,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
     public FilesRenamerStep() {
         super("Files Renamer", false);
 
-        addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to rename", DataDefinitionRegistry.LIST));//full path    maybe need to change to listofFiles
+        addInput(new DataDefinitionDeclarationImpl("FILES_TO_RENAME", DataNecessity.MANDATORY, "Files to rename", DataDefinitionRegistry.LIST));//full path    maybe need to change to listofFiles
         addInput(new DataDefinitionDeclarationImpl("PREFIX", DataNecessity.OPTIONAL, "Add this prefix", DataDefinitionRegistry.STRING));//full path
         addInput(new DataDefinitionDeclarationImpl("SUFFIX", DataNecessity.OPTIONAL, "Append this suffix", DataDefinitionRegistry.STRING));//full path
 
@@ -30,7 +30,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        List<FileData> filesToRename = context.getDataValue("FILES_LIST", List.class);
+        List<FileData> filesToRename = context.getDataValue("FILES_TO_RENAME", List.class);
         List<String>cols= Arrays.asList(new String[]{"Serial Number", "File Name Before Change", "File Name After Change"});
         RelationData outputTable = new RelationData(cols);
         ArrayList<String> fileBeforeChange = new ArrayList<>();

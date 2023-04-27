@@ -20,8 +20,8 @@ public class FilesDeleterStep extends AbstractStepDefinition {
 
         addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to delete", DataDefinitionRegistry.LIST));//full path
 
-        addOutput(new DataDefinitionDeclarationImpl("DELETION_STATS", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.LIST));
-        addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND", DataNecessity.NA, "Deletion summary results", DataDefinitionRegistry.MAPPING));
+        addOutput(new DataDefinitionDeclarationImpl("DELETION_STATS", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.MAPPING));
+        addOutput(new DataDefinitionDeclarationImpl("DELETED_LIST", DataNecessity.NA, "Deletion summary results", DataDefinitionRegistry.LIST));
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
