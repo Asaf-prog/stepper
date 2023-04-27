@@ -40,6 +40,8 @@ public class FLowExecutor {
              flowExecution.getFlowDefinition().createFreeInputsForCustomeMapping();
         }
 
+        flowExecution.getFlowDefinition().setFinalNames();
+
         context=flowExecution.getFlowDefinition().setFreeInputs(context);
 
 

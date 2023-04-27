@@ -127,14 +127,21 @@ public class Stepper implements Manager {
         }
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
-
     }
     public void validateStepperFlows() {
         for (FlowDefinitionImpl flow : flows) {
+            flow.setFinalNames();
             flow.setReadOnlyState();
             //todo validate flow
             flow.validateFlowStructure();
         }
-
+    }
+    public void updateAliasesPerStep() {
+        for (FlowDefinitionImpl flow : flows) {
+            for (FlowLevelAlias alias : flow.getFlowLevelAliases()) {
+                StepUsageDeclaration stepToAdd=flow.getStepByName(alias.getSource());
+                stepToAdd.addAlias(alias.getSourceData(),alias.getAlias());
+            }
+        }
     }
 }

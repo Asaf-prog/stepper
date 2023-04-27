@@ -35,6 +35,8 @@ public class GetDataFromXML {
             //validation!!!!!
             stepperData.validateStepperFlows();
             //
+            //update all aliases for each step
+            stepperData.updateAliasesPerStep();
             sentToStepper(stepperData);//update Data Manager
         } catch (JAXBException e) {
             e.printStackTrace();

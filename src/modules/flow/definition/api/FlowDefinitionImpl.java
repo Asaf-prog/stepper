@@ -79,7 +79,14 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public void addAnewValToMapOfNamesByKeyWithObject(StepUsageDeclarationImpl step,String name, String alias){
         mappingFromNameToAliasDD.addNewNameToMapWithObject(step,name,alias);
     }
-    public String getStepByName(String name){return mappingFromNameToAlias.getValByKey(name);}
+    public StepUsageDeclaration getStepByName(String name){
+        for(StepUsageDeclaration tempStep: steps){
+            if(tempStep.getFinalStepName().equals(name)){
+                return tempStep;
+            }
+        }
+        return null;
+    }
     public void addAnewValToMapOfNamesByKeyInDD(String name,String alias){
         mappingFromNameToAliasDD.addNewNameToMap(name,alias);
     }
@@ -151,7 +158,7 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
             for(DataDefinitionDeclaration DD:tempInput) {
 
                 if (!valueExistsInListAndConnected(tempListInputs,DD,currentStep)){
-                    System.out.println(DD.getNameAfterChange());
+                    System.out.println(DD.getFinalName());
                     freeInputs.add(new Pair<>(currentStep.getFinalStepName(),DD));
                 }
             }
@@ -167,7 +174,7 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
                 else {
                     tempListInputs.add(DDOut);
                 }
-                System.out.println(DDOut.getNameAfterChange());
+                System.out.println(DDOut.getFinalName());
             }
             index++;
         }
@@ -223,6 +230,8 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
     }
     public void createFlowFreeInputs() {
         List<DataDefinitionDeclaration> tempListInputs = new ArrayList<>();
+        setAliases();
+        System.out.println("******************************");
         for (StepUsageDeclaration currentStep: steps) {//run on all steps
             System.out.println(currentStep.getFinalStepName());
                 List<DataDefinitionDeclaration> tempInput = currentStep.getStepDefinition().inputs();
@@ -259,16 +268,16 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
         String dataToStore;
         for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
-                    pairOfStringAndDD.getValue().getNameAfterChange() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
+                    pairOfStringAndDD.getValue().getFinalName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
 
             if (pairOfStringAndDD.getValue().getName() == "LINE"){
                 int num = myScanner.nextInt();
-                context.storeDataValue(pairOfStringAndDD.getValue().getNameAfterChange(),num);
+                context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),num);
             }else {
                 dataToStore = myScanner.nextLine();
                 if (!dataToStore.isEmpty()) {
-                    context.storeDataValue(pairOfStringAndDD.getValue().getNameAfterChange(),dataToStore);
+                    context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),dataToStore);
                 }
             }
         }
@@ -320,4 +329,43 @@ public boolean stepExistInListOFCustomMapping(String nameOfTargetStep){
     public boolean IsReadOnly() {
         return readOnly;
     }
+
+   public void setFinalNames(){
+
+        //going through all the Aliases and then custom mappings and setting the final names
+       setAliases();
+       System.out.println("******************************");
+       setCustomMappingConnections();
+   }
+
+    private void setCustomMappingConnections() {
+
+    }
+
+    public void setAliases() {
+        for (FlowLevelAlias alias: flowLevelAliases) {
+            StepUsageDeclaration step = getStepByNameFromSteps(alias.getSource(), steps);
+            for (DataDefinitionDeclaration DD : step.getStepDefinition().inputs()) {
+                if (DD.getName().equals(alias.getSourceData())) {
+                    DD.setNameForAlias(alias.getAlias());
+                }
+            }
+            for (DataDefinitionDeclaration DD : step.getStepDefinition().outputs()) {
+                if (DD.getName().equals(alias.getSourceData())) {
+                    DD.setNameForAlias(alias.getAlias());
+                }
+            }
+        }
+        }
+
+    private StepUsageDeclaration getStepByNameFromSteps(String source, List<StepUsageDeclaration> steps) {
+
+        for (StepUsageDeclaration step: steps) {
+            if (step.getFinalStepName().equals(source))
+                return step;
+        }
+        return null;
+    }
+
+
 }

@@ -5,7 +5,7 @@ import modules.dataDefinition.api.DataDefinition;
 
 public interface DataDefinitionDeclaration {
     String getName();
-    String getNameAfterChange();
+    String getFinalName();
     DataNecessity necessity();
     String userString();
     DataDefinition dataDefinition();

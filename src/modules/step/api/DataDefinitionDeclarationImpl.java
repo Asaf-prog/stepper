@@ -6,7 +6,7 @@ import modules.dataDefinition.api.DataDefinition;
 public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration {
 
     private final String name;
-    private String nameAfterChange;
+    private String finalName;
     private final DataNecessity necessity;
     private final String userString;
     private final DataDefinition dataDefinition;
@@ -16,7 +16,7 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
         this.necessity = necessity;
         this.userString = userString;
         this.dataDefinition = dataDefinition;
-        nameAfterChange = name;
+        finalName = name;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
         return dataDefinition;
     }
     @Override
-   public String getNameAfterChange(){return nameAfterChange;}
+   public String getFinalName(){return finalName;}
     @Override
-    public void setNameForAlias(String name){nameAfterChange = name;}
+    public void setNameForAlias(String finalName){finalName = finalName;}
 
 }

@@ -28,4 +28,6 @@ public interface StepUsageDeclaration {
 
      String getFlowLevelAliasInStep(String name);
     void setFlowLevelAliasInStep(String keyS,String valS);
+
+    void addAlias(String sourceData, String alias);
 }

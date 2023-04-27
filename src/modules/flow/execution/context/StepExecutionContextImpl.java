@@ -32,23 +32,23 @@ public class StepExecutionContextImpl implements StepExecutionContext {
             if (mapOfName.get(tempStep.getName()) != null)
                 tempStep.setFinalName(mapOfName.get(tempStep.getName()));
         }
-        for (StepUsageDeclaration tempStep: steps){
-            for (FlowLevelAlias alias : FlowLevelAlias){
-                if (tempStep.getFinalStepName().equals(alias.getSource())) {
-                    tempStep.setFlowLevelAliasInStep(alias.getSourceData(), alias.getAlias());
-                }
-            }
-        }
+//        for (StepUsageDeclaration tempStep: steps){
+//            for (FlowLevelAlias alias : FlowLevelAlias){
+//                if (tempStep.getFinalStepName().equals(alias.getSource())) {
+//                    tempStep.setFlowLevelAliasInStep(alias.getSourceData(), alias.getAlias());
+//                }
+//            }
+//        }
 
-        for (CustomMapping run : customMappings) {
-
-            System.out.println("-----------------------------");
-            System.out.println(run.getSource());
-            System.out.println(run.getSourceData());
-            System.out.println(run.getTarget());
-            System.out.println(run.getTargetData());
-            System.out.println("---------------------------------------");
-        }
+//        for (CustomMapping run : customMappings) {
+//
+//            System.out.println("-----------------------------");
+//            System.out.println(run.getSource());
+//            System.out.println(run.getSourceData());
+//            System.out.println(run.getTarget());
+//            System.out.println(run.getTargetData());
+//            System.out.println("---------------------------------------");
+//        }
 
         for (StepUsageDeclaration stepRunner: steps){
             for (CustomMapping run : customMappings){
@@ -57,11 +57,9 @@ public class StepExecutionContextImpl implements StepExecutionContext {
                 }
             }
         }
-
     }
     @Override
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
-
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
         for(CustomMapping custome: customMappings){
@@ -113,21 +111,15 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     public boolean storeDataValue(String dataName ,Object value) {
         //auto map
         if (currentWorkingStep == null){
-            if (dataValues.get(dataName)==null)
             dataValues.put(dataName, value);
-            else {
-                //dataValues.put(name, value);
+        }
+        else {
+            //update alias before store into context
+             String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
+             dataValues.put(finalName, value);
             }
-        }
-        else {
-            String lvlAliasData= currentWorkingStep.getFlowLevelAliasInStep(dataName);
-        if (lvlAliasData != null){
-            dataValues.put(lvlAliasData, value);
-        }//check if there is a custom mapping
-        else {
-            dataValues.put(dataName, value);
-        }
-        }
+
+        //check if there is a custom mapping}
         return true;
     }
     @Override

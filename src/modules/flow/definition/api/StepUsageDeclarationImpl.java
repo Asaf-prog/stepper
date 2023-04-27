@@ -29,13 +29,11 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public double getAvgTime() {
         return avgTime;
     }
-
     @Override
     public double updateAvgTime(Duration time) {
         avgTime = (avgTime * timeUsage + time.toMillis()) / (timeUsage + 1);
         return avgTime;
     }
-
     @Override
     public int getTimeUsed() {
         return timeUsage;
@@ -92,9 +90,13 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         FlowLevelAliasInStepOut.put(keyS, valS);}
 
     @Override
-    public StepDefinition getStepDefinition() {
-        return stepDefinition;
+    public void addAlias(String sourceData, String alias) {
+
+        FlowLevelAliasInStepOut.put(sourceData, alias);
     }
+
+    @Override
+    public StepDefinition getStepDefinition() {return stepDefinition;}
     @Override
     public boolean skipIfFail() {
         return skipIfFail;

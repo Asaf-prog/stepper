@@ -32,4 +32,6 @@ public interface FlowDefinition {
     void setMappingForStep();
     getNameFromAliasImpl getMappingFromNameToAlias();
     List<FlowLevelAlias> getFlowLevelAlias();
-    }
+
+    void setFinalNames();
+}
