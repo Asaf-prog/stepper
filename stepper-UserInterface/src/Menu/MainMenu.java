@@ -51,6 +51,7 @@ public class MainMenu implements Menu {
                         StepperStatisticsMenu.displayMenu();
                         break;
                     case EXIT:
+                        stepperData.exportToXml();
                         System.out.println("Exiting... Goodbye!");
                         break;
                 }

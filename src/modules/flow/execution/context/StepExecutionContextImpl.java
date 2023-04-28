@@ -1,28 +1,39 @@
 package modules.flow.execution.context;
-import com.sun.deploy.security.SelectableSecurityManager;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
-import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.flow.execution.FlowExecution;
-import modules.step.api.DataDefinitionDeclaration;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class
-StepExecutionContextImpl implements StepExecutionContext {
+public class StepExecutionContextImpl implements StepExecutionContext {
+
     private final Map<String, Object> dataValues;
+
     private  Map <String,String> inputOfCurrentStep;
+
     private  Map <String,String> outputOfCurrentStep;
+
     private Map<String,List<Pair<String,String>>> logs;
+
     private Map<String,String> summaryLine;
+
     private StepUsageDeclaration currentWorkingStep;
+
     private List<CustomMapping> customMappings;
+
     private List<StepUsageDeclaration> steps;
+
     private StepUsageDeclarationImpl currentStep;
+    ////////////////
+
     public StepExecutionContextImpl() {
         dataValues = new HashMap<>();
         summaryLine = new HashMap<>();
@@ -85,7 +96,7 @@ StepExecutionContextImpl implements StepExecutionContext {
         private String getCustomMapping (String nameAfterAliasing) {//check if is on custom mapping and return the source data name
             for (CustomMapping custom : customMappings) {
                 if (currentWorkingStep.getFinalStepName().equals(custom.getTarget())) {
-                    if (nameAfterAliasing.equals(custom.getTargetData()))
+                    if (nameAfterAliasing.equals(custom.getTargetData1()))
                         return custom.getSourceData();
                 }
             }

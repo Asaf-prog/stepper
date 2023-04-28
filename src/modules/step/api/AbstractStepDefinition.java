@@ -1,16 +1,31 @@
 package modules.step.api;
 
 import modules.dataDefinition.api.DataDefinition;
+import modules.flow.definition.api.FlowDefinition;
+import modules.flow.definition.api.FlowDefinitionImpl;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.ArrayList;
 import java.util.List;
-
+@XmlRootElement(name = "Step-Definition")
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractStepDefinition implements StepDefinition {
+    @XmlAttribute
     private final String stepName;
+    @XmlElement
     private final boolean readonly;
+    @XmlElement
     private final List<DataDefinitionDeclaration> inputs;
+    @XmlElement(name = "DataDefinitionDeclaration-output")
     private final List<DataDefinitionDeclaration> outputs;
 
+    public AbstractStepDefinition() {
+        this.stepName = null;
+        this.readonly = false;
+        inputs = new ArrayList<>();
+        outputs = new ArrayList<>();
+    }
     public AbstractStepDefinition(String stepName, boolean readonly) {
         this.stepName = stepName;
         this.readonly = readonly;
@@ -70,4 +85,9 @@ public abstract class AbstractStepDefinition implements StepDefinition {
         return null;
     }
 
+    static class Adapter extends XmlAdapter<AbstractStepDefinition, StepDefinition> {
+        public Adapter() { super(); }
+        public StepDefinition unmarshal(AbstractStepDefinition v) { return v; }
+        public AbstractStepDefinition marshal(StepDefinition v) { return (AbstractStepDefinition)v; }
+    }
 }

@@ -1,14 +1,13 @@
 package modules.flow.definition.api;
 
-import javafx.util.Pair;
 import modules.step.api.StepDefinition;
 
+import javax.xml.bind.annotation.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
-
 public interface StepUsageDeclaration {
+    @XmlElementDecl(name = "StepUsageDeclaration")
     String getFinalStepName();
 
     StepDefinition getStepDefinition();

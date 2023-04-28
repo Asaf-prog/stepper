@@ -1,5 +1,10 @@
 package modules.dataDefinition.api;
 
+import modules.step.api.DataDefinitionDeclaration;
+import modules.step.api.DataDefinitionDeclarationImpl;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 public abstract class AbstractDataDefinition implements DataDefinition {
     private final String name;
     private final boolean userFriendly;
@@ -25,4 +30,10 @@ public abstract class AbstractDataDefinition implements DataDefinition {
     public Class<?> getType() {
         return type;
     }
+
+    static class Adapter extends XmlAdapter<AbstractDataDefinition, DataDefinition> {
+        public DataDefinition unmarshal(AbstractDataDefinition v) { return v; }
+        public AbstractDataDefinition marshal(DataDefinition v) { return (AbstractDataDefinition)v; }
+    }
+
 }

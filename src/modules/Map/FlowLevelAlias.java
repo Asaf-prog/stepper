@@ -1,11 +1,24 @@
 package modules.Map;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class FlowLevelAlias implements HasSource<String> {
 
+    @XmlElement
     protected String step;
+    @XmlElement
     protected String sourceDataName;
 
     protected String alias;
+    ////////
+    public FlowLevelAlias() {//default constructor
+        step = null;
+        sourceDataName = null;
+        alias = null;
+    }
 
     public FlowLevelAlias(String step, String sourceDataName, String alias) {//default constructor
         this.step = step;
@@ -27,6 +40,7 @@ public class FlowLevelAlias implements HasSource<String> {
 
     public void setSourceData(String sourceDataName) {this.sourceDataName = sourceDataName;}
     public String getSourceData() {return sourceDataName;}
+    @XmlAttribute(name = "alias")
     public void setAlias(String alias) {this.alias = alias;}
     public String getAlias() {return alias;}
 

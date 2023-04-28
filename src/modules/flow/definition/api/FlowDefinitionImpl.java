@@ -8,22 +8,51 @@ import java.util.*;
 
 import javafx.util.Pair;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+@XmlRootElement(name = "flow-Definition")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FlowDefinitionImpl implements FlowDefinition {
     //maybe add another duration for calc
-
+    @XmlAttribute
     protected final String name;
+    @XmlElement
+    protected  List<CustomMapping> customMappings;
+    @XmlElement
     protected final String description;
+    @XmlElement
     protected final List<String> flowOutputs;
-
+    @XmlElement(name = "stepUsageDeclarationImpl")
     protected final List<StepUsageDeclaration> steps;
-    protected List<CustomMapping> customMappings;
+    @XmlElement(name = "flowLevelAlias")
     protected  List<FlowLevelAlias> flowLevelAliases;
+    @XmlElement
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+    @XmlElement
     protected List<Pair<String,String>> userInputs;
+    @XmlElement
     protected boolean isCustomMappings;
+    @XmlElement
     protected static int timesUsed;
+    @XmlElement
     protected static double avgTime;
+    @XmlElement
     protected boolean readOnly;
+    /////////////////
+    public FlowDefinitionImpl() {
+        name = null;
+        description = null;
+        flowOutputs = new ArrayList<>();
+        steps = new ArrayList<>();
+        freeInputs = new ArrayList<>();
+        customMappings = new ArrayList<>();
+        flowLevelAliases = new ArrayList<>();
+        userInputs=new ArrayList<>();
+        readOnly=true;
+        timesUsed=0;
+        avgTime=0;
+    }
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -148,7 +177,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
             for (CustomMapping custom : customMappings){
                 if (custom.getTarget().equals(step.getFinalStepName())){
                     String findSource = custom.getSourceData();
-                    if (!custom.getTargetData().equals(nameToFind))
+                    if (!custom.getTargetData1().equals(nameToFind))
                         return false;
                     for (String input: listInputs){
                         if (findSource.equals(input))
@@ -233,5 +262,10 @@ public class FlowDefinitionImpl implements FlowDefinition {
                 return step;
         }
         return null;
+    }
+    static class Adapter extends XmlAdapter<FlowDefinitionImpl,FlowDefinition> {
+        public Adapter() { super(); }
+        public FlowDefinition unmarshal(FlowDefinitionImpl v) { return v; }
+        public FlowDefinitionImpl marshal(FlowDefinition v) { return (FlowDefinitionImpl)v; }
     }
 }

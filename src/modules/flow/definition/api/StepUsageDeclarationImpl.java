@@ -2,25 +2,47 @@ package modules.flow.definition.api;
 
 import modules.step.api.StepDefinition;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.Instant;
 import java.util.*;
 
 import java.time.Duration;
-
+@XmlRootElement(name = "StepUsageDeclaration")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class StepUsageDeclarationImpl implements StepUsageDeclaration {
-
+    @XmlElement(name = "StepDefinitionImpl")
     private final StepDefinition stepDefinition;
+    @XmlElement
     private  boolean skipIfFail;
+    @XmlTransient
     private  String stepName;
+    @XmlAttribute
     private  String stepNameAlias;
+    @XmlTransient
     private Duration totalTime;
+    @XmlTransient
     private static int timesUsed;
+    @XmlTransient
     private static double avgTime;//in ms
+    @XmlElement
     private boolean isCustom = false;
+    @XmlElement
     Map<String,String> inputFromNameToAlias; //<name,alias>
+    @XmlElement
     Map<String,String> outputFromNameToAlias; //<name,alias>
 
-
+    public StepUsageDeclarationImpl(){
+        stepDefinition=null;
+        skipIfFail=false;
+        stepName=null;
+        stepNameAlias=null;
+        totalTime=null;
+        timesUsed=0;
+        avgTime=0;
+        inputFromNameToAlias=null;
+        outputFromNameToAlias=null;
+    }
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
         this(stepDefinition, false, stepDefinition.name());
@@ -130,4 +152,19 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     }
     @Override
     public void setFinalName(String name){this.stepName = name;}
+
+    public class Adapter extends XmlAdapter<StepUsageDeclarationImpl,StepUsageDeclaration> {
+        public Adapter() {
+            super();
+        }
+        @Override
+        public StepUsageDeclaration unmarshal(StepUsageDeclarationImpl v) throws Exception {
+            return (StepUsageDeclaration)v;
+        }
+
+        @Override
+        public StepUsageDeclarationImpl marshal(StepUsageDeclaration v) throws Exception {
+            return (StepUsageDeclarationImpl)v;
+        }
+    }
 }

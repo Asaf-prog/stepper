@@ -12,17 +12,25 @@ package modules.stepper;
  import schemeTest.generatepackage.STFlowLevelAlias;
  import schemeTest.generatepackage.STStepInFlow;
 
+ import javax.xml.bind.JAXBContext;
+ import javax.xml.bind.Marshaller;
+ import javax.xml.bind.annotation.XmlAttribute;
+ import javax.xml.bind.annotation.XmlElement;
+ import javax.xml.bind.annotation.XmlRootElement;
  import java.util.ArrayList;
  import java.util.List;
  import java.util.Optional;
-
+@XmlRootElement(name = "stepper")
 public class Stepper implements Manager {
+    @XmlElement
     public static int idCounter = 1000;
+
     List<FlowExecution> flowExecutions;
+
     List<FlowDefinitionImpl> flows;
 
 
-
+    @XmlElement(name = "flowExecutions")
     public List<FlowExecution> getFlowExecutions() {
         return flowExecutions;
     }
@@ -49,7 +57,7 @@ public class Stepper implements Manager {
     public void setFlows(List<FlowDefinitionImpl> flows) {
         this.flows = flows;
     }
-
+    @XmlElement(name = "flow-DefinitionImpl" )
     public List<FlowDefinitionImpl> getFlows() {
         return flows;
     }
@@ -203,5 +211,17 @@ public class Stepper implements Manager {
     public void AddFlowExecution(FlowExecution flowTestExecution) {
         this.flowExecutions.add(flowTestExecution);
         //maybe logic of time and stuff
+    }
+
+    public void exportToXml() {
+        String filename = "stepper.xml";
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Stepper.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(this, System.out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

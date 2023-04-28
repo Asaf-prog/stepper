@@ -6,12 +6,17 @@ import modules.Map.FlowLevelAlias;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+
 public interface FlowDefinition {
+
+
     String getName();
 
     String getDescription();
@@ -20,12 +25,10 @@ public interface FlowDefinition {
 
     List<String> getFlowFormalOutputs();
 
-    void validateFlowStructure();
-
     List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs();
 
     StepExecutionContext setFreeInputs(StepExecutionContext context);
-
+    void validateFlowStructure();
     void createFlowFreeInputs();
 
     void setIsCustomMappings(boolean isCustomMappings);
