@@ -61,10 +61,10 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                    }
                }
                if (check == false){
-                   System.out.println("Not such line\n");//check if we need to write this in the log
+                   //todo -finsih!!!
+                   // System.out.println("Not such line\n");//check if we need to write this in the log
                }
            }
-           table.printTable();
            context.storeDataValue("DATA",table);
        }
         return StepResult.SUCCESS;

@@ -1,9 +1,8 @@
 package modules.flow.definition.api;
 
-import javafx.util.Pair;
-import modules.step.api.DataDefinitionDeclaration;
 import modules.step.api.StepDefinition;
 
+import java.time.Instant;
 import java.util.*;
 
 import java.time.Duration;
@@ -14,14 +13,28 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private  boolean skipIfFail;
     private  String stepName;
     private  String stepNameAlias;
-    private static int timeUsage;
+    private Duration totalTime;
+    private static int timesUsed;
     private static double avgTime;//in ms
     private boolean isCustom = false;
     Map<String,String> inputFromNameToAlias; //<name,alias>
     Map<String,String> outputFromNameToAlias; //<name,alias>
 
+
+
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
         this(stepDefinition, false, stepDefinition.name());
+    }
+    public void setStepDuration(Duration duration){
+        totalTime=duration;
+        updateAvgTime(duration);
+    }
+
+    public Instant startStepTimer(){
+        return Instant.now();
+    }
+    public Instant stopStepTimer(){
+       return Instant.now();
     }
     public StepUsageDeclarationImpl(StepDefinition stepDefinition, String name) {
         this(stepDefinition, false, name);
@@ -81,17 +94,17 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
 
     @Override
     public double updateAvgTime(Duration time) {
-        avgTime = (avgTime * timeUsage + time.toMillis()) / (timeUsage + 1);
+        avgTime = (avgTime * timesUsed + time.toMillis()) / (timesUsed + 1);
         return avgTime;
     }
     @Override
     public int getTimeUsed() {
-        return timeUsage;
+        return timesUsed;
     }
 
     @Override
     public void addUsage() {
-        timeUsage++;
+        timesUsed++;
     }
 
     public String getStepName() {

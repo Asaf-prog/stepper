@@ -89,7 +89,6 @@ public class Stepper implements Manager {
                         , currStCustomMapping.getTargetData());
                 CustomMappingsToAdd.add(j, temp);
             }
-
             flowToAdd.setCustomMappings(CustomMappingsToAdd);
         }
         if (stFlow.getSTFlowLevelAliasing()!=null) {
@@ -107,16 +106,19 @@ public class Stepper implements Manager {
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
     }
-
     public void validateStepper() {
         //this.updateAliasesPerStep();
         for (FlowDefinitionImpl flow : flows) {
 
+            //todo -saar check if the xml file exist
+            //todo -saar=> check if for every flow unique name
+
             //flow.setFinalNames();//finish flow definition
             inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
-           // printfunction(flow.getSteps());
-            flow.createFlowFreeInputs();//including one for user input
 
+           // printfunction(flow.getSteps());
+
+            flow.createFlowFreeInputs();//including one for user input
             flow.setReadOnlyState();
             flow.validateFlowStructure();
         }
@@ -146,9 +148,8 @@ public class Stepper implements Manager {
                     if (checkIfNameFoundInInput(step,alias.getSourceData())){
                         step.addToMapOfInput(alias.getSourceData(), alias.getAlias());
                     }
-                    else {//is belonging to output map
+                    else //is belonging to output map
                         step.addToMapOfOutput(alias.getSourceData(), alias.getAlias());
-                    }
                 }
             }
         }

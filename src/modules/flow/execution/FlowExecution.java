@@ -5,7 +5,7 @@ import modules.stepper.Stepper;
 
 import java.time.Duration;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 
 public class FlowExecution {//This class accumulates all the data for the flow
     private final int uniqueId;
@@ -13,13 +13,10 @@ public class FlowExecution {//This class accumulates all the data for the flow
     private final SimpleDateFormat startTime;
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
-
-    //todo need to add extra information we would like to have about flow execution
-
-    public FlowExecution(FlowDefinition flowDefinition) {
-        // Here, I am referring to a specific flow for tracing.
-        //each flow execution has a unique id
-        this.uniqueId = Stepper.GetUniqueID();
+    //todo  need to add extra information we would like to have about flow execution
+    //exceptions!!!
+    public FlowExecution(FlowDefinition flowDefinition) {// Here, I am referring to a specific flow for tracing.
+        this.uniqueId = Stepper.GetUniqueID();//each flow execution has a unique id
         flowDefinition.addUsage();//for stats
         this.flowDefinition = flowDefinition;
         startTime = new SimpleDateFormat("hh:mm:ss");
@@ -28,8 +25,14 @@ public class FlowExecution {//This class accumulates all the data for the flow
         //duration, number of steps, number of steps that failed,etc...
     }
 
-    //todo func that update unique id when startup the program!!!
 
+    //todo func that update unique id when startup the program!!!
+    public Instant startStepTimer(){
+        return Instant.now();
+    }
+    public Instant stopStepTimer(){
+        return Instant.now();
+    }
     public void setFlowExecutionResult(FlowExecutionResult flowExecutionResult) {
         this.flowExecutionResult = flowExecutionResult;
     }
@@ -53,5 +56,10 @@ public class FlowExecution {//This class accumulates all the data for the flow
 
     public FlowExecutionResult getFlowExecutionResult() {
         return flowExecutionResult;
+    }
+
+    public void setFlowDuration(Duration between) {
+        this.totalTime=between;
+        this.flowDefinition.updateAvgTime(between);
     }
 }

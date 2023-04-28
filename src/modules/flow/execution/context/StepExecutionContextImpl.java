@@ -1,4 +1,5 @@
 package modules.flow.execution.context;
+import com.sun.deploy.security.SelectableSecurityManager;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
@@ -11,7 +12,8 @@ import modules.step.api.DataDefinitionDeclaration;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class StepExecutionContextImpl implements StepExecutionContext {
+public class
+StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
     private  Map <String,String> inputOfCurrentStep;
     private  Map <String,String> outputOfCurrentStep;
@@ -35,6 +37,12 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     public void setInputOfCurrentStep(Map <String,String> input){this.inputOfCurrentStep = input;}
     @Override
     public void setOutputOfCurrentStep(Map <String,String> output){this.outputOfCurrentStep = output;}
+
+    @Override
+    public void initializedCustomMapping(FlowExecution flowExecution) {
+        this.customMappings = flowExecution.getFlowDefinition().getCustomMappings();
+    }
+
     @Override
     public void setCustomMappings(List<CustomMapping> customMappings, Map<String,String> mapOfName, List<FlowLevelAlias> FlowLevelAlias){
         this.customMappings = customMappings;
@@ -43,7 +51,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
             if (mapOfName.get(tempStep.getFinalStepName()) != null)
                 tempStep.setFinalName(mapOfName.get(tempStep.getFinalStepName()));
         }
-        }
+    }
     @Override
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
 
@@ -59,71 +67,35 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         @Override
     public <T> T getDataValue(String dataName ,Class<T> expectedDataType) {
 
-
-
-
-
-
-//        for(CustomMapping custome: customMappings){
-//            //if target data == source data (type)
-//            if(currentWorkingStep.getFinalStepName().equals(custome.getTarget()) && (dataName.equals(custome.getTargetData()))){
-//               String targetName = custome.getTargetData();//dd
-//               String sourceName = custome.getSourceData();//dd
-//                StepUsageDeclaration sourceStep = null;
-//               for (StepUsageDeclaration sur :steps){
-//                 if (sur.getFinalStepName().equals(custome.getSource())){
-//                     sourceStep = sur;
-//                 }
-//               }
-//                DataDefinition source = sourceStep.getStepDefinition().getDataDefinitionByName(custome.getSourceData());
-//              // String nameToSearch=sourceStep.getFlowLevelAliasInStep(targetName);
-//
-//                DataDefinition target = currentWorkingStep.getStepDefinition().getDataDefinitionByNameTarget(custome.getTargetData());
-//                if (target.getType() == source.getType()){ //if these steps are same types
-//                    Object aValue = dataValues.get(custome.getTargetData());
-//                    return expectedDataType.cast(aValue);
-//                }
-//            }
-         Object aValue = dataValues.get(dataName);
-         return expectedDataType.cast(aValue);
+            String nameAfterAliasing = inputOfCurrentStep.get(dataName);
+            String nameAfterCustomMapping =getCustomMapping(nameAfterAliasing);//check if is on custom mapping and return the source data
+            if (nameAfterCustomMapping != null) {  //if after validation
+                Optional<Object> aValue = Optional.ofNullable(dataValues.get(nameAfterCustomMapping));
+                if (aValue.isPresent())
+                    if (expectedDataType.isAssignableFrom(aValue.get().getClass()))
+                        return expectedDataType.cast(aValue.get());
+            } else {
+                Optional<Object> aValue = Optional.ofNullable(dataValues.get(nameAfterCustomMapping));
+                if (aValue.isPresent())
+                    if (expectedDataType.isAssignableFrom(aValue.get().getClass()))
+                        return expectedDataType.cast(aValue.get());
+            }
+            return null;
+    }
+        private String getCustomMapping (String nameAfterAliasing) {//check if is on custom mapping and return the source data name
+            for (CustomMapping custom : customMappings) {
+                if (currentWorkingStep.getFinalStepName().equals(custom.getTarget())) {
+                    if (nameAfterAliasing.equals(custom.getTargetData()))
+                        return custom.getSourceData();
+                }
+            }
+            return null;
         }
-//        //Find of there is an input match
-//        DataDefinitionDeclaration theExpectedDataDefinition = null;
-//
-//        Optional<DataDefinitionDeclaration> maybeTheExpectedDataDefinition =
-//                currentWorkingStep.getStepDefinition()
-//                        .inputs()
-//                        .stream()
-//                        .filter((input) -> input.getName() == dataName)
-//                        .findFirst();
-//
-//        if(maybeTheExpectedDataDefinition.isPresent()){
-//            theExpectedDataDefinition = maybeTheExpectedDataDefinition.get();
-//            if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.dataDefinition().getType())) {
-//                Object aValue = dataValues.get(dataName);
-//                //System.out.println(expectedDataType.cast(aValue).getClass().getName());
-//                return expectedDataType.cast(aValue);
-//            }
-//        }
-//        else{
-//            //Handle there is no input;
-//        }
-//        return null;
-//    }
+
     @Override
     public boolean storeDataValue(String dataName ,Object value) {
-        //auto map
-      //  if (currentWorkingStep == null){
-            //String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
-            dataValues.put(dataName, value);
-        //}
-        //else {
-            //update alias before store into context
-             //String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
-          //   dataValues.put(dataName, value);
-            //}
-
-        //check if there is a custom mapping}
+           String realOutputName = outputOfCurrentStep.get(dataName);
+            dataValues.put(realOutputName, value);
         return true;
     }
     @Override

@@ -27,7 +27,7 @@ public class PropertiesExporter extends AbstractStepDefinition {
         RelationData relationTable = context.getDataValue("SOURCE", RelationData.class);
         context.setLogs("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
         boolean warning=false;
-        if (relationTable.getColumns().size() != 2) {
+        if (relationTable.getColumns().size() <= 2) {
             context.setLogs("Properties Exporter", "Warning: Source table must have 2 columns");
             warning=true;
             //continue
@@ -38,11 +38,11 @@ public class PropertiesExporter extends AbstractStepDefinition {
             //continue
         }
         StringBuilder propertiesBuilder = new StringBuilder();
-        propertiesBuilder.append(relationTable.getColumns().get(0)).append("=").append(relationTable.getColumns().get(1)).append("\n");
+        propertiesBuilder.append(relationTable.getColumns().get(1)).append("=").append(relationTable.getColumns().get(1)).append("\n");
 
         for (RelationData.SingleRow row : relationTable.getRows()) {
-            String key = row.getData().get(0);
-            String value = row.getData().get(1);
+            String key = row.getData().get(1);
+            String value = row.getData().get(2);
             key = key.replace("\\", "\\\\").replace(":", "\\:");
             value = value.replace("\\", "\\\\").replace("=", "\\=");
             propertiesBuilder.append(key).append("=").append(value).append("\n");

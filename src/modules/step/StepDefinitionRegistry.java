@@ -4,7 +4,6 @@ import modules.step.api.StepDefinition;
 import modules.step.impl.*;
 
 public enum StepDefinitionRegistry {
-    HELLO_WORLD(new HelloWorldStep()),
     PERSON_DETAILS(new PersonDetailsStep()),
     SPEND_SOME_TIME(new SpendSomeTimeStep()),
     COLLECT_FILES_IN_FOLDER(new CollectFilesInFolderStep()),

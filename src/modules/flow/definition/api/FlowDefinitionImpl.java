@@ -9,13 +9,13 @@ import java.util.*;
 import javafx.util.Pair;
 
 public class FlowDefinitionImpl implements FlowDefinition {
+    //maybe add another duration for calc
 
     protected final String name;
     protected final String description;
     protected final List<String> flowOutputs;
 
     protected final List<StepUsageDeclaration> steps;
-
     protected List<CustomMapping> customMappings;
     protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
@@ -24,27 +24,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected static int timesUsed;
     protected static double avgTime;
     protected boolean readOnly;
-    //todo add a boolean filed how check if it's automaticMappings or customMappings
-
-    public List<Pair<String, String>> getUserInputs(){
-        return userInputs;
-    }
-
-    @Override
-    public boolean addUserInput(DataDefinitionDeclaration data,String input) {
-        if (userInputs == null) {
-            userInputs = new ArrayList<>();
-        }
-        userInputs.add(new Pair<String,String>(data.getFinalName(),input));
-        return true;
-    }
-
-
-    @Override
-    public List<FlowLevelAlias> getFlowLevelAlias(){return flowLevelAliases;}
-    public void setFlowLevelAliases(List<FlowLevelAlias> flowLevelAliases) {
-        this.flowLevelAliases = flowLevelAliases;
-    }
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -58,6 +37,27 @@ public class FlowDefinitionImpl implements FlowDefinition {
         readOnly=true;
         timesUsed=0;
         avgTime=0;
+    }
+    public static void setTimesUsed(int timesUsed) {FlowDefinitionImpl.timesUsed = timesUsed;}
+    public static void setAvgTime(double avgTime) {FlowDefinitionImpl.avgTime = avgTime;}
+    public List<Pair<String, String>> getUserInputs(){
+        return userInputs;
+    }
+
+    @Override
+    public boolean addUserInput(DataDefinitionDeclaration data,String input) {
+        if (userInputs == null) {
+            userInputs = new ArrayList<>();
+        }
+        userInputs.add(new Pair<String,String>(data.getFinalName(),input));
+        return true;
+    }
+    @Override
+    public List<FlowLevelAlias> getFlowLevelAlias(){
+        return flowLevelAliases;
+    }
+    public void setFlowLevelAliases(List<FlowLevelAlias> flowLevelAliases) {
+        this.flowLevelAliases = flowLevelAliases;
     }
 
     public static int getTimesUsed() {
@@ -92,9 +92,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     @Override
     public void validateFlowStructure() {
-        //todo validate of flow structure base on step location,legal customMappings etc.
-
-        // createFlowFreeInputs();
+        //unique output for step
+        
     }
     @Override
     public List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs() {return freeInputs;}
@@ -133,7 +132,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
             for (DataDefinitionDeclaration inputDD : inputListOfDD) {
 
                 if (!(listInputs.contains(step.getByKeyFromInputMap(inputDD.getName()))) &&
-                        !(theirIsInputFromcustomMapping(step, listInputs, step.getByKeyFromInputMap(inputDD.getName())))) {
+                        !(theirIsInputFromCustomMapping(step, listInputs, step.getByKeyFromInputMap(inputDD.getName())))) {
 
                     listInputs.add(step.getByKeyFromInputMap(inputDD.getName()));
                     freeInputs.add(new Pair<>(step.getByKeyFromInputMap(inputDD.getName()), inputDD));
@@ -145,7 +144,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
             }
         }
     }
-    public boolean theirIsInputFromcustomMapping(StepUsageDeclaration step, List<String> listInputs ,String nameToFind){
+    public boolean theirIsInputFromCustomMapping(StepUsageDeclaration step, List<String> listInputs , String nameToFind){
             for (CustomMapping custom : customMappings){
                 if (custom.getTarget().equals(step.getFinalStepName())){
                     String findSource = custom.getSourceData();
@@ -160,7 +159,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
             return false;
     }
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
-
 
         System.out.println("Please fill the free inputs\n");
         Scanner myScanner = new Scanner(System.in);
@@ -181,33 +179,23 @@ public class FlowDefinitionImpl implements FlowDefinition {
             }
         }
         return context;
-        //todo need to move this to the UI
-        //todo :need to get input by identification of the type of the data 4example: int, List<FileData> etc.
-        // todo check if the data that the user enter is the same type of the real data how i need to get
-        //todo check if there is any conversion from string to int
-
     }
     public List<String> getFlowOutputs() {return flowOutputs;}
-
     public List<StepUsageDeclaration> getSteps() {return steps;}
     @Override
     public List<CustomMapping> getCustomMappings() {return customMappings;}
-
     public void setCustomMappings(List<CustomMapping> customMappings) {
         this.customMappings = customMappings;
     }
     public List<FlowLevelAlias> getFlowLevelAliases() {
         return flowLevelAliases;
     }
-
     public List<Pair<String, DataDefinitionDeclaration>> getFreeInputs() {
         return freeInputs;
     }
-
     public void setFreeInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputs) {
         this.freeInputs = freeInputs;
     }
-
     public void setReadOnlyState() {
         for (StepUsageDeclaration step: steps) {
             if (step.getStepDefinition().isReadonly() == false){
@@ -215,7 +203,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
             }
         }
     }
-
     public boolean IsReadOnly() {
         return readOnly;
     }
@@ -223,13 +210,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
    public void setFinalNames(){
         //going through all the Aliases and then custom mappings and setting the final names
         setAliases();
-        setCustomMappingConnections();
    }
-
-    private void setCustomMappingConnections() {
-
-    }
-
     public void setAliases() {
         for (FlowLevelAlias alias: flowLevelAliases) {
             StepUsageDeclaration step = getStepByNameFromSteps(alias.getSource(), steps);
@@ -253,6 +234,4 @@ public class FlowDefinitionImpl implements FlowDefinition {
         }
         return null;
     }
-
-
 }

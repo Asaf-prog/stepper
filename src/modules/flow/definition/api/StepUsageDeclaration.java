@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import modules.step.api.StepDefinition;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +43,7 @@ public interface StepUsageDeclaration {
     String getByKeyFromOutputMap(String key);
     Map<String,String> getInputFromNameToAlias();
      Map<String,String> getOutputFromNameToAlias();
-
+    Instant startStepTimer();
+    Instant stopStepTimer();
+    void setStepDuration(Duration duration);
 }

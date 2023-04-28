@@ -32,7 +32,7 @@ public class FlowStatisticsMenu implements Menu {
             try {
                 PresentFlowStats(stepperData.getFlowExecutionById(stepperData.getFlowExecutions().get(choice - 1).getUniqueId()));
             } catch (Exception e) {
-                System.out.println("im so sowwy ,no can do!");
+                System.out.println("im so sorry ,no can do!");
                 return;
             }
         }

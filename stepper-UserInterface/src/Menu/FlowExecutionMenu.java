@@ -52,14 +52,18 @@ public class FlowExecutionMenu implements Menu {
         System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
         List<Pair<String, DataDefinitionDeclaration>> freeInputRemain = new ArrayList<>();
         freeInputRemain.addAll(flow.getFlowFreeInputs());
+        Scanner input = new Scanner(System.in);
         while (freeInputRemain.size() > 0) {
-            Scanner input = new Scanner(System.in);
             Map<Integer,Pair<String, DataDefinitionDeclaration >> dataOptions = new HashMap<>();
             int i,choice;
             choice = input.nextInt();
 
             switch (choice) {
                 case 1:
+                    if (!stillGotFreeInputs(freeInputRemain)) {
+                        System.out.println("No more free Mandatory inputs");
+                        break;
+                    }//else
                     System.out.println("Choose one to insert:");
                     i=1;
                     for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
@@ -76,6 +80,9 @@ public class FlowExecutionMenu implements Menu {
                     //assume it work and now one less data to update
                     break;
                 case 2:
+                    if(noMoreOptionalInputs(freeInputRemain)){
+                        break;
+                    }
                     System.out.println("Choose one to insert:");
                     i=1;
                     for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
@@ -104,6 +111,15 @@ public class FlowExecutionMenu implements Menu {
                     break;
             }
         }
+    }
+
+    private static boolean noMoreOptionalInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
+        for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+            if (!pairOfStringAndDD.getValue().isMandatory()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean stillGotFreeInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {

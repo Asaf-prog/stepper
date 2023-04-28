@@ -22,8 +22,5 @@ public interface StepExecutionContext {
     void setUserInputs(FlowExecution flowExecution);
     void setInputOfCurrentStep(Map <String,String> input);
     void setOutputOfCurrentStep(Map <String,String> output);
-
-    // some more utility methods:
-    // allow step to store log lines
-    // allow steps to declare their summary line
+    void initializedCustomMapping(FlowExecution flowExecution);
 }
