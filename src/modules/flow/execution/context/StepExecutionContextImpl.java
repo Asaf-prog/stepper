@@ -6,10 +6,6 @@ import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.flow.execution.FlowExecution;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,7 +25,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     private List<CustomMapping> customMappings;
 
-    private List<StepUsageDeclaration> steps;
+    private List<StepUsageDeclarationImpl> steps;
 
     private StepUsageDeclarationImpl currentStep;
     ////////////////
@@ -64,7 +60,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         }
     }
     @Override
-    public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
+    public void setSteps(List<StepUsageDeclarationImpl> steps){this.steps = steps;}
 
     @Override
     public void setUserInputs(FlowExecution flowExecution) {

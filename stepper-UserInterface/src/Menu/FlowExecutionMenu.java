@@ -7,6 +7,7 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
 import modules.flow.execution.runner.FLowExecutor;
 import modules.step.api.DataDefinitionDeclaration;
+import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.stepper.Stepper;
 
 import java.util.*;
@@ -45,11 +46,11 @@ public class FlowExecutionMenu implements Menu {
     private static void getUserInput(FlowDefinition flow) {
 
         System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
-        List<Pair<String, DataDefinitionDeclaration>> freeInputRemain = new ArrayList<>();
+        List<Pair<String, DataDefinitionDeclarationImpl>> freeInputRemain = new ArrayList<>();
         freeInputRemain.addAll(flow.getFlowFreeInputs());
         Scanner input = new Scanner(System.in);
         while (freeInputRemain.size() > 0) {
-            Map<Integer,Pair<String, DataDefinitionDeclaration >> dataOptions = new HashMap<>();
+            Map<Integer,Pair<String, DataDefinitionDeclarationImpl >> dataOptions = new HashMap<>();
             int i,choice;
             choice = input.nextInt();
 
@@ -61,7 +62,7 @@ public class FlowExecutionMenu implements Menu {
                     }//else
                     System.out.println("Choose one to insert:");
                     i=1;
-                    for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+                    for (Pair<String, DataDefinitionDeclarationImpl> pairOfStringAndDD : freeInputRemain) {
                         if (pairOfStringAndDD.getValue().isMandatory()) {
                             dataOptions.put(i, pairOfStringAndDD);
                             System.out.println(i + ". " + pairOfStringAndDD.getKey());
@@ -80,7 +81,7 @@ public class FlowExecutionMenu implements Menu {
                     }
                     System.out.println("Choose one to insert:");
                     i=1;
-                    for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+                    for (Pair<String, DataDefinitionDeclarationImpl> pairOfStringAndDD : freeInputRemain) {
                         if (!pairOfStringAndDD.getValue().isMandatory()) {
                             dataOptions.put(i, pairOfStringAndDD);
                             System.out.println(i + ". " + pairOfStringAndDD.getKey());
@@ -108,8 +109,8 @@ public class FlowExecutionMenu implements Menu {
         }
     }
 
-    private static boolean noMoreOptionalInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
-        for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+    private static boolean noMoreOptionalInputs(List<Pair<String, DataDefinitionDeclarationImpl>> freeInputRemain) {
+        for (Pair<String, DataDefinitionDeclarationImpl> pairOfStringAndDD : freeInputRemain) {
             if (!pairOfStringAndDD.getValue().isMandatory()) {
                 return false;
             }
@@ -117,8 +118,8 @@ public class FlowExecutionMenu implements Menu {
         return true;
     }
 
-    private static boolean stillGotFreeInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
-        for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+    private static boolean stillGotFreeInputs(List<Pair<String, DataDefinitionDeclarationImpl>> freeInputRemain) {
+        for (Pair<String, DataDefinitionDeclarationImpl> pairOfStringAndDD : freeInputRemain) {
             if (pairOfStringAndDD.getValue().isMandatory()) {
                 return true;
             }
@@ -126,7 +127,7 @@ public class FlowExecutionMenu implements Menu {
         return false;
     }
 
-    private static void updateFreeInputs(FlowDefinition flow, Pair<String, DataDefinitionDeclaration> value) {
+    private static void updateFreeInputs(FlowDefinition flow, Pair<String, DataDefinitionDeclarationImpl> value) {
         System.out.println("Insert value for " + value.getValue().getFinalName());
         Scanner input = new Scanner(System.in);
         String userInput = input.nextLine();

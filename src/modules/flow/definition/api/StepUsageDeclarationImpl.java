@@ -10,6 +10,7 @@ import java.util.*;
 import java.time.Duration;
 @XmlRootElement(name = "StepUsageDeclaration")
 @XmlAccessorType(XmlAccessType.FIELD)
+
 public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     @XmlElement(name = "StepDefinitionImpl")
     private final StepDefinition stepDefinition;

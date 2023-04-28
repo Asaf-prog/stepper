@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.util.*;
 
 import javafx.util.Pair;
+import modules.step.api.DataDefinitionDeclarationImpl;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -24,11 +25,11 @@ public class FlowDefinitionImpl implements FlowDefinition {
     @XmlElement
     protected final List<String> flowOutputs;
     @XmlElement(name = "stepUsageDeclarationImpl")
-    protected final List<StepUsageDeclaration> steps;
+    protected final List<StepUsageDeclarationImpl> steps;
     @XmlElement(name = "flowLevelAlias")
     protected  List<FlowLevelAlias> flowLevelAliases;
     @XmlElement
-    protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+    protected List<Pair<String, DataDefinitionDeclarationImpl>> freeInputs;
     @XmlElement
     protected List<Pair<String,String>> userInputs;
     @XmlElement
@@ -125,7 +126,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
         
     }
     @Override
-    public List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs() {return freeInputs;}
+    public List<Pair<String, DataDefinitionDeclarationImpl>> getFlowFreeInputs() {return freeInputs;}
     @Override
     public String getName() {
         return name;
@@ -137,7 +138,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
     }
 
     @Override
-    public List<StepUsageDeclaration> getFlowSteps() {
+    public List<StepUsageDeclarationImpl> getFlowSteps() {
         return steps;
     }
 
@@ -156,9 +157,9 @@ public class FlowDefinitionImpl implements FlowDefinition {
         List<String> listInputs = new ArrayList<>();
         for (StepUsageDeclaration step: steps) {
 
-            List<DataDefinitionDeclaration> inputListOfDD = step.getStepDefinition().inputs();
+            List<DataDefinitionDeclarationImpl> inputListOfDD = step.getStepDefinition().inputs();
 
-            for (DataDefinitionDeclaration inputDD : inputListOfDD) {
+            for (DataDefinitionDeclarationImpl inputDD : inputListOfDD) {
 
                 if (!(listInputs.contains(step.getByKeyFromInputMap(inputDD.getName()))) &&
                         !(theirIsInputFromCustomMapping(step, listInputs, step.getByKeyFromInputMap(inputDD.getName())))) {
@@ -167,7 +168,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
                     freeInputs.add(new Pair<>(step.getByKeyFromInputMap(inputDD.getName()), inputDD));
                 }
             }
-            List<DataDefinitionDeclaration> outPutList = step.getStepDefinition().outputs();
+            List<DataDefinitionDeclarationImpl> outPutList = step.getStepDefinition().outputs();
             for (DataDefinitionDeclaration output : outPutList) {
                 listInputs.add(step.getByKeyFromOutputMap(output.getName()));
             }
@@ -192,7 +193,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
         System.out.println("Please fill the free inputs\n");
         Scanner myScanner = new Scanner(System.in);
         String dataToStore;
-        for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
+        for (Pair<String,DataDefinitionDeclarationImpl> pairOfStringAndDD : freeInputs) {
             System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
                     pairOfStringAndDD.getValue().getFinalName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
                     + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
@@ -210,7 +211,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
         return context;
     }
     public List<String> getFlowOutputs() {return flowOutputs;}
-    public List<StepUsageDeclaration> getSteps() {return steps;}
+    public List<StepUsageDeclarationImpl> getSteps() {return steps;}
     @Override
     public List<CustomMapping> getCustomMappings() {return customMappings;}
     public void setCustomMappings(List<CustomMapping> customMappings) {
@@ -219,10 +220,10 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public List<FlowLevelAlias> getFlowLevelAliases() {
         return flowLevelAliases;
     }
-    public List<Pair<String, DataDefinitionDeclaration>> getFreeInputs() {
+    public List<Pair<String, DataDefinitionDeclarationImpl>> getFreeInputs() {
         return freeInputs;
     }
-    public void setFreeInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputs) {
+    public void setFreeInputs(List<Pair<String, DataDefinitionDeclarationImpl>> freeInputs) {
         this.freeInputs = freeInputs;
     }
     public void setReadOnlyState() {
@@ -242,7 +243,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
    }
     public void setAliases() {
         for (FlowLevelAlias alias: flowLevelAliases) {
-            StepUsageDeclaration step = getStepByNameFromSteps(alias.getSource(), steps);
+            StepUsageDeclarationImpl step = getStepByNameFromSteps(alias.getSource(), steps);
             for (DataDefinitionDeclaration DD : step.getStepDefinition().inputs()) {
                 if (DD.getName().equals(alias.getSourceData())) {
                     DD.setFinalName(alias.getAlias());
@@ -255,9 +256,9 @@ public class FlowDefinitionImpl implements FlowDefinition {
             }
         }
     }
-    private StepUsageDeclaration getStepByNameFromSteps(String source, List<StepUsageDeclaration> steps) {
+    private StepUsageDeclarationImpl getStepByNameFromSteps(String source, List<StepUsageDeclarationImpl> steps) {
 
-        for (StepUsageDeclaration step: steps) {
+        for (StepUsageDeclarationImpl step: steps) {
             if (step.getFinalStepName().equals(source))
                 return step;
         }

@@ -1,6 +1,7 @@
 package modules.dataDefinition.impl;
 
 
+import modules.dataDefinition.api.AbstractDataDefinition;
 import modules.dataDefinition.api.DataDefinition;
 import modules.dataDefinition.impl.enumerator.EnumeratorDataDefinition;
 import modules.dataDefinition.impl.number.DoubleDataDefinition;
@@ -12,7 +13,11 @@ import modules.dataDefinition.impl.json.JsonDataDifinition;
 import modules.dataDefinition.impl.list.ListDataDefinition;
 import modules.dataDefinition.impl.number.NumberDataDefinition;
 
-public enum DataDefinitionRegistry implements DataDefinition {//todo add all of the DD
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
+
+@XmlEnum
+public enum DataDefinitionRegistry implements DataDefinition {
     STRING(new StringDataDefinition()),
     NUMBER(new NumberDataDefinition()),
     DOUBLE(new DoubleDataDefinition()),
@@ -21,12 +26,14 @@ public enum DataDefinitionRegistry implements DataDefinition {//todo add all of 
     FILE(new FileDataDefinition()),
     LIST(new ListDataDefinition());
 
-
-    DataDefinitionRegistry(DataDefinition dataDefinition) {
+    DataDefinitionRegistry() {
+            this.dataDefinition = null;
+    }
+    DataDefinitionRegistry(AbstractDataDefinition dataDefinition) {
         this.dataDefinition = dataDefinition;
     }
 
-    private final DataDefinition dataDefinition;
+    private final AbstractDataDefinition dataDefinition;
 
     @Override
     public String getName() {

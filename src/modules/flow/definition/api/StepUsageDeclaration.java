@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+@XmlRegistry
 public interface StepUsageDeclaration {
     @XmlElementDecl(name = "StepUsageDeclaration")
     String getFinalStepName();

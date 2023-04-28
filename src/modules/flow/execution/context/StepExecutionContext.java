@@ -3,6 +3,7 @@ package modules.flow.execution.context;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.definition.api.StepUsageDeclaration;
+import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.flow.execution.FlowExecution;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface StepExecutionContext {
     String getSummary(String step);
     public void setStep(StepUsageDeclaration step);
     void setCustomMappings(List<CustomMapping> customMappings,Map<String,String> mapOfName, List<FlowLevelAlias> FlowLevelAlias);
-    void setSteps(List<StepUsageDeclaration> steps);
+    void setSteps(List<StepUsageDeclarationImpl> steps);
 
     void setUserInputs(FlowExecution flowExecution);
     void setInputOfCurrentStep(Map <String,String> input);

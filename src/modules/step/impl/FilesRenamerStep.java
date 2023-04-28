@@ -70,7 +70,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             }
         }
         if (warning){
-            context.setLogs("Files Renamer","Failed to rename some files:"+faileds);
+            context.setLogs("Files Renamer"," Failed to rename some files: "+faileds);
             return StepResult.WARNING;
         }
         //todo add output table with the new file names and store

@@ -7,6 +7,7 @@ package modules.stepper;
  import modules.flow.execution.FlowExecution;
  import modules.step.StepDefinitionRegistry;
  import modules.step.api.DataDefinitionDeclaration;
+ import modules.step.api.DataDefinitionDeclarationImpl;
  import schemeTest.generatepackage.STCustomMapping;
  import schemeTest.generatepackage.STFlow;
  import schemeTest.generatepackage.STFlowLevelAlias;
@@ -136,23 +137,17 @@ public class Stepper implements Manager {
     }
     public void printfunction(List<StepUsageDeclaration> stepOfFlow){
         for (StepUsageDeclaration step: stepOfFlow){
-            System.out.println("the step is "+step.getFinalStepName());
-            System.out.println("*****************");
-            List<DataDefinitionDeclaration> in = step.getStepDefinition().inputs();
+            List<DataDefinitionDeclarationImpl> in = step.getStepDefinition().inputs();
             for (DataDefinitionDeclaration i : in){
                 System.out.println(step.getByKeyFromInputMap(i.getName()));
             }
-            List<DataDefinitionDeclaration> out = step.getStepDefinition().outputs();
-
-            System.out.println("outputttttttttttt");
-            System.out.println("*****************");
-
+            List<DataDefinitionDeclarationImpl> out = step.getStepDefinition().outputs();
             for (DataDefinitionDeclaration o : out){
                 System.out.println(step.getByKeyFromOutputMap(o.getName()));
             }
         }
     }
-    public void inisilaizedInputAndOutput(List<StepUsageDeclaration> stepOfFlow,List<FlowLevelAlias> flowLevelAliases){
+    public void inisilaizedInputAndOutput(List<StepUsageDeclarationImpl> stepOfFlow,List<FlowLevelAlias> flowLevelAliases){
         for (StepUsageDeclaration step: stepOfFlow){
             for (FlowLevelAlias alias: flowLevelAliases){
                 if (step.getFinalStepName().equals(alias.getSource())){
@@ -165,13 +160,13 @@ public class Stepper implements Manager {
             }
         }
         for (StepUsageDeclaration step: stepOfFlow){
-            List<DataDefinitionDeclaration> inputs =  step.getStepDefinition().inputs();
+            List<DataDefinitionDeclarationImpl> inputs =  step.getStepDefinition().inputs();
             for (DataDefinitionDeclaration input:inputs){
                 if (!thisInputExistInTheMapOfInput(step,input.getName())){
                     step.addToMapOfInput(input.getName(), input.getName());
                 }
             }
-            List<DataDefinitionDeclaration> outputs = step.getStepDefinition().outputs();
+            List<DataDefinitionDeclarationImpl> outputs = step.getStepDefinition().outputs();
             for(DataDefinitionDeclaration output: outputs){
                 if (!thisOutputExistInTheMapOfOutputs(step ,output.getName())){
                     step.addToMapOfOutput(output.getName(), output.getName());
@@ -192,7 +187,7 @@ public class Stepper implements Manager {
             return false;
     }
     public boolean checkIfNameFoundInInput(StepUsageDeclaration step,String sourceName){
-       List<DataDefinitionDeclaration> inputs =  step.getStepDefinition().inputs();
+       List<DataDefinitionDeclarationImpl> inputs =  step.getStepDefinition().inputs();
        for (DataDefinitionDeclaration input:inputs){
            if (input.getName().equals(sourceName))
                return true;

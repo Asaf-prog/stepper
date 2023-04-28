@@ -9,13 +9,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.Duration;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-@XmlRootElement(name = "flow-Executions")
+//@XmlRootElement(name = "flow-Executions")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FlowExecution {//This class accumulates all the data for the flow
     @XmlAttribute
     private final int uniqueId;
     @XmlElement(name = "flow Definition in flow Execution")
-    private final FlowDefinition flowDefinition;
+    private final FlowDefinitionImpl flowDefinition;
     @XmlElement
     private final SimpleDateFormat startTime;
     @XmlElement
@@ -32,7 +32,7 @@ public class FlowExecution {//This class accumulates all the data for the flow
         totalTime = null;
         flowExecutionResult = null;
     }
-    public FlowExecution(FlowDefinition flowDefinition) {// Here, I am referring to a specific flow for tracing.
+    public FlowExecution(FlowDefinitionImpl flowDefinition) {// Here, I am referring to a specific flow for tracing.
         this.uniqueId = Stepper.GetUniqueID();//each flow execution has a unique id
         flowDefinition.addUsage();//for stats
         this.flowDefinition = flowDefinition;
@@ -67,7 +67,7 @@ public class FlowExecution {//This class accumulates all the data for the flow
         return uniqueId;
     }
 
-    public FlowDefinition getFlowDefinition() {
+    public FlowDefinitionImpl getFlowDefinition() {
         return flowDefinition;
     }
 

@@ -1,6 +1,7 @@
 package modules.step.api;
 
 
+import modules.dataDefinition.api.AbstractDataDefinition;
 import modules.dataDefinition.api.DataDefinition;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -67,7 +68,6 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
         return necessity == DataNecessity.MANDATORY;
     }
     static class Adapter extends XmlAdapter<DataDefinitionDeclarationImpl, DataDefinitionDeclaration> {
-        public Adapter() { super(); }
         public DataDefinitionDeclaration unmarshal(DataDefinitionDeclarationImpl v) { return v; }
         public DataDefinitionDeclarationImpl marshal(DataDefinitionDeclaration v) { return (DataDefinitionDeclarationImpl)v; }
     }

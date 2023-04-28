@@ -16,9 +16,9 @@ public abstract class AbstractStepDefinition implements StepDefinition {
     @XmlElement
     private final boolean readonly;
     @XmlElement
-    private final List<DataDefinitionDeclaration> inputs;
+    private final List<DataDefinitionDeclarationImpl> inputs;
     @XmlElement(name = "DataDefinitionDeclaration-output")
-    private final List<DataDefinitionDeclaration> outputs;
+    private final List<DataDefinitionDeclarationImpl> outputs;
 
     public AbstractStepDefinition() {
         this.stepName = null;
@@ -33,10 +33,10 @@ public abstract class AbstractStepDefinition implements StepDefinition {
         outputs = new ArrayList<>();
     }
 
-    protected void addInput(DataDefinitionDeclaration dataDefinitionDeclaration) {
+    protected void addInput(DataDefinitionDeclarationImpl dataDefinitionDeclaration) {
         inputs.add(dataDefinitionDeclaration);
     }
-    protected void addOutput(DataDefinitionDeclaration dataDefinitionDeclaration) {
+    protected void addOutput(DataDefinitionDeclarationImpl dataDefinitionDeclaration) {
         outputs.add(dataDefinitionDeclaration);
     }
     @Override
@@ -49,12 +49,12 @@ public abstract class AbstractStepDefinition implements StepDefinition {
     }
 
     @Override
-    public List<DataDefinitionDeclaration> inputs() {
+    public List<DataDefinitionDeclarationImpl> inputs() {
         return inputs;
     }
 
     @Override
-    public List<DataDefinitionDeclaration> outputs() {
+    public List<DataDefinitionDeclarationImpl> outputs() {
         return outputs;
     }
 

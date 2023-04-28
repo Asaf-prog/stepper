@@ -3,12 +3,24 @@ package modules.dataDefinition.api;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.step.api.DataDefinitionDeclarationImpl;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-public abstract class AbstractDataDefinition implements DataDefinition {
+@XmlRootElement
+public abstract class AbstractDataDefinition  implements DataDefinition{
+    @XmlElement
     private final String name;
+    @XmlElement
     private final boolean userFriendly;
+    @XmlElement
     private final Class<?> type;
+
+
+    public AbstractDataDefinition() {
+        this.name = null;
+        this.userFriendly = false;
+        this.type = null;
+    }
 
     public AbstractDataDefinition(String name, boolean userFriendly, Class<?> type) {
         this.name = name;
@@ -31,9 +43,6 @@ public abstract class AbstractDataDefinition implements DataDefinition {
         return type;
     }
 
-    static class Adapter extends XmlAdapter<AbstractDataDefinition, DataDefinition> {
-        public DataDefinition unmarshal(AbstractDataDefinition v) { return v; }
-        public AbstractDataDefinition marshal(DataDefinition v) { return (AbstractDataDefinition)v; }
-    }
+
 
 }

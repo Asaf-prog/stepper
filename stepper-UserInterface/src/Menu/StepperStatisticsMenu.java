@@ -4,6 +4,7 @@ package Menu;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
+import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.stepper.Stepper;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class StepperStatisticsMenu implements Menu {
         System.out.println("Took in avg  " + flowDefinition.getAvgTime()+ " MS");
         presentStepsStats(flowDefinition.getSteps());
     }
-    private static void presentStepsStats(List<StepUsageDeclaration> steps) {
+    private static void presentStepsStats(List<StepUsageDeclarationImpl> steps) {
         System.out.println("Steps:");
         for (StepUsageDeclaration step : steps) {
             System.out.println("Step name: " + step.getFinalStepName());
