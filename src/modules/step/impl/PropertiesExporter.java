@@ -38,11 +38,11 @@ public class PropertiesExporter extends AbstractStepDefinition {
             //continue
         }
         StringBuilder propertiesBuilder = new StringBuilder();
-        propertiesBuilder.append(relationTable.getColumns().get(1)).append("=").append(relationTable.getColumns().get(1)).append("\n");
+        propertiesBuilder.append(relationTable.getColumns().get(0)).append("=").append(relationTable.getColumns().get(1)).append("\n");
 
         for (RelationData.SingleRow row : relationTable.getRows()) {
-            String key = row.getData().get(1);
-            String value = row.getData().get(2);
+            String key = row.getData().get(0);
+            String value = row.getData().get(1);
             key = key.replace("\\", "\\\\").replace(":", "\\:");
             value = value.replace("\\", "\\\\").replace("=", "\\=");
             propertiesBuilder.append(key).append("=").append(value).append("\n");

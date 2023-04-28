@@ -75,7 +75,7 @@ StepExecutionContextImpl implements StepExecutionContext {
                     if (expectedDataType.isAssignableFrom(aValue.get().getClass()))
                         return expectedDataType.cast(aValue.get());
             } else {
-                Optional<Object> aValue = Optional.ofNullable(dataValues.get(nameAfterCustomMapping));
+                Optional<Object> aValue = Optional.ofNullable(dataValues.get(nameAfterAliasing));
                 if (aValue.isPresent())
                     if (expectedDataType.isAssignableFrom(aValue.get().getClass()))
                         return expectedDataType.cast(aValue.get());

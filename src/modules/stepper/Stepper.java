@@ -21,6 +21,8 @@ public class Stepper implements Manager {
     List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
 
+
+
     public List<FlowExecution> getFlowExecutions() {
         return flowExecutions;
     }
@@ -41,6 +43,7 @@ public class Stepper implements Manager {
 
     public Stepper(){
         flows = new ArrayList<>();
+        flowExecutions = new ArrayList<>();
     }
 
     public void setFlows(List<FlowDefinitionImpl> flows) {
@@ -195,5 +198,10 @@ public class Stepper implements Manager {
                 stepToAdd.addAlias(alias.getSourceData(),alias.getAlias());
             }
         }
+    }
+
+    public void AddFlowExecution(FlowExecution flowTestExecution) {
+        this.flowExecutions.add(flowTestExecution);
+        //maybe logic of time and stuff
     }
 }

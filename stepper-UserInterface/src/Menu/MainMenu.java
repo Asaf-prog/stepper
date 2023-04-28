@@ -9,7 +9,8 @@ public class MainMenu implements Menu {
 
     public static void main(String[] args) {
         System.out.println("---Stepper UI---");
-
+        GetDataFromXML.fromXmlFileToObject("/Users/cohen/Documents/GitHub/stepper/ex1.xml");
+        Stepper stepperData= DataManager.getData();
         Scanner input = new Scanner(System.in);
         MainMenuItems choice = null;
         do {

@@ -148,6 +148,7 @@ public class FlowExecutionMenu implements Menu {
 
         FlowExecution flowTestExecution = new FlowExecution(flow);
         fLowExecutor.executeFlow(flowTestExecution);
+        stepperData.AddFlowExecution(flowTestExecution);
         System.out.println("Flow Ended with "+ flowTestExecution.getFlowExecutionResult());
 
     }
