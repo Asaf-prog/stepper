@@ -36,6 +36,10 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
         outputFromNameToAlias = new HashMap<>();
     }
     @Override
+    public Map<String,String> getInputFromNameToAlias(){return inputFromNameToAlias;}
+    @Override
+    public Map<String,String> getOutputFromNameToAlias(){return outputFromNameToAlias;}
+    @Override
     public String getByKeyFromInputMap(String key){return inputFromNameToAlias.get(key);}
    @Override
     public String getByKeyFromOutputMap(String key){return outputFromNameToAlias.get(key);}

@@ -13,6 +13,8 @@ import java.util.*;
 
 public class StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
+    private  Map <String,String> inputOfCurrentStep;
+    private  Map <String,String> outputOfCurrentStep;
     private Map<String,List<Pair<String,String>>> logs;
     private Map<String,String> summaryLine;
     private StepUsageDeclaration currentWorkingStep;
@@ -24,7 +26,15 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         summaryLine = new HashMap<>();
         logs = new HashMap<>();
         customMappings = new ArrayList<>();
+        currentWorkingStep = null;
+        inputOfCurrentStep = new HashMap<>();
+        outputOfCurrentStep = new HashMap<>();
+
     }
+    @Override
+    public void setInputOfCurrentStep(Map <String,String> input){this.inputOfCurrentStep = input;}
+    @Override
+    public void setOutputOfCurrentStep(Map <String,String> output){this.outputOfCurrentStep = output;}
     @Override
     public void setCustomMappings(List<CustomMapping> customMappings, Map<String,String> mapOfName, List<FlowLevelAlias> FlowLevelAlias){
         this.customMappings = customMappings;
@@ -33,50 +43,26 @@ public class StepExecutionContextImpl implements StepExecutionContext {
             if (mapOfName.get(tempStep.getFinalStepName()) != null)
                 tempStep.setFinalName(mapOfName.get(tempStep.getFinalStepName()));
         }
-//        for (StepUsageDeclaration tempStep: steps){
-//            for (FlowLevelAlias alias : FlowLevelAlias){
-//                if (tempStep.getFinalStepName().equals(alias.getSource())) {
-//                    tempStep.setFlowLevelAliasInStep(alias.getSourceData(), alias.getAlias());
-//                }
-//            }
-//        }
-
-//        for (CustomMapping run : customMappings) {
-//
-//            System.out.println("-----------------------------");
-//            System.out.println(run.getSource());
-//            System.out.println(run.getSourceData());
-//            System.out.println(run.getTarget());
-//            System.out.println(run.getTargetData());
-//            System.out.println("---------------------------------------");
-//        }
-//
-//        for (StepUsageDeclaration stepRunner: steps){
-//            for (CustomMapping run : customMappings){
-//                if (stepRunner.getFinalStepName().equals(run.getSource())){
-//                    stepRunner.addAnewValOfDDThatConnectedAddToListOFPair(run.getTargetData(), run.getSourceData());
-//                }
-//            }
         }
     @Override
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
 
     @Override
     public void setUserInputs(FlowExecution flowExecution) {
-        Map<DataDefinitionDeclaration, String> userInputs = flowExecution.getFlowDefinition().getUserInputs();
+        List<Pair<String, String>> userInputs = flowExecution.getFlowDefinition().getUserInputs();
         if (userInputs != null) {
-            for (Map.Entry<DataDefinitionDeclaration, String> entry : userInputs.entrySet()) {
-                DataDefinitionDeclaration dataDefinitionDeclaration = entry.getKey();
-                String userInput = entry.getValue();
-                //convert to object that need to stored
-                dataValues.put(dataDefinitionDeclaration.getFinalName(), userInput);//or regular name
+            for (Pair<String, String> userInput : userInputs) {
+                dataValues.put(userInput.getKey(), userInput.getValue());//add to context by final name and input value
             }
         }
-
     }
-
-    @Override
+        @Override
     public <T> T getDataValue(String dataName ,Class<T> expectedDataType) {
+
+
+
+
+
 
 //        for(CustomMapping custome: customMappings){
 //            //if target data == source data (type)
@@ -124,19 +110,18 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 //        }
 //        return null;
 //    }
-
     @Override
     public boolean storeDataValue(String dataName ,Object value) {
         //auto map
-        if (currentWorkingStep == null){
+      //  if (currentWorkingStep == null){
             //String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
             dataValues.put(dataName, value);
-        }
-        else {
+        //}
+        //else {
             //update alias before store into context
              //String finalName=currentWorkingStep.getFlowLevelAliasInStep(dataName);
-             dataValues.put(dataName, value);
-            }
+          //   dataValues.put(dataName, value);
+            //}
 
         //check if there is a custom mapping}
         return true;

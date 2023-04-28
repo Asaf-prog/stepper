@@ -22,7 +22,7 @@ public interface FlowDefinition {
     void setIsCustomMappings(boolean isCustomMappings);
     boolean getIsCustomMappings();
     List<CustomMapping> getCustomMappings();
-    Map<DataDefinitionDeclaration, String> getUserInputs();
+    List<Pair<String, String>> getUserInputs();
     boolean addUserInput(DataDefinitionDeclaration data,String input);
 
     void addUsage();

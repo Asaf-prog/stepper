@@ -114,11 +114,29 @@ public class Stepper implements Manager {
 
             //flow.setFinalNames();//finish flow definition
             inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
-
+           // printfunction(flow.getSteps());
             flow.createFlowFreeInputs();//including one for user input
 
             flow.setReadOnlyState();
             flow.validateFlowStructure();
+        }
+    }
+    public void printfunction(List<StepUsageDeclaration> stepOfFlow){
+        for (StepUsageDeclaration step: stepOfFlow){
+            System.out.println("the step is "+step.getFinalStepName());
+            System.out.println("*****************");
+            List<DataDefinitionDeclaration> in = step.getStepDefinition().inputs();
+            for (DataDefinitionDeclaration i : in){
+                System.out.println(step.getByKeyFromInputMap(i.getName()));
+            }
+            List<DataDefinitionDeclaration> out = step.getStepDefinition().outputs();
+
+            System.out.println("outputttttttttttt");
+            System.out.println("*****************");
+
+            for (DataDefinitionDeclaration o : out){
+                System.out.println(step.getByKeyFromOutputMap(o.getName()));
+            }
         }
     }
     public void inisilaizedInputAndOutput(List<StepUsageDeclaration> stepOfFlow,List<FlowLevelAlias> flowLevelAliases){

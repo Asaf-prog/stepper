@@ -16,10 +16,8 @@ public class FLowExecutor {
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
         context.setUserInputs(flowExecution);//sets user inputs into the context
 
-        flowExecution.getFlowDefinition().createFlowFreeInputs();
-      //  flowExecution.getFlowDefinition().setFinalNames();
 
-        context=flowExecution.getFlowDefinition().setFreeInputs(context);
+        //context=flowExecution.getFlowDefinition().setFreeInputs(context);
 
         System.out.println("Starting execution of flow " + flowExecution.getFlowDefinition().getName() + " [ID: " + flowExecution.getUniqueId() + "]");
         try {
@@ -27,6 +25,12 @@ public class FLowExecutor {
                 StepUsageDeclaration stepUsageDeclaration = flowExecution.getFlowDefinition().getFlowSteps().get(i);
                 System.out.println("Starting to execute step: " + stepUsageDeclaration.getFinalStepName());
                 context.setStep(stepUsageDeclaration);
+
+                //function that inisilaized the contex with the map input and the map output
+
+                context.setInputOfCurrentStep(stepUsageDeclaration.getInputFromNameToAlias());
+                context.setOutputOfCurrentStep(stepUsageDeclaration.getOutputFromNameToAlias());
+
                 StepResult stepResult = stepUsageDeclaration.getStepDefinition().invoke(context);
                 System.out.println("Done executing step: " + stepUsageDeclaration.getFinalStepName() + ". Result: " + stepResult);
                 // check if you should continue etc..

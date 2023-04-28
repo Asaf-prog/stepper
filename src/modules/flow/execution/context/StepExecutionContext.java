@@ -20,7 +20,8 @@ public interface StepExecutionContext {
     void setSteps(List<StepUsageDeclaration> steps);
 
     void setUserInputs(FlowExecution flowExecution);
-
+    void setInputOfCurrentStep(Map <String,String> input);
+    void setOutputOfCurrentStep(Map <String,String> output);
 
     // some more utility methods:
     // allow step to store log lines

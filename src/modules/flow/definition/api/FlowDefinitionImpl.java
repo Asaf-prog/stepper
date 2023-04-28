@@ -15,28 +15,30 @@ public class FlowDefinitionImpl implements FlowDefinition {
     protected final List<String> flowOutputs;
 
     protected final List<StepUsageDeclaration> steps;
-    protected Map<DataDefinitionDeclaration,String> userInputs;
+
     protected List<CustomMapping> customMappings;
     protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+    protected List<Pair<String,String>> userInputs;
     protected boolean isCustomMappings;
     protected static int timesUsed;
     protected static double avgTime;
     protected boolean readOnly;
     //todo add a boolean filed how check if it's automaticMappings or customMappings
 
-    public Map<DataDefinitionDeclaration, String> getUserInputs() {
+    public List<Pair<String, String>> getUserInputs(){
         return userInputs;
     }
 
     @Override
     public boolean addUserInput(DataDefinitionDeclaration data,String input) {
         if (userInputs == null) {
-            userInputs = new HashMap<>();
+            userInputs = new ArrayList<>();
         }
-        userInputs.put(data,input);
+        userInputs.add(new Pair<String,String>(data.getFinalName(),input));
         return true;
     }
+
 
     @Override
     public List<FlowLevelAlias> getFlowLevelAlias(){return flowLevelAliases;}
@@ -52,6 +54,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
         freeInputs = new ArrayList<>();
         customMappings = new ArrayList<>();
         flowLevelAliases = new ArrayList<>();
+        userInputs=new ArrayList<>();
         readOnly=true;
         timesUsed=0;
         avgTime=0;
@@ -123,26 +126,42 @@ public class FlowDefinitionImpl implements FlowDefinition {
     }
     public void createFlowFreeInputs() {
         List<String> listInputs = new ArrayList<>();
-        // protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
-        for (StepUsageDeclaration step: steps){
+        for (StepUsageDeclaration step: steps) {
 
             List<DataDefinitionDeclaration> inputListOfDD = step.getStepDefinition().inputs();
 
-            for (DataDefinitionDeclaration inputDD:inputListOfDD) {
-                if(!listInputs.contains(step.getByKeyFromInputMap(inputDD.getName()))){
-                    listInputs.add(step.getByKeyFromInputMap(step.getStepDefinition().getName()));
-                    freeInputs.add(new Pair<>(step.getByKeyFromInputMap(inputDD.getName()),inputDD));
-                } else {
-                    List<DataDefinitionDeclaration> outPutList = step.getStepDefinition().outputs();
-                    for (DataDefinitionDeclaration output : outPutList) {
-                        listInputs.add(step.getByKeyFromOutputMap(output.getName()));
-                    }
+            for (DataDefinitionDeclaration inputDD : inputListOfDD) {
+
+                if (!(listInputs.contains(step.getByKeyFromInputMap(inputDD.getName()))) &&
+                        !(theirIsInputFromcustomMapping(step, listInputs, step.getByKeyFromInputMap(inputDD.getName())))) {
+
+                    listInputs.add(step.getByKeyFromInputMap(inputDD.getName()));
+                    freeInputs.add(new Pair<>(step.getByKeyFromInputMap(inputDD.getName()), inputDD));
                 }
+            }
+            List<DataDefinitionDeclaration> outPutList = step.getStepDefinition().outputs();
+            for (DataDefinitionDeclaration output : outPutList) {
+                listInputs.add(step.getByKeyFromOutputMap(output.getName()));
             }
         }
     }
-
+    public boolean theirIsInputFromcustomMapping(StepUsageDeclaration step, List<String> listInputs ,String nameToFind){
+            for (CustomMapping custom : customMappings){
+                if (custom.getTarget().equals(step.getFinalStepName())){
+                    String findSource = custom.getSourceData();
+                    if (!custom.getTargetData().equals(nameToFind))
+                        return false;
+                    for (String input: listInputs){
+                        if (findSource.equals(input))
+                            return true;
+                    }
+                }
+            }
+            return false;
+    }
     public StepExecutionContext setFreeInputs(StepExecutionContext context) {
+
+
         System.out.println("Please fill the free inputs\n");
         Scanner myScanner = new Scanner(System.in);
         String dataToStore;

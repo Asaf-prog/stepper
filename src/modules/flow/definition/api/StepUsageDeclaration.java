@@ -5,6 +5,7 @@ import modules.step.api.StepDefinition;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 public interface StepUsageDeclaration {
     String getFinalStepName();
@@ -39,4 +40,7 @@ public interface StepUsageDeclaration {
 
     String getByKeyFromInputMap(String key);
     String getByKeyFromOutputMap(String key);
+    Map<String,String> getInputFromNameToAlias();
+     Map<String,String> getOutputFromNameToAlias();
+
 }
