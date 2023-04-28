@@ -61,5 +61,6 @@ public class FlowExecution {//This class accumulates all the data for the flow
     public void setFlowDuration(Duration between) {
         this.totalTime=between;
         this.flowDefinition.updateAvgTime(between);
+        
     }
 }
