@@ -1,6 +1,8 @@
 package modules.Map;
 
-public class FlowLevelAlias implements HasSource<String> {
+import java.io.Serializable;
+
+public class FlowLevelAlias implements HasSource<String> , Serializable {
 
     protected String step;
     protected String sourceDataName;

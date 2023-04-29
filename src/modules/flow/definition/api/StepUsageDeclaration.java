@@ -3,12 +3,13 @@ package modules.flow.definition.api;
 import javafx.util.Pair;
 import modules.step.api.StepDefinition;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-public interface StepUsageDeclaration {
+public interface StepUsageDeclaration extends Serializable {
     String getFinalStepName();
 
     StepDefinition getStepDefinition();

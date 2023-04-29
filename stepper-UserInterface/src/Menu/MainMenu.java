@@ -9,8 +9,8 @@ public class MainMenu implements Menu {
 
     public static void main(String[] args) {
         System.out.println("---Stepper UI---");
-        GetDataFromXML.fromXmlFileToObject("/Users/cohen/Documents/GitHub/stepper/ex1.xml");
-        Stepper stepperData= DataManager.getData();
+       // GetDataFromXML.fromXmlFileToObject("/Users/cohen/Documents/GitHub/stepper/ex1.xml");
+       // Stepper stepperData= DataManager.getData();
         Scanner input = new Scanner(System.in);
         MainMenuItems choice = null;
         do {
@@ -30,9 +30,9 @@ public class MainMenu implements Menu {
                     case MAIN_MENU:
                         System.out.println("MAIN_MENU");
                         break;
-                    case LOAD_DATA:
-                        System.out.println("LOAD_DATA");
-                        GetXmlDataFromUser();
+                    case DATA_MANAGEMENT:
+                        System.out.println("DATA_MANAGEMENT");
+                        LoadDataMenu.displayMenu();
                         break;
                     case FLOW_DEFINITION_MENU:
                         System.out.println("FLOW_DEFINITION_MENU");
@@ -56,17 +56,6 @@ public class MainMenu implements Menu {
                 }
             } while (choice != MainMenuItems.EXIT);
         input.close();
-    }
-    private static void GetXmlDataFromUser() {
-        System.out.println("Please enter the path to the xml file");
-        Scanner input = new Scanner(System.in);
-        String path = input.nextLine();
-
-        //todo add logics to get the xml file
-        GetDataFromXML.fromXmlFileToObject(path);
-
-        Stepper stepperData= DataManager.getData();
-
     }
     public static void displayMenu() {
         System.out.println("MainMenu:");

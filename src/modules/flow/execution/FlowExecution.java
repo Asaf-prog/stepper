@@ -3,11 +3,12 @@ package modules.flow.execution;
 import modules.flow.definition.api.FlowDefinition;
 import modules.stepper.Stepper;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 
-public class FlowExecution {//This class accumulates all the data for the flow
+public class FlowExecution implements Serializable {//This class accumulates all the data for the flow
     private final int uniqueId;
     private final FlowDefinition flowDefinition;
     private final SimpleDateFormat startTime;

@@ -3,12 +3,14 @@ import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
+
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.*;
 
 import javafx.util.Pair;
 
-public class FlowDefinitionImpl implements FlowDefinition {
+public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     //maybe add another duration for calc
 
     protected final String name;

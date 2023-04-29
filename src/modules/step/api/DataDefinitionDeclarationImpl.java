@@ -3,7 +3,9 @@ package modules.step.api;
 
 import modules.dataDefinition.api.DataDefinition;
 
-public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration {
+import java.io.Serializable;
+
+public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration, Serializable {
 
     private final String name;
     private String finalName;

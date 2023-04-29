@@ -1,6 +1,8 @@
 package modules.Map;
 
-public class CustomMapping implements HasSource<String>, HasTarget<String> //Steps not Data
+import java.io.Serializable;
+
+public class CustomMapping implements HasSource<String>, HasTarget<String> , Serializable//Steps not Data
 {
     protected String sourceStep;
     protected String sourceData;

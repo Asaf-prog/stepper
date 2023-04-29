@@ -2,7 +2,7 @@ package Menu;
 
 public enum MainMenuItems {
     MAIN_MENU("Main Menu"),
-    LOAD_DATA("Load Data"),
+    DATA_MANAGEMENT("Data Management"),
     FLOW_DEFINITION_MENU("Flow Definition"),
     FLOW_EXECUTION("Flow Execution"),
 

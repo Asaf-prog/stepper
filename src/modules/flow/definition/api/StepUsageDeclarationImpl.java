@@ -2,12 +2,13 @@ package modules.flow.definition.api;
 
 import modules.step.api.StepDefinition;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
 
 import java.time.Duration;
 
-public class StepUsageDeclarationImpl implements StepUsageDeclaration {
+public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializable {
 
     private final StepDefinition stepDefinition;
     private  boolean skipIfFail;

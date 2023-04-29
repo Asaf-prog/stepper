@@ -12,11 +12,12 @@ package modules.stepper;
  import schemeTest.generatepackage.STFlowLevelAlias;
  import schemeTest.generatepackage.STStepInFlow;
 
+ import java.io.Serializable;
  import java.util.ArrayList;
  import java.util.List;
  import java.util.Optional;
 
-public class Stepper implements Manager {
+public class Stepper implements Manager, Serializable {
     public static int idCounter = 1000;
     List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
@@ -204,4 +205,8 @@ public class Stepper implements Manager {
         this.flowExecutions.add(flowTestExecution);
         //maybe logic of time and stuff
     }
+
+
+
+
 }
