@@ -2,10 +2,9 @@ package Menu;
 
 import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
-import modules.flow.definition.api.FlowDefinition;
-import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
-import Menu.MainMenuItems;
+
+import javax.xml.bind.JAXBException;
 import java.util.Scanner;
 
 public class LoadDataMenu implements Menu {
@@ -42,11 +41,22 @@ public class LoadDataMenu implements Menu {
         System.out.println("Please enter the path to the xml file");
         Scanner input = new Scanner(System.in);
         String path = input.nextLine();
-
+        try{
         //todo add logics to get the xml file
         GetDataFromXML.fromXmlFileToObject(path);
-
         Stepper stepperData= DataManager.getData();
+        stepperData.validateStepper();
+        } catch (Exception e) {
+        if (e instanceof JAXBException) {
+            System.out.println("Jaxb Exception: Failed to load stepper, xml file is invalid");
+        }
+        System.out.println(e.getMessage());
+        System.out.println("Failed to load stepper Back to main menu");
+        return;
+        }
+        finally {
+            return;
+        }
 
     }
     @Override

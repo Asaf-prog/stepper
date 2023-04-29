@@ -1,54 +1,31 @@
 package modules.DataManeger;
 
-
-import modules.flow.execution.FlowExecution;
+import modules.stepper.StepperDefinitionExceptionItems;
 import modules.stepper.Stepper;
+import modules.stepper.StepperDefinitionException;
 import schemeTest.generatepackage.STStepper;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 //all generated classes should be generated into FromXML Folder..
 public class GetDataFromXML {
-    public static void fromXmlFileToObject(String path) {
-        try {
-            File file = new File(path);
-            JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(file);//import all data from xml to stepperDemo
-            DeepCopy deepCopy = new DeepCopy(stStepper);
-            Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
-            stepperData.validateStepper();
-
-            sentToStepper(stepperData);
-        } catch (JAXBException e) {
-            e.printStackTrace();
+    public static void fromXmlFileToObject(String path)throws Exception{
+        File file = new File(path);
+        if (!(file.exists() && file.length() > 0)) {//file not exist or empty
+            throw new StepperDefinitionException(StepperDefinitionExceptionItems.XML_FILE_NOT_EXIST_OR_EMPTY);
         }
-    }
+        JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(file);//import all data from xml to stepperDemo
+        DeepCopy deepCopy = new DeepCopy(stStepper);
+        Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
+        sentToStepper(stepperData);
+}
 
     private static void sentToStepper(Stepper stepperData) {DataManager dataManager = new DataManager(stepperData);}//the one and only data manager
 
-    private static void fromObjectToXmlFile(Object obj) {//todo read to xml (bonus)
-        try {
-
-            File file = new File(FILE_NAME);
-            JAXBContext jaxbContext = JAXBContext.newInstance(FlowExecution.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            jaxbMarshaller.marshal(obj, file);
-            jaxbMarshaller.marshal(obj, System.out);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-    }
     public static final String FILE_NAME = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
 
 }

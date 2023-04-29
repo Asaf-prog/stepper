@@ -29,6 +29,4 @@ private List <STFlow> Flows;
     }
     return stepper;
     }
-    void copySpecificFlow(FlowDefinitionImpl flow){
-    }
 }

@@ -5,11 +5,10 @@ import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
+import modules.stepper.FlowDefinitionException;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 public interface FlowDefinition {
     String getName();
@@ -20,7 +19,7 @@ public interface FlowDefinition {
 
     List<String> getFlowFormalOutputs();
 
-    void validateFlowStructure();
+    void validateFlowStructure() throws FlowDefinitionException;
 
     List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs();
 

@@ -110,23 +110,35 @@ public class Stepper implements Manager, Serializable {
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
     }
-    public void validateStepper() {
-        //this.updateAliasesPerStep();
-        for (FlowDefinitionImpl flow : flows) {
-
-            //todo -saar check if the xml file exist
-            //todo -saar=> check if for every flow unique name
-
-            //flow.setFinalNames();//finish flow definition
-            inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
-
-           // printfunction(flow.getSteps());
-
+    public void validateStepper() throws StepperDefinitionException, FlowDefinitionException {
+        flows.forEach(flow -> {
+            //this.updateAliasesPerStep();
+            //flow.setFinalNames();
             flow.createFlowFreeInputs();//including one for user input
             flow.setReadOnlyState();
+            inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
+        });
+        //Stepper Validate
+        ValidateFlowsUniqueName();
+        for (FlowDefinitionImpl flow : flows) {
+            //todo -saar check if the xml file exist
             flow.validateFlowStructure();
+
         }
     }
+
+    private void ValidateFlowsUniqueName() throws StepperDefinitionException {
+            for (int i = 0; i < flows.size(); i++) {
+                for (int j = i + 1; j < flows.size(); j++) {
+                    if (flows.get(i).getName().equals(flows.get(j).getName())) {
+                        throw new StepperDefinitionException(StepperDefinitionExceptionItems.FLOWS_NOT_UNIQUE);
+                    }
+                }
+            }
+        //throw new StepperDefinisionException(StepperDefinisionExceptionItems.FLOWS_NOT_UNIQUE);
+
+    }
+
     public void printfunction(List<StepUsageDeclaration> stepOfFlow){
         for (StepUsageDeclaration step: stepOfFlow){
             System.out.println("the step is "+step.getFinalStepName());

@@ -142,8 +142,7 @@ public class FlowExecutionMenu implements Menu {
         //if there is no mandatory inputs that the user didn't insert throw exception!!!
         FlowDefinitionImpl flow= stepperData.getFlows().get(choice-1);
         System.out.println("Executing flow: "+ flow.getName());
-
-        flow.validateFlowStructure();
+        //todo maybe Validation of the flow inputs
         FLowExecutor fLowExecutor = new FLowExecutor();
 
         FlowExecution flowTestExecution = new FlowExecution(flow);
