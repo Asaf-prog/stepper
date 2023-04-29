@@ -7,6 +7,7 @@ package modules.stepper;
  import modules.flow.execution.FlowExecution;
  import modules.step.StepDefinitionRegistry;
  import modules.step.api.DataDefinitionDeclaration;
+ import modules.step.api.StepDefinition;
  import schemeTest.generatepackage.STCustomMapping;
  import schemeTest.generatepackage.STFlow;
  import schemeTest.generatepackage.STFlowLevelAlias;
@@ -54,7 +55,7 @@ public class Stepper implements Manager, Serializable {
     public List<FlowDefinitionImpl> getFlows() {
         return flows;
     }
-    public void copyFlowFromXMLObject(STFlow stFlow) {
+    public void copyFlowFromXMLObject(STFlow stFlow) throws FlowDefinitionException {
         FlowDefinitionImpl flowToAdd = new FlowDefinitionImpl(stFlow.getName(), stFlow.getSTFlowDescription());
         List<FlowLevelAlias> flowLevelAliasesToAdd = new ArrayList<>();
         //add all steps
@@ -63,7 +64,11 @@ public class Stepper implements Manager, Serializable {
             STStepInFlow currStStep=stFlow.getSTStepsInFlow().getSTStepInFlow().get(i);
             String StepName = currStStep.getName();
             String StepNameAlias = currStStep.getAlias();
-            StepUsageDeclarationImpl declaration =new StepUsageDeclarationImpl(StepDefinitionRegistry.getStepDefinitionByName(StepName));
+            Optional<StepDefinition> checkStepExist =Optional.ofNullable(StepDefinitionRegistry.getStepDefinitionByName(StepName));
+            if (!checkStepExist.isPresent())
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_STEP_THAT_DOES_NOT_EXIST);
+            StepUsageDeclarationImpl declaration =new StepUsageDeclarationImpl(checkStepExist.get());
+
 
             if (StepNameAlias!=null) {
                 declaration.setStepNameAlias(StepNameAlias);

@@ -10,8 +10,8 @@ public enum FlowDefinitionExceptionItems {
     FLOW_USED_STEP_IN_CUSTOM_MAPPING_THAT_ARE_NOT_EXIST("Flow used step in custom mapping that are not exist!!!"),
     DEFINE_CUSTOM_MAPPING_FOR_DATA_THAT_NOT_EXIST_IN_FLOW("Define custom mapping for data that not exist in flow!!!"),
     DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW("Define alias for data or step that not exist in flow!!!"),
-    THIS_IS_NOT_THE_FORMAL_OUTPUT("This is not the formal output")
-    ;
+    THIS_IS_NOT_THE_FORMAL_OUTPUT("This is not the formal output"),
+    FLOW_HAS_STEP_THAT_DOES_NOT_EXIST("Flow has step that does not exist!!!");
 
     private final String message;
 

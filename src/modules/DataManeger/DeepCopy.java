@@ -1,6 +1,7 @@
 package modules.DataManeger;
 
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.stepper.FlowDefinitionException;
 import modules.stepper.Stepper;
 import schemeTest.generatepackage.STFlow;
 import schemeTest.generatepackage.STStepper;
@@ -22,7 +23,7 @@ private List <STFlow> Flows;
     public STStepper getStStepper() {return stStepper;}
     public Stepper getStepper() {return stepper;}
 
-    public Stepper copyAllDataInFields(){
+    public Stepper copyAllDataInFields() throws FlowDefinitionException {
         //Stepper res = new Stepper();
     for (STFlow flow : Flows){
     stepper.copyFlowFromXMLObject(flow);
