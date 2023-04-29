@@ -23,4 +23,5 @@ public interface StepExecutionContext {
     void setInputOfCurrentStep(Map <String,String> input);
     void setOutputOfCurrentStep(Map <String,String> output);
     void initializedCustomMapping(FlowExecution flowExecution);
+    Map<String, Object> getDataValues();
 }

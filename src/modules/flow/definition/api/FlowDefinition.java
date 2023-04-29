@@ -46,4 +46,5 @@ public interface FlowDefinition {
     List<FlowLevelAlias> getFlowLevelAlias();
 
     void setFinalNames();
+    void setOutputs(List<String> asList);
 }

@@ -5,7 +5,6 @@ public enum MainMenuItems {
     DATA_MANAGEMENT("Data Management"),
     FLOW_DEFINITION_MENU("Flow Definition"),
     FLOW_EXECUTION("Flow Execution"),
-
     FLOW_STATISTICS("Flow Statistics"),
     STEPPER_STATISTICS("Stepper Statistics"),
     EXIT("Exit");

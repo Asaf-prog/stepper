@@ -77,7 +77,7 @@ public class FlowExecutionMenu implements Menu {
                     updateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
                     freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
                     System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
-                    //assume it work and now one less data to update
+                    //assume it works and now one less data to update
                     break;
                 case 2:
                     if(noMoreOptionalInputs(freeInputRemain)){

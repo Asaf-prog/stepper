@@ -42,6 +42,7 @@ public class FLowExecutor {
             //maybe save the end time for calc the time occurred
             UpdateFlowAvgTiming(Duration.between(flowStartTime,flowEndTime),flowExecution.getFlowDefinition());//update avg time of flow def
             flowExecution.setFlowExecutionResult(flowExecutionResult);
+            flowExecution.setFlowExecutionOutputs(context);
         }
         catch (IOException e) {
             e.printStackTrace();

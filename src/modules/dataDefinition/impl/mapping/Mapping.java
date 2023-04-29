@@ -1,6 +1,8 @@
 package modules.dataDefinition.impl.mapping;
 
-public class Mapping<T,S> {
+import java.io.Serializable;
+
+public class Mapping<T,S> implements Serializable{
     private T car;
     private S cdr;
     public Mapping(T car, S cdr){

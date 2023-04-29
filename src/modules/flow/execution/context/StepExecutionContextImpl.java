@@ -1,13 +1,10 @@
 package modules.flow.execution.context;
-import com.sun.deploy.security.SelectableSecurityManager;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
-import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.flow.execution.FlowExecution;
-import modules.step.api.DataDefinitionDeclaration;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -126,5 +123,8 @@ StepExecutionContextImpl implements StepExecutionContext {
     public String getSummary(String step) {return summaryLine.get(step);}
    @Override
     public void setStep(StepUsageDeclaration step) { currentWorkingStep = step;}
+    public Map<String, Object> getDataValues(){
+        return this.dataValues;
+    }
 
 }

@@ -13,12 +13,10 @@ package modules.stepper;
  import schemeTest.generatepackage.STStepInFlow;
 
  import java.io.Serializable;
- import java.util.ArrayList;
- import java.util.List;
- import java.util.Optional;
+ import java.util.*;
 
 public class Stepper implements Manager, Serializable {
-    public static int idCounter = 1000;
+    public static int idCounter;
     List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
 
@@ -31,7 +29,7 @@ public class Stepper implements Manager, Serializable {
     public void setFlowExecutions(List<FlowExecution> flowExecutions) {
         this.flowExecutions = flowExecutions;
     }
-    public FlowExecution getFlowExecutionById(int id){
+    public FlowExecution getFlowExecutionById(UUID id){
         Optional<FlowExecution> res = flowExecutions.stream().filter(flowExecution -> flowExecution.getUniqueId() == id).findFirst();
         if(res.isPresent()){
             return res.get();
@@ -39,12 +37,14 @@ public class Stepper implements Manager, Serializable {
         return null;
     }
     public static int GetUniqueID(){
-        return ++idCounter;
+        idCounter=529;
+        return Integer.valueOf(idCounter).hashCode();
     }
 
     public Stepper(){
         flows = new ArrayList<>();
         flowExecutions = new ArrayList<>();
+        idCounter= 529;
     }
 
     public void setFlows(List<FlowDefinitionImpl> flows) {
@@ -59,7 +59,6 @@ public class Stepper implements Manager, Serializable {
         List<FlowLevelAlias> flowLevelAliasesToAdd = new ArrayList<>();
         //add all steps
         for (int i = 0; i < stFlow.getSTStepsInFlow().getSTStepInFlow().size(); i++) {
-            //todo check if it's costume mapping or automatic mapping
 
             STStepInFlow currStStep=stFlow.getSTStepsInFlow().getSTStepInFlow().get(i);
             String StepName = currStStep.getName();
@@ -107,23 +106,28 @@ public class Stepper implements Manager, Serializable {
                 flowLevelAliasesToAdd.add(k, temp);
             }
         }
+        SetFormalOutputs(flowToAdd,stFlow.getSTFlowOutput());
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
     }
+
+    private void SetFormalOutputs(FlowDefinitionImpl flowToAdd, String stFlowOutput) {
+        flowToAdd.setOutputs(Arrays.asList(stFlowOutput.split(",")));
+    }
+
     public void validateStepper() throws StepperDefinitionException, FlowDefinitionException {
         flows.forEach(flow -> {
-            //this.updateAliasesPerStep();
-            //flow.setFinalNames();
+            inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
+            this.updateAliasesPerStep();
+            flow.setFinalNames();
             flow.createFlowFreeInputs();//including one for user input
             flow.setReadOnlyState();
-            inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
+
         });
         //Stepper Validate
         ValidateFlowsUniqueName();
         for (FlowDefinitionImpl flow : flows) {
-            //todo -saar check if the xml file exist
             flow.validateFlowStructure();
-
         }
     }
 
@@ -135,27 +139,6 @@ public class Stepper implements Manager, Serializable {
                     }
                 }
             }
-        //throw new StepperDefinisionException(StepperDefinisionExceptionItems.FLOWS_NOT_UNIQUE);
-
-    }
-
-    public void printfunction(List<StepUsageDeclaration> stepOfFlow){
-        for (StepUsageDeclaration step: stepOfFlow){
-            System.out.println("the step is "+step.getFinalStepName());
-            System.out.println("*****************");
-            List<DataDefinitionDeclaration> in = step.getStepDefinition().inputs();
-            for (DataDefinitionDeclaration i : in){
-                System.out.println(step.getByKeyFromInputMap(i.getName()));
-            }
-            List<DataDefinitionDeclaration> out = step.getStepDefinition().outputs();
-
-            System.out.println("outputttttttttttt");
-            System.out.println("*****************");
-
-            for (DataDefinitionDeclaration o : out){
-                System.out.println(step.getByKeyFromOutputMap(o.getName()));
-            }
-        }
     }
     public void inisilaizedInputAndOutput(List<StepUsageDeclaration> stepOfFlow,List<FlowLevelAlias> flowLevelAliases){
         for (StepUsageDeclaration step: stepOfFlow){
@@ -180,8 +163,8 @@ public class Stepper implements Manager, Serializable {
             for(DataDefinitionDeclaration output: outputs){
                 if (!thisOutputExistInTheMapOfOutputs(step ,output.getName())){
                     step.addToMapOfOutput(output.getName(), output.getName());
+                }
             }
-        }
         }
     }
     public boolean thisInputExistInTheMapOfInput(StepUsageDeclaration step,String inputName){
@@ -217,8 +200,5 @@ public class Stepper implements Manager, Serializable {
         this.flowExecutions.add(flowTestExecution);
         //maybe logic of time and stuff
     }
-
-
-
 
 }

@@ -13,11 +13,11 @@ import modules.stepper.FlowDefinitionException;
 import modules.stepper.FlowDefinitionExceptionItems;
 
 public class FlowDefinitionImpl implements FlowDefinition, Serializable {
-    //maybe add another duration for calc
 
     protected final String name;
     protected final String description;
-    protected final List<String> flowOutputs;
+    protected List<String> flowOutputs;//list of what the user ask to get after the flow!
+    List<String> flowOfAllStepsOutputs;//list of all the outputs of all the steps in the flow
 
     protected final List<StepUsageDeclaration> steps;
     protected List<CustomMapping> customMappings;
@@ -38,6 +38,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         customMappings = new ArrayList<>();
         flowLevelAliases = new ArrayList<>();
         userInputs=new ArrayList<>();
+        flowOfAllStepsOutputs= new ArrayList<>();
         readOnly=true;
         timesUsed=0;
         avgTime=0;
@@ -101,25 +102,37 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             checkIfWeDoCustomMappingOnStepThatNotExist();
             checkIfWeDoCustomMappingOnDDThatNotExist();
             checkIfExistAliasForFlowStepOrDataThatNotExist();
+            checkIfTheFormalOutputsExist();
+    }
+    public void checkIfTheFormalOutputsExist()throws FlowDefinitionException{
+        if (flowOutputs.get(0).equals(""))
+            return;
+        for (String output:flowOutputs){
+            if (!flowOfAllStepsOutputs.contains(output)){
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.THIS_IS_NOT_THE_FORMAL_OUTPUT);
+            }
+        }
     }
     public void checkIfExistAliasForFlowStepOrDataThatNotExist()throws FlowDefinitionException {
         for (FlowLevelAlias Alias: flowLevelAliases){
-            if (!checkIfTheStepAndTheStepThatWeDoAliasExist(Alias.getSource(),Alias.getSourceData())){
+            if (!checkIfTheStepAndTheDataThatWeDoAliasExist(Alias.getSource(),Alias.getSourceData())){
                 throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW);
             }
         }
     }
-    public boolean checkIfTheStepAndTheStepThatWeDoAliasExist(String stepName , String dataDefinitionName){
-        for (StepUsageDeclaration step: steps){
-            if (step.getFinalStepName().equals(stepName)){
+    public boolean checkIfTheStepAndTheDataThatWeDoAliasExist(String stepName , String dataDefinitionName) {
+        for (StepUsageDeclaration step : steps) {
+            if (step.getFinalStepName().equals(stepName)) {
                 List<DataDefinitionDeclaration> input = step.getStepDefinition().inputs();
                 List<DataDefinitionDeclaration> outPuts = step.getStepDefinition().outputs();
-                if (containInList(input,dataDefinitionName))
-                    return true;
-                else if (containInList(outPuts,dataDefinitionName))
-                    return true;
-                else
-                    return false;
+                for (DataDefinitionDeclaration in : input) {
+                    if (in.getName().equals(dataDefinitionName))
+                        return true;
+                }
+                for (DataDefinitionDeclaration out : outPuts) {
+                    if (out.getName().equals(dataDefinitionName))
+                        return true;
+                }
             }
         }
         return false;
@@ -247,6 +260,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
                 listInputs.add(step.getByKeyFromOutputMap(output.getName()));
             }
         }
+        flowOfAllStepsOutputs = listInputs;
     }
     public boolean theirIsInputFromCustomMapping(StepUsageDeclaration step, List<String> listInputs , String nameToFind){
             for (CustomMapping custom : customMappings){
@@ -310,7 +324,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public boolean IsReadOnly() {
         return readOnly;
     }
-
    public void setFinalNames(){
         //going through all the Aliases and then custom mappings and setting the final names
         setAliases();
@@ -337,5 +350,9 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
                 return step;
         }
         return null;
+    }
+
+    public void setOutputs(List<String> asList) {
+        flowOutputs = asList;
     }
 }

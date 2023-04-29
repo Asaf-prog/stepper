@@ -1,3 +1,0 @@
-Serial Number,File Name Before Change,File Name After Change
-1,AA.txt,AA.txt
-2,BB.txt,BB.txt

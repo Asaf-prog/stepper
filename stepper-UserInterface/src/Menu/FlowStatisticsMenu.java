@@ -6,11 +6,11 @@ import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
 
+import java.util.Date;
 import java.util.Scanner;
 
 public class FlowStatisticsMenu implements Menu {
     public static void displayMenu() {
-
         System.out.println("Choose a flow to get its Stats:");
         Stepper stepperData = DataManager.getData();
         int i=1;
@@ -21,7 +21,8 @@ public class FlowStatisticsMenu implements Menu {
         else {
             System.out.println("0. Back");
             for (FlowExecution exe : stepperData.getFlowExecutions()) {
-                System.out.println(i + ". " + +exe.getUniqueId());
+                String StartTime=exe.getStartDateTime();
+                System.out.println(i + ". " + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);
                 i++;
             }
             Scanner input = new Scanner(System.in);
@@ -36,17 +37,15 @@ public class FlowStatisticsMenu implements Menu {
                 return;
             }
         }
-
     }
-
     private static void PresentFlowStats(FlowExecution singleExecution) {
         System.out.println("Flow name: " + singleExecution.getFlowDefinition().getName());
         System.out.println("ID: " + singleExecution.getUniqueId());
         //start to work on 'time'
         System.out.println("Took about " +singleExecution.getTotalTime().toMillis() + " MS");
         System.out.println("And finish with " + singleExecution.getFlowExecutionResult().name());
+        System.out.println("The flow Outputs are :" + singleExecution.printOutputs());
     }
-
     @Override
     public void displayMenu2() {
 
