@@ -11,8 +11,11 @@ import java.util.Scanner;
 
 public class FlowStatisticsMenu implements Menu {
     public static void displayMenu() {
-        System.out.println("Choose a flow to get its Stats:");
+
         Stepper stepperData = DataManager.getData();
+        //todo check if stepperData ifso null and throw exception
+        System.out.println("---Flow Statistics Menu---");
+        System.out.println("Choose a flow to get its Stats:");
         int i=1;
         if (stepperData.getFlowExecutions()==null){
             System.out.println("No flow executions to show");
@@ -22,11 +25,12 @@ public class FlowStatisticsMenu implements Menu {
             System.out.println("0. Back");
             for (FlowExecution exe : stepperData.getFlowExecutions()) {
                 String StartTime=exe.getStartDateTime();
-                System.out.println(i + ". " + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);
+                System.out.println("("+i + ")" + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);
                 i++;
             }
             Scanner input = new Scanner(System.in);
             int choice = input.nextInt();
+            //TODO: add validation
             if (choice == MainMenuItems.MAIN_MENU.getValue()) {
                 return;
             }
@@ -44,7 +48,7 @@ public class FlowStatisticsMenu implements Menu {
         //start to work on 'time'
         System.out.println("Took about " +singleExecution.getTotalTime().toMillis() + " MS");
         System.out.println("And finish with " + singleExecution.getFlowExecutionResult().name());
-        System.out.println("The flow Outputs are :" + singleExecution.printOutputs());
+        System.out.println("The flow Outputs are :\n" + singleExecution.printOutputs());
     }
     @Override
     public void displayMenu2() {

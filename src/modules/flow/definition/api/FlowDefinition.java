@@ -23,7 +23,7 @@ public interface FlowDefinition {
 
     List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs();
 
-    StepExecutionContext setFreeInputs(StepExecutionContext context);
+   // StepExecutionContext setFreeInputs(StepExecutionContext context);
 
     void createFlowFreeInputs();
 

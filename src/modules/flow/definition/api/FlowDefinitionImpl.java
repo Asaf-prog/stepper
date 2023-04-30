@@ -276,28 +276,28 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             }
             return false;
     }
-    public StepExecutionContext setFreeInputs(StepExecutionContext context) {
-
-        System.out.println("Please fill the free inputs\n");
-        Scanner myScanner = new Scanner(System.in);
-        String dataToStore;
-        for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
-            System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
-                    pairOfStringAndDD.getValue().getFinalName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
-                    + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
-
-            if (pairOfStringAndDD.getValue().getName() == "LINE"){
-                int num = myScanner.nextInt();
-                context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),num);
-            }else {
-                dataToStore = myScanner.nextLine();
-                if (!dataToStore.isEmpty()) {
-                    context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),dataToStore);
-                }
-            }
-        }
-        return context;
-    }
+//    public StepExecutionContext setFreeInputs(StepExecutionContext context) {
+//
+//        System.out.println("Please fill the free inputs\n");
+//        Scanner myScanner = new Scanner(System.in);
+//        String dataToStore;
+//        for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
+//            System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
+//                    pairOfStringAndDD.getValue().getFinalName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
+//                    + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
+//
+//            if (pairOfStringAndDD.getValue().getName() == "LINE"){
+//                int num = myScanner.nextInt();
+//                context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),num);
+//            }else {
+//                dataToStore = myScanner.nextLine();
+//                if (!dataToStore.isEmpty()) {
+//                    context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),dataToStore);
+//                }
+//            }
+//        }
+//        return context;
+//    }
     public List<String> getFlowOutputs() {return flowOutputs;}
     public List<StepUsageDeclaration> getSteps() {return steps;}
     @Override

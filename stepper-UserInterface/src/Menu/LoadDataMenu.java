@@ -9,11 +9,13 @@ import java.util.Scanner;
 
 public class LoadDataMenu implements Menu {
     public static void displayMenu(){
-        System.out.println("---Load Data Menu---");
+
         Stepper stepperData = DataManager.getData();
-        System.out.println("Choose what to do \n 1.Load Existing Data \n 2.Save The Data \n 3.Load Stepper Xml Definition ");
+        System.out.println("---Load Data Menu---");
+        System.out.println("(1)Load Existing Data \n(2)Save The Data \n(3)Load Stepper Xml Definition ");
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
+        //todo validate input
         try {
             switch (choice) {
                 case 0://Main menu
@@ -41,6 +43,7 @@ public class LoadDataMenu implements Menu {
         System.out.println("Please enter the path to the xml file");
         Scanner input = new Scanner(System.in);
         String path = input.nextLine();
+        //todo validate input
         try{
         //todo add logics to get the xml file
         GetDataFromXML.fromXmlFileToObject(path);

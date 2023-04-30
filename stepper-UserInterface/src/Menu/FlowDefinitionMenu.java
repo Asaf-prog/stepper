@@ -11,16 +11,17 @@ import java.util.Scanner;
 public class FlowDefinitionMenu implements Menu{
 
     public static void displayMenu(){
-
-        System.out.println("Choose a flow to get its information:");
         Stepper stepperData = DataManager.getData();
+        System.out.println("---Flow Definition Menu---");
+        System.out.println("Choose a flow to get its information:");
         int i=1;
         for(FlowDefinitionImpl flow : stepperData.getFlows()){
-            System.out.println(i+". "+ flow.getName() + "    ,which " + flow.getDescription());
+            System.out.println("("+i+") "+ flow.getName());
             i++;
         }
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
+        //TODO: add validation
         if (choice== MainMenuItems.MAIN_MENU.getValue()){
             return;
         }
@@ -34,20 +35,29 @@ public class FlowDefinitionMenu implements Menu{
         return;
     }
 
-    private static void PresentFlowInformation(FlowDefinitionImpl flow) {
+    private static void PresentFlowInformation(FlowDefinitionImpl flow) throws Exception {
         System.out.println("Flow name: " + flow.getName());
         System.out.println("Flow description: " + flow.getDescription());
-
         System.out.println("Steps Formal Outputs: " + flow.getFlowOutputs());
         System.out.println("Is the Step ReadOnly? " + flow.IsReadOnly());
-
-        System.out.println("Flow steps: ");
-        int i=1;
-        for(StepUsageDeclaration step : flow.getSteps()){
-            System.out.println(i+". "+ step.getFinalStepName());
-            i++;
-            PrintStepInformation(step);
+        System.out.println("Choose Step to display its information:");
+        Scanner input = new Scanner(System.in);
+        int choice = input.nextInt();
+        //TODO: add validation
+        while(choice!= MainMenuItems.MAIN_MENU.getValue()){
+            int i=1;
+            PrintStepInformation(flow.getSteps().get(choice-1));
+            System.out.println("Press Enter to continue");
+            input.nextLine();
+            System.out.println("Choose Step to display its information:");
+            for(StepUsageDeclaration step : flow.getSteps()){
+                System.out.println(i+". "+ step.getFinalStepName());
+                i++;
+            }
+            choice = input.nextInt();
         }
+
+
         System.out.println(" that's it! for now... ");
     }
 
