@@ -40,8 +40,12 @@ public class DataManager implements Manager {
     }
 
     public static boolean loadData() {
-        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+        //String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter the path to the data file");
+        String filePath = input.nextLine();
+        //todo validate input
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
             stepperData = (Stepper) in.readObject();
             return true;
         } catch (IOException | ClassNotFoundException e) {

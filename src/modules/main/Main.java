@@ -36,5 +36,6 @@ public class Main {
         //todo collect all user inputs and store them on the flow execution object
         fLowExecutor.executeFlow(flow2Execution1);
         */
+        System.out.println("Hello World!");
     }
 }

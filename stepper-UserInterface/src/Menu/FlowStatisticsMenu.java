@@ -22,7 +22,7 @@ public class FlowStatisticsMenu implements Menu {
             return;
         }
         else {
-            System.out.println("0. Back");
+            System.out.println("(0)Back");
             for (FlowExecution exe : stepperData.getFlowExecutions()) {
                 String StartTime=exe.getStartDateTime();
                 System.out.println("("+i + ")" + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);

@@ -25,8 +25,8 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
     protected List<Pair<String,String>> userInputs;
     protected boolean isCustomMappings;
-    protected static int timesUsed;
-    protected static double avgTime;
+    protected  int timesUsed;
+    protected  double avgTime;
     protected boolean readOnly;
 
     public FlowDefinitionImpl(String name, String description) {
@@ -43,8 +43,8 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         timesUsed=0;
         avgTime=0;
     }
-    public static void setTimesUsed(int timesUsed) {FlowDefinitionImpl.timesUsed = timesUsed;}
-    public static void setAvgTime(double avgTime) {FlowDefinitionImpl.avgTime = avgTime;}
+    public void setTimesUsed(int timesUsed) {this.timesUsed = timesUsed;}
+    public void setAvgTime(double avgTime) {this.avgTime = avgTime;}
     public List<Pair<String, String>> getUserInputs(){
         return userInputs;
     }
@@ -65,12 +65,12 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         this.flowLevelAliases = flowLevelAliases;
     }
 
-    public static int getTimesUsed() {
+    public  int getTimesUsed() {
         return timesUsed;
     }
     @Override
     public void addUsage() {
-            FlowDefinitionImpl.timesUsed++;
+            this.timesUsed++;
     }
 
     @Override

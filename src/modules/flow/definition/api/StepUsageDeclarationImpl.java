@@ -15,8 +15,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
     private  String stepName;
     private  String stepNameAlias;
     private Duration totalTime;
-    private static int timesUsed;
-    private static double avgTime;//in ms
+    private  int timesUsed;
+    private  double avgTime;//in ms
     private boolean isCustom = false;
     Map<String,String> inputFromNameToAlias; //<name,alias>
     Map<String,String> outputFromNameToAlias; //<name,alias>
@@ -48,6 +48,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
         this.stepNameAlias = stepName;
         inputFromNameToAlias = new HashMap<>();
         outputFromNameToAlias = new HashMap<>();
+        timesUsed = 0;
+        avgTime = 0;
     }
     @Override
     public Map<String,String> getInputFromNameToAlias(){return inputFromNameToAlias;}

@@ -24,6 +24,8 @@ public class StepperStatisticsMenu implements Menu {
             }
             Scanner input = new Scanner(System.in);
             int choice = input.nextInt();
+
+
             //TODO: add validation
             if (choice == MainMenuItems.MAIN_MENU.getValue()) {
                 return;
@@ -37,6 +39,7 @@ public class StepperStatisticsMenu implements Menu {
         }
         else
             System.out.println("Stepper currently has no flows");
+
 
     }
 

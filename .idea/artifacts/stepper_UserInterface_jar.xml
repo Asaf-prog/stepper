@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="stepper-UserInterface:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/stepper_UserInterface_jar</output-path>
+    <root id="archive" name="stepper-UserInterface.jar">
+      <element id="module-output" name="stepper-UserInterface" />
+    </root>
+  </artifact>
+</component>
