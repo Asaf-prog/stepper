@@ -10,7 +10,7 @@ import modules.step.api.StepResult;
 public class SpendSomeTimeStep extends AbstractStepDefinition {
     public SpendSomeTimeStep() {
         super("SpendSomeTime", true);
-        addInput(new DataDefinitionDeclarationImpl("Time_To_Spend", DataNecessity.MANDATORY, "Time", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("Time_To_Spend", DataNecessity.MANDATORY, "Time", DataDefinitionRegistry.NUMBER));
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
