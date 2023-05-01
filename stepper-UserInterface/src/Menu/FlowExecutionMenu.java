@@ -65,7 +65,7 @@ public class FlowExecutionMenu implements Menu {
                     for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
                         if (pairOfStringAndDD.getValue().isMandatory()) {
                             dataOptions.put(i, pairOfStringAndDD);
-                            System.out.println(i + ". " + pairOfStringAndDD.getKey());
+                            System.out.println("("+i + ")" + pairOfStringAndDD.getKey());
                             i++;
                         }
                     }
@@ -73,7 +73,7 @@ public class FlowExecutionMenu implements Menu {
                     //todo valitade input
                     updateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
                     freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
-                    System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                    System.out.println("For flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
                     //assume it works and now one less data to update
                     break;
                 case 2:
@@ -86,7 +86,7 @@ public class FlowExecutionMenu implements Menu {
                     for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
                         if (!pairOfStringAndDD.getValue().isMandatory()) {
                             dataOptions.put(i, pairOfStringAndDD);
-                            System.out.println(i + ". " + pairOfStringAndDD.getKey());
+                            System.out.println("("+i + ")" + pairOfStringAndDD.getKey());
                             i++;
                         }
                     }
@@ -94,21 +94,21 @@ public class FlowExecutionMenu implements Menu {
                     //todo valitade input
                     updateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
                     freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
-                    System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                    System.out.println("For flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
                     //free inputs print all optional
                     break;
                 case 3:
                     if (stillGotFreeManInputs(freeInputRemain)) {
                         System.out.println("You must insert all mandatory inputs");
-                        System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                        System.out.println("For flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
                         break;
                     }//else
-                    System.out.println("----Done----");
+                    System.out.println("---Executing---");
                     //maybe update Freeinputs
                     return;
                 default:
                     System.out.println("Wrong input");
-                    System.out.println("for Flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
+                    System.out.println("For flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
                     break;
             }
         }while (freeInputRemain.size() > 0) ;

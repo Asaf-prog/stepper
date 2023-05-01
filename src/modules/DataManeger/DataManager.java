@@ -30,6 +30,7 @@ public class DataManager implements Manager {
 
     public static boolean saveData() {
         String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
+        //todo add get [path to file] from user
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(stepperData);
             return true;
@@ -40,12 +41,12 @@ public class DataManager implements Manager {
     }
 
     public static boolean loadData() {
-        //String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
-        Scanner input = new Scanner(System.in);
-        System.out.println("Please enter the path to the data file");
-        String filePath = input.nextLine();
+        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
+//        Scanner input = new Scanner(System.in);
+//        System.out.println("Please enter the path to the data file");
+//        String filePath = input.nextLine();
         //todo validate input
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             stepperData = (Stepper) in.readObject();
             return true;
         } catch (IOException | ClassNotFoundException e) {

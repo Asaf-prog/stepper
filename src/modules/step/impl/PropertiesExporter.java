@@ -38,14 +38,25 @@ public class PropertiesExporter extends AbstractStepDefinition {
             //continue
         }
         StringBuilder propertiesBuilder = new StringBuilder();
-        propertiesBuilder.append(relationTable.getColumns().get(0)).append("=").append(relationTable.getColumns().get(1)).append("\n");
+        propertiesBuilder.append(relationTable.getColumns().get(0));
+        for (int i = 1; i < relationTable.getColumns().size(); i++) {
+            propertiesBuilder.append(" = ").append(relationTable.getColumns().get(i));
+        }
+        propertiesBuilder.append("\n");
+       //v2: propertiesBuilder.append(relationTable.getColumns().get(0)).append("=").append(relationTable.getColumns().get(1)).append("\n");
 
         for (RelationData.SingleRow row : relationTable.getRows()) {
-            String key = row.getData().get(0);
-            String value = row.getData().get(1);
-            key = key.replace("\\", "\\\\").replace(":", "\\:");
-            value = value.replace("\\", "\\\\").replace("=", "\\=");
-            propertiesBuilder.append(key).append("=").append(value).append("\n");
+        propertiesBuilder.append(row.getData().get(0));
+            for (int i = 1; i < row.getData().size(); i++) {
+                propertiesBuilder.append(" = ").append(row.getData().get(i));
+            }
+            propertiesBuilder.append("\n");//the above isnt a valid properties file format but
+            // it was unclear what to present in order to include all the data
+//            String key = row.getData().get(0); // this is a valid structure
+//            String value = row.getData().get(1);
+//            key = key.replace("\\", "\\\\").replace(":", "\\:");
+//            value = value.replace("\\", "\\\\").replace("=", "\\=");
+//            propertiesBuilder.append(key).append("=").append(value).append("\n");
         }
         if (warning){
             context.setLogs("Properties Exporter", "Extracted total of "+relationTable.getRows().size());

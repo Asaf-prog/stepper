@@ -29,8 +29,8 @@ public class FilesContentExtractor extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
         List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);
-        String lineNumberString = context.getDataValue("LINE", String.class);
-        int lineNumber = Integer.parseInt(lineNumberString);
+        int lineNumber = context.getDataValue("LINE", Integer.class);
+        //int lineNumber = Integer.parseInt(lineNumberString);
         List<String> colums = new ArrayList<String>();
 
       if (FileList == null) {

@@ -1,2 +1,0 @@
-Serial Number=File Name Before Change
-1=AAA.txt

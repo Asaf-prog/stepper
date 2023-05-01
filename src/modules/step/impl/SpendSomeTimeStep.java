@@ -14,10 +14,10 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        String time = context.getDataValue("Time_To_Spend", String.class);//
+        int seconds = context.getDataValue("Time_To_Spend", Integer.class);//
         //String time ="3";//
         try{
-            int seconds = Integer.parseInt(time);
+          //  int seconds = Integer.parseInt(time);
             if (seconds <= 0) {
                 System.out.println("Invalid input");
                 return StepResult.FAILURE;

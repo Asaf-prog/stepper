@@ -2,12 +2,9 @@ package modules.flow.execution.context;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
-import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
-import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.flow.execution.FlowExecution;
 import modules.step.api.DataDefinitionDeclaration;
-import modules.step.api.DataDefinitionDeclarationImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -58,34 +55,29 @@ StepExecutionContextImpl implements StepExecutionContext {
     @Override
     public void setUserInputs(FlowExecution flowExecution) {
         List<Pair<String, String>> userInputs = flowExecution.getFlowDefinition().getUserInputs();
-        //get data type from list of all names of flow and cast.
-
         if (userInputs != null) {
             for (Pair<String, String> userInput : userInputs) {
-                Class<?> dataType = GetDataTypeFromName(userInput.getKey());//get data type by final name
-                if (dataType == String.class)
-                    dataValues.put(userInput.getKey(), userInput.getValue());//add to context by final name and input value
-                dataValues.put(userInput.getKey(), userInput.getValue());//add to context by final name and input value
+                Class<?> dataType = getDataTypeFromName(userInput.getKey(),flowExecution.getFlowDefinition().getFlowFreeInputs());//get data type by final name
+                dataValues.put(userInput.getKey(), casting(userInput.getValue(), dataType));//add to context by final name and input value
             }
         }
     }
-
-    private int Casting(String value, Class<?> dataType) {
+    private Object casting(String value, Class<?> dataType) {
+        if (dataType == String.class)
+            return value;
         if (dataType == Integer.class)
             return (Integer.parseInt(value));
+        if (dataType == Double.class)
+            return (Double.parseDouble(value));
+
+
         return 0;
     }
 
-    private Class<?> GetDataTypeFromName(String key) {
-        for (StepUsageDeclaration step : steps) {
-           for (DataDefinitionDeclaration input : step.getStepDefinition().inputs()) {
-               if (input.getName().equals(key))
-                   return input.dataDefinition().getType();
-           }
-           for (DataDefinitionDeclaration output : step.getStepDefinition().outputs()) {
-               if (output.getName().equals(key))
-                   return output.dataDefinition().getType();
-           }
+    private Class<?> getDataTypeFromName(String key, List<Pair<String, DataDefinitionDeclaration>> flowFreeInputs) {
+        for (Pair<String, DataDefinitionDeclaration> temp : flowFreeInputs) {
+            if (temp.getKey().equals(key))
+                return temp.getValue().dataDefinition().getType();
         }
         return null;
     }
@@ -120,6 +112,7 @@ StepExecutionContextImpl implements StepExecutionContext {
 
     @Override
     public boolean storeDataValue(String dataName ,Object value) {
+        //store from user input needs to be cast
            String realOutputName = outputOfCurrentStep.get(dataName);
             dataValues.put(realOutputName, value);
         return true;
