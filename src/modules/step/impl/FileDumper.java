@@ -48,9 +48,11 @@ public class FileDumper extends AbstractStepDefinition {
         if (file.exists()) {
             if (content.length()==0) {
                 context.setLogs("File Dumper", "Warning file created but as Empty file ");
+                context.storeDataValue("RESULT", "Warning-created but as Empty file");
                 return StepResult.WARNING;
             }
             context.setLogs("File Dumper", "File created: " + fileName);
+            context.storeDataValue("RESULT", "Success");
             return StepResult.SUCCESS;
         } else {
             context.setLogs("File Dumper", "Error Exporting file: " + fileName);

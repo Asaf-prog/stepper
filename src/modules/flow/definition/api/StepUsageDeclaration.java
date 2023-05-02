@@ -2,6 +2,7 @@ package modules.flow.definition.api;
 
 import javafx.util.Pair;
 import modules.step.api.StepDefinition;
+import modules.step.api.StepResult;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -47,4 +48,9 @@ public interface StepUsageDeclaration extends Serializable {
     Instant startStepTimer();
     Instant stopStepTimer();
     void setStepDuration(Duration duration);
+    Duration getTotalTime();
+
+    void setStepResult(StepResult stepResult);
+    StepResult getStepResult();
+
 }

@@ -28,6 +28,7 @@ public class FLowExecutor {
 
                 Instant stepStartTime=step.startStepTimer();//start duration timer
                 StepResult stepResult = step.getStepDefinition().invoke(context);
+                step.setStepResult(stepResult);
                 Instant stepEndTime=step.startStepTimer();
                 flowExeStatus.add(stepResult);
                 step.setStepDuration(Duration.between(stepStartTime,stepEndTime));
@@ -43,10 +44,16 @@ public class FLowExecutor {
             UpdateFlowAvgTiming(Duration.between(flowStartTime,flowEndTime),flowExecution.getFlowDefinition());//update avg time of flow def
             flowExecution.setFlowExecutionResult(flowExecutionResult);
             flowExecution.setFlowExecutionOutputs(context);
+            flowExecution.setLogs(context.getLogs());
+            flowExecution.setSummaryLines(context.getSummaryLines());
+            flowExecution.setAllExecutionOutputs(context);
+
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        //
     }
 
     private void UpdateFlowAvgTiming(Duration between, FlowDefinition flowDefinition) {

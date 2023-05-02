@@ -52,13 +52,13 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             String oldFileName = fileData.getName();
 
             if (suffix == null && prefix == null) {
-                 newFileName = oldFileName.substring(0, oldFileName.lastIndexOf(".")) + ".txt";
-            }else  if(prefix == null) {
-                 newFileName = oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix + ".txt";
+                 newFileName = oldFileName;//.substring(0, oldFileName.lastIndexOf(".")) ;
+            }else if(prefix == null) {
+                 newFileName = oldFileName + suffix;
             }else if (suffix == null) {
-                 newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf("."))  + ".txt";
+                 newFileName = prefix + oldFileName ;
             } else {
-                 newFileName = prefix + oldFileName.substring(0, oldFileName.lastIndexOf(".")) + suffix+ ".txt";
+                 newFileName = prefix + oldFileName + suffix;
             }
             fileAfterChange.add(newFileName);//check if changed correctly
             String renamedFilePath = folder + newFileName;
@@ -73,7 +73,6 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             context.setLogs("Files Renamer","Failed to rename some files:"+faileds);
             return StepResult.WARNING;
         }
-        //todo add output table with the new file names and store
 
         for (int i = 0; i < numOfFiles; i++) {
             List<String> row = new ArrayList<>();

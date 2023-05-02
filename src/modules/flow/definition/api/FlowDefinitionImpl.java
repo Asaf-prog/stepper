@@ -1,7 +1,6 @@
 package modules.flow.definition.api;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
-import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 
 import java.io.Serializable;
@@ -18,21 +17,27 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     protected final String description;
     protected List<String> flowOutputs;//list of what the user ask to get after the flow!
 
-    public List<String> getFlowOfAllStepsOutputs() {
-        return flowOfAllStepsOutputs;
-    }
-
     List<String> flowOfAllStepsOutputs;//list of all the outputs of all the steps in the flow
 
     protected final List<StepUsageDeclaration> steps;
     protected List<CustomMapping> customMappings;
     protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
+
+
+
     protected List<Pair<String,String>> userInputs;
     protected boolean isCustomMappings;
     protected  int timesUsed;
     protected  double avgTime;
     protected boolean readOnly;
+    @Override
+    public List<String> getFlowOfAllStepsOutputs() {
+        return flowOfAllStepsOutputs;
+    }
+    public void setUserInputs(List<Pair<String, String>> userInputs) {
+        this.userInputs = userInputs;
+    }
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -102,30 +107,49 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
     @Override
     public void validateFlowStructure() throws FlowDefinitionException {
-            uniqueOutputForStep();
-            checkIfMandatoryInputsAreNotUserFriendly();
-            checkIfWeDoCustomMappingOnStepThatNotExist();
-            checkIfWeDoCustomMappingOnDDThatNotExist();
-            checkIfExistAliasForFlowStepOrDataThatNotExist();
-            checkIfTheFormalOutputsExist();
+
+            uniqueOutputForStep();//4.1
+            checkIfMandatoryInputsAreNotUserFriendly();//4.2
+            checkIfWeDoCustomMappingOnStepThatNotExist();//4.3
+            checkIfWeDoCustomMappingOnDDThatNotExist();//4.3
+            checkIfExistAliasForFlowStepOrDataThatNotExist();//4.4
+            checkIfTheFormalOutputsExist();//4.5
     }
     public void checkIfTheFormalOutputsExist()throws FlowDefinitionException{
         if (flowOutputs.get(0).equals(""))
             return;
         for (String output:flowOutputs){
             if (!flowOfAllStepsOutputs.contains(output)){
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.THIS_IS_NOT_THE_FORMAL_OUTPUT);
+                String message = "The output "+output+" does not exist";
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.THIS_IS_NOT_THE_FORMAL_OUTPUT,message);
             }
         }
     }
     public void checkIfExistAliasForFlowStepOrDataThatNotExist()throws FlowDefinitionException {
         for (FlowLevelAlias Alias: flowLevelAliases){
             if (!checkIfTheStepAndTheDataThatWeDoAliasExist(Alias.getSource(),Alias.getSourceData())){
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW);
+                //need to check if the step exist and if the step exist check if the data definition exist
+                // need to check if the step name is null if he is null the step is do not exist
+                String stepName = checkIfTheStepExist(Alias.getSource());
+                if (stepName == null){
+                    String message = "The Step "+Alias.getSource()+" does not exist";
+                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW,message);
+                }else{
+                    String message = "The Step "+Alias.getSource()+" is  exist but the data definition "+ Alias.getSourceData()+" does not exist";
+                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW,message);
+                }
             }
         }
     }
-    public boolean checkIfTheStepAndTheDataThatWeDoAliasExist(String stepName , String dataDefinitionName) {
+    private String checkIfTheStepExist(String stepToCheck) {
+        for (StepUsageDeclaration step : steps){
+            if(step.getFinalStepName().equals(stepToCheck)){
+                return stepToCheck;
+            }
+        }
+        return null;
+    }
+    private boolean checkIfTheStepAndTheDataThatWeDoAliasExist(String stepName , String dataDefinitionName) {
         for (StepUsageDeclaration step : steps) {
             if (step.getFinalStepName().equals(stepName)) {
                 List<DataDefinitionDeclaration> input = step.getStepDefinition().inputs();
@@ -153,11 +177,22 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         for (CustomMapping custom:customMappings){
             if (!(checkIfThisDDExistInCustomMappingInListOfInputs(custom.getTargetData()) &&
                     checkIfThisDDExistInCustomMappingInListOfOutputs(custom.getSourceData()))){
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_CUSTOM_MAPPING_FOR_DATA_THAT_NOT_EXIST_IN_FLOW);
+                String DDCustomNotExist = "The custom mapping is: "+findTheDDThatNotExist(custom.getTargetData(),custom.getSourceData());
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_CUSTOM_MAPPING_FOR_DATA_THAT_NOT_EXIST_IN_FLOW,DDCustomNotExist);
             }
         }
     }
-    public boolean checkIfThisDDExistInCustomMappingInListOfOutputs(String name){
+    private String findTheDDThatNotExist(String target,String source){
+        for (StepUsageDeclaration step: steps){
+            List<DataDefinitionDeclaration> output = step.getStepDefinition().outputs();
+            for(DataDefinitionDeclaration out : output){
+                if(name.equals(step.getByKeyFromOutputMap(out.getName())))
+                    return source;
+            }
+        }
+        return target;
+    }
+    private boolean checkIfThisDDExistInCustomMappingInListOfOutputs(String name){
         for (StepUsageDeclaration step: steps){
             List<DataDefinitionDeclaration> output = step.getStepDefinition().outputs();
             for(DataDefinitionDeclaration out : output){
@@ -168,7 +203,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         return false;
     }
 
-    public boolean checkIfThisDDExistInCustomMappingInListOfInputs(String name){
+    private boolean checkIfThisDDExistInCustomMappingInListOfInputs(String name){
         for (StepUsageDeclaration step: steps){
             List<DataDefinitionDeclaration> input = step.getStepDefinition().inputs();
             for (DataDefinitionDeclaration in :input) {
@@ -180,12 +215,20 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     }
     public void checkIfWeDoCustomMappingOnStepThatNotExist() throws FlowDefinitionException {
         for(CustomMapping custom: customMappings){
+
             if (!(checkIfThisNameExistInStep(custom.getSource()) && checkIfThisNameExistInStep(custom.getTarget()))){
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_USED_STEP_IN_CUSTOM_MAPPING_THAT_ARE_NOT_EXIST);
+                String customHowDoNotExist = getCustomHowDoNotExist(custom.getSource(),custom.getTarget());
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_USED_STEP_IN_CUSTOM_MAPPING_THAT_ARE_NOT_EXIST,customHowDoNotExist);
             }
         }
     }
-    public boolean checkIfThisNameExistInStep(String name){
+    private String  getCustomHowDoNotExist(String source, String target){
+        if (!checkIfThisNameExistInStep(source)){
+            return source;
+        }
+        return target;
+    }
+    private boolean checkIfThisNameExistInStep(String name){
         for (StepUsageDeclaration step : steps){
             if (step.getFinalStepName().equals(name))
                 return true;
@@ -196,7 +239,8 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
         for (Pair<String, DataDefinitionDeclaration> inputUser : freeInputs) {
             if (!inputUser.getValue().dataDefinition().isUserFriendly()) {
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_MANDATORY_INPUTS_THAT_ARE_NOT_USER_FRIENDLY);
+                String theUnUserFriendlyMandatoryInput = inputUser.getKey();
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_MANDATORY_INPUTS_THAT_ARE_NOT_USER_FRIENDLY,theUnUserFriendlyMandatoryInput);
             }
         }
     }
@@ -212,7 +256,8 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             String str = listOfOutputs.get(i);
             for (int j = i + 1; j < listOfOutputs.size(); j++) {
                 if (str.equals(listOfOutputs.get(j))) {
-                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_DUPLICATE_OUTPUTS);
+                    String dupicateOutputMessage = "There are two outputs with the same name "+str;
+                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_DUPLICATE_OUTPUTS,dupicateOutputMessage);
                 }
             }
         }
@@ -262,10 +307,11 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             }
             List<DataDefinitionDeclaration> outPutList = step.getStepDefinition().outputs();
             for (DataDefinitionDeclaration output : outPutList) {
+                flowOfAllStepsOutputs.add(step.getByKeyFromOutputMap(output.getName()));
                 listInputs.add(step.getByKeyFromOutputMap(output.getName()));
             }
         }
-        flowOfAllStepsOutputs = listInputs;
+        //flowOfAllStepsOutputs = listInputs;
     }
     public boolean theirIsInputFromCustomMapping(StepUsageDeclaration step, List<String> listInputs , String nameToFind){
             for (CustomMapping custom : customMappings){
@@ -281,28 +327,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             }
             return false;
     }
-//    public StepExecutionContext setFreeInputs(StepExecutionContext context) {
-//
-//        System.out.println("Please fill the free inputs\n");
-//        Scanner myScanner = new Scanner(System.in);
-//        String dataToStore;
-//        for (Pair<String,DataDefinitionDeclaration> pairOfStringAndDD : freeInputs) {
-//            System.out.println("The Step is: "+pairOfStringAndDD.getKey() +" The DD is: " +
-//                    pairOfStringAndDD.getValue().getFinalName() + " The Necessity is " + pairOfStringAndDD.getValue().necessity()
-//                    + " Please enter a " + pairOfStringAndDD.getValue().dataDefinition().getName());
-//
-//            if (pairOfStringAndDD.getValue().getName() == "LINE"){
-//                int num = myScanner.nextInt();
-//                context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),num);
-//            }else {
-//                dataToStore = myScanner.nextLine();
-//                if (!dataToStore.isEmpty()) {
-//                    context.storeDataValue(pairOfStringAndDD.getValue().getFinalName(),dataToStore);
-//                }
-//            }
-//        }
-//        return context;
-//    }
     public List<String> getFlowOutputs() {return flowOutputs;}
     public List<StepUsageDeclaration> getSteps() {return steps;}
     @Override

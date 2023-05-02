@@ -8,13 +8,25 @@ public class MenuException extends Exception{
         super(exceptionItem.getMessage());
         this.exceptionItem = exceptionItem;
     }
-
-    public MenuException(MenuExceptionItems exceptionItem, Object additionalInfo) {
+    public MenuException(MenuExceptionItems exceptionItem, String additionalInfo) {
         super(exceptionItem.getMessage());
         this.exceptionItem = exceptionItem;
         if (additionalInfo!=null) {
             this.additionalInfo = additionalInfo;
         }
 
+    }
+
+//    public MenuException(MenuExceptionItems exceptionItem, Object additionalInfo) {
+//        super(exceptionItem.getMessage());
+//        this.exceptionItem = exceptionItem;
+//        if (additionalInfo!=null) {
+//            this.additionalInfo = additionalInfo;
+//        }
+//
+//    }
+
+    public String getMessage(){
+        return exceptionItem.getMessage()+" "+additionalInfo;
     }
 }

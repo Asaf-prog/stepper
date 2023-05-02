@@ -47,4 +47,5 @@ public interface FlowDefinition {
 
     void setFinalNames();
     void setOutputs(List<String> asList);
+    List<String> getFlowOfAllStepsOutputs();
 }

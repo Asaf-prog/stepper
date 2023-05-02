@@ -3,6 +3,9 @@ package Menu;
 import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
 import modules.stepper.Stepper;
+
+import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MainMenu implements Menu {
@@ -12,20 +15,16 @@ public class MainMenu implements Menu {
        // GetDataFromXML.fromXmlFileToObject("/Users/cohen/Documents/GitHub/stepper/ex1.xml");
        // Stepper stepperData= DataManager.getData();
         Scanner input = new Scanner(System.in);
-        MainMenuItems choice = null;
-        do {
+       MainMenuItems choice = null;
+        while (choice != MainMenuItems.EXIT){
             displayMenu();
             try {
-                choice = MainMenuItems.getMenuItem(input.nextInt());
+                choice =MainMenuItems.getMenuItem(input.nextInt());
+                if(choice==null)
+                    throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, "from Main menu Options");
                 if ((choice.getValue() < 0) || (choice.getValue() > MainMenuItems.values().length) || (choice == MainMenuItems.MAIN_MENU)) {
-                    throw new Exception();
+                    throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, "from Main menu Options");
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid input, please try again");
-                input.nextLine();
-                continue;
-            }
-            try {
                 switch (choice) {
                     //todo add logics to choices
                     case MAIN_MENU:
@@ -50,12 +49,20 @@ public class MainMenu implements Menu {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("Possible Missing Data, please try Load the data again");
+                if (e instanceof MenuException) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Please try again");
+                }else if(e instanceof InputMismatchException) {
+                    System.out.println("Invalid input, please try again");
+                    input.nextLine();
+                    choice=null;
+                } else {
+                    System.out.println("Possible Missing Data in the stepper, please load data again...");
+                    System.out.println("Please try again");
+                }
             }
-            } while (choice != MainMenuItems.EXIT) ;
-
+        }
         input.close();
-
     }
     public static void displayMenu() {
         System.out.println("---Main Menu---");

@@ -5,19 +5,20 @@ import modules.DataManeger.GetDataFromXML;
 import modules.stepper.Stepper;
 
 import javax.xml.bind.JAXBException;
+import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class LoadDataMenu implements Menu {
-    public static void displayMenu(){
-
+    public static void displayMenu() throws Exception{
         Stepper stepperData = DataManager.getData();
         System.out.println("---Load Data Menu---");
         System.out.println("(1)Load Existing Data \n(2)Save The Data \n(3)Load Stepper Xml Definition ");
         Scanner input = new Scanner(System.in);
-        int choice = input.nextInt();
-        //todo validate input
         try {
-            switch (choice) {
+            Optional<Integer> choice = Optional.of(input.nextInt());
+
+            switch (choice.get()) {
                 case 0://Main menu
                     return;
                 case 1:
@@ -30,13 +31,12 @@ public class LoadDataMenu implements Menu {
                     getXmlDataFromUser();
                     break;
                 default:
-                    System.out.println("Invalid input, please try again");
+                    System.out.println("Not in range of valid options");
                     return;
             }
         }
-        catch (Exception e){
-            System.out.println("Opps, no can do!");
-            return;
+        catch (InputMismatchException e){
+            throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Load Data Menu");
         }
     }
     private static void getXmlDataFromUser() {
@@ -48,7 +48,6 @@ public class LoadDataMenu implements Menu {
         //todo add logics to get the xml file
         GetDataFromXML.fromXmlFileToObject(path);
         Stepper stepperData= DataManager.getData();
-        stepperData.validateStepper();
         } catch (Exception e) {
         if (e instanceof JAXBException) {
             System.out.println("Jaxb Exception: Failed to load stepper, xml file is invalid");

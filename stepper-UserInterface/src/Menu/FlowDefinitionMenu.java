@@ -9,37 +9,42 @@ import modules.flow.definition.api.StepUsageDeclarationImpl;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
 import Menu.MainMenuItems;
+
+import java.util.Optional;
 import java.util.Scanner;
 
 import static Menu.MainMenuItems.MAIN_MENU;
 
 public class FlowDefinitionMenu implements Menu{
 
-    public static void displayMenu(){
+    public static void displayMenu() throws MenuException {
         Stepper stepperData = DataManager.getData();
+        if (stepperData.getFlows().isEmpty()) {
+            throw new MenuException(MenuExceptionItems.EMPTY, " No Data Loaded");
+        }
         System.out.println("---Flow Definition Menu---");
         System.out.println("Choose a flow to get its information:");
-        int i=1;
-        for(FlowDefinitionImpl flow : stepperData.getFlows()){
-            System.out.println("("+i+") "+ flow.getName());
+        int i = 1;
+        for (FlowDefinitionImpl flow : stepperData.getFlows()) {
+            System.out.println("(" + i + ") " + flow.getName());
             i++;
         }
         Scanner input = new Scanner(System.in);
-        int choice = input.nextInt();
-        //TODO: add validation
-        if (choice== MAIN_MENU.getValue()){
-            return;
-        }
-        try{
-            PresentFlowInformation(stepperData.getFlows().get(choice-1));
-        }
-        catch (Exception e){
-            System.out.println(" Opps,no can do!");
-            return;
-        }
-        return;
-    }
+        Optional<Integer> choice = Optional.of(input.nextInt());
+        if (choice.isPresent()) {
+            if (choice.get() == MAIN_MENU.getValue())
+                return;
+            try {
+                PresentFlowInformation(stepperData.getFlows().get(choice.get() - 1));
+            } catch (Exception e) {
+                System.out.println(" Oops,no can do!");
+                return;
+            }
 
+            return;
+        }
+        throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Flow Definition Menu");
+        }
     private static void PresentFlowInformation(FlowDefinitionImpl flow) throws Exception {
         System.out.println("Flow name: " + flow.getName());
         System.out.println("Flow description: " + flow.getDescription());
@@ -48,9 +53,10 @@ public class FlowDefinitionMenu implements Menu{
         System.out.println("Get More Information about the Flow: ");
         System.out.println("(1)Steps\n(2)Free Inputs\n(3)Outputs\n(4)Done");
         Scanner input = new Scanner(System.in);
-        int choice = input.nextInt();
-        //todo validate input
-        switch(choice){
+        Optional<Integer> choice = Optional.of(input.nextInt());
+        if(!choice.isPresent())
+            throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Load Data Menu");
+        switch (choice.get()) {
             case 0://main menu
                 return;
             case 1:
@@ -84,27 +90,28 @@ public class FlowDefinitionMenu implements Menu{
 
     }
 
-    private static void PresentFreeInputsInfo(FlowDefinitionImpl flow) {
+    private static void PresentFreeInputsInfo(FlowDefinitionImpl flow) throws MenuException {
         System.out.println("Choose Free Input to display its information:");
         Scanner input = new Scanner(System.in);
         int choice = 69;
         while (choice != MAIN_MENU.getValue()) {
             int i = 1;
             for (Pair<String, DataDefinitionDeclaration> data : flow.getFreeInputs()) {
-                System.out.println("(" + i + ")" + data.getKey() +" of the type"+ data.getValue().dataDefinition().getType());
+                System.out.println("(" + i + ")" + data.getKey() +" of the type "+ data.getValue().dataDefinition().getTypeName());
                 System.out.println("is Mandatory? " + data.getValue().isMandatory());
                 i++;
             }
-            choice = input.nextInt();
-            //todo add validation
+            Optional<Integer> choiceTry = Optional.of(input.nextInt());
+            if(!choiceTry.isPresent())
+                throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Present Free inputs Information");
+            choice=choiceTry.get();
+            System.out.println("Free input original name: " + flow.getFreeInputs().get(choice - 1).getKey());
             System.out.println("Press 'Enter' to continue");
             input.nextLine();
             input.nextLine();
-
         }
     }
-
-    private static void PresentStepDefInfo(FlowDefinitionImpl flow) {
+    private static void PresentStepDefInfo(FlowDefinitionImpl flow) throws MenuException {
         System.out.println("Choose Step to display its information:");
         Scanner input = new Scanner(System.in);
         int choice=69;
@@ -115,13 +122,15 @@ public class FlowDefinitionMenu implements Menu{
                 System.out.println("("+i+")"+ step.getFinalStepName());
                 i++;
             }
-            choice = input.nextInt();
+            Optional<Integer> choiceTry = Optional.of(input.nextInt());
+            if(!choiceTry.isPresent())
+                throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Present step Definition Information");
+            choice=choiceTry.get();
             PrintStepInformation(flow.getSteps().get(choice-1));
             System.out.println("Press 'Enter' to continue");
             input.nextLine();
             input.nextLine();
 
-            //TODO: add validation
             System.out.println("Choose Step to display its information:");
 
         }
@@ -134,7 +143,6 @@ public class FlowDefinitionMenu implements Menu{
       //  System.out.println("Step Skip if Fail? : "+step.skipIfFail());
 
     }
-
     @Override
     public void displayMenu2() {
     }

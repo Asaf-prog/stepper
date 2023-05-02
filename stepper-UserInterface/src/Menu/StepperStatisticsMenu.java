@@ -33,7 +33,7 @@ public class StepperStatisticsMenu implements Menu {
             try {
                 presentFlowStats(stepperData.getFlows().get(choice - 1));
             } catch (Exception e) {
-                System.out.println("im so sowwy ,no can do!");
+                System.out.println("im so sorry ,no can do!");
                 return;
             }
         }

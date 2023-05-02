@@ -66,7 +66,7 @@ public class Stepper implements Manager, Serializable {
             String StepNameAlias = currStStep.getAlias();
             Optional<StepDefinition> checkStepExist =Optional.ofNullable(StepDefinitionRegistry.getStepDefinitionByName(StepName));
             if (!checkStepExist.isPresent())
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_STEP_THAT_DOES_NOT_EXIST);
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_STEP_THAT_DOES_NOT_EXIST,StepName);
             StepUsageDeclarationImpl declaration =new StepUsageDeclarationImpl(checkStepExist.get());
 
 

@@ -1,5 +1,6 @@
 package modules.flow.execution.context;
 
+import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -24,4 +25,8 @@ public interface StepExecutionContext {
     void setOutputOfCurrentStep(Map <String,String> output);
     void initializedCustomMapping(FlowExecution flowExecution);
     Map<String, Object> getDataValues();
+    void setLogs(Map<String, List<Pair<String, String>>> logs);
+    Map<String, List<Pair<String, String>>> getLogs();
+
+    Map<String,String>  getSummaryLines();
 }

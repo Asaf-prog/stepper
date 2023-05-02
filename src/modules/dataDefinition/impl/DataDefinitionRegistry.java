@@ -42,4 +42,9 @@ public enum DataDefinitionRegistry implements DataDefinition {//todo add all of 
     public Class<?> getType() {
         return dataDefinition.getType();
     }
+
+    @Override
+    public String getTypeName() {
+       return  dataDefinition.getTypeName();
+    }
 }

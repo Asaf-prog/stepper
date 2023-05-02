@@ -1,5 +1,6 @@
 package modules.flow.execution;
 
+import javafx.util.Pair;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -15,19 +16,32 @@ import java.util.*;
 public class FlowExecution implements Serializable {//This class accumulates all the data for the flow
     public final UUID uniqueId;
     private final FlowDefinition flowDefinition;
+    private Map<String, String> summaryLines;
+    private Map<String, List<Pair<String, String>>> logs;//List<Pair<stepName,List<Pair<date Log occur,the actual log>>>
     private final Date startTime;
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
-    private Map<String, Object> executionOutputs=new HashMap<>();
+    private Map<String, Object> executionFormalOutputs = new HashMap<>();
+
+    private Map<String, Object> allExecutionOutputs = new HashMap<>();
+
+
+    public Map<String, Object> getAllExecutionOutputs() {
+        return allExecutionOutputs;
+    }
+
+    public void setAllExecutionOutputs(Map<String, Object> allExecutionOutputs) {
+        this.allExecutionOutputs = allExecutionOutputs;
+    }
+
+
     public Map<String, Object> getExecutionOutputs() {
-        return executionOutputs;
+        return executionFormalOutputs;
     }
 
     public void setExecutionOutputs(Map<String, Object> executionOutputs) {
-        this.executionOutputs = executionOutputs;
+        this.executionFormalOutputs = executionOutputs;
     }
-
-
 
     //todo  need to add extra information we would like to have about flow execution
     //exceptions!!!
@@ -89,15 +103,16 @@ public class FlowExecution implements Serializable {//This class accumulates all
         for (String key : flowDefinition.getFlowFormalOutputs()) {
             if (context.getDataValues().containsKey(key)) {
                 DataDefinition theExpectedDataType = GetExpectedDataType(key);
-                String tempKey=GetOriginalName(key);
+                String tempKey = GetOriginalName(key);
                 //UpdateContextCurrentStep(context,key);
-                Map<String,String> currentString = getCurrentInput(key);
+                Map<String, String> currentString = getCurrentInput(key);
                 context.setInputOfCurrentStep(currentString);
-              executionOutputs.put(key, context.getDataValue(tempKey, theExpectedDataType.getType()));
+                executionFormalOutputs.put(key, context.getDataValue(tempKey, theExpectedDataType.getType()));
             }
         }
     }
-    private Map<String,String> getCurrentInput(String key){
+
+    private Map<String, String> getCurrentInput(String key) {
         for (StepUsageDeclaration step : flowDefinition.getFlowSteps()) {
             List<DataDefinitionDeclaration> outputs = step.getStepDefinition().outputs();
             for (DataDefinitionDeclaration out : outputs) {
@@ -130,10 +145,18 @@ public class FlowExecution implements Serializable {//This class accumulates all
         return null;
     }
 
+    public Map<String, List<Pair<String, String>>> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(Map<String, List<Pair<String, String>>> logs) {
+        this.logs = logs;
+    }
+
     public String printOutputs() {
         StringBuilder sb = new StringBuilder();
-        for (String key : executionOutputs.keySet()) {
-            sb.append(key + " : " + executionOutputs.get(key) + "\n");
+        for (String key : executionFormalOutputs.keySet()) {
+            sb.append(key + " :\n" + executionFormalOutputs.get(key) + "\n");
         }
         return sb.toString();
     }
@@ -142,6 +165,30 @@ public class FlowExecution implements Serializable {//This class accumulates all
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String formattedDate = sdf.format(startTime);
         return formattedDate;
+    }
+
+    public void setSummaryLines(Map<String, String> summaryLines) {
+        this.summaryLines = summaryLines;
+    }
+
+    public Map<String, String> getSummaryLines() {
+        return summaryLines;
+    }
+
+    public void setAllExecutionOutputs(StepExecutionContext context) {
+        for (StepUsageDeclaration step : flowDefinition.getFlowSteps()) {
+            context.setInputOfCurrentStep(step.getOutputFromNameToAlias());
+            for (DataDefinitionDeclaration out : step.getStepDefinition().outputs()) {
+                String nameAfter = step.getByKeyFromOutputMap(out.getName());
+                if (context.getDataValues().containsKey(nameAfter)) {
+                    DataDefinition theExpectedData = GetExpectedDataType(nameAfter);
+                    String tempKey = GetOriginalName(nameAfter);
+
+                    allExecutionOutputs.put(nameAfter, context.getDataValue(tempKey, theExpectedData.getType()));
+                }
+            }
+
+        }
     }
 }
 

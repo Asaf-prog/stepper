@@ -1,6 +1,7 @@
 package modules.flow.definition.api;
 
 import modules.step.api.StepDefinition;
+import modules.step.api.StepResult;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -21,6 +22,15 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
     Map<String,String> inputFromNameToAlias; //<name,alias>
     Map<String,String> outputFromNameToAlias; //<name,alias>
 
+    private StepResult stepResult;
+
+    public void setStepResult(StepResult stepResult){
+        this.stepResult=stepResult;
+    }
+    public StepResult getStepResult(){
+        return stepResult;
+    }
+
 
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
@@ -30,6 +40,11 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
         totalTime=duration;
         updateAvgTime(duration);
     }
+    @Override
+    public Duration getTotalTime(){
+        return totalTime;
+    }
+
 
     public Instant startStepTimer(){
         return Instant.now();
@@ -50,6 +65,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
         outputFromNameToAlias = new HashMap<>();
         timesUsed = 0;
         avgTime = 0;
+        stepResult = null;
     }
     @Override
     public Map<String,String> getInputFromNameToAlias(){return inputFromNameToAlias;}

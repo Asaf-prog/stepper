@@ -13,33 +13,36 @@ import java.util.*;
 
 public class FlowExecutionMenu implements Menu {
 
-    public static void displayMenu(){
-
-
+    public static void displayMenu()throws Exception{
         Stepper stepperData = DataManager.getData();
         System.out.println("---Flow Chooser Menu---");
         int i=1;
         for(FlowDefinitionImpl flow : stepperData.getFlows()){
             System.out.println("("+i+")"+ flow.getName() + " That does: " + flow.getDescription());
-            //todo => check in the list of the free input(found in the function validateFlowStructure ) the value after aliasing and compare with the real data
-            // maybe i will new to hold more Map of data definition <aliasing name,real name>
 
             i++;
         }
         Scanner input = new Scanner(System.in);
         //todo validate input
         int choice = input.nextInt();
+       try{ if (0>choice || choice> stepperData.getFlows().size()){
+            throw new MenuException(MenuExceptionItems.EMPTY,"The number you chose is not in range");
+        }
         if (choice== MainMenuItems.MAIN_MENU.getValue()){
             return;
-        }try{
+        }
             FlowDefinition flow =stepperData.getFlows().get(choice-1);
             getUserInput(flow);
             ExecuteFlow(stepperData,choice);
         }
         catch (Exception e){
-            //todo Class Exception for ExecutionException
-            System.out.println(" Opps,no can do!");
-            return;
+           if (e instanceof InputMismatchException)
+               throw new MenuException(MenuExceptionItems.EMPTY,"we expected Number... ");
+
+           else {//todo Class Exception for ExecutionException
+               System.out.println(e.getMessage());
+               return;
+           }
         }
     }
 
@@ -53,7 +56,7 @@ public class FlowExecutionMenu implements Menu {
             Map<Integer,Pair<String, DataDefinitionDeclaration >> dataOptions = new HashMap<>();
             int i,choice;
             choice = input.nextInt();
-
+        //todo validate input
             switch (choice) {
                 case 1:
                     if (!stillGotFreeManInputs(freeInputRemain)) {
@@ -70,7 +73,7 @@ public class FlowExecutionMenu implements Menu {
                         }
                     }
                     choice= input.nextInt();
-                    //todo valitade input
+                    //todo validate input
                     updateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
                     freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
                     System.out.println("For flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
@@ -91,7 +94,7 @@ public class FlowExecutionMenu implements Menu {
                         }
                     }
                     choice= input.nextInt();
-                    //todo valitade input
+                    //todo validate input
                     updateFreeInputs(flow, dataOptions.get(choice));//maybe add field in flow that hold user insertions for execution
                     freeInputRemain.remove(dataOptions.get(choice));//remove the free input the inserted
                     System.out.println("For flow :" + flow.getName() + "Choose what to insert \n 1.Mandatory inputs \n 2.Optional inputs \n 3. Done- and Execute ");
@@ -104,7 +107,7 @@ public class FlowExecutionMenu implements Menu {
                         break;
                     }//else
                     System.out.println("---Executing---");
-                    //maybe update Freeinputs
+                    //maybe update Free-inputs
                     return;
                 default:
                     System.out.println("Wrong input");
@@ -122,7 +125,6 @@ public class FlowExecutionMenu implements Menu {
         }
         return true;
     }
-
     private static boolean stillGotFreeManInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
         for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
             if (pairOfStringAndDD.getValue().isMandatory()) {
@@ -150,10 +152,16 @@ public class FlowExecutionMenu implements Menu {
         stepperData.AddFlowExecution(flowTestExecution);
         System.out.println("Done executing flow: "+ flow.getName() + " \n ID: "+ flowTestExecution.getUniqueId() +
                 " \nEnded with: "+ flowTestExecution.getFlowExecutionResult());
-         System.out.println("Flow outputs: "+ flow.getFlowFormalOutputs());
-
-
+         System.out.println("Flow outputs: ");
+         PrintFormalOutput(flowTestExecution.getExecutionOutputs());
     }
+
+    private static void PrintFormalOutput(Map<String, Object> executionOutputs) {
+        for (Map.Entry<String, Object> entry : executionOutputs.entrySet()) {
+            System.out.println(entry.getKey() + " : \n" + entry.getValue());
+        }
+    }
+
     @Override
     public void displayMenu2() {
     }

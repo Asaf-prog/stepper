@@ -46,6 +46,16 @@ public class RelationData {
         }
 
     }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getColumns().toString()).append('\n');
+        for (RelationData.SingleRow row : this.getRows()) {
+            sb.append(row.getData().toString()).append('\n');
+        }
+        return sb.toString();
+    }
+
     public String getValInList(int index){return columns.get(index);}
     public List<String> getRowDataByColumnsOrder(int rowId) {return new ArrayList<>();}
     public int getNumColumns() {return columns.size();}

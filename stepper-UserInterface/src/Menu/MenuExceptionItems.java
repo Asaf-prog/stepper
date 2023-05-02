@@ -6,6 +6,7 @@ public enum MenuExceptionItems {
     INVALID_FILE("You entered a invalid file"),
     INVALID_NUMBER_INPUT("You entered a invalid numerical input"),
     INVALID_STRING_INPUT("You entered a invalid string input"),
+    EMPTY(""),
 
     ;
 

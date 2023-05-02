@@ -14,6 +14,9 @@ StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
     private  Map <String,String> inputOfCurrentStep;
     private  Map <String,String> outputOfCurrentStep;
+
+
+
     private Map<String,List<Pair<String,String>>> logs;
     private Map<String,String> summaryLine;
     private StepUsageDeclaration currentWorkingStep;
@@ -62,6 +65,20 @@ StepExecutionContextImpl implements StepExecutionContext {
             }
         }
     }
+    @Override
+    public Map<String, List<Pair<String, String>>> getLogs() {
+        return logs;
+    }
+
+    @Override
+    public  Map<String,String>  getSummaryLines() {
+        return summaryLine;
+    }
+
+    @Override
+    public void setLogs(Map<String, List<Pair<String, String>>> logs) {
+        this.logs = logs;
+    }
     private Object casting(String value, Class<?> dataType) {
         if (dataType == String.class)
             return value;
@@ -81,7 +98,6 @@ StepExecutionContextImpl implements StepExecutionContext {
         }
         return null;
     }
-
     @Override
     public <T> T getDataValue(String dataName ,Class<T> expectedDataType) {
 
@@ -126,12 +142,12 @@ StepExecutionContextImpl implements StepExecutionContext {
         Date date = new Date();
         if (logs.get(step) == null) {
             List<Pair<String,String>> values = new ArrayList<>();
-            Pair<String,String> pair = new Pair<>(log, new SimpleDateFormat("HH:mm:ss.SSS").format(date));
+            Pair<String,String> pair = new Pair<>(log, new SimpleDateFormat("HH:MM:SS.sss").format(date));
             values.add(pair);
             logs.put(step, values);
         } else {
             List<Pair<String,String>> values = logs.get(step);
-            Pair<String,String> pair = new Pair<>(log, new SimpleDateFormat("HH:mm:ss.SSS").format(date));
+            Pair<String,String> pair = new Pair<>(log, new SimpleDateFormat("HH:MM:SS.sss").format(date));
             values.add(pair);
             logs.put(step, values);
         }
