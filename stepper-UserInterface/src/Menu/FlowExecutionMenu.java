@@ -199,6 +199,7 @@ public class FlowExecutionMenu implements Menu {
         FlowExecution flowTestExecution = new FlowExecution(flow);
         fLowExecutor.executeFlow(flowTestExecution);
         stepperData.AddFlowExecution(flowTestExecution);
+        //todo add user input to flow execution and clear the flow definition user inpout !!!!
         System.out.println("Done executing flow: "+ flow.getName() + " \n ID: "+ flowTestExecution.getUniqueId() +
                 " \nEnded with: "+ flowTestExecution.getFlowExecutionResult());
          System.out.println("Flow outputs: ");
