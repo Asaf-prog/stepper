@@ -47,10 +47,17 @@ public class FLowExecutor {
             flowExecution.setLogs(context.getLogs());
             flowExecution.setSummaryLines(context.getSummaryLines());
             flowExecution.setAllExecutionOutputs(context);
-
+            flowExecution.setUserInputs();//sets user inputs into the flow execution and delete the original user inputs
+//todo check that each step in flow (step usage dec) is different (if one step is used twice in the same flow)
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        finally {
+            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus));
         }
 
         //

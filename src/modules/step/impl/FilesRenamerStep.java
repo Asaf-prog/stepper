@@ -9,10 +9,7 @@ import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 import modules.dataDefinition.impl.file.FileData;
 
-import javax.xml.bind.annotation.XmlType;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,16 +33,23 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         ArrayList<String> fileBeforeChange = new ArrayList<>();
         ArrayList<String> fileAfterChange = new ArrayList<>();
         int numOfFiles=filesToRename.size();
+        if (filesToRename == null){
+            context.addSummaryLine("Files Renamer","Name of file not entered");
+            return StepResult.SUCCESS;
+        }
         for (FileData f : filesToRename) {
             fileBeforeChange.add(f.getName());//check if really the name and not the path!!!
         }
 
         boolean warning = false;
         List<String> faileds = new ArrayList<>();//failed files
+
         //make the next string as optional because they are optional
+
         String prefix = context.getDataValue("PREFIX", String.class);
         String suffix = context.getDataValue("SUFFIX", String.class);
-        context.setLogs("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
+        context.setLogsForStep("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
+
         for (FileData fileData : filesToRename) {
             String newFileName;
             String folder =fileData.getFile().getParent() + File.separator;
@@ -60,17 +64,20 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             } else {
                  newFileName = prefix + oldFileName + suffix;
             }
+
             fileAfterChange.add(newFileName);//check if changed correctly
             String renamedFilePath = folder + newFileName;
+
             if (!fileData.getFile().renameTo(new File(renamedFilePath))) {
                //means Warning
                 warning = true;
                 faileds.add(oldFileName);
-                context.setLogs("Files Renamer","Failed to rename file:"+oldFileName);
+                context.setLogsForStep("Files Renamer","Failed to rename file:"+oldFileName);
             }
         }
         if (warning){
-            context.setLogs("Files Renamer","Failed to rename some files:"+faileds);
+            context.setLogsForStep("Files Renamer","Failed to rename some files:"+faileds);
+            context.addSummaryLine("Files Renamer","\"Can not able to convert it to a file.");
             return StepResult.WARNING;
         }
 
@@ -81,8 +88,10 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             row.add(fileAfterChange.get(i));
             outputTable.addRow(row);
         }
+
         context.storeDataValue("RENAME_RESULT",outputTable);
-        context.setLogs("Files Renamer","All files renamed successfully");
+        context.setLogsForStep("Files Renamer","All files renamed successfully");
+        context.addSummaryLine("Files Renamer","Success to change File name");
         return StepResult.SUCCESS;
     }
 }

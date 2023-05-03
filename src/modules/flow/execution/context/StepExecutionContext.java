@@ -13,7 +13,7 @@ public interface StepExecutionContext {
     <T> T getDataValue(String dataName, Class<T> expectedDataType);
     boolean storeDataValue(String dataName , Object value);
     List getLog(String step);
-    void setLogs(String step,String log);
+    void setLogsForStep(String step, String log);
     void addSummaryLine(String step,String summary);
     String getSummary(String step);
     public void setStep(StepUsageDeclaration step);

@@ -14,9 +14,6 @@ StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
     private  Map <String,String> inputOfCurrentStep;
     private  Map <String,String> outputOfCurrentStep;
-
-
-
     private Map<String,List<Pair<String,String>>> logs;
     private Map<String,String> summaryLine;
     private StepUsageDeclaration currentWorkingStep;
@@ -135,10 +132,12 @@ StepExecutionContextImpl implements StepExecutionContext {
     }
     @Override
     public List getLog(String step){
-        return logs.get(step);
+
+        return logs.get(currentWorkingStep.getFinalStepName());
     }
     @Override
-    public void setLogs(String step,String log) {
+    public void setLogsForStep(String step, String log) {
+        step = currentWorkingStep.getFinalStepName();
         Date date = new Date();
         if (logs.get(step) == null) {
             List<Pair<String,String>> values = new ArrayList<>();
@@ -154,7 +153,8 @@ StepExecutionContextImpl implements StepExecutionContext {
     }
     @Override
     public void addSummaryLine(String step,String summary) {
-        summaryLine.put(step,summary);
+        String nameAfterAlias = currentWorkingStep.getFinalStepName();
+        summaryLine.put(nameAfterAlias,summary);
     }
 
     @Override

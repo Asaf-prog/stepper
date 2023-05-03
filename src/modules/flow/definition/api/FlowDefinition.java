@@ -35,6 +35,8 @@ public interface FlowDefinition {
 
     List<Pair<String, String>> getUserInputs();
 
+    void clearUserInputs();
+
     boolean addUserInput(DataDefinitionDeclaration data, String input);
 
     void addUsage();

@@ -11,6 +11,8 @@ import modules.step.api.StepResult;
 
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,27 +29,27 @@ public class FilesDeleterStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         List<String> survivingFiles = new ArrayList<>();
         List<String> deletedFiles = new ArrayList<>();
-        List <FileData> name = context.getDataValue("FILES_LIST", List.class);
-        if (name.size() ==0 )
+        List <FileData> filesList = context.getDataValue("FILES_LIST", List.class);
+        if (filesList.size() ==0 ) {
+            context.addSummaryLine("Files Deleter", "The list of file is empty");
             return StepResult.SUCCESS;
-            //todo summary line
-        else {
-            for (FileData filedata : name) {
+        }else {
+            for (FileData filedata : filesList) {
                 Object runnerFile = filedata.getFile();
                 if (runnerFile instanceof File) {
-                   context.setLogs("Files Deleter","About to start delete"+name.size() +"files");
+                   context.setLogsForStep("Files Deleter","About to start delete "+filesList.size() +" files");
                     if (((File) runnerFile).exists() && ((File) runnerFile).isFile()) {
                         deletedFiles.add(((File) runnerFile).getName());
                         ((File) runnerFile).delete();
                     }
                     else {
-                        survivingFiles.add(((File) runnerFile).getName());
-                        context.setLogs("Files Deleter","Failed to delete file"+((File) runnerFile).getName());
+                        Path path = Paths.get(((File) runnerFile).getAbsolutePath());
+                        survivingFiles.add(path.toString());
+                        context.setLogsForStep("Files Deleter","Failed to delete file "+((File) runnerFile).getName());
                     }
                 }
                 else
                     return StepResult.FAILURE;
-
             }
         }
         if (deletedFiles.size() == 0){
@@ -55,12 +57,18 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             deletedFiles.add("0");
             //summary line
         }
+        int car = deletedFiles.size();
+        int cdr = survivingFiles.size();
         Mapping<Integer,Integer> deletionStats = new Mapping<>(deletedFiles.size(),survivingFiles.size());
-        context.storeDataValue("DELETION_STATS",survivingFiles);
-        context.storeDataValue("TOTAL_FOUND",deletionStats);
+        if (cdr == 0)
+            survivingFiles.add(" is Empty...");
+
+        context.storeDataValue("DELETION_STATS",deletionStats);
+        context.storeDataValue("DELETED_LIST",survivingFiles);
         //car :number of successfully deleted files
         //cdr :number of unsuccessfully deleted files
-        //summary line
+        context.addSummaryLine("Files Deleter","Success to delete file");
+
         return StepResult.SUCCESS;
     }
 }

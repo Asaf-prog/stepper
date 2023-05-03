@@ -21,8 +21,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
     private boolean isCustom = false;
     Map<String,String> inputFromNameToAlias; //<name,alias>
     Map<String,String> outputFromNameToAlias; //<name,alias>
-
     private StepResult stepResult;
+
 
     public void setStepResult(StepResult stepResult){
         this.stepResult=stepResult;

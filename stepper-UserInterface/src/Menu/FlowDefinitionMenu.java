@@ -10,6 +10,7 @@ import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
 import Menu.MainMenuItems;
 
+import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -30,21 +31,24 @@ public class FlowDefinitionMenu implements Menu{
             i++;
         }
         Scanner input = new Scanner(System.in);
-        Optional<Integer> choice = Optional.of(input.nextInt());
-        if (choice.isPresent()) {
-            if (choice.get() == MAIN_MENU.getValue())
+        try {
+            int choice = input.nextInt();
+            if (choice ==0)
                 return;
-            try {
-                PresentFlowInformation(stepperData.getFlows().get(choice.get() - 1));
-            } catch (Exception e) {
-                System.out.println(" Oops,no can do!");
-                return;
+            if (choice > stepperData.getFlows().size() || choice < 1) {
+                System.out.println("No such option , try again");
+                displayMenu();
             }
+            PresentFlowInformation(stepperData.getFlows().get(choice - 1));
+        } catch (Exception e) {
+            if (e instanceof InputMismatchException) {
+                throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Flow Definition Menu");
+            } else
+                throw new MenuException(MenuExceptionItems.EMPTY, "Error in presenting flow information");
 
-            return;
         }
-        throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Flow Definition Menu");
-        }
+    }
+
     private static void PresentFlowInformation(FlowDefinitionImpl flow) throws Exception {
         System.out.println("Flow name: " + flow.getName());
         System.out.println("Flow description: " + flow.getDescription());
@@ -71,8 +75,8 @@ public class FlowDefinitionMenu implements Menu{
             case 4:
                 return;
             default:
-                System.out.println("Invalid input");
-                break;
+                System.out.println("No such option , try again");
+                PresentFlowInformation(flow);
         }
         return;
     }
@@ -81,7 +85,6 @@ public class FlowDefinitionMenu implements Menu{
         int i = 1;
         for (String data : flow.getFlowOfAllStepsOutputs()) {
             System.out.println("(" + i++ + ")" + data);
-            //todo add step connected to ,who create it ,and type!
 
         }
         System.out.println("Press 'Enter' to continue");
@@ -115,31 +118,39 @@ public class FlowDefinitionMenu implements Menu{
         System.out.println("Choose Step to display its information:");
         Scanner input = new Scanner(System.in);
         int choice=69;
+        try {
 
-        while(choice!= MAIN_MENU.getValue()){
-            int i=1;
-            for(StepUsageDeclaration step : flow.getSteps()){
-                System.out.println("("+i+")"+ step.getFinalStepName());
-                i++;
+            while (choice != MAIN_MENU.getValue()) {
+                int i = 1;
+                for (StepUsageDeclaration step : flow.getSteps()) {
+                    System.out.println("(" + i + ")" + step.getFinalStepName());
+                    i++;
+                }
+                Optional<Integer> choiceTry = Optional.of(input.nextInt());
+                if (!choiceTry.isPresent())
+                    throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Present step Definition Information");
+                choice = choiceTry.get();
+                PrintStepInformation(flow.getSteps().get(choice - 1));
+                System.out.println("Press 'Enter' to continue");
+                input.nextLine();
+                input.nextLine();
+
+                System.out.println("Choose Step to display its information:");
+
             }
-            Optional<Integer> choiceTry = Optional.of(input.nextInt());
-            if(!choiceTry.isPresent())
-                throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Present step Definition Information");
-            choice=choiceTry.get();
-            PrintStepInformation(flow.getSteps().get(choice-1));
-            System.out.println("Press 'Enter' to continue");
-            input.nextLine();
-            input.nextLine();
-
-            System.out.println("Choose Step to display its information:");
-
+        } catch (Exception e){
+            if (e instanceof InputMismatchException) {
+                throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Present step Information");
+            } else
+                throw new MenuException(MenuExceptionItems.EMPTY, "Error in presenting step information");
         }
+
     }
 
     private static void PrintStepInformation(StepUsageDeclaration step) {
-        System.out.println("Step name: " + step.getFinalStepName());
-        System.out.println("Step original name: " + step.getStepDefinition().getName());
-        System.out.println("Step ReadOnly? : " + step.getStepDefinition().isReadonly());
+        System.out.print("Step name: " + step.getFinalStepName());
+        System.out.print(" , Step original name: " + step.getStepDefinition().getName());
+        System.out.println(" , Step ReadOnly? : " + step.getStepDefinition().isReadonly());
       //  System.out.println("Step Skip if Fail? : "+step.skipIfFail());
 
     }

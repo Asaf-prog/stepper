@@ -14,27 +14,27 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        int seconds = context.getDataValue("Time_To_Spend", Integer.class);//
-        //String time ="3";//
+        int seconds = context.getDataValue("Time_To_Spend", Integer.class);
         try{
-          //  int seconds = Integer.parseInt(time);
             if (seconds <= 0) {
                 System.out.println("Invalid input");
+                context.setLogsForStep("Time_To_Spend","Get unpositive number");
                 return StepResult.FAILURE;
             }
             try {
-                context.setLogs("Spend Some Time","About to sleep for " + seconds + " seconds...");
-                //System.out.println("About to sleep for " + seconds + " seconds...");
+                context.setLogsForStep("Spend Some Time","About to sleep for " + seconds + " seconds...");
                 Thread.sleep(seconds*1000);
-                context.setLogs("Spend Some Time","Done sleeping...");
-                //System.out.println("Done sleeping...");
+                context.setLogsForStep("Spend Some Time","Done sleeping...");
+
             } catch (InterruptedException e) {
                 System.out.println("Error");
+                context.addSummaryLine("Time_To_Spend","The step was fall and this is why their is no summary line");
                 return StepResult.FAILURE;
             }
         }
         catch (NumberFormatException e){
             System.out.println("Invalid input");
+            context.addSummaryLine("Time_To_Spend","The step was fall and this is why their is no summary line");
             return StepResult.FAILURE;
         }
         return StepResult.SUCCESS;

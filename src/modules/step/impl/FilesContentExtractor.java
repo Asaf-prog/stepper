@@ -9,7 +9,6 @@ import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 
-import javax.management.relation.Relation;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +29,6 @@ public class FilesContentExtractor extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) throws IOException {
         List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);
         int lineNumber = context.getDataValue("LINE", Integer.class);
-        //int lineNumber = Integer.parseInt(lineNumberString);
         List<String> colums = new ArrayList<String>();
 
       if (FileList == null) {
@@ -44,7 +42,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
            int index=1;
            for (FileData specificFile : FileList) {
 
-               context.setLogs("Files Content Extractor ","About to start work on file "+specificFile.getName());
+               context.setLogsForStep("Files Content Extractor ","About to start work on file "+specificFile.getName());
                boolean check = false;
                reader = new BufferedReader(new FileReader(specificFile.getFile()));
                String line = null;
@@ -62,12 +60,13 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                    }
                }
                if (check == false){
-                   //todo -finsih!!!
-                   // System.out.println("Not such line\n");//check if we need to write this in the log
+                   context.addSummaryLine("Files Content Extractor ","Not such line");
                }
            }
            context.storeDataValue("DATA",table);
        }
+        context.addSummaryLine("Files Content Extractor ","End with Success");
+
         return StepResult.SUCCESS;
 
     }

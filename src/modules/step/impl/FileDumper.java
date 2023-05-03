@@ -10,9 +10,6 @@ import modules.step.api.DataDefinitionDeclarationImpl;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
 
 public class FileDumper extends AbstractStepDefinition {
 
@@ -34,28 +31,32 @@ public class FileDumper extends AbstractStepDefinition {
          String filePath = context.getDataValue("FILE_NAME", String.class);
         String fileName=filePath.substring(filePath.lastIndexOf("/")+1);
 
-        context.setLogs("File Dumper", "About to create file: " + fileName);
+        context.setLogsForStep("File Dumper", "About to create file: " + fileName);
         File file = new File(filePath);
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(content);
             fileWriter.close();
         } catch (IOException e) {//check if it counts as len = 0 exception
-            context.setLogs("File Dumper", "Error Crafting the file: " + e.getMessage());
+            context.setLogsForStep("File Dumper", "Error Crafting the file: " + e.getMessage());
             return StepResult.FAILURE;
         }
         // check if file created
         if (file.exists()) {
             if (content.length()==0) {
-                context.setLogs("File Dumper", "Warning file created but as Empty file ");
+                context.setLogsForStep("File Dumper", "Warning file created but as Empty file ");
+                context.addSummaryLine("File Dumper","create empty file");
+
                 context.storeDataValue("RESULT", "Warning-created but as Empty file");
                 return StepResult.WARNING;
             }
-            context.setLogs("File Dumper", "File created: " + fileName);
+            context.setLogsForStep("File Dumper", "File created: " + fileName);
             context.storeDataValue("RESULT", "Success");
+            context.addSummaryLine("File Dumper","create file.");
+
             return StepResult.SUCCESS;
         } else {
-            context.setLogs("File Dumper", "Error Exporting file: " + fileName);
+            context.setLogsForStep("File Dumper", "Error Exporting file: " + fileName);
             return StepResult.FAILURE;
         }
     }

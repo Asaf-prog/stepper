@@ -8,10 +8,6 @@ import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class PropertiesExporter extends AbstractStepDefinition {
 
         public PropertiesExporter() {
@@ -25,15 +21,15 @@ public class PropertiesExporter extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) {
         RelationData relationTable = context.getDataValue("SOURCE", RelationData.class);
-        context.setLogs("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
+        context.setLogsForStep("Properties Exporter", "About to process "+relationTable.getRows().size() +" lines of data");
         boolean warning=false;
         if (relationTable.getColumns().size() <= 2) {
-            context.setLogs("Properties Exporter", "Warning: Source table must have 2 columns");
+            context.setLogsForStep("Properties Exporter", "Warning: Source table must have 2 columns");
             warning=true;
             //continue
         }
         if (relationTable.isEmpty()) {
-            context.setLogs("Properties Exporter", "Warning: Source table is empty");
+            context.setLogsForStep("Properties Exporter", "Warning: Source table is empty");
             warning=true;
             //continue
         }
@@ -50,7 +46,7 @@ public class PropertiesExporter extends AbstractStepDefinition {
             for (int i = 1; i < row.getData().size(); i++) {
                 propertiesBuilder.append(" = ").append(row.getData().get(i));
             }
-            propertiesBuilder.append("\n");//the above isnt a valid properties file format but
+            propertiesBuilder.append("\n");//the above isn't a valid properties file format but
             // it was unclear what to present in order to include all the data
 //            String key = row.getData().get(0); // this is a valid structure
 //            String value = row.getData().get(1);
@@ -59,14 +55,15 @@ public class PropertiesExporter extends AbstractStepDefinition {
 //            propertiesBuilder.append(key).append("=").append(value).append("\n");
         }
         if (warning){
-            context.setLogs("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+            context.setLogsForStep("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
             context.storeDataValue("RESULT", String.valueOf(propertiesBuilder));
+            context.addSummaryLine("Properties Exporter","The relation is empty");
             return StepResult.WARNING;
         }
 
-        //System.out.println(relationTable);
-        context.setLogs("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
+        context.setLogsForStep("Properties Exporter", "Extracted total of "+relationTable.getRows().size());
         context.storeDataValue("RESULT", String.valueOf(propertiesBuilder));
+        context.addSummaryLine("Properties Exporter","Finish with success.");
         return StepResult.SUCCESS;
 
     }

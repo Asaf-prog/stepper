@@ -22,8 +22,21 @@ public class FlowExecution implements Serializable {//This class accumulates all
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
     private Map<String, Object> executionFormalOutputs = new HashMap<>();
-
     private Map<String, Object> allExecutionOutputs = new HashMap<>();
+    protected List<Pair<String,String>> userInputs;
+
+    public List<Pair<String, String>> getUserInputs() {
+        return userInputs;
+    }
+    public void setUserInputs() {
+        this.userInputs = flowDefinition.getUserInputs();
+        clearUserInputs();
+
+    }
+    public void clearUserInputs() {
+        this.flowDefinition.clearUserInputs();
+    }
+
 
 
     public Map<String, Object> getAllExecutionOutputs() {

@@ -7,6 +7,7 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.stepper.Stepper;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,22 +24,40 @@ public class StepperStatisticsMenu implements Menu {
                 System.out.println("("+(i+1) +")" + stepperData.getFlows().get(i).getName());
             }
             Scanner input = new Scanner(System.in);
+            try {
             int choice = input.nextInt();
-
-
             //TODO: add validation
             if (choice == MainMenuItems.MAIN_MENU.getValue()) {
                 return;
+
             }
-            try {
-                presentFlowStats(stepperData.getFlows().get(choice - 1));
+            if (choice > stepperData.getFlows().size() || choice < 1) {
+                System.out.println("No such option , try again");
+                displayMenu();
+            }
+            presentFlowStats(stepperData.getFlows().get(choice - 1));
             } catch (Exception e) {
-                System.out.println("im so sorry ,no can do!");
+                if (e instanceof InputMismatchException) {
+                    System.out.println("Insert number please...");
+                    displayMenu();
+                }if (e instanceof MenuException) {
+                    System.out.println(e.getMessage());;
+                } else {
+                    return;
+                }
                 return;
             }
         }
-        else
+        else {
             System.out.println("Stepper currently has no flows");
+            Scanner input = new Scanner(System.in);
+            System.out.println("Press enter to continue");
+            input.nextLine();
+            displayMenu();
+
+        }
+        return;
+
 
 
     }

@@ -36,18 +36,18 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         if (folderNameOptional.isPresent()) {
             String folderName = folderNameOptional.get();
             Path path = Paths.get(folderName);//folder path
-            context.setLogs("Collect files in folder", "Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
+            context.setLogsForStep("Collect files in folder", " Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
 
             if (!exists(path)) {
-                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " does not exist");
+                context.setLogsForStep("Collect files in folder", " Folder " + path.getFileName() + " does not exist");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().isDirectory()) {
-                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " is not a directory");
+                context.setLogsForStep("Collect files in folder", " Folder " + path.getFileName() + " is not a directory");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().canRead()) {
-                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " is not readable");
+                context.setLogsForStep("Collect files in folder", " Folder " + path.getFileName() + " is not readable");
                 return StepResult.FAILURE;
             }
 
@@ -59,7 +59,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {
-                    context.setLogs("Collect files in folder", "Failed to collect files in folder: " + e.getMessage());
+                    context.setLogsForStep("Collect files in folder", "Failed to collect files in folder: " + e.getMessage());
                     return StepResult.FAILURE;
                 }
             } else {
@@ -71,12 +71,12 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {
-                    context.setLogs("Collect files in folder", "Failed to collect files in folder with filter " + filter + ": " + e.getMessage());
+                    context.setLogsForStep("Collect files in folder", "Failed to collect files in folder with filter " + filter + ": " + e.getMessage());
                     return StepResult.FAILURE;
                 }
             }
 
-            //converting to filedata
+            //converting to file data
             List<FileData> filesList = new ArrayList<>();
             for (File file : fileList) {
                 if (file.isFile()) {
@@ -84,19 +84,18 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                     if (!(check.equals(".DS_Store"))) {
                         FileData fileData = new FileData(file);
                         filesList.add(fileData);
-                        //  System.out.println(fileData.getName());
                     }
                 }
             }
             context.storeDataValue("FILES_LIST", filesList);
             context.storeDataValue("TOTAL_FOUND", filesList.size());
-            context.setLogs("Collect files in folder", "Found"+filesList.size()+"files in folder matching the filter");
-            //todo summery line
+            context.setLogsForStep("Collect files in folder", "Found"+filesList.size()+"files in folder matching the filter");
+
+            context.addSummaryLine("Collect files in folder","The step end with success");
             return StepResult.SUCCESS;
         } else {
-            context.setLogs("Collect files in folder", "Folder name not provided");
+            context.setLogsForStep("Collect files in folder", "Folder name not provided");
             return StepResult.FAILURE;
         }
     }
 }
-
