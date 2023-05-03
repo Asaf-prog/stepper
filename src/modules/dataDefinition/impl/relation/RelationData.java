@@ -1,11 +1,12 @@
 package modules.dataDefinition.impl.relation;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RelationData {
+public class RelationData implements Serializable {
     public static void main(String[] args) {
         //RelationData data = RelationData.Demo();
        // data.printTable();
@@ -81,7 +82,7 @@ public class RelationData {
         rows.add(temp);
     }
    //////////////////////////////
-    public static class SingleRow {
+    public static class SingleRow implements Serializable{
         private List<String> data;
         public List<String> getData() {return data;}
 

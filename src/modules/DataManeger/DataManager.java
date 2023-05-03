@@ -38,10 +38,10 @@ public class DataManager implements Manager {
 //        Scanner input = new Scanner(System.in);
 //        System.out.println("Please enter the path to the data file");
 //        String filePath = input.nextLine();
-        Optional<Path> path= Optional.ofNullable(Paths.get(filename));
-        if (!path.isPresent()) {
-            throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
-        }
+        //Optional<Path> path= Optional.ofNullable(Paths.get(filename));
+//        if (!path.isPresent()) {
+//            throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
+//        }
         //todo validate input
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(stepperData);

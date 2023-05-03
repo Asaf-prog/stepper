@@ -1,5 +1,6 @@
 package Menu;
 
+import com.sun.javaws.IconUtil;
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
 import modules.dataDefinition.impl.file.FileData;
@@ -18,45 +19,85 @@ public class FlowStatisticsMenu implements Menu {
         //todo check if stepperData if so null and throw exception
         System.out.println("---Flow Statistics Menu---");
         System.out.println("Choose a flow to get its Stats:");
-        int i=1;
-        if (stepperData.getFlowExecutions()==null){
+        int i = 1;
+        if (stepperData.getFlowExecutions() == null) {
             System.out.println("No flow executions to show");
             return;
         } else {
             System.out.println("(0)Back");
             for (FlowExecution exe : stepperData.getFlowExecutions()) {
-                String StartTime=exe.getStartDateTime();
-                System.out.println("("+i + ")" + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);
+                String StartTime = exe.getStartDateTime();
+                System.out.println("(" + i + ")" + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);
                 i++;
-            }try {
-            Scanner input = new Scanner(System.in);
-            Optional<Integer> choiceTry = Optional.of(input.nextInt());
-            if (!choiceTry.isPresent())
-                throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Flow Statistics Menu");
-            int choice = choiceTry.get();
-            if (choice == MainMenuItems.MAIN_MENU.getValue())
-                return;
-            PresentFlowStats(stepperData.getFlowExecutionById(stepperData.getFlowExecutions().get(choice - 1).getUniqueId()));
-            } catch (Exception e) {
-            if (e instanceof MenuException) {
-                throw e;
             }
-            else
-                throw new MenuException(MenuExceptionItems.EMPTY, " Prob a missing information problem");//todo change it
+            try {
+                Scanner input = new Scanner(System.in);
+                Optional<Integer> choiceTry = Optional.of(input.nextInt());
+                if (!choiceTry.isPresent())
+                    throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Flow Statistics Menu");
+                int choice = choiceTry.get();
+                if (choice == MainMenuItems.MAIN_MENU.getValue())
+                    return;
+                PresentFlowStats(stepperData.getFlowExecutionById(stepperData.getFlowExecutions().get(choice - 1).getUniqueId()));
+            } catch (Exception e) {
+                if (e instanceof MenuException) {
+                    throw e;
+                } else
+                    throw new MenuException(MenuExceptionItems.EMPTY, " Prob a missing information problem");//todo change it
             }
         }
     }
+
+
     private static void PresentFlowStats(FlowExecution singleExecution) {
         System.out.println("Flow name: " + singleExecution.getFlowDefinition().getName());
         System.out.println("ID: " + singleExecution.getUniqueId());
         System.out.println("And finish with " + singleExecution.getFlowExecutionResult().name());
-        System.out.println("Took about " +singleExecution.getTotalTime().toMillis() + " MS");
+        System.out.println("Took about " + singleExecution.getTotalTime().toMillis() + " MS");
         //specific flow exe free inputs that inserted by user
-        presentInformationOfAllFreeInputs(singleExecution);//5
-        presentInformationAboutOutputsInFlow(singleExecution);//6
-        System.out.println("The flow Outputs are :\n" + singleExecution.printOutputs());
-        PresentStepExecutionStats(singleExecution);
-        //show step
+        Scanner input = new Scanner(System.in);
+        String menuOptions = "Please choose an option:\n" +
+                "0. Return to main menu\n" +
+                "1. Show information about all free inputs in the flow\n" +
+                "2. Show information about all outputs in the flow\n" +
+                "3. Show all flow outputs\n" +
+                "4. Show step execution statistics\n" ;
+        int choice = 69;
+    while(choice!=0){
+        //present menu
+        System.out.print(menuOptions);
+        while (choice > 0 || choice < 4 || choice==69) {
+            try {
+                choice = input.nextInt();
+                break;
+            } catch(InputMismatchException e){
+                System.out.println("You need to Enter a number,try again ");
+                continue;
+        }
+    }
+        switch (choice) {
+            case 0:
+                return;//main menu
+            case 1:
+                presentInformationOfAllFreeInputs(singleExecution);//add this as an option of input
+                break;
+            case 2:
+                presentInformationAboutOutputsInFlow(singleExecution);//also this
+                break;
+            case 3:
+                System.out.println("The flow Outputs are :\n" + singleExecution.printOutputs());//and also this
+                break;
+            case 4:
+                PresentStepExecutionStats(singleExecution);
+                break;
+
+        }
+
+
+
+            //show step
+        }
+
     }
 
     private static void presentInformationAboutOutputsInFlow(FlowExecution singleExecution) {
@@ -65,7 +106,7 @@ public class FlowStatisticsMenu implements Menu {
             Object outputValue= singleExecution.getAllExecutionOutputs().get(outputKey);
             if(outputValue instanceof ArrayList){
                 System.out.println("The type is: List");
-           
+
                 System.out.println("Content:\n");
                 for (Object o : (ArrayList) outputValue) {
                     if (o instanceof FileData)
@@ -93,13 +134,13 @@ public class FlowStatisticsMenu implements Menu {
 
             String value = freeFromUserGetByVal(freeFromUser,freeInput.getKey());
             if (value == null) {
-                System.out.println("Empty");
+                System.out.println("Empty...");
             }
             else {
                 System.out.println("The content is:\n" + value);
             }
             if (freeInput.getValue().isMandatory()){
-                System.out.println("This free input are mandatory. ");
+                System.out.println("This free input are mandatory.");
             }
             else{
                 System.out.println("This free input are optional. ");
@@ -121,10 +162,10 @@ public class FlowStatisticsMenu implements Menu {
         for (StepUsageDeclaration step : singleExecution.getFlowDefinition().getFlowSteps()) {
             System.out.println("("+i+")"+step.getStepDefinition().getName());
             // valdiate input
-            int choice = input.nextInt();
-            PresentStepStats(singleExecution.getFlowDefinition().getFlowSteps().get(choice-1),singleExecution.getLogs(),singleExecution.getSummaryLines());
-            i++;
         }
+        int choice = input.nextInt();
+        PresentStepStats(singleExecution.getFlowDefinition().getFlowSteps().get(choice-1),singleExecution.getLogs(),singleExecution.getSummaryLines());
+        i++;
     }
     private static void PresentStepStats(StepUsageDeclaration stepUsageDeclaration, Map<String, List<Pair<String, String>>> logs, Map<String, String> summaryLines) {
         System.out.println("Step name: " + stepUsageDeclaration.getStepDefinition().getName());

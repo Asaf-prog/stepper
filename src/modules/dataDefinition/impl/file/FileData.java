@@ -1,12 +1,13 @@
 package modules.dataDefinition.impl.file;
 
 import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileData {
+public class FileData  implements Serializable {
     String name;
-    Path _path;
+  //  Path _path;
 
     File file;
     public File getFile() {
@@ -27,13 +28,14 @@ public class FileData {
 
     public FileData(String name,File file) {//default constructor
         this.name = name;
-        this._path = Paths.get(file.getPath());
+      //  this._path = Paths.get(file.getPath());
         this.file = file;
     }
 
     public Path getPath() {
-        return this._path;
-    }
+    //    return this._path;
+        return null;
+    }//todo if work delete it!!!1
 
     public String getName() {
         return name;
@@ -44,11 +46,11 @@ public class FileData {
     }
 
     public void set_path(String _path) {
-        this._path = Paths.get(_path);
+      //  this._path = Paths.get(_path);
     }
 
     public FileData(File file) {
-        this._path = Paths.get(file.getPath());
+      //  this._path = Paths.get(file.getPath());
         this.name = file.getName();
         this.file = file;
     }
