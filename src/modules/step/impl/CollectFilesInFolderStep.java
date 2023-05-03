@@ -36,18 +36,18 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         if (folderNameOptional.isPresent()) {
             String folderName = folderNameOptional.get();
             Path path = Paths.get(folderName);//folder path
-            context.setLogs("Collect files in folder", "Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
+            context.setLogs("Collect files in folder", " Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
 
             if (!exists(path)) {
-                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " does not exist");
+                context.setLogs("Collect files in folder", " Folder " + path.getFileName() + " does not exist");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().isDirectory()) {
-                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " is not a directory");
+                context.setLogs("Collect files in folder", " Folder " + path.getFileName() + " is not a directory");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().canRead()) {
-                context.setLogs("Collect files in folder", "Folder " + path.getFileName() + " is not readable");
+                context.setLogs("Collect files in folder", " Folder " + path.getFileName() + " is not readable");
                 return StepResult.FAILURE;
             }
 

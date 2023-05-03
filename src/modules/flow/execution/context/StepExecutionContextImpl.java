@@ -14,9 +14,6 @@ StepExecutionContextImpl implements StepExecutionContext {
     private final Map<String, Object> dataValues;
     private  Map <String,String> inputOfCurrentStep;
     private  Map <String,String> outputOfCurrentStep;
-
-
-
     private Map<String,List<Pair<String,String>>> logs;
     private Map<String,String> summaryLine;
     private StepUsageDeclaration currentWorkingStep;

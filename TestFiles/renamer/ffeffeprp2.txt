@@ -1,2 +1,0 @@
-Serial Number=File Name Before Change=File Name After Change=1=xrtx.txt=dsdxrtx.txt=
-2=prop.txt=dsdprop.txt=

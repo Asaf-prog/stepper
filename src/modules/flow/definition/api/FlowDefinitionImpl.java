@@ -16,16 +16,12 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     protected final String name;
     protected final String description;
     protected List<String> flowOutputs;//list of what the user ask to get after the flow!
-
     List<String> flowOfAllStepsOutputs;//list of all the outputs of all the steps in the flow
 
     protected final List<StepUsageDeclaration> steps;
     protected List<CustomMapping> customMappings;
     protected  List<FlowLevelAlias> flowLevelAliases;
     protected List<Pair<String,DataDefinitionDeclaration>> freeInputs;
-
-
-
     protected List<Pair<String,String>> userInputs;
     protected boolean isCustomMappings;
     protected  int timesUsed;
@@ -57,6 +53,9 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void setAvgTime(double avgTime) {this.avgTime = avgTime;}
     public List<Pair<String, String>> getUserInputs(){
         return userInputs;
+    }
+    public void clearUserInputs(){
+        userInputs=new ArrayList<>();
     }
 
     @Override

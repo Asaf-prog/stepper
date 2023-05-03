@@ -2,9 +2,12 @@ package Menu;
 
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
+import modules.dataDefinition.impl.mapping.Mapping;
+import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
+import modules.flow.execution.FlowExecutionResult;
 import modules.flow.execution.runner.FLowExecutor;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
@@ -23,17 +26,18 @@ public class FlowExecutionMenu implements Menu {
             i++;
         }
         Scanner input = new Scanner(System.in);
-        //todo validate input
-        int choice = input.nextInt();
-       try{ if (0>choice || choice> stepperData.getFlows().size()){
-            throw new MenuException(MenuExceptionItems.EMPTY,"The number you chose is not in range");
-        }
-        if (choice== MainMenuItems.MAIN_MENU.getValue()){
-            return;
-        }
-            FlowDefinition flow =stepperData.getFlows().get(choice-1);
+        try {
+            int choice = input.nextInt();
+            if (0 > choice || choice > stepperData.getFlows().size()) {
+                throw new MenuException(MenuExceptionItems.EMPTY, "The number you chose is not in range");
+            }
+            if (choice == MainMenuItems.MAIN_MENU.getValue()) {
+                return;
+            }
+            FlowDefinition flow = stepperData.getFlows().get(choice - 1);
             getUserInput(flow);
-            ExecuteFlow(stepperData,choice);
+            ExecuteFlow(stepperData, choice);
+
         }
         catch (Exception e){
            if (e instanceof InputMismatchException)
@@ -81,6 +85,8 @@ public class FlowExecutionMenu implements Menu {
                 choice = input.nextInt();
 
             if (choice < 1 || choice > 3) {
+                if(choice == 0)
+                    return;
                 System.out.println("Invalid input. Please enter a number between 1 and 3.");
                 continue; // go back to the start of the loop
             }
@@ -100,13 +106,22 @@ public class FlowExecutionMenu implements Menu {
                         }
                     }
                     choice = input.nextInt();
+                    if(choice == 0)
+                        return;
                     // Validate input can only be a num between 1 to i, prompt user to re-enter if invalid
                     while (choice < 1 || choice >= i) {
+
                         System.out.println("Invalid input. Please enter a number between 1 and " + (i - 1) + ".");
                         choice = input.nextInt();
+                        if(choice == 0)
+                            return;
+                        if (choice < 1 || choice >= i) {
+                            System.out.println("Invalid input. Please enter a number between 1 and " + (i - 1) + ".");
+                        }
                     }
                     updateFreeInputs(flow, dataOptions.get(choice));
-                    freeInputRemain.remove(dataOptions.get(choice));
+                   // freeInputRemain.remove(dataOptions.get(choice));
+                    //mistaber she no need in remove
 
                     System.out.println("For flow :" + flow.getName() +prompt);
                     break;
@@ -129,27 +144,26 @@ public class FlowExecutionMenu implements Menu {
                     }
 
                     choice = input.nextInt();
-
+                    if(choice == 0)
+                        return;
                     // Validate input can only be a num between 1 to i, prompt user to re-enter if invalid
                     while (choice < 1 || choice >= i) {
                         System.out.println("Invalid input. Please enter a number between 1 and " + (i - 1) + ".");
                         choice = input.nextInt();
                     }
-
                     updateFreeInputs(flow, dataOptions.get(choice));
-                    freeInputRemain.remove(dataOptions.get(choice));
-
+                   // freeInputRemain.remove(dataOptions.get(choice));
                     System.out.println("For flow :" + flow.getName() + prompt);
                     break;
 
                 case 3:
                     if (stillGotFreeManInputs(freeInputRemain)) {
                         System.out.println("You must insert all mandatory inputs");
-                        System.out.println("For flow :" + flow.getName() + prompt);
+                        System.out.println("For flow : " + flow.getName() +" "+ prompt);
+                    } else{
+                        System.out.println("---Executing---");
                     }
-
-                    System.out.println("---Executing---");
-                    return;
+                    break;
 
                 default:
                     System.out.println("Wrong input");
@@ -157,9 +171,6 @@ public class FlowExecutionMenu implements Menu {
             }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number. \n"+prompt);
-
-                input.nextLine(); // consume the invalid input
-                continue; // go back to the start of the loop
             }// validate input num between 1-3 if not re-get it
 
         }while (freeInputRemain.size() > 0) ;
@@ -185,30 +196,56 @@ public class FlowExecutionMenu implements Menu {
     private static void updateFreeInputs(FlowDefinition flow, Pair<String, DataDefinitionDeclaration> value) {
         System.out.println("Insert value for " + value.getValue().getFinalName());
         Scanner input = new Scanner(System.in);
-        //todo check if the input is matching the data definition
-        String userInput = input.nextLine();
-        flow.getUserInputs().add(new Pair<String,String>(value.getKey(), userInput));
 
+        String userInput = input.nextLine();
+        Pair<String,String> pairToAdd=new Pair<String,String>(value.getKey(), userInput);
+        // Check if the key already exists in the list of user inputs
+        for (Pair<String,String> pair : flow.getUserInputs()) {
+            if (pair.getKey().equals(pairToAdd.getKey())) {
+                flow.getUserInputs().remove(pair);
+                break;
+            }
+        }
+        flow.getUserInputs().add(pairToAdd);
+        // If the pair doesn't exist, add it to the flow definition
     }
+
 
     private static void ExecuteFlow(Stepper stepperData,int choice) {
         //if there is no mandatory inputs that the user didn't insert throw exception!!!
-        FlowDefinitionImpl flow= stepperData.getFlows().get(choice-1);
-        System.out.println("Executing flow: "+ flow.getName());
+        FlowDefinitionImpl flow = stepperData.getFlows().get(choice - 1);
+        System.out.println("Executing flow: " + flow.getName());
         FLowExecutor fLowExecutor = new FLowExecutor();
         FlowExecution flowTestExecution = new FlowExecution(flow);
         fLowExecutor.executeFlow(flowTestExecution);
         stepperData.AddFlowExecution(flowTestExecution);
         //todo add user input to flow execution and clear the flow definition user inpout !!!!
-        System.out.println("Done executing flow: "+ flow.getName() + " \n ID: "+ flowTestExecution.getUniqueId() +
-                " \nEnded with: "+ flowTestExecution.getFlowExecutionResult());
-         System.out.println("Flow outputs: ");
-         PrintFormalOutput(flowTestExecution.getExecutionOutputs());
+        System.out.print("Done executing flow: " + flow.getName() + " \nID: " + flowTestExecution.getUniqueId() +
+                " \nEnded with: " + flowTestExecution.getFlowExecutionResult());
+        if (!flowTestExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE)) {
+            System.out.println(" ,And the Flow outputs: ");
+            PrintFormalOutput(flowTestExecution.getExecutionOutputs());
+        }
+        else
+            System.out.println();
     }
 
     private static void PrintFormalOutput(Map<String, Object> executionOutputs) {
         for (Map.Entry<String, Object> entry : executionOutputs.entrySet()) {
-            System.out.println(entry.getKey() + " : \n" + entry.getValue());
+            System.out.print(entry.getKey() + " : ");
+            if (entry.getValue() instanceof RelationData)
+                System.out.println();
+            if (entry.getValue() instanceof String) {
+                System.out.println(entry);
+            }else if(entry.getValue() instanceof Mapping) {
+                String fixed=entry.toString();
+                fixed=fixed.replace(fixed.substring(0, fixed.indexOf("=")+1),"");
+                System.out.println(fixed);
+            }else if (entry.getValue() instanceof List) {
+                System.out.println((entry.toString()));
+            }else {
+                System.out.println(entry.getValue().toString());
+            }
         }
     }
 

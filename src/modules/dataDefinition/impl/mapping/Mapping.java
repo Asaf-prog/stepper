@@ -9,6 +9,10 @@ public class Mapping<T,S> implements Serializable{
         this.car = car;
         this.cdr = cdr;
     }
+    @Override
+    public String toString(){
+        return "< "+car.toString() + " - " + cdr.toString()+" >";
+    }
     public T getCar(){return car;}
     public S getCdr(){return cdr;}
     public void setCar(T car) {this.car = car;}

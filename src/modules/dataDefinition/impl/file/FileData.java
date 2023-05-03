@@ -28,27 +28,15 @@ public class FileData  implements Serializable {
 
     public FileData(String name,File file) {//default constructor
         this.name = name;
-      //  this._path = Paths.get(file.getPath());
         this.file = file;
     }
-
-    public Path getPath() {
-    //    return this._path;
-        return null;
-    }//todo if work delete it!!!1
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    public void set_path(String _path) {
-      //  this._path = Paths.get(_path);
-    }
-
     public FileData(File file) {
       //  this._path = Paths.get(file.getPath());
         this.name = file.getName();
