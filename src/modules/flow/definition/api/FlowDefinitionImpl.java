@@ -239,7 +239,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         for (Pair<String, DataDefinitionDeclaration> inputUser : freeInputs) {
             if (!inputUser.getValue().dataDefinition().isUserFriendly()) {
                 String theUnUserFriendlyMandatoryInput = inputUser.getKey();
-                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_MANDATORY_INPUTS_THAT_ARE_NOT_USER_FRIENDLY,theUnUserFriendlyMandatoryInput);
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.FLOW_HAS_MANDATORY_INPUTS_THAT_ARE_NOT_USER_FRIENDLY,"input name : "+theUnUserFriendlyMandatoryInput);
             }
         }
     }

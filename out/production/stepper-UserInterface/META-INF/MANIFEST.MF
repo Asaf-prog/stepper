@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: Menu.MainMenu
+Class-Path: stepper-Engine.jar
 

@@ -48,7 +48,19 @@ public class FilesRenamerStep extends AbstractStepDefinition {
 
         String prefix = context.getDataValue("PREFIX", String.class);
         String suffix = context.getDataValue("SUFFIX", String.class);
-        context.setLogsForStep("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
+        if (prefix == null && suffix == null) {
+            context.setLogsForStep("Files Renamer","About to start rename "+filesToRename.size()+" files , without adding prefix or suffix");
+            context.addSummaryLine("Files Renamer","No changes were made to the files becuase no prefix or suffix were entered");
+            createTableForNoChange(filesToRename,outputTable);
+            context.storeDataValue("RENAME_RESULT",outputTable);
+            return StepResult.SUCCESS;
+        }
+        if (prefix == null) {
+            context.setLogsForStep("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding suffix:"+suffix);
+        } else if (suffix == null) {
+            context.setLogsForStep("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix);
+        } else
+            context.setLogsForStep("Files Renamer","About to start rename "+filesToRename.size()+" files , Adding prefix:"+prefix+" Adding suffix:"+suffix);
 
         for (FileData fileData : filesToRename) {
             String newFileName;
@@ -93,6 +105,16 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         context.setLogsForStep("Files Renamer","All files renamed successfully");
         context.addSummaryLine("Files Renamer","Success to change File name");
         return StepResult.SUCCESS;
+    }
+
+    private void createTableForNoChange(List<FileData> filesToRename, RelationData outputTable) {
+        for (int i = 0; i < filesToRename.size(); i++) {
+            List<String> row = new ArrayList<>();
+            row.add(String.valueOf(i+1));
+            row.add(filesToRename.get(i).getName());
+            row.add(filesToRename.get(i).getName());
+            outputTable.addRow(row);
+        }
     }
 }
 

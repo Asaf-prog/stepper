@@ -34,10 +34,10 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             context.addSummaryLine("Files Deleter", "The list of file is empty");
             return StepResult.SUCCESS;
         }else {
+            context.setLogsForStep("Files Deleter","About to start delete "+filesList.size() +" files");
             for (FileData filedata : filesList) {
                 Object runnerFile = filedata.getFile();
                 if (runnerFile instanceof File) {
-                   context.setLogsForStep("Files Deleter","About to start delete "+filesList.size() +" files");
                     if (((File) runnerFile).exists() && ((File) runnerFile).isFile()) {
                         deletedFiles.add(((File) runnerFile).getName());
                         ((File) runnerFile).delete();
@@ -48,8 +48,10 @@ public class FilesDeleterStep extends AbstractStepDefinition {
                         context.setLogsForStep("Files Deleter","Failed to delete file "+((File) runnerFile).getName());
                     }
                 }
-                else
+                else {
+                    context.addSummaryLine("Files Deleter", "File deleter failed to delete one of");
                     return StepResult.FAILURE;
+                }
             }
         }
         if (deletedFiles.size() == 0){

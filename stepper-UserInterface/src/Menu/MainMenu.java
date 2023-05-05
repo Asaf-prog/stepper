@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class MainMenu implements Menu {
+public class MainMenu{
 
     public static void main(String[] args) {
         System.out.println("---Stepper UI---");
@@ -70,12 +70,8 @@ public class MainMenu implements Menu {
             if (item == MainMenuItems.MAIN_MENU) {//no need to present main menu option in the Main Menu
                 continue;
             }
-            System.out.println("("+item.ordinal() + ")" + item.getName());
+            System.out.println("("+item.ordinal() + ") " + item.getName());
         }
-    }
-    @Override
-    public void displayMenu2() {
-
     }
 }
 

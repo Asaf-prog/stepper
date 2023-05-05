@@ -14,7 +14,7 @@ public class GetDataFromXML {
     public static void fromXmlFileToObject(String path)throws Exception{
         File file = new File(path);
         if (!(file.exists() && file.length() > 0)) {//file not exist or empty
-            throw new StepperDefinitionException(StepperDefinitionExceptionItems.XML_FILE_NOT_EXIST_OR_EMPTY);
+            throw new StepperDefinitionException(StepperDefinitionExceptionItems.XML_FILE_NOT_EXIST_OR_EMPTY,"the file "+path+" not exist or empty");
         }
         JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

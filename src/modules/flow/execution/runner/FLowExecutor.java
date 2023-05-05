@@ -1,4 +1,6 @@
 package modules.flow.execution.runner;
+import Menu.MenuException;
+import Menu.MenuExceptionItems;
 import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
@@ -11,7 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 public class FLowExecutor {
-    public void executeFlow(FlowExecution flowExecution){//This class implements the flow
+    public void executeFlow(FlowExecution flowExecution) throws MenuException {//This class implements the flow
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
         context.setUserInputs(flowExecution);//sets user inputs into the context
@@ -38,29 +40,32 @@ public class FLowExecutor {
                 }
             }
             Instant flowEndTime=flowExecution.stopStepTimer();
+            updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
+        }
+        catch (IOException e) {
+            System.out.println("next massage is a stack trace \n"+e.getMessage());
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new MenuException(MenuExceptionItems.EMPTY, " Error in executing flow "+flowExecution.getFlowDefinition().getName());
+        }
+        finally {
+            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus));
+        }
+    }
+
+    private void updateFlowExecution(FlowExecution flowExecution, StepExecutionContext context, ArrayList<StepResult> flowExeStatus, Instant flowStartTime, Instant flowEndTime) throws Exception {
             FlowExecutionResult flowExecutionResult = getFlowExecutionResult(flowExeStatus);
-            flowExecution.setFlowDuration(Duration.between(flowStartTime,flowEndTime));//update flow execution avg time
+            flowExecution.setFlowDuration(Duration.between(flowStartTime, flowEndTime));//update flow execution avg time
             //maybe save the end time for calc the time occurred
-            UpdateFlowAvgTiming(Duration.between(flowStartTime,flowEndTime),flowExecution.getFlowDefinition());//update avg time of flow def
+            UpdateFlowAvgTiming(Duration.between(flowStartTime, flowEndTime), flowExecution.getFlowDefinition());//update avg time of flow def
             flowExecution.setFlowExecutionResult(flowExecutionResult);
             flowExecution.setFlowExecutionOutputs(context);
             flowExecution.setLogs(context.getLogs());
             flowExecution.setSummaryLines(context.getSummaryLines());
             flowExecution.setAllExecutionOutputs(context);
             flowExecution.setUserInputs();//sets user inputs into the flow execution and delete the original user inputs
-//todo check that each step in flow (step usage dec) is different (if one step is used twice in the same flow)
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        finally {
-            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus));
-        }
-
-        //
     }
 
     private void UpdateFlowAvgTiming(Duration between, FlowDefinition flowDefinition) {

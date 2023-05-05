@@ -1,4 +1,6 @@
 package modules.flow.execution.context;
+import Menu.MenuException;
+import Menu.MenuExceptionItems;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
@@ -53,12 +55,20 @@ StepExecutionContextImpl implements StepExecutionContext {
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
 
     @Override
-    public void setUserInputs(FlowExecution flowExecution) {
+    public void setUserInputs(FlowExecution flowExecution) throws MenuException {
         List<Pair<String, String>> userInputs = flowExecution.getFlowDefinition().getUserInputs();
         if (userInputs != null) {
             for (Pair<String, String> userInput : userInputs) {
                 Class<?> dataType = getDataTypeFromName(userInput.getKey(),flowExecution.getFlowDefinition().getFlowFreeInputs());//get data type by final name
-                dataValues.put(userInput.getKey(), casting(userInput.getValue(), dataType));//add to context by final name and input value
+                //validate user input!!
+                Object val = casting(userInput.getValue(), dataType);
+                //check if the input is the same type as val
+                if (val != null && val.getClass().equals(dataType)) {
+                    dataValues.put(userInput.getKey(), val);//add to context by final name and input value
+                }
+                else{
+                    throw new MenuException(MenuExceptionItems.EMPTY," User input is not valid for input for " + userInput.getKey() + " with value " + userInput.getValue());
+                }
             }
         }
     }

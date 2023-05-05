@@ -1,5 +1,6 @@
 package modules.flow.execution.context;
 
+import Menu.MenuException;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
@@ -20,7 +21,7 @@ public interface StepExecutionContext {
     void setCustomMappings(List<CustomMapping> customMappings,Map<String,String> mapOfName, List<FlowLevelAlias> FlowLevelAlias);
     void setSteps(List<StepUsageDeclaration> steps);
 
-    void setUserInputs(FlowExecution flowExecution);
+    void setUserInputs(FlowExecution flowExecution) throws MenuException;
     void setInputOfCurrentStep(Map <String,String> input);
     void setOutputOfCurrentStep(Map <String,String> output);
     void initializedCustomMapping(FlowExecution flowExecution);

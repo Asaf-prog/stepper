@@ -16,7 +16,7 @@ package modules.stepper;
  import java.io.Serializable;
  import java.util.*;
 
-public class Stepper implements Manager, Serializable {
+public class Stepper implements Serializable {
     public static int idCounter;
     List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
@@ -111,18 +111,18 @@ public class Stepper implements Manager, Serializable {
                 flowLevelAliasesToAdd.add(k, temp);
             }
         }
-        SetFormalOutputs(flowToAdd,stFlow.getSTFlowOutput());
+        setFormalOutputs(flowToAdd,stFlow.getSTFlowOutput());
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
     }
 
-    private void SetFormalOutputs(FlowDefinitionImpl flowToAdd, String stFlowOutput) {
+    private void setFormalOutputs(FlowDefinitionImpl flowToAdd, String stFlowOutput) {
         flowToAdd.setOutputs(Arrays.asList(stFlowOutput.split(",")));
     }
 
     public void validateStepper() throws StepperDefinitionException, FlowDefinitionException {
         flows.forEach(flow -> {
-            inisilaizedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
+            initializedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
             this.updateAliasesPerStep();
             flow.setFinalNames();
             flow.createFlowFreeInputs();//including one for user input
@@ -130,22 +130,22 @@ public class Stepper implements Manager, Serializable {
 
         });
         //Stepper Validate
-        ValidateFlowsUniqueName();
+        validateFlowsUniqueName();
         for (FlowDefinitionImpl flow : flows) {
             flow.validateFlowStructure();
         }
     }
 
-    private void ValidateFlowsUniqueName() throws StepperDefinitionException {
+    private void validateFlowsUniqueName() throws StepperDefinitionException {
             for (int i = 0; i < flows.size(); i++) {
                 for (int j = i + 1; j < flows.size(); j++) {
                     if (flows.get(i).getName().equals(flows.get(j).getName())) {
-                        throw new StepperDefinitionException(StepperDefinitionExceptionItems.FLOWS_NOT_UNIQUE);
+                        throw new StepperDefinitionException(StepperDefinitionExceptionItems.FLOWS_NOT_UNIQUE,"Flow name: "+flows.get(i).getName());
                     }
                 }
             }
     }
-    public void inisilaizedInputAndOutput(List<StepUsageDeclaration> stepOfFlow,List<FlowLevelAlias> flowLevelAliases){
+    public void initializedInputAndOutput(List<StepUsageDeclaration> stepOfFlow, List<FlowLevelAlias> flowLevelAliases){
         for (StepUsageDeclaration step: stepOfFlow){
             for (FlowLevelAlias alias: flowLevelAliases){
                 if (step.getFinalStepName().equals(alias.getSource())){
@@ -201,7 +201,7 @@ public class Stepper implements Manager, Serializable {
         }
     }
 
-    public void AddFlowExecution(FlowExecution flowTestExecution) {
+    public void addFlowExecution(FlowExecution flowTestExecution) {
         this.flowExecutions.add(flowTestExecution);
         //maybe logic of time and stuff
     }

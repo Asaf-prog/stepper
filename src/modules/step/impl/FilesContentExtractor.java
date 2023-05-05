@@ -30,7 +30,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);
         int lineNumber = context.getDataValue("LINE", Integer.class);
         List<String> colums = new ArrayList<String>();
-
+        boolean warn=false;
       if (FileList == null) {
            context.addSummaryLine("Files Content Extractor ","Their is no files in this folder");
            return StepResult.SUCCESS;
@@ -40,12 +40,14 @@ public class FilesContentExtractor extends AbstractStepDefinition {
           RelationData table= new RelationData(cols);
           BufferedReader reader = null;
            int index=1;
+
            for (FileData specificFile : FileList) {
 
                context.setLogsForStep("Files Content Extractor ","About to start work on file "+specificFile.getName());
                boolean check = false;
                reader = new BufferedReader(new FileReader(specificFile.getFile()));
                String line = null;
+
                for (int i=0; i <lineNumber;i++){
                    line = reader.readLine();
                    if (i == lineNumber-1){
@@ -60,14 +62,21 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                    }
                }
                if (check == false){
-                   context.addSummaryLine("Files Content Extractor ","Not such line");
+                   context.setLogsForStep("Files Content Extractor ","Problem extracting line number"+lineNumber+" from file "+specificFile.getName());
+                    warn= true;
                }
            }
            context.storeDataValue("DATA",table);
        }
-        context.addSummaryLine("Files Content Extractor ","End with Success");
+       if (warn) {
+           context.addSummaryLine("Files Content Extractor ", "End with Warning because some file failed.");
+           return StepResult.SUCCESS;//should be warning but not define in WORD
 
-        return StepResult.SUCCESS;
+       }
+       else {
+           context.addSummaryLine("Files Content Extractor ", "End with Success");
+           return StepResult.SUCCESS;
+       }
 
     }
 }

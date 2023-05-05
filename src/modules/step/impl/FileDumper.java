@@ -39,6 +39,7 @@ public class FileDumper extends AbstractStepDefinition {
             fileWriter.close();
         } catch (IOException e) {//check if it counts as len = 0 exception
             context.setLogsForStep("File Dumper", "Error Crafting the file: " + e.getMessage());
+            context.addSummaryLine("CSV Exporter","End with Failure ,cant export file");
             return StepResult.FAILURE;
         }
         // check if file created
@@ -46,7 +47,6 @@ public class FileDumper extends AbstractStepDefinition {
             if (content.length()==0) {
                 context.setLogsForStep("File Dumper", "Warning file created but as Empty file ");
                 context.addSummaryLine("File Dumper","create empty file");
-
                 context.storeDataValue("RESULT", "Warning-created but as Empty file");
                 return StepResult.WARNING;
             }
@@ -57,6 +57,7 @@ public class FileDumper extends AbstractStepDefinition {
             return StepResult.SUCCESS;
         } else {
             context.setLogsForStep("File Dumper", "Error Exporting file: " + fileName);
+            context.addSummaryLine("CSV Exporter","End with Failure ,cant export file");
             return StepResult.FAILURE;
         }
     }

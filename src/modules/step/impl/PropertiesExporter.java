@@ -25,6 +25,7 @@ public class PropertiesExporter extends AbstractStepDefinition {
         boolean warning=false;
         if (relationTable.getColumns().size() <= 2) {
             context.setLogsForStep("Properties Exporter", "Warning: Source table must have 2 columns");
+            //maybe store empty string or with a warning
             warning=true;
             //continue
         }
@@ -35,17 +36,21 @@ public class PropertiesExporter extends AbstractStepDefinition {
         }
         StringBuilder propertiesBuilder = new StringBuilder();
         propertiesBuilder.append(relationTable.getColumns().get(0));
-        for (int i = 1; i < relationTable.getColumns().size(); i++) {
-            propertiesBuilder.append(" = ").append(relationTable.getColumns().get(i));
+        for (int i = 1; i < relationTable.getColumns().size()-1; i++) {
+
+            propertiesBuilder.append(".").append(relationTable.getColumns().get(i));
         }
+        propertiesBuilder.append("=");
+        propertiesBuilder.append(relationTable.getColumns().get(relationTable.getColumns().size()-1));
         propertiesBuilder.append("\n");
        //v2: propertiesBuilder.append(relationTable.getColumns().get(0)).append("=").append(relationTable.getColumns().get(1)).append("\n");
 
         for (RelationData.SingleRow row : relationTable.getRows()) {
         propertiesBuilder.append(row.getData().get(0));
-            for (int i = 1; i < row.getData().size(); i++) {
-                propertiesBuilder.append(" = ").append(row.getData().get(i));
+            for (int i = 1; i < row.getData().size()-1; i++) {
+                propertiesBuilder.append(".").append(row.getData().get(i));
             }
+            propertiesBuilder.append("=").append(row.getData().get(row.getData().size()-1));
             propertiesBuilder.append("\n");//the above isn't a valid properties file format but
             // it was unclear what to present in order to include all the data
 //            String key = row.getData().get(0); // this is a valid structure

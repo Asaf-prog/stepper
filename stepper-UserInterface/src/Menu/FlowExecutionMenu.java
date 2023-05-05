@@ -10,18 +10,19 @@ import modules.flow.execution.FlowExecution;
 import modules.flow.execution.FlowExecutionResult;
 import modules.flow.execution.runner.FLowExecutor;
 import modules.step.api.DataDefinitionDeclaration;
+import modules.step.api.DataNecessity;
 import modules.stepper.Stepper;
 
 import java.util.*;
 
-public class FlowExecutionMenu implements Menu {
+public class FlowExecutionMenu {
 
-    public static void displayMenu()throws Exception{
+    public static void displayMenu() throws Exception {
         Stepper stepperData = DataManager.getData();
         System.out.println("---Flow Chooser Menu---");
-        int i=1;
-        for(FlowDefinitionImpl flow : stepperData.getFlows()){
-            System.out.println("("+i+")"+ flow.getName() + " That does: " + flow.getDescription());
+        int i = 1;
+        for (FlowDefinitionImpl flow : stepperData.getFlows()) {
+            System.out.println("(" + i + ")" + flow.getName() + " That does: " + flow.getDescription());
 
             i++;
         }
@@ -29,26 +30,28 @@ public class FlowExecutionMenu implements Menu {
         try {
             int choice = input.nextInt();
             if (0 > choice || choice > stepperData.getFlows().size()) {
-                throw new MenuException(MenuExceptionItems.EMPTY, "The number you chose is not in range");
+                throw new MenuException(MenuExceptionItems.EMPTY, " The number you chose is not in range");
             }
             if (choice == MainMenuItems.MAIN_MENU.getValue()) {
                 return;
             }
             FlowDefinition flow = stepperData.getFlows().get(choice - 1);
-            getUserInput(flow);
-            ExecuteFlow(stepperData, choice);
+            boolean back = getUserInput(flow);
+            if (!back)
+                return;//back to main menu
+            else
+                ExecuteFlow(stepperData, choice);
+        } catch (Exception e) {
+            if (e instanceof InputMismatchException)
+                throw new MenuException(MenuExceptionItems.EMPTY, "we expected Number... ");
 
-        }
-        catch (Exception e){
-           if (e instanceof InputMismatchException)
-               throw new MenuException(MenuExceptionItems.EMPTY,"we expected Number... ");
-
-           else {//todo Class Exception for ExecutionException
-               System.out.println(e.getMessage());
-               return;
-           }
+            else {//todo Class Exception for ExecutionException
+                System.out.println(e.getMessage());
+                return;
+            }
         }
     }
+
     private int validInputCheck(String prompt, Map<Integer, Pair<String, DataDefinitionDeclaration>> options) {
         Scanner input = new Scanner(System.in);
         int choice;
@@ -71,119 +74,144 @@ public class FlowExecutionMenu implements Menu {
     }
 
 
-    private static void getUserInput(FlowDefinition flow) {
-        String prompt = "Choose what to insert \n1.Mandatory inputs \n2.Optional inputs \n3. Done- and Execute ";
-
-        System.out.println("for Flow :" + flow.getName() + prompt);
+    private static boolean getUserInput(FlowDefinition flow) throws MenuException {
+        String prompt = "Choose what to insert \n(0) Back \n(1) Mandatory inputs \n(2) Optional inputs \n(3) Done- and Execute ";
+        System.out.println("for Flow :" + flow.getName() + " " + prompt);
         List<Pair<String, DataDefinitionDeclaration>> freeInputRemain = new ArrayList<>();
         freeInputRemain.addAll(flow.getFlowFreeInputs());
-        System.out.println(freeInputRemain.size());
+        List<Pair<String, DataDefinitionDeclaration>> mandatoryDataOptions = GetDataOptions(freeInputRemain, DataNecessity.MANDATORY);
+        List<Pair<String, DataDefinitionDeclaration>> optionalDataOptions = GetDataOptions(freeInputRemain, DataNecessity.OPTIONAL);
         Scanner input = new Scanner(System.in);
-
+        boolean done = false;
+        boolean finishInsert = false;
         do {
-            Map<Integer, Pair<String, DataDefinitionDeclaration>> dataOptions = new HashMap<>();
-            int i,choice;
+            int i, choice;
             try {
-                choice = input.nextInt();
+                String userIn = input.nextLine();
+                Optional<Integer> possibleInt = Optional.of(Integer.parseInt(userIn));
 
-            if (choice < 1 || choice > 3) {
-                if(choice == 0)
-                    return;
-                System.out.println("Invalid input. Please enter a number between 1 and 3.");
-                continue; // go back to the start of the loop
+                if (!possibleInt.isPresent()) {
+                    System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                    continue;
+                }
+                choice = possibleInt.get();
+                if (choice < 1 || choice > 3) {
+                    if (choice == 0)
+                        return false;
+                    System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                    continue; // go back to the start of the loop
+                }
+            } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number between 1 and 3.");
+            continue;
             }
             switch (choice) {
                 case 1:
-                    if (!stillGotFreeManInputs(freeInputRemain)) {
-                        System.out.println("No more free Mandatory inputs");
-                        break;
-                    }
-                    System.out.println("Choose one to insert:");
-                    i = 1;
-                    for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
-                        if (pairOfStringAndDD.getValue().isMandatory()) {
-                            dataOptions.put(i, pairOfStringAndDD);
-                            System.out.println("(" + i + ")" + pairOfStringAndDD.getKey());
+                    done = false;
+                    while(!done) {
+                        System.out.println("Choose one to insert:");
+                        i = 1;
+                        for (Pair<String, DataDefinitionDeclaration> option : mandatoryDataOptions) {
+                            System.out.println("(" + i + ") " + option.getKey());
                             i++;
                         }
-                    }
-                    choice = input.nextInt();
-                    if(choice == 0)
-                        return;
-                    // Validate input can only be a num between 1 to i, prompt user to re-enter if invalid
-                    while (choice < 1 || choice >= i) {
-
-                        System.out.println("Invalid input. Please enter a number between 1 and " + (i - 1) + ".");
-                        choice = input.nextInt();
-                        if(choice == 0)
-                            return;
-                        if (choice < 1 || choice >= i) {
-                            System.out.println("Invalid input. Please enter a number between 1 and " + (i - 1) + ".");
+                       // System.out.println("(" + i + ") Back");
+                        try {
+                            String userIn2 = input.nextLine();
+                            Optional<Integer> possibleInt2 = Optional.of(Integer.parseInt(userIn2));
+                            if (!possibleInt2.isPresent()) {
+                                System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
+                                continue;
+                            }
+                            choice = possibleInt2.get();
+                            if (choice < 1 || choice > i) {
+                                if (choice == 0)
+                                    return false;
+                                System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
+                                continue; // go back to the start of the loop
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
+                            continue;
                         }
+                        updateFreeInputs(flow, mandatoryDataOptions.get(choice - 1));
+                        freeInputRemain.remove(mandatoryDataOptions.get(choice - 1));
+                        done = true;
+                        System.out.println("For flow :" + flow.getName() + " " + prompt);
+                        break;
                     }
-                    updateFreeInputs(flow, dataOptions.get(choice));
-                    freeInputRemain.remove(dataOptions.get(choice));
-                    //mistaber she no need in remove
-
-                    System.out.println("For flow :" + flow.getName() +prompt);
                     break;
-
                 case 2:
-                    if(noMoreOptionalInputs(freeInputRemain)){
-                        System.out.println("No more free Optional inputs");
-                        break;
-                    }
-
-                    System.out.println("Choose input to insert:");
-                    i=1;
-
-                    for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
-                        if (!pairOfStringAndDD.getValue().isMandatory()) {
-                            dataOptions.put(i, pairOfStringAndDD);
-                            System.out.println("(" + i + ")" + pairOfStringAndDD.getKey());
+                    done = false;
+                    while(!done) {
+                        System.out.println("Choose one to insert:");
+                        i = 1;
+                        for (Pair<String, DataDefinitionDeclaration> option : optionalDataOptions) {
+                            System.out.println("(" + i + ") " + option.getKey());
                             i++;
                         }
-                    }
 
-                    choice = input.nextInt();
-                    if(choice == 0)
-                        return;
-                    // Validate input can only be a num between 1 to i, prompt user to re-enter if invalid
-                    while (choice < 1 || choice >= i) {
-                        System.out.println("Invalid input. Please enter a number between 1 and " + (i - 1) + ".");
-                        choice = input.nextInt();
+                        try {
+                            String userIn3 = input.nextLine();
+                            Optional<Integer> possibleInt3 = Optional.of(Integer.parseInt(userIn3));
+                            if (!possibleInt3.isPresent()) {
+                                System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
+                                continue;
+                            }
+                            choice = possibleInt3.get();
+                            if (choice < 1 || choice > i) {
+                                if (choice == 0)
+                                    return false;
+                                System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
+                                continue; // go back to the start of the loop
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
+                            continue;
+                        }
+                        updateFreeInputs(flow, optionalDataOptions.get(choice - 1));
+                        freeInputRemain.remove(optionalDataOptions.get(choice - 1));
+                        done = true;
+                        System.out.println("For flow :" + flow.getName() + " " + prompt);
+                        break;
                     }
-                    updateFreeInputs(flow, dataOptions.get(choice));
-                   // freeInputRemain.remove(dataOptions.get(choice));
-                    System.out.println("For flow :" + flow.getName() + prompt);
                     break;
                 case 3:
                     if (stillGotFreeManInputs(freeInputRemain)) {
                         System.out.println("You must insert all mandatory inputs");
-                        System.out.println("For flow : " + flow.getName() +" "+ prompt);
-                    } else{
-                        System.out.println("---Executing---");
-                    }
+                        System.out.println("For flow : " + flow.getName() + " " + prompt);
+                    } else
+                        finishInsert = true;
                     break;
-
                 default:
                     System.out.println("Wrong input");
                     System.out.println("For flow :" + flow.getName() + prompt);
             }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number. \n"+prompt);
-            }// validate input num between 1-3 if not re-get it
-
-        }while (freeInputRemain.size() > 0) ;
+            if (finishInsert) {
+                return true;
+            }
+        } while (freeInputRemain.size() > 0 || !finishInsert);
+        return true;
     }
 
-    private static boolean noMoreOptionalInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
+    private static List<Pair<String, DataDefinitionDeclaration>> GetDataOptions
+            (List<Pair<String, DataDefinitionDeclaration>> freeInputRemain, DataNecessity necessity) {
+        List<Pair<String, DataDefinitionDeclaration>> dataOptions = new ArrayList<>();
         for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
-            if (!pairOfStringAndDD.getValue().isMandatory()) {
-                return false;
+            if (pairOfStringAndDD.getValue().necessity() == necessity) {
+                dataOptions.add(pairOfStringAndDD);
             }
         }
-        return true;
+        return dataOptions;
+    }
+
+    private static boolean stillGotFreeOptionalInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
+        for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
+            if (!pairOfStringAndDD.getValue().isMandatory()) {
+                return true;
+            }
+        }
+        return false;
     }
     private static boolean stillGotFreeManInputs(List<Pair<String, DataDefinitionDeclaration>> freeInputRemain) {
         for (Pair<String, DataDefinitionDeclaration> pairOfStringAndDD : freeInputRemain) {
@@ -195,7 +223,7 @@ public class FlowExecutionMenu implements Menu {
     }
 
     private static void updateFreeInputs(FlowDefinition flow, Pair<String, DataDefinitionDeclaration> value) {
-        System.out.println("Insert value for " + value.getValue().getFinalName());
+        System.out.println("Insert value for " + value.getKey()+":");
         Scanner input = new Scanner(System.in);
 
         String userInput = input.nextLine();
@@ -212,14 +240,14 @@ public class FlowExecutionMenu implements Menu {
     }
 
 
-    private static void ExecuteFlow(Stepper stepperData,int choice) {
+    private static void ExecuteFlow(Stepper stepperData,int choice) throws MenuException {
         //if there is no mandatory inputs that the user didn't insert throw exception!!!
         FlowDefinitionImpl flow = stepperData.getFlows().get(choice - 1);
         System.out.println("Executing flow: " + flow.getName());
         FLowExecutor fLowExecutor = new FLowExecutor();
         FlowExecution flowTestExecution = new FlowExecution(flow);
         fLowExecutor.executeFlow(flowTestExecution);
-        stepperData.AddFlowExecution(flowTestExecution);
+        stepperData.addFlowExecution(flowTestExecution);
         //todo add user input to flow execution and clear the flow definition user inpout !!!!
         System.out.print("Done executing flow: " + flow.getName() + " \nID: " + flowTestExecution.getUniqueId() +
                 " \nEnded with: " + flowTestExecution.getFlowExecutionResult());
@@ -233,7 +261,9 @@ public class FlowExecutionMenu implements Menu {
 
     private static void PrintFormalOutput(Map<String, Object> executionOutputs) {
         for (Map.Entry<String, Object> entry : executionOutputs.entrySet()) {
-            System.out.print(entry.getKey() + " : ");
+
+            System.out.println(entry.getKey() + " : ");
+
             if (entry.getValue() instanceof RelationData)
                 System.out.println();
             if (entry.getValue() instanceof String) {
@@ -250,7 +280,4 @@ public class FlowExecutionMenu implements Menu {
         }
     }
 
-    @Override
-    public void displayMenu2() {
-    }
 }

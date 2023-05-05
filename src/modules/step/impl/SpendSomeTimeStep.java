@@ -18,7 +18,8 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
         try{
             if (seconds <= 0) {
                 System.out.println("Invalid input");
-                context.setLogsForStep("Time_To_Spend","Get unpositive number");
+                context.setLogsForStep("Time_To_Spend","Get un-positive number");
+                context.addSummaryLine("Time_To_Spend","The step fail because the input is un-positive number");
                 return StepResult.FAILURE;
             }
             try {
@@ -37,6 +38,7 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
             context.addSummaryLine("Time_To_Spend","The step was fall and this is why their is no summary line");
             return StepResult.FAILURE;
         }
+        context.addSummaryLine("Time_To_Spend","The step ended with success");
         return StepResult.SUCCESS;
     }
 }

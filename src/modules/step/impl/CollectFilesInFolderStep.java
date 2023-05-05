@@ -36,18 +36,21 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         if (folderNameOptional.isPresent()) {
             String folderName = folderNameOptional.get();
             Path path = Paths.get(folderName);//folder path
-            context.setLogsForStep("Collect files in folder", " Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
+            context.setLogsForStep("Collect files in folder", "Reading folder " + path.getFileName() + " content with filter " + filterOptional.orElse("none"));
 
             if (!exists(path)) {
                 context.setLogsForStep("Collect files in folder", " Folder " + path.getFileName() + " does not exist");
+                context.addSummaryLine("CSV Exporter","End with Failure due folder not exist.");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().isDirectory()) {
                 context.setLogsForStep("Collect files in folder", " Folder " + path.getFileName() + " is not a directory");
+                context.addSummaryLine("CSV Exporter","End with Failure due folder not a directory.");
                 return StepResult.FAILURE;
             }
             if (!path.toFile().canRead()) {
                 context.setLogsForStep("Collect files in folder", " Folder " + path.getFileName() + " is not readable");
+                context.addSummaryLine("CSV Exporter","End with Failure due folder not readable.");
                 return StepResult.FAILURE;
             }
 
@@ -60,6 +63,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                             .collect(Collectors.toList());
                 } catch (IOException e) {
                     context.setLogsForStep("Collect files in folder", "Failed to collect files in folder: " + e.getMessage());
+                    context.addSummaryLine("CSV Exporter","End with Failure due folder not readable.");
                     return StepResult.FAILURE;
                 }
             } else {
@@ -72,6 +76,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                             .collect(Collectors.toList());
                 } catch (IOException e) {
                     context.setLogsForStep("Collect files in folder", "Failed to collect files in folder with filter " + filter + ": " + e.getMessage());
+                    context.addSummaryLine("CSV Exporter","End with Failure due unknown error");
                     return StepResult.FAILURE;
                 }
             }
@@ -89,8 +94,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
             }
             context.storeDataValue("FILES_LIST", filesList);
             context.storeDataValue("TOTAL_FOUND", filesList.size());
-            context.setLogsForStep("Collect files in folder", "Found"+filesList.size()+"files in folder matching the filter");
-
+            context.setLogsForStep("Collect files in folder", "Found "+filesList.size()+" files in folder matching the filter");
             context.addSummaryLine("Collect files in folder","The step end with success");
             return StepResult.SUCCESS;
         } else {

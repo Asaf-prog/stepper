@@ -2,7 +2,7 @@ package modules.DataManeger;
 
 import Menu.MenuException;
 import Menu.MenuExceptionItems;
-import modules.stepper.Manager;
+
 import modules.stepper.Stepper;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class DataManager implements Manager {
+public class DataManager {
     static Stepper stepperData;//the one and only steppe!!!
 
     public DataManager(Stepper stepperData){
@@ -34,20 +34,23 @@ public class DataManager implements Manager {
     }
 
     public static boolean saveData() throws MenuException {
-        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
-//        Scanner input = new Scanner(System.in);
-//        System.out.println("Please enter the path to the data file");
-//        String filePath = input.nextLine();
-        //Optional<Path> path= Optional.ofNullable(Paths.get(filename));
-//        if (!path.isPresent()) {
-//            throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
-//        }
+//        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter the path to the data file");
+        String filePath = input.nextLine();
+        Optional<Path> path= Optional.ofNullable(Paths.get(filePath));
+        if (!path.isPresent()) {
+            throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
+        }
         //todo validate input
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
             out.writeObject(stepperData);
             return true;
         } catch (IOException e) {
-            throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File wont created...");
+            throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File wont created...(try enter good path to your file)");
+        }
+        catch (Exception e){
+            throw new MenuException(MenuExceptionItems.EMPTY, " unknown error..");
         }
 
     }
@@ -56,14 +59,14 @@ public class DataManager implements Manager {
         return file.isFile() && file.exists();
     }
     public static boolean loadData() throws MenuException {
-        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
-//        Scanner input = new Scanner(System.in);
-//        System.out.println("Please enter the path to the data file");
-//        String filePath = input.nextLine();
-        if (!isFilePathExist(filename)) {
+//        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter the path to the data file");
+        String filePath = input.nextLine();
+        if (!isFilePathExist(filePath)) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File Dont Exist...");
         }
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
             stepperData = (Stepper) in.readObject();
             return true;
         } catch (IOException | ClassNotFoundException e) {
