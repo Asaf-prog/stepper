@@ -20,36 +20,41 @@ public class FlowExecutionMenu {
     public static void displayMenu() throws Exception {
         Stepper stepperData = DataManager.getData();
         System.out.println("---Flow Chooser Menu---");
-        int i = 1;
-        for (FlowDefinitionImpl flow : stepperData.getFlows()) {
-            System.out.println("(" + i + ")" + flow.getName() + " That does: " + flow.getDescription());
+        while(true)
+            {
+            int i = 1;
+            for (FlowDefinitionImpl flow : stepperData.getFlows()) {
+                System.out.println("(" + i + ") " + flow.getName() + " That does: " + flow.getDescription());
 
-            i++;
-        }
-        Scanner input = new Scanner(System.in);
-        try {
-            int choice = input.nextInt();
-            if (0 > choice || choice > stepperData.getFlows().size()) {
-                throw new MenuException(MenuExceptionItems.EMPTY, " The number you chose is not in range");
+                i++;
             }
-            if (choice == MainMenuItems.MAIN_MENU.getValue()) {
-                return;
-            }
-            FlowDefinition flow = stepperData.getFlows().get(choice - 1);
-            boolean back = getUserInput(flow);
-            if (!back)
-                return;//back to main menu
-            else
-                ExecuteFlow(stepperData, choice);
-        } catch (Exception e) {
-            if (e instanceof InputMismatchException)
-                throw new MenuException(MenuExceptionItems.EMPTY, "we expected Number... ");
+            Scanner input = new Scanner(System.in);
+            try {
+                int choice = input.nextInt();
+                if (0 > choice || choice > stepperData.getFlows().size())
+                    continue;
+                if (choice == MainMenuItems.MAIN_MENU.getValue())
+                    return;
+                FlowDefinition flow = stepperData.getFlows().get(choice - 1);
+                boolean back = getUserInput(flow);
+                if (!back) {
+                    System.out.println("Choose flow to execute");
+                    continue;//back to main menu
+                }
+                else
+                    ExecuteFlow(stepperData, choice);
 
-            else {//todo Class Exception for ExecutionException
-                System.out.println(e.getMessage());
                 return;
+            } catch (InputMismatchException e) {
+                    input.next();
+                    System.out.println("Invalid input, please try again");
+                    continue;
+                }
+           catch (Exception e) {
+                    //System.out.println(e.getMessage());
+                    throw new MenuException(MenuExceptionItems.EMPTY, " Error in flow Execution");
+                }
             }
-        }
     }
 
     private int validInputCheck(String prompt, Map<Integer, Pair<String, DataDefinitionDeclaration>> options) {
@@ -125,8 +130,10 @@ public class FlowExecutionMenu {
                             }
                             choice = possibleInt2.get();
                             if (choice < 1 || choice > i) {
-                                if (choice == 0)
-                                    return false;
+                                if (choice == 0) {
+                                    System.out.println(prompt);
+                                    break;
+                                }
                                 System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
                                 continue; // go back to the start of the loop
                             }
@@ -160,8 +167,10 @@ public class FlowExecutionMenu {
                             }
                             choice = possibleInt3.get();
                             if (choice < 1 || choice > i) {
-                                if (choice == 0)
-                                    return false;
+                                if (choice == 0) {
+                                    System.out.println(prompt);
+                                    break;
+                                }
                                 System.out.println("Invalid input. Please enter a number between 1 and "+(i-1)+".");
                                 continue; // go back to the start of the loop
                             }
@@ -240,23 +249,35 @@ public class FlowExecutionMenu {
     }
 
 
-    private static void ExecuteFlow(Stepper stepperData,int choice) throws MenuException {
-        //if there is no mandatory inputs that the user didn't insert throw exception!!!
-        FlowDefinitionImpl flow = stepperData.getFlows().get(choice - 1);
-        System.out.println("Executing flow: " + flow.getName());
-        FLowExecutor fLowExecutor = new FLowExecutor();
-        FlowExecution flowTestExecution = new FlowExecution(flow);
-        fLowExecutor.executeFlow(flowTestExecution);
-        stepperData.addFlowExecution(flowTestExecution);
-        //todo add user input to flow execution and clear the flow definition user inpout !!!!
-        System.out.print("Done executing flow: " + flow.getName() + " \nID: " + flowTestExecution.getUniqueId() +
-                " \nEnded with: " + flowTestExecution.getFlowExecutionResult());
-        if (!flowTestExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE)) {
-            System.out.println(" ,And the Flow outputs: ");
-            PrintFormalOutput(flowTestExecution.getExecutionOutputs());
+    private static void ExecuteFlow(Stepper stepperData,int choice) {
+        FlowExecution flowTestExecution = null;
+        try {
+            //if there is no mandatory inputs that the user didn't insert throw exception!!!
+            FlowDefinitionImpl flow = stepperData.getFlows().get(choice - 1);
+            System.out.println("Executing flow: " + flow.getName());
+            FLowExecutor fLowExecutor = new FLowExecutor();
+            flowTestExecution = new FlowExecution(flow);
+            fLowExecutor.executeFlow(flowTestExecution);
+            stepperData.addFlowExecution(flowTestExecution);
+            System.out.print("Done executing flow: " + flow.getName() + " \nID: " + flowTestExecution.getUniqueId() +
+                    " \nEnded with: " + flowTestExecution.getFlowExecutionResult());
+            if (!flowTestExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE)) {
+                if(flowTestExecution.getExecutionOutputs().size()>0) {
+                    System.out.println(" ,And the Flow outputs: ");
+                    PrintFormalOutput(flowTestExecution.getExecutionOutputs());
+                }else{
+                    System.out.println(" ,No outputs were generated during the flow execution.");
+                }
+                System.out.println("Press enter to continue");
+                Scanner input = new Scanner(System.in);
+                input.nextLine();
+            } else
+                System.out.println();
+        } catch (Exception e) {
+            System.out.println("Error executing flow: ");
+            stepperData.addFlowExecution(flowTestExecution);
+            return;
         }
-        else
-            System.out.println();
     }
 
     private static void PrintFormalOutput(Map<String, Object> executionOutputs) {

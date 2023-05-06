@@ -31,7 +31,7 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration,
     }
 
     @Override
-    public String userString() {
+    public String getUserString() {
         return userString;
     }
 

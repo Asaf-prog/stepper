@@ -30,6 +30,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         List<String> survivingFiles = new ArrayList<>();
         List<String> deletedFiles = new ArrayList<>();
         List <FileData> filesList = context.getDataValue("FILES_LIST", List.class);
+        boolean warning = false;
         if (filesList.size() ==0 ) {
             context.addSummaryLine("Files Deleter", "The list of file is empty");
             return StepResult.SUCCESS;
@@ -46,11 +47,13 @@ public class FilesDeleterStep extends AbstractStepDefinition {
                         Path path = Paths.get(((File) runnerFile).getAbsolutePath());
                         survivingFiles.add(path.toString());
                         context.setLogsForStep("Files Deleter","Failed to delete file "+((File) runnerFile).getName());
+                        warning = true;
                     }
                 }
                 else {
-                    context.addSummaryLine("Files Deleter", "File deleter failed to delete one of");
-                    return StepResult.FAILURE;
+                    context.addSummaryLine("Files Deleter", "File deleter failed to delete one of the file ");
+                    survivingFiles.add(runnerFile.toString());
+                    warning = true;
                 }
             }
         }
@@ -67,6 +70,10 @@ public class FilesDeleterStep extends AbstractStepDefinition {
 
         context.storeDataValue("DELETION_STATS",deletionStats);
         context.storeDataValue("DELETED_LIST",survivingFiles);
+        if (warning) {
+            context.addSummaryLine("Files Deleter","Failed to delete "+ survivingFiles.size() +" file");
+            return StepResult.WARNING;
+        }
         //car :number of successfully deleted files
         //cdr :number of unsuccessfully deleted files
         context.addSummaryLine("Files Deleter","Success to delete file");

@@ -7,7 +7,7 @@ public interface DataDefinitionDeclaration {
     String getName();
     String getFinalName();
     DataNecessity necessity();
-    String userString();
+    String getUserString();
     DataDefinition dataDefinition();
     void setFinalName(String name);
 

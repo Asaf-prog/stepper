@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.util.*;
 
 import javafx.util.Pair;
+import modules.step.api.StepDefinition;
 import modules.stepper.FlowDefinitionException;
 import modules.stepper.FlowDefinitionExceptionItems;
 
@@ -106,14 +107,47 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
     @Override
     public void validateFlowStructure() throws FlowDefinitionException {
-
+            checkIfTwoInputsOfTheSameAlias();
             uniqueOutputForStep();//4.1
             checkIfMandatoryInputsAreNotUserFriendly();//4.2
             checkIfWeDoCustomMappingOnStepThatNotExist();//4.3
             checkIfWeDoCustomMappingOnDDThatNotExist();//4.3
             checkIfExistAliasForFlowStepOrDataThatNotExist();//4.4
             checkIfTheFormalOutputsExist();//4.5
+
     }
+
+    private void checkIfTwoInputsOfTheSameAlias() throws FlowDefinitionException {
+        FlowLevelAlias alias,alias2;
+        for(int i=0;i<flowLevelAliases.size();i++){
+            alias=flowLevelAliases.get(i);
+            for(int j=i+1;j<flowLevelAliases.size();j++){
+                alias2=flowLevelAliases.get(j);
+                if(alias.getAlias().equals(alias2.getAlias())){
+                    CheckIfBothInputs(alias,alias2);
+                }
+            }
+        }
+    }
+
+    private void CheckIfBothInputs(FlowLevelAlias alias, FlowLevelAlias alias2) throws FlowDefinitionException {
+        boolean check1=IsAliasInputInStep(alias,getStepByName(alias.getSource()).getStepDefinition().inputs());//if input with the same name exist
+        boolean check2=IsAliasInputInStep(alias2,getStepByName(alias2.getSource()).getStepDefinition().inputs());//if input with the same name exist
+        if(check1 && check2){//both inputs with thw same name
+            String message = "The alias "+alias.getAlias()+" is used twice";
+            throw new FlowDefinitionException(FlowDefinitionExceptionItems.MORE_THEN_ONE_ALIAS_WITH_THE_SAME_NAME,message);
+        }
+    }
+
+    private boolean IsAliasInputInStep(FlowLevelAlias alias, List<DataDefinitionDeclaration> inputs) {
+        for(DataDefinitionDeclaration input:inputs){
+            if(input.getName().equals(alias.getSourceData())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void checkIfTheFormalOutputsExist()throws FlowDefinitionException{
         if (flowOutputs.get(0).equals(""))
             return;
@@ -127,14 +161,12 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void checkIfExistAliasForFlowStepOrDataThatNotExist()throws FlowDefinitionException {
         for (FlowLevelAlias Alias: flowLevelAliases){
             if (!checkIfTheStepAndTheDataThatWeDoAliasExist(Alias.getSource(),Alias.getSourceData())){
-                //need to check if the step exist and if the step exist check if the data definition exist
-                // need to check if the step name is null if he is null the step is do not exist
                 String stepName = checkIfTheStepExist(Alias.getSource());
                 if (stepName == null){
-                    String message = "The Step "+Alias.getSource()+" does not exist";
+                    String message = "The step "+Alias.getSource()+" does not exist";
                     throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW,message);
                 }else{
-                    String message = "The Step "+Alias.getSource()+" is  exist but the data definition "+ Alias.getSourceData()+" does not exist";
+                    String message = "The step "+Alias.getSource()+" is exist but the data definition "+ Alias.getSourceData()+" does not exist";
                     throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_ALIAS_FOR_DATA_OR_STEP_THAT_NOT_EXIST_IN_FLOW,message);
                 }
             }

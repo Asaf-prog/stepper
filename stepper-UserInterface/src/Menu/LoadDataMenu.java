@@ -62,10 +62,9 @@ public class LoadDataMenu {
             } catch (InputMismatchException e) {
                 System.out.println("Your input is not a valid string, xml file is invalid");
                 System.out.println("Please enter a valid path to the xml file");
-                getXmlDataFromUser();
-                return;
+                continue;
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.getMessage());//for stepper and flow definition exceptions!!
                 System.out.println("Failed to load stepper try again or enter 0 to go back to main menu");
             }
 

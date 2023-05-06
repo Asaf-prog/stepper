@@ -3,7 +3,6 @@ package modules.flow.definition.api;
 import javafx.util.Pair;
 import modules.Map.CustomMapping;
 import modules.Map.FlowLevelAlias;
-import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.FlowDefinitionException;
 

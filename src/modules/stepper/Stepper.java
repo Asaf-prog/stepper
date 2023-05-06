@@ -121,14 +121,13 @@ public class Stepper implements Serializable {
     }
 
     public void validateStepper() throws StepperDefinitionException, FlowDefinitionException {
-        flows.forEach(flow -> {
-            initializedInputAndOutput(flow.getSteps(),flow.getFlowLevelAliases());
+        for (FlowDefinitionImpl flowDefinition : flows) {
+            initializedInputAndOutput(flowDefinition.getSteps(), flowDefinition.getFlowLevelAliases());
             this.updateAliasesPerStep();
-            flow.setFinalNames();
-            flow.createFlowFreeInputs();//including one for user input
-            flow.setReadOnlyState();
-
-        });
+            flowDefinition.setFinalNames();
+            flowDefinition.createFlowFreeInputs();//including one for user input
+            flowDefinition.setReadOnlyState();
+        }
         //Stepper Validate
         validateFlowsUniqueName();
         for (FlowDefinitionImpl flow : flows) {
@@ -192,11 +191,14 @@ public class Stepper implements Serializable {
        }
        return false;
     }
-    public void updateAliasesPerStep() {
+    public void updateAliasesPerStep() throws FlowDefinitionException {
         for (FlowDefinitionImpl flow : flows) {
             for (FlowLevelAlias alias : flow.getFlowLevelAliases()) {
                 StepUsageDeclaration stepToAdd=flow.getStepByName(alias.getSource());
-                stepToAdd.addAlias(alias.getSourceData(),alias.getAlias());
+                if (stepToAdd==null)//step not found flow definition exception
+                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.STEP_IN_ALIAS_NOT_FOUND,alias.getSource());
+                else
+                    stepToAdd.addAlias(alias.getSourceData(),alias.getAlias());
             }
         }
     }

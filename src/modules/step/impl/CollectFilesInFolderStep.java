@@ -32,7 +32,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         Optional<String> folderNameOptional = Optional.ofNullable(context.getDataValue("FOLDER_NAME", String.class));
         Optional<String> filterOptional = Optional.ofNullable(context.getDataValue("FILTER", String.class));
-
+//todo filter change to end of name of file
         if (folderNameOptional.isPresent()) {
             String folderName = folderNameOptional.get();
             Path path = Paths.get(folderName);//folder path
@@ -71,7 +71,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                 try {
                     fileList = Files.list(path)
                             .filter(Files::isRegularFile)
-                            .filter(p -> p.getFileName().toString().contains(filter))
+                            .filter(p -> p.getFileName().toString().endsWith(filter))
                             .map(Path::toFile)
                             .collect(Collectors.toList());
                 } catch (IOException e) {

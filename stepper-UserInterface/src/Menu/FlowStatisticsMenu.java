@@ -1,23 +1,21 @@
 package Menu;
 
-import com.sun.javaws.IconUtil;
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
 import modules.dataDefinition.impl.file.FileData;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.step.api.DataDefinitionDeclaration;
-import modules.step.api.StepDefinition;
 import modules.stepper.Stepper;
 
-import java.nio.file.Path;
 import java.util.*;
 
 public class FlowStatisticsMenu {
     public static void displayMenu() throws MenuException {
 
         Stepper stepperData = DataManager.getData();
-        //todo check if stepperData if so null and throw exception
+        if(stepperData==null)
+            throw new MenuException(MenuExceptionItems.EMPTY,"No Data Loaded");
         System.out.println("---Flow Statistics Menu---");
         System.out.println("Choose a flow to get its Stats:");
         int i = 1;
@@ -25,38 +23,43 @@ public class FlowStatisticsMenu {
             System.out.println("No flow executions to show");
             return;
         } else {
-            System.out.println("(0) Back");
+            StringBuilder sb = new StringBuilder();
+            sb.append("(0) Back\n");
             for (FlowExecution exe : stepperData.getFlowExecutions()) {
                 String StartTime = exe.getStartDateTime();
-                System.out.println("(" + i + ") " + exe.getFlowDefinition().getName() + "  Occurred on " + StartTime);
+                sb.append("(").append(i).append(") ").append(exe.getFlowDefinition().getName()).append("  Occurred on ").append(StartTime).append("\n");
                 i++;
             }
-            try {
-                Scanner input = new Scanner(System.in);
-                Optional<Integer> choiceTry = Optional.of(input.nextInt());
-                if (!choiceTry.isPresent())
-                    throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " wrrong input for choice in");
-                int choice = choiceTry.get();
-                if (choice == MainMenuItems.MAIN_MENU.getValue())
-                    return;
-                if (choice > stepperData.getFlowExecutions().size() || choice < 1) {
-                    System.out.println("No such option , try again");
-                    displayMenu();
-                }
-                PresentFlowStats(stepperData.getFlowExecutionById(stepperData.getFlowExecutions().get(choice - 1).getUniqueId()));
-            } catch (Exception e) {
-                if (e instanceof InputMismatchException) {
-                    throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " Flow Statistics Menu");
-                } else if (e instanceof MenuException) {
+            String menuString = sb.toString();
+            System.out.println(menuString);
+            Scanner input = new Scanner(System.in);
+            while (true) {//loop until user choose back
+                try {//try to get user input
+                    Optional<Integer> choiceTry = Optional.of(input.nextInt());
+                    if (!choiceTry.isPresent())
+                        throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " wrong input for choice in Flow Statistics Menu");
+                    int choice = choiceTry.get();
+                    if (choice == MainMenuItems.MAIN_MENU.getValue())
+                        return;
+                    if (choice > stepperData.getFlowExecutions().size() || choice < 1) {
+                        System.out.println("No such option , try again");
+                        continue;
+                    }
+                    PresentFlowStats(stepperData.getFlowExecutionById(stepperData.getFlowExecutions().get(choice - 1).getUniqueId()));//present flow stats
+                    System.out.println("Choose a flow to get its Stats:");
+                    System.out.println(menuString);//print menu again when coming back from presenting flow stats
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input, please try again");
+                    input.next();
+                } catch (Exception e) {//catch any other exception
                     throw new MenuException(MenuExceptionItems.EMPTY, " Flow Statistics Menu");
-                } else
-                    throw new MenuException(MenuExceptionItems.EMPTY, " Prob a missing information problem");//todo change it
+                }
             }
         }
     }
 
 
-    private static void PresentFlowStats(FlowExecution singleExecution) {
+    private static void PresentFlowStats(FlowExecution singleExecution) {//present flow stats
         System.out.println("Flow name: " + singleExecution.getFlowDefinition().getName());
         System.out.println("ID: " + singleExecution.getUniqueId());
         System.out.println("And finish with " + singleExecution.getFlowExecutionResult().name());
@@ -69,51 +72,69 @@ public class FlowStatisticsMenu {
                 "(2) Show information about all outputs in the flow\n" +
                 "(3) Show step execution statistics\n"+
                 "(4) Show all flow logs list\n";
-        int choice = 69;
-    while(choice!=0){
-        //present menu
-        System.out.print(menuOptions);
-        while (choice > 0 || choice < 4 || choice==69) {
+        int choice=69;
+        while(choice!=0) {
+            System.out.print(menuOptions);
+            while (true) {
+                try {
+                    choice = input.nextInt();
+                    if (choice < 0 || choice > 4) {
+                        System.out.println("No such option, try again");
+                        continue;
+                    }
+                    else
+                        break;
+                } catch (InputMismatchException e) {
+                    System.out.println("You need to enter a number,try again ");
+                    input.next();
+                    continue;
+                }
+            }
             try {
-                choice = input.nextInt();
-                break;
-            } catch(InputMismatchException e){
-                System.out.println("You need to enter a number,try again ");
-                input.next();
+                switch (choice) {
+                    case 0:
+                        return;//main menu
+                    case 1:
+                        presentInformationOfAllFreeInputs(singleExecution);//show free inputs info
+                        continue;
+                    case 2:
+                        presentInformationAboutOutputsInFlow(singleExecution);//show outputs info
+                        continue;
+                    case 3:
+                        PresentStepExecutionStats(singleExecution);//show step execution stats
+                        continue;
+                    case 4:
+                        presentAllFlowLogs(singleExecution);//show all flow logs
+                        continue;
+                    default:
+                        System.out.println("No such option, try again");
+                        break;
+
+                }
+            }catch (Exception e){
+                System.out.println("Something went wrong, try again");
+                continue;
+            }
         }
-    }
-        switch (choice) {
-            case 0:
-                return;//main menu
-            case 1:
-                presentInformationOfAllFreeInputs(singleExecution);//add this as an option of input
-                break;
-            case 2:
-                presentInformationAboutOutputsInFlow(singleExecution);//also this
-                break;
-            case 3:
-                PresentStepExecutionStats(singleExecution);
-                break;
-            case 4:
-                presentAllFlowLogs(singleExecution);
-                break;
-            default:
-                System.out.println("No such option, try again");
-                break;
-
-        }
-    }
 
     }
 
-    private static void presentAllFlowLogs(FlowExecution singleExecution) {
+    private static void presentAllFlowLogs(FlowExecution singleExecution) {//as it sounds
         if (singleExecution.getLogs().isEmpty()){
             System.out.println("No logs to show");
             return;
         }
         int i=1;
         for (StepUsageDeclaration step : singleExecution.getFlowDefinition().getFlowSteps()){
+            if (singleExecution.getLogs()==null){
+                System.out.println(" No logs to show for this step");
+                continue;
+            }
             System.out.println("Step "+step.getFinalStepName()+" logs:");
+            if (singleExecution.getLogs().size()==0){
+                System.out.println("No logs for this step");
+                continue;
+            }
             for (Pair<String,String> log : singleExecution.getLogs().get(step.getFinalStepName())){
                 System.out.println("("+i+") "+log.getKey()+" - "+log.getValue()+"\n");
                 i++;
@@ -143,7 +164,7 @@ public class FlowStatisticsMenu {
             }
             System.out.print("("+i+") ");
             System.out.print(outputKey);
-            if(outputValue instanceof ArrayList){
+            if(outputValue instanceof ArrayList){//print an arraylist
                 System.out.print(" ,Type: List");
                 System.out.println(" ,Content:  ");
                 for (Object o : (ArrayList) outputValue) {
@@ -191,7 +212,7 @@ public class FlowStatisticsMenu {
         System.out.println("Press enter to continue...");
         input.nextLine();
     }
-    private static String freeFromUserGetByVal(List<Pair<String,String>> freeFromUser ,String nameToFind){
+    private static String freeFromUserGetByVal(List<Pair<String,String>> freeFromUser ,String nameToFind){//get  free input by name
         for (Pair<String, String> pair : freeFromUser) {
             if (pair.getKey().equals(nameToFind)) {
                 return pair.getValue();
@@ -199,7 +220,7 @@ public class FlowStatisticsMenu {
         }
         return null;
     }
-    private static void PresentStepExecutionStats(FlowExecution singleExecution) {
+    private static void PresentStepExecutionStats(FlowExecution singleExecution) {//present step execution stats
         System.out.println("Choose step to get his stats");
         int i = 1;
         Scanner input = new Scanner(System.in);
@@ -233,16 +254,24 @@ public class FlowStatisticsMenu {
         System.out.print("Step name: " + stepUsageDeclaration.getFinalStepName());
         System.out.println(" ,Took about: " +stepUsageDeclaration.getTotalTime().toMillis() + " MS");
         System.out.println("And finish with " + stepUsageDeclaration.getStepResult());
-        ShowFlowLogs(logs.get(stepUsageDeclaration.getFinalStepName()));
-        System.out.println("Summery line : " + summaryLines.get(stepUsageDeclaration.getFinalStepName()));
+        if(logs.get(stepUsageDeclaration.getFinalStepName()) ==null){
+            System.out.println("No logs for this step");
+        }
+        else
+            ShowStepLogs(logs.get(stepUsageDeclaration.getFinalStepName()));
+        if(summaryLines.get(stepUsageDeclaration.getFinalStepName()) ==null){
+            System.out.println("No summary line for this step");
+        }
+        else {
+            System.out.println("Summery line : " + summaryLines.get(stepUsageDeclaration.getFinalStepName()));
+        }
         Scanner input = new Scanner(System.in);
         System.out.println("Press enter to continue...");
         input.nextLine();
 
     }
 
-    private static void ShowFlowLogs(List<Pair<String, String>> logsOfStep) {
-
+    private static void ShowStepLogs(List<Pair<String, String>> logsOfStep) {
         System.out.println("Logs:");
         int i= 1;
         for (Pair<String, String> pair : logsOfStep) {

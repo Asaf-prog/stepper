@@ -35,7 +35,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         int numOfFiles=filesToRename.size();
         if (filesToRename == null){
             context.addSummaryLine("Files Renamer","Name of file not entered");
-            return StepResult.SUCCESS;
+            return StepResult.FAILURE;
         }
         for (FileData f : filesToRename) {
             fileBeforeChange.add(f.getName());//check if really the name and not the path!!!
