@@ -39,6 +39,7 @@ public class FilesContentExtractor extends AbstractStepDefinition {
             List<String> cols = Arrays.asList(new String[]{"Serial Number", "Name Of File", "Data in specific line"});
             RelationData table = new RelationData(cols);
             BufferedReader reader = null;
+            boolean success= false;
             int index = 1;
             try {
                 for (FileData specificFile : FileList) {
@@ -69,22 +70,26 @@ public class FilesContentExtractor extends AbstractStepDefinition {
                         warn = true;
                     }
                 }
-                context.storeDataValue("DATA", table);
                 if (warn) {
                     context.addSummaryLine("Files Content Extractor ", "End with Warning because some file failed.");
-                    return StepResult.WARNING;
 
                 } else {
                     context.addSummaryLine("Files Content Extractor ", "End with Success");
-                    return StepResult.SUCCESS;
+                    success = true;
                 }
             } catch (Exception e) {
                 context.setLogsForStep("Files Content Extractor ", "Problem extracting line number" + lineNumber + " from file " + FileList.get(index).getName());
                 warn = true;
             } finally {
                 context.storeDataValue("DATA", table);
-                context.setLogsForStep("Files Content Extractor ", "Problem extracting line number" + lineNumber + " from file " + FileList.get(index).getName());
-                return StepResult.FAILURE;
+                if(success)
+                    return StepResult.SUCCESS;
+                if(warn)
+                    return StepResult.WARNING;
+                else
+                    return StepResult.FAILURE;
+
+                //context.setLogsForStep("Files Content Extractor ", "Problem extracting line number" + lineNumber + " from file " + FileList.get(index).getName());
             }
         }
     }

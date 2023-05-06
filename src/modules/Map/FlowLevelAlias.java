@@ -1,5 +1,9 @@
 package modules.Map;
 
+import modules.flow.definition.api.StepUsageDeclaration;
+import modules.step.api.DataDefinitionDeclaration;
+import modules.step.api.DataDefinitionDeclarationImpl;
+
 import java.io.Serializable;
 
 public class FlowLevelAlias implements HasSource<String> , Serializable {
@@ -36,4 +40,15 @@ public class FlowLevelAlias implements HasSource<String> , Serializable {
         return "Aliasing for step: " + step + " with data called" + sourceDataName + " AKA " + alias;
     }
 
+    public Class<?> getAliasType(StepUsageDeclaration step) {
+        for(DataDefinitionDeclaration dd :step.getStepDefinition().inputs()) {
+            if(dd.getFinalName().equals(sourceDataName))
+                return dd.dataDefinition().getType();
+        }
+        for(DataDefinitionDeclaration dd :step.getStepDefinition().outputs()) {
+            if(dd.getFinalName().equals(sourceDataName))
+                return dd.dataDefinition().getType();
+        }
+        return null;
+    }
 }

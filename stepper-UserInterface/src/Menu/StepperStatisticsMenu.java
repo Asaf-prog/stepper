@@ -76,7 +76,6 @@ public class StepperStatisticsMenu {
         List<StepUsageDeclaration> steps=flowDefinition.getSteps();
         Scanner input = new Scanner(System.in);
         int choice=69;
-        //TODO: add validation
         while(choice!=MainMenuItems.MAIN_MENU.getValue()) {
             presentFlowSteps(steps);
             choice = input.nextInt();

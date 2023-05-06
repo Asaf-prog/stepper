@@ -10,11 +10,11 @@ import modules.step.api.StepResult;
 public class SpendSomeTimeStep extends AbstractStepDefinition {
     public SpendSomeTimeStep() {
         super("SpendSomeTime", true);
-        addInput(new DataDefinitionDeclarationImpl("Time_To_Spend", DataNecessity.MANDATORY, "Time", DataDefinitionRegistry.NUMBER));
+        addInput(new DataDefinitionDeclarationImpl("TIME_TO_SPEND", DataNecessity.MANDATORY, "Total sleeping time", DataDefinitionRegistry.NUMBER));
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        int seconds = context.getDataValue("Time_To_Spend", Integer.class);
+        int seconds = context.getDataValue("TIME_TO_SPEND", Integer.class);
         try{
             if (seconds <= 0) {
                 System.out.println("Invalid input");

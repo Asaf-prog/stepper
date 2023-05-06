@@ -13,8 +13,8 @@ public enum FlowDefinitionExceptionItems {
     THIS_IS_NOT_THE_FORMAL_OUTPUT("This is not the formal output"),
     FLOW_HAS_STEP_THAT_DOES_NOT_EXIST("Flow has step that does not exist, the step name is: "),
     STEP_IN_ALIAS_NOT_FOUND("Step in alias not found, the step name is: "),
-    MORE_THEN_ONE_ALIAS_WITH_THE_SAME_NAME("More then one alias with the same name, the alias name is: ")
-    ;
+    MORE_THEN_ONE_ALIAS_WITH_THE_SAME_NAME("More then one alias with the same name, the alias name is: "),
+    CANNOT_CONNECT_TWO_INPUTS_WITH_DIF_TYPES("Cannot connect two inputs with different types");
 
     private final String message;
 

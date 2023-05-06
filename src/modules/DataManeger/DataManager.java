@@ -42,7 +42,6 @@ public class DataManager {
         if (!path.isPresent()) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
         }
-        //todo validate input
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
             out.writeObject(stepperData);
             return true;

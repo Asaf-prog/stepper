@@ -268,9 +268,10 @@ public class FlowExecutionMenu {
                 }else{
                     System.out.println(" ,No outputs were generated during the flow execution.");
                 }
-                System.out.println("Press enter to continue");
+                System.out.println("Press enter twice to continue :)");
                 Scanner input = new Scanner(System.in);
                 input.nextLine();
+                return;
             } else
                 System.out.println();
         } catch (Exception e) {

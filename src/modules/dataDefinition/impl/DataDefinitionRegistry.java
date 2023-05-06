@@ -12,7 +12,7 @@ import modules.dataDefinition.impl.json.JsonDataDifinition;
 import modules.dataDefinition.impl.list.ListDataDefinition;
 import modules.dataDefinition.impl.number.NumberDataDefinition;
 
-public enum DataDefinitionRegistry implements DataDefinition {//todo add all of the DD
+public enum DataDefinitionRegistry implements DataDefinition {
     STRING(new StringDataDefinition()),
     NUMBER(new NumberDataDefinition()),
     DOUBLE(new DoubleDataDefinition()),

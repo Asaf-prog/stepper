@@ -20,8 +20,6 @@ public class FileData  implements Serializable {
 
 
 
-    //todo add more thing we need about file in our system
-
     public FileData(String name) {
         this.name = name;
     }

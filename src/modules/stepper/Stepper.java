@@ -17,7 +17,6 @@ package modules.stepper;
  import java.util.*;
 
 public class Stepper implements Serializable {
-    public static int idCounter;
     List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
 
@@ -37,15 +36,10 @@ public class Stepper implements Serializable {
         }
         return null;
     }
-    public static int GetUniqueID(){
-        idCounter=529;
-        return Integer.valueOf(idCounter).hashCode();
-    }
 
     public Stepper(){
         flows = new ArrayList<>();
         flowExecutions = new ArrayList<>();
-        idCounter= 529;
     }
 
     public void setFlows(List<FlowDefinitionImpl> flows) {
@@ -122,7 +116,7 @@ public class Stepper implements Serializable {
 
     public void validateStepper() throws StepperDefinitionException, FlowDefinitionException {
         for (FlowDefinitionImpl flowDefinition : flows) {
-            initializedInputAndOutput(flowDefinition.getSteps(), flowDefinition.getFlowLevelAliases());
+            initializedInputAndOutput(flowDefinition.getSteps(), flowDefinition.getFlowLevelAliases());//automatic mapping
             this.updateAliasesPerStep();
             flowDefinition.setFinalNames();
             flowDefinition.createFlowFreeInputs();//including one for user input
@@ -194,11 +188,11 @@ public class Stepper implements Serializable {
     public void updateAliasesPerStep() throws FlowDefinitionException {
         for (FlowDefinitionImpl flow : flows) {
             for (FlowLevelAlias alias : flow.getFlowLevelAliases()) {
-                StepUsageDeclaration stepToAdd=flow.getStepByName(alias.getSource());
-                if (stepToAdd==null)//step not found flow definition exception
+                StepUsageDeclaration stepToAddTo =flow.getStepByName(alias.getSource());
+                if (stepToAddTo ==null)//step not found flow definition exception
                     throw new FlowDefinitionException(FlowDefinitionExceptionItems.STEP_IN_ALIAS_NOT_FOUND,alias.getSource());
                 else
-                    stepToAdd.addAlias(alias.getSourceData(),alias.getAlias());
+                    stepToAddTo.addAlias(alias.getSourceData(),alias.getAlias());
             }
         }
     }

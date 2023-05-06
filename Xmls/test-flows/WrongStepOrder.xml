@@ -16,7 +16,7 @@
 				<ST-FlowLevelAlias step="Collector" source-data-name="FILES_LIST" alias="FILES"/>
 				<ST-FlowLevelAlias step="Extractor" source-data-name="FILES_LIST" alias="FILES"/>
 				<ST-FlowLevelAlias step="Extractor" source-data-name="DATA" alias="EXTRACTED"/>
-				<ST-FlowLevelAlias step="Exporter" s3ource-data-name="SOURCE" alias="EXTRACTED"/>
+				<ST-FlowLevelAlias step="Exporter" source-data-name="SOURCE" alias="EXTRACTED"/>
 				<ST-FlowLevelAlias step="Dumper" source-data-name="RESULT" alias="RES"/>
 				<ST-FlowLevelAlias step="Dumper" source-data-name="CONTENT" alias="RESULT"/>
 				<ST-FlowLevelAlias step="Deleter" source-data-name="FILES_LIST" alias="FILES"/>

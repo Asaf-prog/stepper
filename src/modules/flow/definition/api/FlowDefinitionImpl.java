@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.util.*;
 
 import javafx.util.Pair;
-import modules.step.api.StepDefinition;
 import modules.stepper.FlowDefinitionException;
 import modules.stepper.FlowDefinitionExceptionItems;
 
@@ -114,7 +113,56 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             checkIfWeDoCustomMappingOnDDThatNotExist();//4.3
             checkIfExistAliasForFlowStepOrDataThatNotExist();//4.4
             checkIfTheFormalOutputsExist();//4.5
+            checkIfAllConnectionsAreValid();
 
+    }
+//todo !!!!!
+    private void checkIfAllConnectionsAreValid() throws FlowDefinitionException {
+        for (int i = 0; i < flowLevelAliases.size(); i++) {
+            FlowLevelAlias alias = flowLevelAliases.get(i);
+            DataDefinitionDeclaration dd1 = findDDOutput(alias);//if not output then null
+            if (dd1 != null) {//alias is output
+                //go through each step and check if we have input with the same type
+                for (int j = i + 1; i < flowLevelAliases.size(); i++) {
+                    if(j==flowLevelAliases.size()){
+                        break;
+                    }
+                    FlowLevelAlias alias2 = flowLevelAliases.get(j);
+                    if (alias2.getAlias().equals(alias.getAlias())){
+                        for (StepUsageDeclaration step : this.steps) {
+                            String aliasComp = step.getInputFromNameToAlias().get(alias2.getSourceData());
+                            if (aliasComp != null) {//means its exist
+                                DataDefinitionDeclaration dd2 = findDDInput(alias2);
+                                if (dd1.dataDefinition().getType() != dd2.dataDefinition().getType()) {
+                                    String message = "The alias " + alias.getAlias() + " is used twice in two different types 1."
+                                            + dd1.dataDefinition().getType().getSimpleName() + " 2." + dd2.dataDefinition().getType().getSimpleName();
+                                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.CANNOT_CONNECT_TWO_INPUTS_WITH_DIF_TYPES, message);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    private DataDefinitionDeclaration findDDInput(FlowLevelAlias alias) {
+        for(DataDefinitionDeclaration dd:this.getStepByName(alias.getSource()).getStepDefinition().inputs() ){
+            if(dd.getFinalName().equals(alias.getSourceData())){
+                return dd;
+            }
+        }
+            return null;
+    }
+
+    private DataDefinitionDeclaration findDDOutput(FlowLevelAlias alias) {
+       for(DataDefinitionDeclaration dd:this.getStepByName(alias.getSource()).getStepDefinition().outputs() ){
+           if(dd.getFinalName().equals(alias.getSourceData())){
+               return dd;
+           }
+        }
+        return null;
     }
 
     private void checkIfTwoInputsOfTheSameAlias() throws FlowDefinitionException {
@@ -131,21 +179,24 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     }
 
     private void CheckIfBothInputs(FlowLevelAlias alias, FlowLevelAlias alias2) throws FlowDefinitionException {
-        boolean check1=IsAliasInputInStep(alias,getStepByName(alias.getSource()).getStepDefinition().inputs());//if input with the same name exist
-        boolean check2=IsAliasInputInStep(alias2,getStepByName(alias2.getSource()).getStepDefinition().inputs());//if input with the same name exist
-        if(check1 && check2){//both inputs with thw same name
-            String message = "The alias "+alias.getAlias()+" is used twice";
-            throw new FlowDefinitionException(FlowDefinitionExceptionItems.MORE_THEN_ONE_ALIAS_WITH_THE_SAME_NAME,message);
-        }
-    }
+        Class<?> type1=null,type2 = null;
+        type1=IsAliasInputInStep(alias,getStepByName(alias.getSource()).getStepDefinition().inputs());//if input return his type else null
+        type2=IsAliasInputInStep(alias2,getStepByName(alias2.getSource()).getStepDefinition().inputs());
+       if(type1 != null && type2!=null)//both inputs with thw same name
+            if(type1!=type2){//and not the same type
+                String message = "The alias "+alias.getAlias()+" is used twice";
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.MORE_THEN_ONE_ALIAS_WITH_THE_SAME_NAME,message);
+            }
 
-    private boolean IsAliasInputInStep(FlowLevelAlias alias, List<DataDefinitionDeclaration> inputs) {
+        }
+
+    private Class<?> IsAliasInputInStep(FlowLevelAlias alias, List<DataDefinitionDeclaration> inputs) {
         for(DataDefinitionDeclaration input:inputs){
             if(input.getName().equals(alias.getSourceData())){
-                return true;
+                return input.dataDefinition().getType();
             }
         }
-        return false;
+        return null;
     }
 
     public void checkIfTheFormalOutputsExist()throws FlowDefinitionException{
@@ -208,7 +259,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         for (CustomMapping custom:customMappings){
             if (!(checkIfThisDDExistInCustomMappingInListOfInputs(custom.getTargetData()) &&
                     checkIfThisDDExistInCustomMappingInListOfOutputs(custom.getSourceData()))){
-                String DDCustomNotExist = "The custom mapping is: "+findTheDDThatNotExist(custom.getTargetData(),custom.getSourceData());
+                String DDCustomNotExist = "The custom mapping is: "+findTheDDThatNotExist(custom.getTargetData(),custom.getSourceData())+" from Step "+(custom.getSource()+".");
                 throw new FlowDefinitionException(FlowDefinitionExceptionItems.DEFINE_CUSTOM_MAPPING_FOR_DATA_THAT_NOT_EXIST_IN_FLOW,DDCustomNotExist);
             }
         }
