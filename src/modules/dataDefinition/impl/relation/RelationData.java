@@ -90,6 +90,5 @@ public class RelationData implements Serializable {
         public void addData(int columnNum, String value) {
             data.add(columnNum, value);
         }
-        // todo=> add a new line, add a new row
     }
 }

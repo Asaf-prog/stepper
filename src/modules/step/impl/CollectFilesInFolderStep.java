@@ -32,7 +32,6 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         Optional<String> folderNameOptional = Optional.ofNullable(context.getDataValue("FOLDER_NAME", String.class));
         Optional<String> filterOptional = Optional.ofNullable(context.getDataValue("FILTER", String.class));
-//todo filter change to end of name of file
         if (folderNameOptional.isPresent()) {
             String folderName = folderNameOptional.get();
             Path path = Paths.get(folderName);//folder path

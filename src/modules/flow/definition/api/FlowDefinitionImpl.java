@@ -116,7 +116,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             checkIfAllConnectionsAreValid();
 
     }
-//todo !!!!!
     private void checkIfAllConnectionsAreValid() throws FlowDefinitionException {
         for (int i = 0; i < flowLevelAliases.size(); i++) {
             FlowLevelAlias alias = flowLevelAliases.get(i);
@@ -142,6 +141,32 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
                         }
                     }
 
+                }
+            }
+            else{
+                DataDefinitionDeclaration dd3 = findDDOutput(alias);
+                if (dd3 != null) {//alias is output
+                    //go through each step and check if we have input with the same type
+                    for (int j = i + 1; i < flowLevelAliases.size(); i++) {
+                        if (j == flowLevelAliases.size()) {
+                            break;
+                        }
+                        FlowLevelAlias alias2 = flowLevelAliases.get(j);
+                        if (alias2.getAlias().equals(alias.getAlias())) {
+                            for (StepUsageDeclaration step : this.steps) {
+                                String aliasComp = step.getInputFromNameToAlias().get(alias2.getSourceData());
+                                if (aliasComp != null) {//means its exist
+                                    DataDefinitionDeclaration dd4 = findDDOutput(alias2);
+                                    if (dd3.dataDefinition().getType() != dd4.dataDefinition().getType()) {
+                                        String message = "The alias " + alias.getAlias() + " is used twice in two different types 1."
+                                                + dd3.dataDefinition().getType().getSimpleName() + " 2." + dd4.dataDefinition().getType().getSimpleName();
+                                        throw new FlowDefinitionException(FlowDefinitionExceptionItems.CANNOT_CONNECT_TWO_INPUTS_WITH_DIF_TYPES, message);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
         }
