@@ -56,23 +56,19 @@ public class FlowExecution implements Serializable {//This class accumulates all
         this.executionFormalOutputs = executionOutputs;
     }
 
-    //todo  need to add extra information we would like to have about flow execution
-    //exceptions!!!
     public FlowExecution(FlowDefinition flowDefinition) {// Here, I am referring to a specific flow for tracing.
         this.uniqueId = GenerateUniqueID();//each flow execution has a unique id
         flowDefinition.addUsage();//for stats
         this.flowDefinition = flowDefinition;
         startTime = new Date();
 
-        //todo get all the info and statistics about the flow execution!!
-        //duration, number of steps, number of steps that failed,etc...
+        ///duration, number of steps, number of steps that failed,etc...
     }
 
     private UUID GenerateUniqueID() {
         return UUID.randomUUID();
     }
 
-    //todo func that update unique id when startup the program!!!
     public Instant startStepTimer() {
         return Instant.now();
     }

@@ -12,7 +12,8 @@ public enum StepDefinitionRegistry {
     PROPERTIES_EXPORTER(new PropertiesExporter()),
     CSV_EXPORTER(new CSVExporter()),
     FILES_CONTENT_EXTRACTOR(new FilesContentExtractor()),
-
+    ZIPPER(new Zipper()),
+    COMMAND_LINE(new CommandLine())
 
     ;//this is the real steps
     private final StepDefinition stepDefinition;

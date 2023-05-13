@@ -19,7 +19,11 @@ public enum DataDefinitionRegistry implements DataDefinition {
     RELATION(new RelationDataDefinition()),
     MAPPING(new MappingDataDefinition()),
     FILE(new FileDataDefinition()),
-    LIST(new ListDataDefinition());
+    LIST(new ListDataDefinition()),
+    ENUMERATION(new EnumeratorDataDefinition())
+
+    ;
+
 
 
     DataDefinitionRegistry(DataDefinition dataDefinition) {

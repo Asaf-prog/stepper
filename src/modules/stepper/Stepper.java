@@ -20,8 +20,6 @@ public class Stepper implements Serializable {
     List<FlowExecution> flowExecutions;
     List<FlowDefinitionImpl> flows;
 
-
-
     public List<FlowExecution> getFlowExecutions() {
         return flowExecutions;
     }
@@ -138,6 +136,8 @@ public class Stepper implements Serializable {
                 }
             }
     }
+    //this function we create in StepUsageDeclaration a map from the real name to the alias name.
+    //if  to this there is no alias the map will be from the real name to real name (map<String,String>(real_name,real_name).
     public void initializedInputAndOutput(List<StepUsageDeclaration> stepOfFlow, List<FlowLevelAlias> flowLevelAliases){
         for (StepUsageDeclaration step: stepOfFlow){
             for (FlowLevelAlias alias: flowLevelAliases){

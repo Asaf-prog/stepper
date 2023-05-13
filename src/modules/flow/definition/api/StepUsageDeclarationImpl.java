@@ -90,13 +90,17 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
             return false;
     }
     @Override
-    public void addToMapOfInput(String name,String alias){inputFromNameToAlias.put(name,alias);}
+    public void addToMapOfInput(String name,String alias){
+        inputFromNameToAlias.put(name,alias);}
     @Override
-    public void addToMapOfOutput(String name,String alias){outputFromNameToAlias.put(name,alias);}
+    public void addToMapOfOutput(String name,String alias){
+        outputFromNameToAlias.put(name,alias);}
     @Override
-    public void isCustomMapping(boolean bool){isCustom = bool;}
+    public void isCustomMapping(boolean bool){
+        isCustom = bool;}
    @Override
-    public boolean getIsCustomMapping(){return isCustom;}
+    public boolean getIsCustomMapping(){
+        return isCustom;}
     @Override
     public double getAvgTime() {
         return avgTime;
