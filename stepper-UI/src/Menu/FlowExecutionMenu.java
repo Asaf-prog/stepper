@@ -82,8 +82,7 @@ public class FlowExecutionMenu {
     private static boolean getUserInput(FlowDefinition flow) throws MenuException {
         String prompt = "Choose what to insert \n(0) Back \n(1) Mandatory inputs \n(2) Optional inputs \n(3) Done- and Execute ";
         System.out.println("for Flow :" + flow.getName() + " " + prompt);
-        List<Pair<String, DataDefinitionDeclaration>> freeInputRemain = new ArrayList<>();
-        freeInputRemain.addAll(flow.getFlowFreeInputs());
+        List<Pair<String, DataDefinitionDeclaration>> freeInputRemain = new ArrayList<>(flow.getFlowFreeInputs());
         List<Pair<String, DataDefinitionDeclaration>> mandatoryDataOptions = GetDataOptions(freeInputRemain, DataNecessity.MANDATORY);
         List<Pair<String, DataDefinitionDeclaration>> optionalDataOptions = GetDataOptions(freeInputRemain, DataNecessity.OPTIONAL);
         Scanner input = new Scanner(System.in);
