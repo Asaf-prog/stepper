@@ -2,7 +2,7 @@
   <artifact type="jar" name="stepper-UserInterface:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/stepper_UserInterface_jar</output-path>
     <root id="archive" name="stepper-UserInterface.jar">
-      <element id="module-output" name="stepper-UserInterface" />
+      <element id="module-output" name="stepper-UI" />
       <element id="module-output" name="stepper-Engine" />
       <element id="artifact" artifact-name="stepper-Engine:jar" />
     </root>

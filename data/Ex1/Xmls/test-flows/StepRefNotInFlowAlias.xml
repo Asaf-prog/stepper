@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ST-Stepper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Stepper-V1.xsd">
+    <ST-Flows>
+        <ST-Flow name="TestFlow1">
+            <ST-FlowDescription>Does some stuff for testing purposes</ST-FlowDescription>
+            <ST-FlowOutput></ST-FlowOutput>
+            <ST-StepsInFlow>
+                <ST-StepInFlow name="Spend Some Time" alias="Sleepy"/>
+            </ST-StepsInFlow>
+            <ST-FlowLevelAliasing>
+                <ST-FlowLevelAlias step="Sleepy" source-data-name="TIME_TO_SPEND" alias="TIME"/>
+                <ST-FlowLevelAlias step="Sleepy2" source-data-name="TIME_TO_SPEND" alias="TIME"/>
+            </ST-FlowLevelAliasing>
+        </ST-Flow>
+    </ST-Flows>
+</ST-Stepper>

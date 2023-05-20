@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/stepper_Engine_jar</output-path>
     <root id="archive" name="stepper-Engine.jar">
       <element id="module-output" name="stepper-Engine" />
-      <element id="module-output" name="stepper-UserInterface" />
+      <element id="module-output" name="stepper-UI" />
     </root>
   </artifact>
 </component>
