@@ -1,5 +1,6 @@
 package app.management;
 
+import app.MVC_controller.MVC_controller;
 import app.body.bodyController;
 import app.header.headerController;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ public class mainController {
    @FXML private headerController headerComponentController;
    @FXML private Parent bodyComponent;
    @FXML private bodyController bodyComponentController;
+   private MVC_controller mvcController;
    public void PresentTpBodyFlowDefinition(){
 
    }
@@ -22,6 +24,11 @@ public class mainController {
       if (headerComponentController != null && bodyComponentController != null) {
          headerComponentController.setMainController(this);
          bodyComponentController.setMainController(this);
+
+         //initialize a controller that communicate with the engine
+         mvcController = new MVC_controller(this,headerComponentController,bodyComponentController);
+         bodyComponentController.setMVCController(mvcController);
+         headerComponentController.setMVCController(mvcController);
       }
    }
    public void setFlows(List<FlowDefinitionImpl> f){

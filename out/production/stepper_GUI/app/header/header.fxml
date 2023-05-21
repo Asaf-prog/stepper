@@ -3,34 +3,49 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
-      <VBox prefHeight="199.0" prefWidth="495.0">
+      <VBox prefHeight="199.0" prefWidth="495.0" style="-fx-background-color: #1d3557;">
          <children>
-            <Label alignment="TOP_CENTER" prefHeight="54.0" prefWidth="611.0" text="STEPPER" VBox.vgrow="ALWAYS">
+            <Label alignment="TOP_CENTER" prefHeight="54.0" prefWidth="611.0" text="STEPPER" textFill="#139fed" VBox.vgrow="ALWAYS">
                <font>
-                  <Font size="37.0" />
+                  <Font size="48.0" />
                </font>
             </Label>
             <HBox prefHeight="42.0" prefWidth="600.0" spacing="10.0">
                <children>
-                  <Button fx:id="path" alignment="CENTER" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="25.0" prefWidth="112.0" text="Load XML" />
-                  <TextField prefHeight="25.0" prefWidth="167.0" promptText="load xml" />
+                  <Button fx:id="path" alignment="CENTER" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="25.0" prefWidth="112.0" text="Load XML" textFill="#2a9726">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <TextArea fx:id="loaded" maxHeight="37.0" maxWidth="506.0" prefHeight="37.0" prefWidth="506.0" promptText="load xml" />
                </children>
             </HBox>
-            <HBox prefHeight="78.0" prefWidth="600.0" spacing="20.0">
+            <HBox prefHeight="52.0" prefWidth="585.0" spacing="20.0">
                <children>
-                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefHeight="6.0" prefWidth="101.0" text="Flows Definition" />
-                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" text="Statistics" />
-                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" text=" Flows Excution" />
-                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" text="Executions History" />
+                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefHeight="30.0" prefWidth="133.0" text="Flows Definition" textFill="#2a9726">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" prefHeight="30.0" prefWidth="95.0" text="Statistics" textFill="#2a9726">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" prefHeight="25.0" prefWidth="136.0" text=" Flows Excution" textFill="#2a9726">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Executions History" textFill="#2a9726">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" right="5.0" top="5.0" />
@@ -40,6 +55,9 @@
          <StackPane.margin>
             <Insets left="5.0" right="5.0" />
          </StackPane.margin>
+         <effect>
+            <Bloom threshold="1.0" />
+         </effect>
       </VBox>
    </children>
 </StackPane>

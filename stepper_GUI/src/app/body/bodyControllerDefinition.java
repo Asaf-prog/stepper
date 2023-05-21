@@ -9,4 +9,5 @@ public interface bodyControllerDefinition {
     void show();
     void setBodyController(bodyController body);
     void setFlowsDetails(List<FlowDefinitionImpl> list);
+    void SetCurrentFlow(FlowDefinitionImpl flow);
 }
