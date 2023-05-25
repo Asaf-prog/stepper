@@ -12,7 +12,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
-      <VBox prefHeight="199.0" prefWidth="495.0" style="-fx-background-color: #1d3557;">
+      <VBox prefHeight="199.0" prefWidth="495.0">
          <children>
             <Label alignment="TOP_CENTER" prefHeight="54.0" prefWidth="611.0" text="STEPPER" textFill="#139fed" VBox.vgrow="ALWAYS">
                <font>
@@ -42,7 +42,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Executions History" textFill="#2a9726">
+                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" prefHeight="25.0" prefWidth="172.0" text="Executions History" textFill="#2a9726">
                      <font>
                         <Font size="14.0" />
                      </font></Button>

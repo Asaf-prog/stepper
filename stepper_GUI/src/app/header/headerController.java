@@ -43,8 +43,14 @@ public class headerController {
     }
     @FXML
     void FlowsExecutionFunc(ActionEvent event) {
-
+        main.FlowsExecutionInMenu();
     }
+    @FXML
+    void ExecutionsHistoryFunc(ActionEvent event) {
+        main.showHistoryExe();
+    }
+
+
     @FXML
     void StatisticsFunc(ActionEvent event) {
 
@@ -61,6 +67,7 @@ public class headerController {
                 GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
                 FlowsExecution.setDisable(false);
                 FlowsDefinition.setDisable(false);
+               // ExecutionsHistory.setDisable(false);//***
                 loaded.clear();
                 loaded.appendText(selectedFile.getPath());
 
@@ -69,6 +76,9 @@ public class headerController {
                 throw new RuntimeException(e);
             }
         }
+    }
+    public void setDisableOnExecutionsHistory(){
+        ExecutionsHistory.setDisable(false);
     }
     private  void inisilaized(){
         Stepper stepperData = DataManager.getData();

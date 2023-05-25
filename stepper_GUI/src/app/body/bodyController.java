@@ -51,7 +51,6 @@ public class bodyController {
         }
     }
     public void executeExistFlowScreen(FlowDefinitionImpl flow) {
-        System.out.println(flow.getName());
         setCurrentFlow(flow);
         //need to supply the free inputs
         try {//first create a new body with the relevant free inputs and then update in context
@@ -62,11 +61,9 @@ public class bodyController {
 
             loadScreenWithCurrentFlow(fxmlLoader, url,flow);
 
-            controller.executeFlow(flow);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
     private void loadScreenWithCurrentFlow(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow) {
         try {
@@ -77,16 +74,32 @@ public class bodyController {
             bController.SetCurrentFlow(flow);
             bController.show();
 
+
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
+    public void showHistoryExe(){
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        URL url = getClass().getResource("ExecutionsHistory/ExecutionsHistory.fxml");
+        fxmlLoader.setLocation(url);
+        loadScreen(fxmlLoader, url);
+    }
+    public void showAllFlowAndExe(){
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        URL url = getClass().getResource("FlowExecutions/FlowExecutions.fxml");
+        fxmlLoader.setLocation(url);
+        loadScreen(fxmlLoader, url);
+    }
     public void setCurrentFlow(FlowDefinitionImpl flow){
         this.currentFlow = flow;
     }
     public FlowDefinitionImpl getCurrentFlow(){
         return currentFlow;
+    }
+    public MVC_controller getMVC_controller(){
+        return controller;
     }
 }

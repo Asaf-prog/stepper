@@ -37,7 +37,13 @@ public class mainController {
    public void showFlowDefinition() {
       bodyComponentController.showFlowDefinition();
    }
+   public void FlowsExecutionInMenu(){
+      bodyComponentController.showAllFlowAndExe();
+   }
    public List<FlowDefinitionImpl> getFlows(){
       return flows;
+   }
+   public void showHistoryExe(){
+      bodyComponentController.showHistoryExe();
    }
 }
