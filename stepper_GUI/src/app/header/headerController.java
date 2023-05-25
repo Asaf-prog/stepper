@@ -1,7 +1,6 @@
 package app.header;
 
 import app.MVC_controller.MVC_controller;
-import app.body.StatsScreen.StatsScreen;
 import app.management.mainController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,9 +47,14 @@ public class headerController {
     }
     @FXML
     void FlowsExecutionFunc(ActionEvent event) {
-
-
+        main.FlowsExecutionInMenu();
     }
+    @FXML
+    void ExecutionsHistoryFunc(ActionEvent event) {
+        main.showHistoryExe();
+    }
+
+
     @FXML
     void StatisticsFunc(ActionEvent event) {
         main.showStats();
@@ -66,11 +70,16 @@ public class headerController {
         if (selectedFile != null) {
             try {
                 GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
+
                 ActivateMenuButtons();
+
+                FlowsExecution.setDisable(false);
+                FlowsDefinition.setDisable(false);
+               // ExecutionsHistory.setDisable(false);//***
                 loaded.clear();
                 loaded.appendText(selectedFile.getPath());
 
-                inisilaized();
+                initialized();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -81,10 +90,14 @@ public class headerController {
         FlowsExecution.setDisable(false);
         FlowsDefinition.setDisable(false);
         Statistics.setDisable(false);
-        ExecutionsHistory.setDisable(false);
+        //ExecutionsHistory.setDisable(false);
     }
 
-    private  void inisilaized(){
+
+    public void setDisableOnExecutionsHistory(){
+        ExecutionsHistory.setDisable(false);
+    }
+    private void initialized(){
         Stepper stepperData = DataManager.getData();
         main.setFlows(stepperData.getFlows());
     }

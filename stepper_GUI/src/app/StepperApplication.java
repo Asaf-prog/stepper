@@ -12,7 +12,7 @@ public class StepperApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
-        Scene scene = new Scene(load,1280,720);
+        Scene scene = new Scene(load,720,720);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

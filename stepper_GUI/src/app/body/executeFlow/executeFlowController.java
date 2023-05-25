@@ -1,11 +1,16 @@
 package app.body.executeFlow;
 
+import app.MVC_controller.MVC_controller;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.step.api.DataDefinitionDeclaration;
@@ -15,11 +20,15 @@ import java.util.List;
 
 public class executeFlowController implements bodyControllerDefinition {
    private FlowDefinitionImpl currentFlow;
+    @FXML
+    private Button startExecute;
    private bodyController body;
+   private int sizeOfMandatoryList;
     @FXML
     private VBox mandatoryList;
     @FXML
     private VBox optionalList;
+    private List<Pair<String,String>> freeInputsTemp;
     @Override
     public void SetCurrentFlow(FlowDefinitionImpl flow){
         currentFlow = flow;
@@ -41,41 +50,49 @@ public class executeFlowController implements bodyControllerDefinition {
                 optionalInputs.add(pair);
             }
         }
+         freeInputsTemp = new ArrayList<>();
         for (Pair<String, DataDefinitionDeclaration> mandatory: mandatoryInputs){
-            Button button = new Button(mandatory.getKey());
-            button.setOnAction(e -> handleButtonAction(mandatory.getValue()));
-            mandatoryList.getChildren().add(button);
+            Label label = new Label(mandatory.getKey());
+            TextField textField = new TextField();
+
+            textField.setOnAction(e->handleButtonAction(textField.getText(),mandatory.getKey()));
+            textField.setPromptText(mandatory.getValue().getUserString());
+
+            mandatoryList.getChildren().add(label);
+            mandatoryList.getChildren().add(textField);
         }
         for (Pair<String, DataDefinitionDeclaration> optional: optionalInputs){
-            Button button = new Button(optional.getKey());
-            button.setOnAction(e -> handleButtonAction(optional.getValue()));
-            optionalList.getChildren().add(button);
+            Label label = new Label(optional.getKey());
+            TextField textField = new TextField();
+
+            textField.setOnAction(e->handleButtonAction(textField.getText(),optional.getKey()));
+            textField.setPromptText(optional.getValue().getUserString());
+
+            optionalList.getChildren().add(label);
+            optionalList.getChildren().add(textField);
+        }
+        setSizeOfMandatoryList(mandatoryInputs.size());
+       // currentFlow.setUserInputs(freeInputsTemp);
+    }
+    private void setSizeOfMandatoryList(int size){
+        this.sizeOfMandatoryList = size;
+    }
+    public int getSizeOfMandatoryList(){
+        return sizeOfMandatoryList;
+    }
+    @FXML
+    void startExecuteAfterGetFreeInputs(ActionEvent event) {
+        body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        body.getMVC_controller().executeFlow(currentFlow);
+    }
+    private void handleButtonAction(String data,String nameOfDD){
+        if(!data.isEmpty()){
+            freeInputsTemp.add(new Pair<>(nameOfDD,data));
+        }
+        if (freeInputsTemp.size() == getSizeOfMandatoryList()){
+            startExecute.setDisable(false);
         }
     }
-    private void handleButtonAction(DataDefinitionDeclaration dd){
-
-        TextField textField = new TextField();
-       textField.setVisible(true);
-        String userInput = textField.getText(); // Get the user's input from the text field
-        System.out.println("User Input: " + userInput);
-        textField.setVisible(true);
-
-        System.out.println(textField.getText());
-    }
-
-//    private void handleButtonAction(FlowDefinitionImpl flow){
-//        flowDescriptionTL.setVisible(true);
-//        FlowNameTL.setText(flow.getName());//name
-//        FlowNameTL.setVisible(true);
-//        descreptionOfFlow.setVisible(true);
-//        descreptionOfFlow.setText(flow.getDescription());
-//        numOfSteps.setVisible(true);
-//        numOfSteps.setText("The number of steps is: "+ flow.getFlowSteps().size());
-//        freeInputNumber.setVisible(true);
-//        freeInputNumber.setText("The number of free inputs is: "+ flow.getFlowFreeInputs().size());
-//        body.setCurrentFlow(flow);
-//        executeFlow.setDisable(false);
-//    }
     @Override
     public void setBodyController(bodyController body) {
       this.body = body;
