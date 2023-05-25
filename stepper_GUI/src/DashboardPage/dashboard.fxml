@@ -13,7 +13,7 @@
             <Image url="@dashboardContent/TopLogo.png" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="paneForXmlLoad" layoutX="190.0" layoutY="77.0" minHeight="0.0" minWidth="0.0" prefHeight="124.0" prefWidth="1020.0">
+      <AnchorPane fx:id="paneForXmlLoad" layoutX="187.0" layoutY="74.0" minHeight="0.0" minWidth="0.0" prefHeight="135.0" prefWidth="1011.0">
          <children>
             <fx:include source="../LoadXML/LoadXML.fxml" />
          </children>
