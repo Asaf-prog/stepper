@@ -1,6 +1,7 @@
 package app.management;
 
 import app.MVC_controller.MVC_controller;
+import app.body.StatsScreen.StatsScreen;
 import app.body.bodyController;
 import app.header.headerController;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ public class mainController {
    @FXML private headerController headerComponentController;
    @FXML private Parent bodyComponent;
    @FXML private bodyController bodyComponentController;
+   private StatsScreen statsScreen;
    private MVC_controller mvcController;
    public void PresentTpBodyFlowDefinition(){
 
@@ -24,6 +26,7 @@ public class mainController {
       if (headerComponentController != null && bodyComponentController != null) {
          headerComponentController.setMainController(this);
          bodyComponentController.setMainController(this);
+
 
          //initialize a controller that communicate with the engine
          mvcController = new MVC_controller(this,headerComponentController,bodyComponentController);
@@ -36,6 +39,9 @@ public class mainController {
    }
    public void showFlowDefinition() {
       bodyComponentController.showFlowDefinition();
+   }
+   public void showStats(){
+      bodyComponentController.showStatsScreen();
    }
    public List<FlowDefinitionImpl> getFlows(){
       return flows;

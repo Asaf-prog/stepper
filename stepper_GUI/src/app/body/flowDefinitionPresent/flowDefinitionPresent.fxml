@@ -24,7 +24,7 @@
             <Label fx:id="FlowNameTL" prefHeight="31.0" prefWidth="221.0" text="name" textFill="#e80b0b" visible="false" />
             <Label fx:id="numOfSteps" prefHeight="17.0" prefWidth="213.0" text="numOfSteps" textFill="#dd0e0e" visible="false" />
             <Label fx:id="freeInputNumber" prefHeight="17.0" prefWidth="196.0" text="free input num" textFill="#ee1313" visible="false" />
-            <TextArea fx:id="descreptionOfFlow" prefHeight="87.0" prefWidth="388.0" promptText="descreption" visible="false">
+            <TextArea fx:id="descriptionOfFlow" prefHeight="87.0" prefWidth="388.0" promptText="descreption" visible="false">
                <font>
                   <Font size="14.0" />
                </font>

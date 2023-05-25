@@ -35,6 +35,12 @@ public class bodyController {
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
+    public void showStatsScreen(){
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        URL url = getClass().getResource("StatsScreen/StatsScreen.fxml");
+        fxmlLoader.setLocation(url);
+        loadScreen(fxmlLoader, url);
+    }
     private void loadScreen(FXMLLoader fxmlLoader,URL url) {
         try {
             Parent screen = fxmlLoader.load(url.openStream());

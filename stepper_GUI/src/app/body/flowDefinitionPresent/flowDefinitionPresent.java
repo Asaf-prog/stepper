@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
@@ -29,7 +28,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @FXML
     private Label numOfSteps;
     @FXML
-    private TextArea descreptionOfFlow;
+    private TextArea descriptionOfFlow;
     @FXML
     private Label freeInputNumber;
     @FXML
@@ -49,8 +48,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         flowDescriptionTL.setVisible(true);
         FlowNameTL.setText(flow.getName());//name
         FlowNameTL.setVisible(true);
-        descreptionOfFlow.setVisible(true);
-        descreptionOfFlow.setText(flow.getDescription());
+        descriptionOfFlow.setVisible(true);
+        descriptionOfFlow.setText(flow.getDescription());
         numOfSteps.setVisible(true);
         numOfSteps.setText("The number of steps is: "+ flow.getFlowSteps().size());
         freeInputNumber.setVisible(true);
