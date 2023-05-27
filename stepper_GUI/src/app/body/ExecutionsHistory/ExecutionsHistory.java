@@ -42,18 +42,19 @@ public class ExecutionsHistory implements bodyControllerDefinition, Initializabl
         Flow.setVisible(true);
         TImeOfFlow.setCellValueFactory(new PropertyValueFactory<conversionObject, String>("Duration"));
         ResultOfFlow.setCellValueFactory(new PropertyValueFactory<conversionObject, String>("Result"));
-         list = FXCollections.observableArrayList(
+        list = FXCollections.observableArrayList(
                 new conversionObject("asaf","kaka","shit"),
                 new conversionObject("varon","kaka","shit"),
                 new conversionObject("varon","kaka","shit")
         );
+        tableData.setItems(list);
     }
     @Override
     public void show() {
 
         Stepper stepperData = DataManager.getData();
         List<FlowExecution> flowsExe = stepperData.getFlowExecutions();
-     tableData.setItems(list);
+        tableData.setItems(list);
     }
     private void handleButtonAction(FlowExecution flowExecution){
 

@@ -14,4 +14,13 @@ public class conversionObject {
         this.time = time;
         this.res = res;
     }
+
+    @Override
+    public String toString() {
+        return "conversionObject{" +
+                "time='" + time + '\'' +
+                ", name='" + name + '\'' +
+                ", res='" + res + '\'' +
+                '}';
+    }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -8,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1089.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1089.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
       <VBox prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #36393e;">
          <children>
@@ -25,11 +24,16 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
+                  <Button fx:id="buypremiumBtn" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="961.0" layoutY="24.0" mnemonicParsing="false" onAction="#BuyPremium" prefHeight="25.0" prefWidth="104.0" style="-fx-background-color: #36393e;" text="Buy Premuim" textAlignment="CENTER" textFill="#fff200">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                </children>
             </Pane>
             <HBox prefHeight="30.0" prefWidth="1037.0" spacing="10.0">
                <children>
-                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: #36393e;" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: #36393e; -fx-border-color: white;" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
@@ -46,11 +50,11 @@
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" text="Statistics" textFill="#1100ff">
+                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" text=" Flows Excution" textFill="#1100ff">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" text=" Flows Excution" textFill="#1100ff">
+                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" text="Statistics" textFill="#1100ff">
                      <font>
                         <Font size="14.0" />
                      </font></Button>

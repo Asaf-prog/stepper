@@ -66,10 +66,20 @@ public class StatsScreen implements bodyControllerDefinition {
         assert stepperPane != null : "fx:id=\"stepperPane\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         setListsToVisible();
         stepperData= DataManager.getData();
+        setListsView();
         Binds();
         updateLists(); //set Labels and check if needed to put on tables
         //set listeners
         setListeners();
+    }
+
+    private void setListsView() {
+        flowsList.setStyle("-fx-control-inner-background:#36393e ;");
+        flowStatsList.setStyle("-fx-control-inner-background: #36393e;");
+        stepsList.setStyle("-fx-control-inner-background: #36393e;");
+        stepStatsList.setStyle("-fx-control-inner-background: #36393e;");
+
+
     }
 
     private void Binds() {
@@ -180,7 +190,7 @@ public class StatsScreen implements bodyControllerDefinition {
                 String singleFlowStats= "Used "+flow.getTimesUsed()+" times  ||" + "  Average time: "+flow.getAvgTime()+" MS";
                 flowStatsList.getItems().add(singleFlowStats);
             }
-            flowExecutionsSize.setText("Nothing Selected yet");
+            flowExecutionsSize.setText("");
 
         }else {
             flowDefinitionsSize.setText("There are no Flow Definitions");

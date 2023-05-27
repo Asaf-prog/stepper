@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" layoutX="40.0" layoutY="50.0" prefHeight="300.0" prefWidth="521.0">
+      <TableView fx:id="tableData" editable="true" layoutX="40.0" layoutY="50.0" prefHeight="300.0" prefWidth="521.0">
          <columns>
             <TableColumn fx:id="Flow" minWidth="20.0" prefWidth="150.0" text="Flow" />
             <TableColumn fx:id="TImeOfFlow" prefWidth="150.0" text="Time" />
