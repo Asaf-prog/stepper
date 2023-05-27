@@ -3,7 +3,7 @@ package modules.DataManeger;
 import modules.stepper.StepperDefinitionExceptionItems;
 import modules.stepper.Stepper;
 import modules.stepper.StepperDefinitionException;
-import schemeTest.generatepackage.STStepper;
+import schemeTest2.generatepackage.STStepper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;

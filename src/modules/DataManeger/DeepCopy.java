@@ -3,8 +3,8 @@ package modules.DataManeger;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.FlowDefinitionException;
 import modules.stepper.Stepper;
-import schemeTest.generatepackage.STFlow;
-import schemeTest.generatepackage.STStepper;
+import schemeTest2.generatepackage.STFlow;
+import schemeTest2.generatepackage.STStepper;
 
 import java.util.List;
 

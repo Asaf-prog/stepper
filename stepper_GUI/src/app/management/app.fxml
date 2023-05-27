@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="init" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#initialize" prefHeight="386.0" prefWidth="676.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
-   <top>
-      <fx:include fx:id="headerComponent" source="../header/header.fxml" />
-   </top>
-   <center>
-      <fx:include fx:id="bodyComponent" source="../body/body.fxml" />
-   </center>
-</BorderPane>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
+   <children>
+      <VBox  VBox.vgrow="ALWAYS" prefHeight="720.0" prefWidth="1080.0">
+         <children>
+            <fx:include fx:id="headerComponent" source="../header/header.fxml" />
+            <VBox VBox.vgrow="ALWAYS" prefHeight="500.0" prefWidth="1080.0">
+               <fx:include fx:id="bodyComponent" source="../body/body.fxml"  />
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -5,6 +5,7 @@ import app.management.mainController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import modules.DataManeger.DataManager;
@@ -29,7 +30,7 @@ public class headerController {
     private Button ExecutionsHistory;
     private mainController main;
     @FXML
-    private TextArea loaded;
+    private Label loaded;
 
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
@@ -76,9 +77,8 @@ public class headerController {
                 FlowsExecution.setDisable(false);
                 FlowsDefinition.setDisable(false);
                 ExecutionsHistory.setDisable(false);//***
-                loaded.clear();
-                loaded.appendText(selectedFile.getPath());
-
+               // ExecutionsHistory.setDisable(false);//***
+                loaded.setText(selectedFile.getPath());
                 initialized();
             } catch (Exception e) {
                 throw new RuntimeException(e);

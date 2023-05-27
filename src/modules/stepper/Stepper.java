@@ -1,6 +1,5 @@
 package modules.stepper;
- import modules.Map.CustomMapping;
- import modules.Map.FlowLevelAlias;
+ import modules.mappings.*;
  import modules.flow.definition.api.FlowDefinitionImpl;
  import modules.flow.definition.api.StepUsageDeclaration;
  import modules.flow.definition.api.StepUsageDeclarationImpl;
@@ -8,17 +7,15 @@ package modules.stepper;
  import modules.step.StepDefinitionRegistry;
  import modules.step.api.DataDefinitionDeclaration;
  import modules.step.api.StepDefinition;
- import schemeTest.generatepackage.STCustomMapping;
- import schemeTest.generatepackage.STFlow;
- import schemeTest.generatepackage.STFlowLevelAlias;
- import schemeTest.generatepackage.STStepInFlow;
+ import schemeTest2.generatepackage.*;
 
  import java.io.Serializable;
  import java.util.*;
 
 public class Stepper implements Serializable {
-    List<FlowExecution> flowExecutions;
-    List<FlowDefinitionImpl> flows;
+    List<FlowExecution> flowExecutions;//all flow executions
+    List<FlowDefinitionImpl> flows;//all flows
+    Integer TPSize;//Thread pool size
 
     public List<FlowExecution> getFlowExecutions() {
         return flowExecutions;
@@ -75,37 +72,83 @@ public class Stepper implements Serializable {
             }
             flowToAdd.getFlowSteps().add(declaration);
         }
-        if (stFlow.getSTCustomMappings()!=null) { //this step is costume mapping
-            flowToAdd.setIsCustomMappings(true);
-
-            List<STCustomMapping> stCustomMappings = stFlow.getSTCustomMappings().getSTCustomMapping();
-            List<CustomMapping> CustomMappingsToAdd = new ArrayList<>();
-
-            for (int j = 0; j < stCustomMappings.size(); j++) {
-                STCustomMapping currStCustomMapping = stCustomMappings.get(j);
-                CustomMapping temp = new CustomMapping(currStCustomMapping.getSourceStep()
-                        , currStCustomMapping.getSourceData(),
-                        currStCustomMapping.getTargetStep()
-                        , currStCustomMapping.getTargetData());
-                CustomMappingsToAdd.add(j, temp);
-            }
-            flowToAdd.setCustomMappings(CustomMappingsToAdd);
+        if (stFlow.getSTCustomMappings()!= null) {//this step is costume mapping
+            if (stFlow.getSTCustomMappings().getSTCustomMapping().size()!=0)
+                getFlowCustomMapping(stFlow, flowToAdd);
         }
-        if (stFlow.getSTFlowLevelAliasing()!=null) {
-            //adding FlowLevelAlias for each step
-
-            List<STFlowLevelAlias> stFlowLevelAliases = stFlow.getSTFlowLevelAliasing().getSTFlowLevelAlias();
-            for (int k = 0; k < stFlowLevelAliases.size(); k++) {
-                STFlowLevelAlias currStFlowLevelAlias = stFlowLevelAliases.get(k);
-                FlowLevelAlias temp = new FlowLevelAlias(currStFlowLevelAlias.getStep()
-                        , currStFlowLevelAlias.getSourceDataName()
-                        , currStFlowLevelAlias.getAlias());
-                flowLevelAliasesToAdd.add(k, temp);
+        if (stFlow.getSTFlowLevelAliasing()!= null) {
+            if(stFlow.getSTFlowLevelAliasing().getSTFlowLevelAlias().size()!=0)
+                getFlowLvlALiasing(stFlow, flowLevelAliasesToAdd);
+        }
+        if (stFlow.getSTContinuations()!= null) {
+            if(stFlow.getSTContinuations().getSTContinuation().size()!=0) {
+                getFlowContinuations(stFlow, flowToAdd);
+            }
+        }
+        if(stFlow.getSTInitialInputValues()!= null) {
+            if (stFlow.getSTInitialInputValues().getSTInitialInputValue().size()!=0)
+            {
+                getFlowInitialInputs(stFlow, flowToAdd);
             }
         }
         setFormalOutputs(flowToAdd,stFlow.getSTFlowOutput());
         flowToAdd.setFlowLevelAliases(flowLevelAliasesToAdd);
         flows.add(flowToAdd);
+    }
+
+    private static void getFlowCustomMapping(STFlow stFlow, FlowDefinitionImpl flowToAdd) {
+        flowToAdd.setIsCustomMappings(true);
+
+        List<STCustomMapping> stCustomMappings = stFlow.getSTCustomMappings().getSTCustomMapping();
+        List<CustomMapping> CustomMappingsToAdd = new ArrayList<>();
+
+        for (int j = 0; j < stCustomMappings.size(); j++) {
+            STCustomMapping currStCustomMapping = stCustomMappings.get(j);
+            CustomMapping temp = new CustomMapping(currStCustomMapping.getSourceStep()
+                    , currStCustomMapping.getSourceData(),
+                    currStCustomMapping.getTargetStep()
+                    , currStCustomMapping.getTargetData());
+            CustomMappingsToAdd.add(j, temp);
+        }
+        flowToAdd.setCustomMappings(CustomMappingsToAdd);
+    }
+
+    private static void getFlowInitialInputs(STFlow stFlow, FlowDefinitionImpl flowToAdd) {
+        List<InitialInputValues> toAdd=new ArrayList<>();
+        List<STInitialInputValue> stInitialInputValues= stFlow.getSTInitialInputValues().getSTInitialInputValue();
+        for (int k = 0; k < stInitialInputValues.size(); k++) {
+            STInitialInputValue currStInitialInputValue = stInitialInputValues.get(k);
+            InitialInputValues temp = new InitialInputValues(currStInitialInputValue.getInputName(),currStInitialInputValue.getInitialValue());
+            toAdd.add(k, temp);
+        }
+        flowToAdd.setInitialInputValues(toAdd);
+    }
+
+    private static void getFlowContinuations(STFlow stFlow, FlowDefinitionImpl flowToAdd) {
+        List<Continuation> continuationsToAdd = new ArrayList<>();
+        List<STContinuation> stContinuations = stFlow.getSTContinuations().getSTContinuation();
+
+        for (int k = 0; k < stContinuations.size(); k++) {
+            STContinuation currStContinuation = stContinuations.get(k);
+            Continuation temp = new Continuation();
+            temp.setTargetFlow(currStContinuation.getTargetFlow());
+            temp.initMappingList(currStContinuation.getSTContinuationMapping());
+            continuationsToAdd.add(k, temp);
+        }
+        flowToAdd.setContinuations(continuationsToAdd);
+    }
+
+    private static void getFlowLvlALiasing(STFlow stFlow, List<FlowLevelAlias> flowLevelAliasesToAdd) {
+        //adding FlowLevelAlias for each step
+
+        List<STFlowLevelAlias> stFlowLevelAliases = stFlow.getSTFlowLevelAliasing().getSTFlowLevelAlias();
+        for (int k = 0; k < stFlowLevelAliases.size(); k++) {
+            STFlowLevelAlias currStFlowLevelAlias = stFlowLevelAliases.get(k);
+            FlowLevelAlias temp = new FlowLevelAlias(currStFlowLevelAlias.getStep()
+                    , currStFlowLevelAlias.getSourceDataName()
+                    , currStFlowLevelAlias.getAlias());
+            flowLevelAliasesToAdd.add(k, temp);
+        }
     }
 
     private void setFormalOutputs(FlowDefinitionImpl flowToAdd, String stFlowOutput) {

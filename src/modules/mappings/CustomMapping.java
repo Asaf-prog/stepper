@@ -1,4 +1,4 @@
-package modules.Map;
+package modules.mappings;
 
 import java.io.Serializable;
 
