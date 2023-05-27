@@ -36,6 +36,13 @@ public class executeFlowController implements bodyControllerDefinition {
     public FlowDefinitionImpl getCurrentFlow(){
         return currentFlow;
     }
+    @FXML
+    void initialize() {
+        assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+        assert mandatoryList != null : "fx:id=\"mandatoryList\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+        assert optionalList != null : "fx:id=\"optionalList\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+
+    }
     @Override
     public void show() {
         //first of all create a two list : mandatoryInputs and optionalInputs:

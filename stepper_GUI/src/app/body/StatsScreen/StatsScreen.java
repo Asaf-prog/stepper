@@ -49,8 +49,6 @@ public class StatsScreen implements bodyControllerDefinition {
     private Stepper stepperData;
 
 
-
-
     @FXML
     void initialize() {
         assert infoListForFlow != null : "fx:id=\"infoListForFlow\" was not injected: check your FXML file 'StatsScreen.fxml'.";
@@ -87,9 +85,7 @@ public class StatsScreen implements bodyControllerDefinition {
                 }
             }
         });
-
     }
-
     private void updateLists() {
         if (stepperData.getFlows().size()>0){
             for (FlowDefinitionImpl flow:stepperData.getFlows()){

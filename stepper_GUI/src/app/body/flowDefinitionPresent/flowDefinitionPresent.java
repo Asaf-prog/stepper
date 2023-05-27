@@ -35,6 +35,19 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private Button executeFlow;
     private bodyController body;
     private FlowDefinitionImpl currentFlow;
+
+    @FXML
+    void initialize() {
+        assert flowDetailsBox != null : "fx:id=\"flowDetailsBox\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert flowDescriptionTL != null : "fx:id=\"flowDescriptionTL\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert FlowNameTL != null : "fx:id=\"FlowNameTL\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert numOfSteps != null : "fx:id=\"numOfSteps\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert freeInputNumber != null : "fx:id=\"freeInputNumber\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert descriptionOfFlow != null : "fx:id=\"descriptionOfFlow\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert flowListOfButtons != null : "fx:id=\"flowListOfButtons\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert executeFlow != null : "fx:id=\"executeFlow\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+
+    }
     @Override
     public void show() {
 

@@ -75,7 +75,7 @@ public class headerController {
 
                 FlowsExecution.setDisable(false);
                 FlowsDefinition.setDisable(false);
-               // ExecutionsHistory.setDisable(false);//***
+                ExecutionsHistory.setDisable(false);//***
                 loaded.clear();
                 loaded.appendText(selectedFile.getPath());
 

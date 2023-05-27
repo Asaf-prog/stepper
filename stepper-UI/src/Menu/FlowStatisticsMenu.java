@@ -14,11 +14,15 @@ public class FlowStatisticsMenu {
     public static void displayMenu() throws MenuException {
 
         Stepper stepperData = DataManager.getData();
-        if(stepperData==null)
-            throw new MenuException(MenuExceptionItems.EMPTY,"No Data Loaded");
+        if(stepperData==null) {
+            throw new MenuException(MenuExceptionItems.EMPTY, "No Data Loaded");
+        }
+
         System.out.println("---Flow Statistics Menu---");
         System.out.println("Choose a flow to get its Stats:");
+
         int i = 1;
+
         if (stepperData.getFlowExecutions() == null) {
             System.out.println("No flow executions to show");
             return;
@@ -38,13 +42,16 @@ public class FlowStatisticsMenu {
                     Optional<Integer> choiceTry = Optional.of(input.nextInt());
                     if (!choiceTry.isPresent())
                         throw new MenuException(MenuExceptionItems.INVALID_NUMBER_INPUT, " wrong input for choice in Flow Statistics Menu");
+
                     int choice = choiceTry.get();
                     if (choice == MainMenuItems.MAIN_MENU.getValue())
                         return;
+
                     if (choice > stepperData.getFlowExecutions().size() || choice < 1) {
                         System.out.println("No such option , try again");
                         continue;
                     }
+
                     PresentFlowStats(stepperData.getFlowExecutionById(stepperData.getFlowExecutions().get(choice - 1).getUniqueId()));//present flow stats
                     System.out.println("Choose a flow to get its Stats:");
                     System.out.println(menuString);//print menu again when coming back from presenting flow stats
@@ -57,7 +64,6 @@ public class FlowStatisticsMenu {
             }
         }
     }
-
 
     private static void PresentFlowStats(FlowExecution singleExecution) {//present flow stats
         System.out.println("Flow name: " + singleExecution.getFlowDefinition().getName());
