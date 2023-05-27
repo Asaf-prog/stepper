@@ -2,15 +2,15 @@ package app.header;
 
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
-import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -26,6 +26,28 @@ public class headerController {
     private Button path;
     @FXML
     private Button FlowsDefinition;
+    @FXML
+    private Label flow1ProgressLabel;
+    @FXML
+    private Label flow2ProgressLabel;
+    @FXML
+    private Label flow3ProgressLabel;
+    @FXML
+    private Label flow4ProgressLabel;
+
+    @FXML
+    private ProgressBar flow1ProgressBar;
+    @FXML
+    private ProgressBar flow2ProgressBar;
+    @FXML
+    private ProgressBar flow3ProgressBar;
+    @FXML
+    private ProgressBar flow4ProgressBar;
+    @FXML
+    private GridPane progressGrid;
+
+    @FXML
+    private ToggleButton themeToggle;
     private RotateTransition rotateTransition;
     @FXML
     private Button Statistics;
@@ -66,15 +88,37 @@ public class headerController {
 
     @FXML
     void initialize() {
+        assert flow3ProgressBar != null : "fx:id=\"flow3ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow2ProgressBar != null : "fx:id=\"flow2ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert Statistics != null : "fx:id=\"Statistics\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow4ProgressLabel != null : "fx:id=\"flow4ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow2ProgressLabel != null : "fx:id=\"flow2ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
         assert loaded != null : "fx:id=\"loaded\" was not injected: check your FXML file 'header.fxml'.";
+        assert buypremiumBtn != null : "fx:id=\"buypremiumBtn\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow1ProgressLabel != null : "fx:id=\"flow1ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
         assert path != null : "fx:id=\"path\" was not injected: check your FXML file 'header.fxml'.";
+        assert themeToggle != null : "fx:id=\"themeToggle\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow4ProgressBar != null : "fx:id=\"flow4ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow3ProgressLabel != null : "fx:id=\"flow3ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
         assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
         assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
+        assert progressGrid != null : "fx:id=\"ProgressGrid\" was not injected: check your FXML file 'header.fxml'.";
         assert FlowsExecution != null : "fx:id=\"FlowsExecution\" was not injected: check your FXML file 'header.fxml'.";
-        assert Statistics != null : "fx:id=\"Statistics\" was not injected: check your FXML file 'header.fxml'.";
-        assert buypremiumBtn != null : "fx:id=\"buypremiumBtn\" was not injected: check your FXML file 'header.fxml'.";
-        Events();
+        assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
 
+        Events();
+        screensToggleGrouping();
+
+
+    }
+
+    @FXML
+    void changeTheme(ActionEvent event) {
+
+    }
+    private void screensToggleGrouping() {
+       //todo change screens to be in toggle group and maybe change components to be in toggle group
+        //update progress grid
 
     }
 
@@ -133,18 +177,16 @@ public class headerController {
     }
     @FXML
     void loadDataXML(ActionEvent event){
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose File");
         File selectedFile = fileChooser.showOpenDialog(null);
+        stopRotate();
+        path.setRotate(0);
         main.initialize();
         if (selectedFile != null) {
             try {
                 GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
                 path.setText("Loaded:");
-                stopRotate();
-                path.setRotate(0);
-
                 ActivateMenuButtons();
 
                 FlowsExecution.setDisable(false);
@@ -152,7 +194,7 @@ public class headerController {
                 ExecutionsHistory.setDisable(false);//***
                // ExecutionsHistory.setDisable(false);//***
                 loaded.setText(selectedFile.getPath());
-                initialized();
+                initializedData();
                 stopRotate();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -175,12 +217,10 @@ public class headerController {
     public void setDisableOnExecutionsHistory(){
         ExecutionsHistory.setDisable(false);
     }
-    private void initialized(){
+    private void initializedData(){
         Stepper stepperData = DataManager.getData();
         main.setFlows(stepperData.getFlows());
-        loaded.textProperty().addListener((observable, oldValue, newValue) -> {
-            stopRotate();
-        });
+
     }
 }
 
