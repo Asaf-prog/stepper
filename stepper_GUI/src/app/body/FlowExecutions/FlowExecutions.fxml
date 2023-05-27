@@ -5,10 +5,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.FlowExecutions.FlowExecutions">
    <children>
-      <Label layoutX="154.0" layoutY="39.0" prefHeight="53.0" prefWidth="292.0" text="Flow Executions" textFill="#2111d6">
+      <Label layoutX="154.0" layoutY="39.0" prefHeight="53.0" prefWidth="292.0" text="Flow Executions" textFill="#22a9b5">
          <font>
             <Font size="36.0" />
          </font>

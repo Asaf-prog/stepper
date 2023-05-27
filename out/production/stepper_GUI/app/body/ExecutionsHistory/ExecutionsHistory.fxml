@@ -21,7 +21,7 @@
       </Label>
       <ScrollPane layoutX="70.0" layoutY="142.0" prefHeight="253.0" prefWidth="310.0">
          <content>
-            <VBox fx:id="listOfFlowToShow" prefHeight="240.0" prefWidth="297.0" />
+            <VBox fx:id="listOfFlowToShow" prefHeight="240.0" prefWidth="289.0" />
          </content>
       </ScrollPane>
    </children>

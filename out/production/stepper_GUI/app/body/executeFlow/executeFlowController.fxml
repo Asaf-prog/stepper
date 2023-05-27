@@ -13,7 +13,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="63.0" layoutY="14.0" prefHeight="40.0" prefWidth="428.0" text="Collect Flow Inputs" textFill="#1f28a8">
+      <Label layoutX="63.0" layoutY="14.0" prefHeight="40.0" prefWidth="428.0" text="Collect Flow Inputs" textFill="#298bcd">
          <font>
             <Font size="48.0" />
          </font>
