@@ -1,53 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.StatsScreen.StatsScreen">
+<StackPane prefHeight="500.0" prefWidth="1080.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.StatsScreen.StatsScreen">
    <children>
-      <AnchorPane prefHeight="399.0" prefWidth="602.0" style="-fx-background-color: #36393e;">
+      <AnchorPane style="-fx-background-color: #36393e;">
          <children>
-            <Label alignment="CENTER" layoutX="113.0" layoutY="14.0" prefHeight="30.0" prefWidth="68.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="Stepper" textAlignment="CENTER" underline="true">
+            <Label fx:id="flowDefinitionsSize" layoutX="14.0" layoutY="44.0" prefHeight="30.0" prefWidth="306.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="there are X Flows Choose one ">
                <font>
-                  <Font name="Centaur" size="14.0" />
+                  <Font name="Centaur" size="17.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="411.0" layoutY="14.0" prefHeight="30.0" prefWidth="68.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="Flow" textAlignment="CENTER" underline="true">
+            <Label fx:id="flowExecutionsSize" layoutX="495.0" layoutY="44.0" prefHeight="30.0" prefWidth="365.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="there are X Steps Choose One" textAlignment="CENTER">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="Centaur" size="17.0" />
                </font>
             </Label>
-            <Separator layoutX="298.0" layoutY="34.0" orientation="VERTICAL" prefHeight="375.0" prefWidth="2.0" />
-            <Label fx:id="flowDefinitionsSize" layoutX="14.0" layoutY="44.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="there are X Flows Choose one ">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="240.0" layoutY="2.0" prefHeight="30.0" prefWidth="579.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="Stepper Stats" textAlignment="CENTER" underline="true">
                <font>
-                  <Font name="Centaur" size="11.0" />
-               </font>
-            </Label>
-            <Label fx:id="flowExecutionsSize" layoutX="315.0" layoutY="44.0" prefHeight="30.0" prefWidth="273.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="there are X Executions Choose One">
-               <font>
-                  <Font name="Centaur" size="11.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="240.0" layoutY="2.0" prefHeight="30.0" prefWidth="112.0" style="-fx-font-family: Verdana; -fx-text-fill: white;" text="Stats" textAlignment="CENTER" underline="true">
-               <font>
-                  <Font name="Centaur" size="14.0" />
+                  <Font name="Centaur" size="26.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Pane fx:id="flowPane" prefHeight="398.0" prefWidth="600.0">
+      <Pane fx:id="flowPane">
          <children>
-            <ListView fx:id="flowExecutionsList" layoutX="314.0" layoutY="69.0" prefHeight="284.0" prefWidth="273.0" />
-            <ListView fx:id="infoListForFlow" layoutX="314.0" layoutY="69.0" prefHeight="284.0" prefWidth="273.0" />
+            <ListView fx:id="stepsList" layoutX="495.0" layoutY="69.0" prefHeight="422.0" prefWidth="215.0" />
+            <ListView fx:id="stepStatsList" layoutX="717.0" layoutY="68.0" prefHeight="422.0" prefWidth="348.0" />
          </children>
       </Pane>
-      <Pane fx:id="stepperPane" disable="true" prefHeight="391.0" prefWidth="587.0">
+      <Pane fx:id="stepperPane" prefHeight="424.0" prefWidth="957.0">
          <children>
-            <ListView fx:id="flowDefinitionsList" layoutX="10.0" layoutY="70.0" prefHeight="284.0" prefWidth="273.0" />
-            <ListView fx:id="infoListForStepper" layoutX="9.0" layoutY="71.0" prefHeight="284.0" prefWidth="273.0" />
+            <ListView fx:id="flowsList" layoutX="8.0" layoutY="70.0" prefHeight="422.0" prefWidth="201.0" />
+            <ListView fx:id="flowStatsList" layoutX="212.0" layoutY="71.0" prefHeight="422.0" prefWidth="274.0" />
          </children>
       </Pane>
    </children>

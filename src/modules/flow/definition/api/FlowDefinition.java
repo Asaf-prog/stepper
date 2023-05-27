@@ -1,8 +1,8 @@
 package modules.flow.definition.api;
 
 import javafx.util.Pair;
-import modules.Map.CustomMapping;
-import modules.Map.FlowLevelAlias;
+import modules.mappings.CustomMapping;
+import modules.mappings.FlowLevelAlias;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.FlowDefinitionException;
 

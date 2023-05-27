@@ -1,4 +1,4 @@
-package modules.Map;
+package modules.mappings;
 
 public interface HasSource<T> {
 

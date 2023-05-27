@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.Bloom?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
    <children>
-      <StackPane layoutY="22.0" prefHeight="178.0" prefWidth="549.0" />
-      <VBox fx:id="flowDetailsBox" layoutX="212.0" layoutY="6.0" prefHeight="297.0" prefWidth="388.0">
+      <VBox fx:id="flowDetailsBox" layoutX="459.0" layoutY="35.0" prefHeight="403.0" prefWidth="488.0">
          <children>
             <Label fx:id="flowDescriptionTL" prefHeight="27.0" prefWidth="258.0" text="Selected Flow Details" textFill="#e80f0f" visible="false">
                <font>
@@ -35,7 +29,7 @@
             <Bloom />
          </effect>
       </VBox>
-      <VBox fx:id="flowListOfButtons" prefHeight="200.0" prefWidth="211.0">
+      <VBox fx:id="flowListOfButtons" layoutX="72.0" layoutY="12.0" prefHeight="449.0" prefWidth="279.0">
          <children>
             <Label text="Available Flows" textFill="#da1313">
                <font>
@@ -43,25 +37,7 @@
                </font></Label>
          </children>
       </VBox>
-      <VBox layoutX="206.0" layoutY="319.0" minWidth="-Infinity" prefHeight="87.0" prefWidth="388.0">
-         <children>
-            <Button fx:id="executeFlow" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onAction="#executeFlowFunc" prefHeight="30.0" prefWidth="145.0" text="Execute Flow !">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <textFill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop color="#05da1e" />
-                        <Stop color="#0713d9" offset="1.0" />
-                     </stops>
-                  </LinearGradient>
-               </textFill>
-            </Button>
-         </children>
+      <VBox layoutX="320.0" layoutY="453.0" minWidth="-Infinity" prefHeight="31.0" prefWidth="388.0">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
@@ -69,5 +45,18 @@
             <Insets left="250.0" />
          </padding>
       </VBox>
+      <Button fx:id="executeFlow" contentDisplay="RIGHT" disable="true" layoutX="802.0" layoutY="455.0" mnemonicParsing="false" onAction="#executeFlowFunc" prefHeight="30.0" prefWidth="145.0" text="Execute Flow !">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#05da1e" />
+                  <Stop color="#0713d9" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Button>
    </children>
 </AnchorPane>

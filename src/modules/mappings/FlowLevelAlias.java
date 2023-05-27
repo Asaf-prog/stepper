@@ -1,8 +1,7 @@
-package modules.Map;
+package modules.mappings;
 
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.DataDefinitionDeclaration;
-import modules.step.api.DataDefinitionDeclarationImpl;
 
 import java.io.Serializable;
 

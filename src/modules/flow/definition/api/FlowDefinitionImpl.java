@@ -1,6 +1,8 @@
 package modules.flow.definition.api;
-import modules.Map.CustomMapping;
-import modules.Map.FlowLevelAlias;
+import modules.mappings.Continuation;
+import modules.mappings.CustomMapping;
+import modules.mappings.FlowLevelAlias;
+import modules.mappings.InitialInputValues;
 import modules.step.api.DataDefinitionDeclaration;
 
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.util.*;
 import javafx.util.Pair;
 import modules.stepper.FlowDefinitionException;
 import modules.stepper.FlowDefinitionExceptionItems;
+import schemeTest2.generatepackage.STInitialInputValues;
 
 public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
@@ -27,6 +30,52 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     protected  int timesUsed;
     protected  double avgTime;
     protected boolean readOnly;
+
+    //EX2
+    protected List<Continuation> continuations;
+
+    protected List<InitialInputValues> InitialInputValues;
+
+    public void setFlowOutputs(List<String> flowOutputs) {
+        this.flowOutputs = flowOutputs;
+    }
+
+    public void setFlowOfAllStepsOutputs(List<String> flowOfAllStepsOutputs) {
+        this.flowOfAllStepsOutputs = flowOfAllStepsOutputs;
+    }
+
+    public boolean isCustomMappings() {
+        return isCustomMappings;
+    }
+
+    public void setCustomMappings(boolean customMappings) {
+        isCustomMappings = customMappings;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public List<Continuation> getContinuations() {
+        return continuations;
+    }
+
+    public void setContinuations(List<Continuation> continuations) {
+        this.continuations = continuations;
+    }
+
+    public List<modules.mappings.InitialInputValues> getInitialInputValues() {
+        return InitialInputValues;
+    }
+
+    public void setInitialInputValues(List<modules.mappings.InitialInputValues> initialInputValues) {
+        InitialInputValues = initialInputValues;
+    }
+
     @Override
     public List<String> getFlowOfAllStepsOutputs() {
         return flowOfAllStepsOutputs;
@@ -34,6 +83,10 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void setUserInputs(List<Pair<String, String>> userInputs) {
         this.userInputs = userInputs;
     }
+
+
+
+
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -48,6 +101,9 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         readOnly=true;
         timesUsed=0;
         avgTime=0;
+        continuations=new ArrayList<>();
+        InitialInputValues=new ArrayList<>();
+
     }
     public void setTimesUsed(int timesUsed) {this.timesUsed = timesUsed;}
     public void setAvgTime(double avgTime) {this.avgTime = avgTime;}
@@ -236,7 +292,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     }
     public void checkIfExistAliasForFlowStepOrDataThatNotExist()throws FlowDefinitionException {
         for (FlowLevelAlias Alias: flowLevelAliases){
-            if (!checkIfTheStepAndTheDataThatWeDoAliasExist(Alias.getSource(),Alias.getSourceData())){
+            if (!checkIfTheStepAndTheDataThatWeAliasDoExist(Alias.getSource(),Alias.getSourceData())){
                 String stepName = checkIfTheStepExist(Alias.getSource());
                 if (stepName == null){
                     String message = "The step "+Alias.getSource()+" does not exist";
@@ -256,7 +312,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         }
         return null;
     }
-    private boolean checkIfTheStepAndTheDataThatWeDoAliasExist(String stepName , String dataDefinitionName) {
+    private boolean checkIfTheStepAndTheDataThatWeAliasDoExist(String stepName , String dataDefinitionName) {
         for (StepUsageDeclaration step : steps) {
             if (step.getFinalStepName().equals(stepName)) {
                 List<DataDefinitionDeclaration> input = step.getStepDefinition().inputs();
@@ -343,7 +399,9 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         return false;
     }
     public void checkIfMandatoryInputsAreNotUserFriendly() throws FlowDefinitionException {
-
+        if (this.continuations.size() == 0)
+            return;
+        //todo remove above and check if continuation is update flow free inputs
         for (Pair<String, DataDefinitionDeclaration> inputUser : freeInputs) {
             if (!inputUser.getValue().dataDefinition().isUserFriendly()) {
                 String theUnUserFriendlyMandatoryInput = inputUser.getKey();
@@ -398,6 +456,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         return false;
     }
     public void createFlowFreeInputs() {
+        //todo ex2 sync with initial inputs that removing the user option to change the input
         List<String> listInputs = new ArrayList<>();
         for (StepUsageDeclaration step: steps) {
 

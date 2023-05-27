@@ -30,7 +30,7 @@ public class Zipper extends AbstractStepDefinition {
         // todo if in the enumerator was written unzip we need to check that the end of the file is: .zip
 
         String path = context.getDataValue("SOURCE", String.class);
-        Enumerator zipOrUnzip = context.getDataValue("SOURCE", Enumerator.class);
+        Enumerator zipOrUnzip = context.getDataValue("OPERATION", Enumerator.class);
         if(zipOrUnzip.containVal("zip")){
             zipFile(path,path);
         }
