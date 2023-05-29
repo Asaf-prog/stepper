@@ -50,12 +50,18 @@ public class DataViewerController {
         assert close != null : "fx:id=\"close\" was not injected: check your FXML file 'DataViewer.fxml'.";
         assert otherLabel != null : "fx:id=\"otherLabel\" was not injected: check your FXML file 'DataViewer.fxml'.";
 
+       // init();
+
+    }
+
+    private void init() {
         //set the data name and type
         name.setText(name.getText()+ " : " + dataName);
+        double width = mainPane.getPrefWidth();
+        name.setPrefWidth(width/1.5);
         //type.setText(type.getText()+ " : " + data.getClass().getSimpleName());
         int state=selectRelevantPane();
         presentData(state);
-
     }
 
     private void presentData(int state) {
@@ -118,5 +124,6 @@ public class DataViewerController {
     public void setData(Object value, String name) {
         this.data = value;
         this.dataName = name;
+        init();
     }
 }

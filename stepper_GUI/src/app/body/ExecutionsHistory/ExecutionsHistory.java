@@ -302,12 +302,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             result.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
         });
         result.setOnMouseClicked(event -> {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
                     try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                        Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
-                        if (controller!=null) {
+
+                        if (controller!=null ) {
                             controller.setData(value, name);
-                            Parent root = loader.load();
                             Stage stage = new Stage();
                             stage.setTitle("Data Viewer");
                             stage.setScene(new Scene(root, 500, 300));

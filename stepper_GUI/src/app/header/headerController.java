@@ -127,6 +127,63 @@ public class headerController {
         FlowsExecution.getStyleClass().add("screenButton");
         ExecutionsHistory.getStyleClass().add("screenButton");
         Statistics.getStyleClass().add("screenButton");
+        FlowsDefinition.setOnMouseEntered(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+            FlowsDefinition.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+        });
+        FlowsDefinition.setOnMouseExited(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+            FlowsDefinition.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+        });
+        FlowsExecution.setOnMouseEntered(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsExecution);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+            FlowsExecution.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+        });
+        FlowsExecution.setOnMouseExited(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsExecution);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+            FlowsExecution.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+        });
+        ExecutionsHistory.setOnMouseEntered(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), ExecutionsHistory);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+            ExecutionsHistory.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+        });
+        ExecutionsHistory.setOnMouseExited(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), ExecutionsHistory);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+            ExecutionsHistory.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+        });
+        Statistics.setOnMouseEntered(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), Statistics);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+            Statistics.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+        });
+        Statistics.setOnMouseExited(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), Statistics);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+            Statistics.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+        });
+
     }
 
     @FXML

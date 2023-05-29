@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.PointLight?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1080" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1080" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
    <children>
       <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="37.0" prefHeight="180.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
          <columns>
@@ -65,9 +62,9 @@
             <Image url="@content/flash.png" />
          </image>
       </ImageView>
-      <HBox layoutX="318.0" layoutY="251.0" prefHeight="249.0" prefWidth="293.0" spacing="10.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="318.0" layoutY="251.0" prefHeight="249.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
-            <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Input" textFill="#9c40ff">
                      <font>
@@ -76,7 +73,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="inputsVbox4Value" prefHeight="216.0" prefWidth="158.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox4Value" prefHeight="216.0" prefWidth="158.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
                      <font>
@@ -87,9 +84,9 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="14.0" layoutY="252.0" prefHeight="247.0" prefWidth="293.0" spacing="10.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="14.0" layoutY="252.0" prefHeight="247.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
-            <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" style="-fx-border-color: white;">
+            <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Output" textFill="#9c40ff">
                      <font>
@@ -98,7 +95,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="outputsVbox4Value" prefHeight="216.0" prefWidth="158.0" style="-fx-border-color: white;">
+            <VBox fx:id="outputsVbox4Value" prefHeight="245.0" prefWidth="159.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
                      <font>

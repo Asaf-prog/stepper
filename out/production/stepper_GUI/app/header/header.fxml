@@ -94,21 +94,21 @@
             </Pane>
             <HBox alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0">
                <children>
-                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="32.0" prefWidth="191.0" style="-fx-background-color: #36393e; -fx-border-color: white;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="32.0" prefWidth="191.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Label fx:id="loaded" alignment="CENTER" prefHeight="33.0" prefWidth="630.0" style="-fx-border-color: rgb(179,0,220);" text="---Path To Your XML---" textFill="#fffafa">
+                  <Label fx:id="loaded" alignment="CENTER" prefHeight="33.0" prefWidth="630.0" style="-fx-border-color: rgb(179,0,220); -fx-border-width: 2;" text="---Path To Your XML---" textFill="#fffafa">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white;" styleClass="dataButton" text="Save Data" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2;" styleClass="dataButton" text="Save Data" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white;" styleClass="dataButton" text="Load Data" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2;" styleClass="dataButton" text="Load Data" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -123,21 +123,21 @@
             </HBox>
             <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" styleClass="screenButton" text="Flows Definition" textFill="#1100ff">
+                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2;" styleClass="screenButton" stylesheets="@header.css" text="Flows Definition" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Button>
-                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" styleClass="screenButton" text=" Flows Excution" textFill="#1100ff">
+                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2;" styleClass="screenButton" stylesheets="@header.css" text="Excution" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Button>
-                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" styleClass="screenButton" text="Statistics" textFill="#1100ff">
+                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2;" styleClass="screenButton" stylesheets="@header.css" text="Statistics" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Button>
-                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" styleClass="screenButton" text="Executions History" textFill="#1100ff">
+                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2;" styleClass="screenButton" stylesheets="@header.css" text="History" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Button>
                </children>
                <VBox.margin>
