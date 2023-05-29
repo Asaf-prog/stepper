@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
    <children>
-      <VBox fx:id="flowDetailsBox" layoutX="459.0" layoutY="35.0" prefHeight="403.0" prefWidth="488.0">
+      <VBox fx:id="flowDetailsBox" layoutX="332.0" layoutY="9.0" prefHeight="403.0" prefWidth="516.0" style="-fx-border-color: white;" visible="false">
          <children>
-            <Label fx:id="flowDescriptionTL" prefHeight="27.0" prefWidth="258.0" text="Selected Flow Details" textFill="#e80f0f" visible="false">
+            <Label fx:id="flowDescriptionTL" prefHeight="27.0" prefWidth="258.0" text="Selected Flow Details" textFill="#f8f6f6" visible="false">
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <Label fx:id="FlowNameTL" prefHeight="31.0" prefWidth="221.0" text="name" textFill="#e80b0b" visible="false" />
-            <Label fx:id="numOfSteps" prefHeight="17.0" prefWidth="213.0" text="numOfSteps" textFill="#dd0e0e" visible="false" />
-            <Label fx:id="freeInputNumber" prefHeight="17.0" prefWidth="196.0" text="free input num" textFill="#ee1313" visible="false" />
-            <TextArea fx:id="descriptionOfFlow" prefHeight="87.0" prefWidth="388.0" promptText="descreption" visible="false">
+            <Label fx:id="FlowNameTL" prefHeight="31.0" prefWidth="221.0" text="name" textFill="#f6f1f1" visible="false" />
+            <Label fx:id="numOfSteps" prefHeight="17.0" prefWidth="213.0" text="numOfSteps" textFill="#f6f3f3" visible="false" />
+            <Label fx:id="freeInputNumber" prefHeight="17.0" prefWidth="196.0" text="free input number" textFill="#fdfcfc" visible="false" />
+            <TextArea fx:id="descriptionOfFlow" editable="false" prefHeight="87.0" prefWidth="388.0" promptText="descreption" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
             </TextArea>
          </children>
-         <effect>
-            <Bloom />
-         </effect>
       </VBox>
-      <VBox fx:id="flowListOfButtons" layoutX="72.0" layoutY="12.0" prefHeight="449.0" prefWidth="279.0">
+      <VBox fx:id="flowListOfButtons" layoutX="42.0" layoutY="10.0" prefHeight="403.0" prefWidth="278.0" style="-fx-border-color: white;">
          <children>
-            <Label text="Available Flows" textFill="#da1313">
+            <Label text="Available Flows" textFill="#ededed">
                <font>
                   <Font size="18.0" />
                </font></Label>

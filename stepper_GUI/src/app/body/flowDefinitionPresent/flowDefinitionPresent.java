@@ -2,74 +2,141 @@ package app.body.flowDefinitionPresent;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.flow.definition.api.StepUsageDeclaration;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class flowDefinitionPresent implements bodyControllerDefinition {
     private List<FlowDefinitionImpl> flows;
-    @FXML
-    private VBox flowDetailsBox;
-    @FXML
-    private VBox flowListOfButtons;
-    @FXML
-    private TreeView<String> flowDetailsTreeView;
-    @FXML
-    private Label FlowNameTL;
-    @FXML
-    private Label flowDescriptionTL;
-    @FXML
-    private Label numOfSteps;
-    @FXML
-    private TextArea descriptionOfFlow;
-    @FXML
-    private Label freeInputNumber;
-    @FXML
-    private Button executeFlow;
     private bodyController body;
     private FlowDefinitionImpl currentFlow;
+    @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+
+    @FXML
+    private AnchorPane ExecuteButton;
+
+    @FXML
+    private VBox firstVbox;
+
+    @FXML
+    private VBox seocendVbox;
+
+    @FXML
+    private Label nameOfFlowSelected;
+
+    @FXML
+    private Label descriptionP;
+
+    @FXML
+    private Label FormalOutputs;
+
+    @FXML
+    private Label isReadOnly;
+
+    @FXML
+    private RadioButton stepsP;
+
+    @FXML
+    private RadioButton FreeInout;
+
+    @FXML
+    private RadioButton Outputs;
+
+    @FXML
+    private VBox thiredVbox;
+    @FXML
+    private Button executeButton;
+    @FXML
+    private Label numberOfSteps;
+    @FXML
+    private TreeView<String> treeLIst;
 
     @FXML
     void initialize() {
-        assert flowDetailsBox != null : "fx:id=\"flowDetailsBox\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert flowDescriptionTL != null : "fx:id=\"flowDescriptionTL\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert FlowNameTL != null : "fx:id=\"FlowNameTL\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert numOfSteps != null : "fx:id=\"numOfSteps\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert freeInputNumber != null : "fx:id=\"freeInputNumber\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert descriptionOfFlow != null : "fx:id=\"descriptionOfFlow\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert flowListOfButtons != null : "fx:id=\"flowListOfButtons\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
-        assert executeFlow != null : "fx:id=\"executeFlow\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        assert ExecuteButton != null : "fx:id=\"ExecuteButton\" was not injected: check your FXML file 'test.fxml'.";
+        assert firstVbox != null : "fx:id=\"firstVbox\" was not injected: check your FXML file 'test.fxml'.";
+        assert seocendVbox != null : "fx:id=\"seocendVbox\" was not injected: check your FXML file 'test.fxml'.";
+        assert nameOfFlowSelected != null : "fx:id=\"nameOfFlowSelected\" was not injected: check your FXML file 'test.fxml'.";
+        assert descriptionP != null : "fx:id=\"descriptionP\" was not injected: check your FXML file 'test.fxml'.";
+        assert FormalOutputs != null : "fx:id=\"FormalOutputs\" was not injected: check your FXML file 'test.fxml'.";
+        assert isReadOnly != null : "fx:id=\"isReadOnly\" was not injected: check your FXML file 'test.fxml'.";
+        assert stepsP != null : "fx:id=\"stepsP\" was not injected: check your FXML file 'test.fxml'.";
+        assert FreeInout != null : "fx:id=\"FreeInout\" was not injected: check your FXML file 'test.fxml'.";
+        assert Outputs != null : "fx:id=\"Outputs\" was not injected: check your FXML file 'test.fxml'.";
+        assert thiredVbox != null : "fx:id=\"thiredVbox\" was not injected: check your FXML file 'test.fxml'.";
+        assert numberOfSteps != null : "fx:id=\"numberofSteps\" was not injected: check your FXML file 'test.fxml'.";
+        assert treeLIst != null : "fx:id=\"treeLIst\" was not injected: check your FXML file 'test.fxml'.";
+        assert executeButton != null : "fx:id=\"executeButton\" was not injected: check your FXML file 'test.fxml'.";
 
+        seocendVbox.setVisible(false);
+        thiredVbox.setVisible(false);
     }
-    @Override
-    public void show() {
 
-        for (FlowDefinitionImpl flow : flows){
-            Button button = new Button(flow.getName());
-            button.setOnAction(e -> handleButtonAction(flow));
-            flowListOfButtons.getChildren().add(button);
+    @Override
+    public void show(){
+        ToggleGroup group = new ToggleGroup();
+        for (FlowDefinitionImpl flow :flows){
+            RadioButton button = new RadioButton(flow.getName());
+            button.setStyle("-fx-text-fill: white");
+            button.setOnAction(event -> handleButtonAction(flow));
+            button.setToggleGroup(group);
+            firstVbox.getChildren().add(button);
         }
+        firstVbox.setSpacing(10);
     }
     private void handleButtonAction(FlowDefinitionImpl flow){
-        flowDescriptionTL.setVisible(true);
-        FlowNameTL.setText(flow.getName());//name
-        FlowNameTL.setVisible(true);
-        descriptionOfFlow.setVisible(true);
-        descriptionOfFlow.setText(flow.getDescription());
-        numOfSteps.setVisible(true);
-        numOfSteps.setText("The number of steps is: "+ flow.getFlowSteps().size());
-        freeInputNumber.setVisible(true);
-        freeInputNumber.setText("The number of free inputs is: "+ flow.getFlowFreeInputs().size());
-        //todo add the number of continuation
-        body.setCurrentFlow(flow);
-        executeFlow.setDisable(false);
+        executeButton.setDisable(false);
+        seocendVbox.setVisible(true);
+        nameOfFlowSelected.setText("Name: "+flow.getName());
+        FormalOutputs.setText("Formal Outputs: "+flow.getFlowFormalOutputs().toString());
+        descriptionP.setText("Description: "+flow.getDescription());
+        if (flow.isReadOnly()){
+            isReadOnly.setText("Read only: True");
+        }
+        isReadOnly.setText("Read only: False");
+
+        stepsP.setOnAction(event ->handleButtonActionForSteps(flow));
+//        numOfSteps.setText("The number of steps is: "+ flow.getFlowSteps().size());
+//        freeInputNumber.setVisible(true);
+//        freeInputNumber.setText("The number of free inputs is: "+ flow.getFlowFreeInputs().size());
+//        //todo add the number of continuation
+//        body.setCurrentFlow(flow);
+//        executeFlow.setDisable(false);
+    }
+    private void handleButtonActionForSteps(FlowDefinitionImpl flow){
+        thiredVbox.setVisible(true);
+        //TreeItem<String> rootItem = new TreeItem<>("The number of steps is:"+flow.getFlowSteps().size());
+        numberOfSteps.setText("The number of steps is:"+flow.getFlowSteps().size());
+        TreeItem<String> rootItem = createTreeItem(flow.getFlowSteps());
+        treeLIst.setRoot(rootItem);
+    }
+    private TreeItem<String> createTreeItem(List<StepUsageDeclaration> steps) {
+        for (StepUsageDeclaration step : steps){
+            TreeItem<String> item = new TreeItem<>(step.getFinalStepName());
+          //  TreeItem<String> childItem = new TreeItem<>(step.)
+        }
+//        TreeItem<String> item = new TreeItem<>();
+//        if (depth > 0) {
+//            for (int i = 1; i <= depth; i++) {
+//                TreeItem<String> childItem = createTreeItem("Item " + i, depth - 1);
+//                item.getChildren().add(childItem);
+//            }
+//        }
+        return null;
     }
    @FXML
     void executeFlowFunc(ActionEvent event) {

@@ -79,7 +79,6 @@ public class StatsScreen implements bodyControllerDefinition {
         stepsList.setStyle("-fx-control-inner-background: #36393e;");
         stepStatsList.setStyle("-fx-control-inner-background: #36393e;");
 
-
     }
 
     private void Binds() {

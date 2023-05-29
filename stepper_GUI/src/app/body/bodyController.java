@@ -31,7 +31,8 @@ public class bodyController {
     }
     public void showFlowDefinition() {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("flowDefinitionPresent/flowDefinitionPresent.fxml");
+        //URL url = getClass().getResource("flowDefinitionPresent/flowDefinitionPresent.fxml");
+        URL url = getClass().getResource("flowDefinitionPresent/test.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
