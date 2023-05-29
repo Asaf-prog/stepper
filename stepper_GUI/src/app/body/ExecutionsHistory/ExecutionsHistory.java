@@ -112,9 +112,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
 
     private void setAviadCursor() {
-        Image cursorImage = new Image(getClass().getResourceAsStream("aviadCursor.png"));
+        Image cursorImage = new Image(getClass().getResourceAsStream("aviadcursor2.png"));
+        ImageView cursorImageView = new ImageView(cursorImage);
         double scaleFactor = 1.5; // Change this value to adjust the size
-        mainPane.setCursor(new ImageCursor(cursorImage));
+        mainPane.setCursor(new ImageCursor(cursorImageView.getImage(),
+                cursorImageView.getImage().getWidth() *55 ,
+                cursorImageView.getImage().getHeight() * 55));
     }
 
     private void asserts() {

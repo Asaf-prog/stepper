@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -8,11 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1089.0" stylesheets="@header.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="1080.0" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
       <VBox prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #36393e;">
          <children>
-            <Pane prefHeight="200.0">
+            <Pane prefHeight="90.0" prefWidth="1070.0">
                <children>
                   <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="66.0" fitWidth="672.0" layoutX="371.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="371.0" AnchorPane.rightAnchor="370.9285583496094" AnchorPane.topAnchor="7.0">
                      <image>
@@ -93,9 +92,9 @@
                   </Label>
                </children>
             </Pane>
-            <HBox alignment="TOP_RIGHT" prefHeight="32.0" prefWidth="1083.0" spacing="14.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0">
                <children>
-                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="32.0" prefWidth="196.0" style="-fx-background-color: #36393e; -fx-border-color: white;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="32.0" prefWidth="191.0" style="-fx-background-color: #36393e; -fx-border-color: white;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
