@@ -1,7 +1,10 @@
 package app.body.ExecutionsHistory;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.*;
 
+import app.body.ExecutionsHistory.DataViewer.DataViewerController;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import javafx.animation.KeyFrame;
@@ -11,10 +14,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -23,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
@@ -262,7 +269,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         if(outputs!=null) {
             for (Map.Entry<String, Object> entry : outputs.entrySet()) {
                 Label newOutput = new Label(entry.getKey());
-                Label outputValue = setLabelForOutput(entry.getValue());//todo implement
+                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());//todo implement
                 newOutput.getStyleClass().add("DDLabel");
                 outputValue.getStyleClass().add("DDLabel");
                 newOutput.setPrefWidth(outputsVbox.getPrefWidth());
@@ -276,7 +283,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
     }
 
-    private Label setLabelForOutput(Object value) {
+    private Label setLabelForOutput(Object value, String name) {
         Label result = new Label();
         if (value instanceof RelationData) {
             result.setText("relation");
@@ -288,6 +295,29 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         } else {
             result.setText(value.toString());
         }
+        result.setOnMouseEntered(event -> {
+            result.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
+        });
+        result.setOnMouseExited(event -> {
+            result.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
+        });
+        result.setOnMouseClicked(event -> {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                    try {
+                        DataViewerController controller = loader.getController();
+                        if (controller!=null) {
+                            controller.setData(value, name);
+                            Parent root = loader.load();
+                            Stage stage = new Stage();
+                            stage.setTitle("Data Viewer");
+                            stage.setScene(new Scene(root, 500, 300));
+                            stage.showAndWait();
+                        }
+                    } catch (IOException e) {
+                        System.out.println("failed to load data viewer");
+                    }
+                }
+        );
         return result;
     }
 
@@ -302,7 +332,29 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         if(inputs!=null) {
             for (Pair<String, String> entry : inputs) {
                 Label newInput = new Label(entry.getKey());
-                Label inputValue = new Label(entry.getValue());//todo implement
+                Label inputValue = new Label(entry.getValue());
+                inputValue.setOnMouseEntered(event -> {
+                    inputValue.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
+                });
+                inputValue.setOnMouseExited(event -> {
+                    inputValue.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
+                });
+                inputValue.setOnMouseClicked(event -> {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                            try {
+                                Parent root = loader.load();
+                                DataViewerController controller = loader.getController();
+                                controller.setData(entry.getValue(), entry.getKey());
+                                Stage stage = new Stage();
+                                stage.setTitle("Data Viewer");
+                                stage.setScene(new Scene(root, 500, 300));
+                                stage.showAndWait();
+                            } catch (IOException e) {
+                                //giveup
+                            }
+                        }
+                );
+
                 newInput.getStyleClass().add("DDLabel");
                 inputValue.getStyleClass().add("DDLabel");
                 newInput.setPrefWidth(inputsVbox.getPrefWidth());
