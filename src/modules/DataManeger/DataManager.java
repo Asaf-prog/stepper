@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class DataManager {
     public static Stepper stepperData;//the one and only steppe!!!
 
+
     public DataManager(Stepper stepperData){
         this.stepperData = stepperData;
     }
@@ -33,11 +34,29 @@ public class DataManager {
         return stepperData;
     }
 
+
     public static boolean saveData() throws MenuException {
 //        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter the path to the data file");
         String filePath = input.nextLine();
+        Optional<Path> path= Optional.ofNullable(Paths.get(filePath));
+        if (!path.isPresent()) {
+            throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
+        }
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            out.writeObject(stepperData);
+            return true;
+        } catch (IOException e) {
+            throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File wont created...(try enter good path to your file)");
+        }
+        catch (Exception e){
+            throw new MenuException(MenuExceptionItems.EMPTY, " unknown error..");
+        }
+
+    }
+    public static boolean saveDataGui(String filePath) throws MenuException {
+//        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
         Optional<Path> path= Optional.ofNullable(Paths.get(filePath));
         if (!path.isPresent()) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
@@ -62,6 +81,19 @@ public class DataManager {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter the path to the data file");
         String filePath = input.nextLine();
+        if (!isFilePathExist(filePath)) {
+            throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File Dont Exist...");
+        }
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
+            stepperData = (Stepper) in.readObject();
+            return true;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public static boolean loadDataGui(String filePath) throws MenuException {
+//        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
         if (!isFilePathExist(filePath)) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File Dont Exist...");
         }

@@ -1,6 +1,8 @@
 package modules.mappings;
 
-public class InitialInputValues {
+import java.io.Serializable;
+
+public class InitialInputValues implements Serializable {
     protected String inputName;
 
     protected String initialValue;

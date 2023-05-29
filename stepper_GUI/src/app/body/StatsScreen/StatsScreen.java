@@ -197,6 +197,7 @@ public class StatsScreen implements bodyControllerDefinition {
         }
         //set stats table here
         //todo
+        //sync all menu buttons
         if (stepperData.getFlows().size() == 0) {//both are empty
             popAlert();//show appropriate message
         }

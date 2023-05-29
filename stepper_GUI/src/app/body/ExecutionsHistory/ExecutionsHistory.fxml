@@ -1,20 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.PointLight?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500" prefWidth="1080" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" editable="true" layoutX="40.0" layoutY="50.0" prefHeight="300.0" prefWidth="521.0">
+      <ImageView fx:id="bisli" fitHeight="165.0" fitWidth="192.0" layoutX="-51.0" layoutY="418.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@content/bisliGrill.png" />
+         </image>
+         <effect>
+            <Bloom threshold="1.0" />
+         </effect>
+      </ImageView>
+      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="37.0" prefHeight="165.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
          <columns>
-            <TableColumn fx:id="Flow" minWidth="20.0" prefWidth="150.0" text="Flow" />
-            <TableColumn fx:id="TImeOfFlow" prefWidth="150.0" text="Time" />
-            <TableColumn fx:id="ResultOfFlow" prefWidth="150.0" text="Result" />
+            <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" text="Flow ID" />
+
+            <TableColumn fx:id="nameCol" editable="false" prefWidth="323.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14; -fx-background-color: #36393e; -fx-alignment: center;" text="Flow Name" />
+            <TableColumn fx:id="timeCol" editable="false" prefWidth="212.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Time in &lt;MS&gt;" />
+            <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Status" />
          </columns>
       </TableView>
+      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-1.0" prefHeight="39.0" prefWidth="231.0" text="there are X flow Executions" textFill="#fffb05">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font></Label>
+      <Label fx:id="flowOutputsLabel" layoutX="14.0" layoutY="209.0" prefHeight="17.0" prefWidth="231.0" text="Flow Outputs:" textFill="#fffb05">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Pane fx:id="logsPane" layoutX="620.0" layoutY="237.0" prefHeight="215.0" prefWidth="441.0">
+         <children>
+            <ImageView fitHeight="215.0" fitWidth="447.0" layoutX="-6.0">
+               <image>
+                  <Image url="@content/commandScreen.png" />
+               </image>
+               <effect>
+                  <InnerShadow color="#fffafa" />
+               </effect>
+            </ImageView>
+            <VBox fx:id="logsVbox" layoutY="13.0" prefHeight="199.0" prefWidth="441.0">
+               <children>
+                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="441.0" textFill="#24ff21" wrapText="true">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <Label fx:id="logslabel" layoutX="611.0" layoutY="209.0" prefHeight="17.0" prefWidth="231.0" text="Logs:" textFill="#fffb05">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <PointLight color="CHARTREUSE" layoutX="1047.0" layoutY="470.0" lightOn="true" />
+      <Label fx:id="logslabel1" layoutX="318.0" layoutY="209.0" prefHeight="17.0" prefWidth="231.0" text="Inputs:" textFill="#fffb05">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="20.0" fitWidth="23.0" layoutX="982.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@content/flash.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="318.0" layoutY="237.0" prefHeight="215.0" prefWidth="293.0" style="-fx-border-color: white;">
+         <children>
+            <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" style="-fx-border-color: white;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Input" textFill="#9c40ff">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox fx:id="inputsVbox4Value" prefHeight="216.0" prefWidth="158.0" style="-fx-border-color: white;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox layoutX="14.0" layoutY="237.0" prefHeight="215.0" prefWidth="293.0" style="-fx-border-color: white;">
+         <children>
+            <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" style="-fx-border-color: white;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Output" textFill="#9c40ff">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox fx:id="outputsVbox4Value" prefHeight="216.0" prefWidth="158.0" style="-fx-border-color: white;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button fx:id="execute" alignment="CENTER_RIGHT" disable="true" layoutX="980.0" layoutY="455.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="29.0" prefWidth="83.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow;" text="Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Narrow" size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

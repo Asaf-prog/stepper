@@ -13,10 +13,27 @@ package modules.stepper;
  import java.util.*;
 
 public class Stepper implements Serializable {
-    List<FlowExecution> flowExecutions;//all flow executions
-    List<FlowDefinitionImpl> flows;//all flows
-    Integer TPSize;//Thread pool size
+    private List<FlowExecution> flowExecutions;//all flow executions
+    private List<FlowDefinitionImpl> flows;//all flows
+    private Integer TPSize;//Thread pool size
+    private  String XmlPath="";
 
+
+    public Integer getTPSize() {
+        return TPSize;
+    }
+
+    public void setTPSize(Integer TPSize) {
+        this.TPSize = TPSize;
+    }
+
+    public String getXmlPath() {
+        return XmlPath;
+    }
+
+    public void setXmlPath(String xmlPath) {
+        XmlPath = xmlPath;
+    }
     public List<FlowExecution> getFlowExecutions() {
         return flowExecutions;
     }
@@ -25,11 +42,12 @@ public class Stepper implements Serializable {
         this.flowExecutions = flowExecutions;
     }
     public FlowExecution getFlowExecutionById(UUID id){
-        Optional<FlowExecution> res = flowExecutions.stream().filter(flowExecution -> flowExecution.getUniqueId() == id).findFirst();
+        Optional<FlowExecution> res = flowExecutions.stream().filter(flowExecution -> flowExecution.getUniqueId().equals(id)).findFirst();
         if(res.isPresent()){
             return res.get();
         }
         return null;
+
     }
 
     public Stepper(){

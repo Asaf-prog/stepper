@@ -6,6 +6,7 @@ import app.body.bodyController;
 import app.header.headerController;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
 import java.util.List;
@@ -13,8 +14,10 @@ import java.util.List;
 public class mainController {
    private List<FlowDefinitionImpl> flows;
    @FXML private Parent headerComponent;
-   @FXML private headerController headerComponentController;
    @FXML private Parent bodyComponent;
+   @FXML private AnchorPane generalPane;
+   @FXML private headerController headerComponentController;
+;
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
    private MVC_controller mvcController;
@@ -52,4 +55,20 @@ public class mainController {
    public void showHistoryExe(){
       bodyComponentController.showHistoryExe();
    }
+
+   public void changeTheme(String toSet) {
+      if (toSet.equals("dark")) {
+       bodyComponent.setStyle("-fx-background-color: #e4e5f1\t");
+       headerComponent.setStyle("-fx-background-color: #e4e5f1\t");
+
+      } else {
+         bodyComponent.setStyle("-fx-background-color:  #36393e\t");
+         headerComponent.setStyle("-fx-background-color: #36393e\t");
+
+
+      }
+
+
+   }
+
 }

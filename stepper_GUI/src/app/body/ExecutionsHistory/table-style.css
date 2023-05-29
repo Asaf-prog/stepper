@@ -1,0 +1,22 @@
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-selection-bar;
+}
+.table-view .column-header.titleOfColumn .label {
+    -fx-text-fill: yellow;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+}
+.table-view .column-header.radio-button-for-table .label {
+
+    -fx-alignment: center;
+}

@@ -1,6 +1,8 @@
 package modules.mappings;
 
-public class ContinuationMapping {
+import java.io.Serializable;
+
+public class ContinuationMapping  implements Serializable {
 
     protected String targetData;
     protected String sourceData;

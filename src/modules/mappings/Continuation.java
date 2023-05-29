@@ -2,10 +2,11 @@ package modules.mappings;
 
 import schemeTest2.generatepackage.STContinuationMapping;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Continuation {
+public class Continuation implements Serializable {
 
     protected String targetFlow;
     protected List<ContinuationMapping> mappingList;
