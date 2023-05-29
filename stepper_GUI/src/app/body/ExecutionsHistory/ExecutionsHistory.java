@@ -145,7 +145,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     void executeFlow(ActionEvent event) {
         if (pickedExecution != null) {
             FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
-           // body.getMVC_controller().executeFlow(flowDefinition);
+            //body.getMVC_controller().executeFlow(flowDefinition);
             //todo need to use the body in order to execute FLOW from here
 
         }
