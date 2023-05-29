@@ -22,7 +22,7 @@ public class FlowExecutionTableItem {
     public FlowExecutionTableItem(UUID id, String name, double time, FlowExecutionResult result) {
         String idString = id.toString();
         this.id = new RadioButton(idString);
-        this.id.setStyle("-fx-alignment: TOP_LEFT;");
+        this.id.getStyleClass().add("radio-button-in-table");
         this.name = name;
         //get only the first 3 digits after the dot
         DecimalFormat decimalFormat = new DecimalFormat("#####.#####");

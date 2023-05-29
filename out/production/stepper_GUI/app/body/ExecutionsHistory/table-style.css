@@ -20,3 +20,18 @@
 
     -fx-alignment: top-left;
 }
+.DDLabel {
+    -fx-alignment: top-center;
+    -fx-border-color: yellow;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-border-width: 1px;
+}
+.radio-button-in-table {
+    -fx-alignment: top-left;
+    -fx-pref-width: 351px;
+
+
+}

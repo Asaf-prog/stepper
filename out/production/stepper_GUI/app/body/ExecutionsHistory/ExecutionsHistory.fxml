@@ -65,7 +65,7 @@
             <Image url="@content/flash.png" />
          </image>
       </ImageView>
-      <HBox layoutX="318.0" layoutY="251.0" prefHeight="249.0" prefWidth="293.0" style="-fx-border-color: white;">
+      <HBox layoutX="318.0" layoutY="251.0" prefHeight="249.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
             <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" style="-fx-border-color: white;">
                <children>
@@ -87,7 +87,7 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="14.0" layoutY="252.0" prefHeight="247.0" prefWidth="293.0" style="-fx-border-color: white;">
+      <HBox layoutX="14.0" layoutY="252.0" prefHeight="247.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
             <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" style="-fx-border-color: white;">
                <children>
