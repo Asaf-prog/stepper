@@ -18,5 +18,5 @@
 }
 .table-view .column-header.radio-button-for-table .label {
 
-    -fx-alignment: center;
+    -fx-alignment: top-left;
 }

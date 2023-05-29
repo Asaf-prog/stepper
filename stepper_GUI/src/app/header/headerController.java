@@ -278,7 +278,7 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            loadData.setStyle("-fx-background-color: rgba(174,0,242,0.34);-fx-border-color: white");
+            loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
         });
         loadData.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
@@ -293,7 +293,7 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            saveData.setStyle("-fx-background-color: rgba(174,0,242,0.34);-fx-border-color: white");
+            saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
         });
         saveData.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), saveData);

@@ -94,17 +94,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
 
     private void setBisli() {
-
-
         bisli.setOnMouseEntered(e -> {
-            double bisliX = bisli.getLayoutX();
-            double bisliY = bisli.getLayoutY();
             // Adjust the position if it is too close to the cursor
-            double sceneWidth = mainPane.getWidth();
-            double sceneHeight = mainPane.getHeight();
+            double sceneWidth = mainPane.getWidth()-50;
+            double sceneHeight = mainPane.getHeight()-50;
             // Update the position of bisli
-             double randomX = Math.random() * (sceneWidth - 50)%sceneWidth;
-             double randomY = Math.random() * (sceneHeight - 50)%sceneHeight;
+            double randomX = Math.random() * (sceneWidth - 50)%sceneWidth;
+            double randomY = Math.random() * (sceneHeight - 50)%sceneHeight;
             bisli.setLayoutX(randomX);
             bisli.setLayoutY(randomY);
         });
@@ -112,7 +108,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
 
     private void setAviadCursor() {
-        Image cursorImage = new Image(getClass().getResourceAsStream("aviadcursor2.png"));
+        Image cursorImage = new Image(getClass().getResourceAsStream("cursor3.png"));
         ImageView cursorImageView = new ImageView(cursorImage);
         double scaleFactor = 1.5; // Change this value to adjust the size
         mainPane.setCursor(new ImageCursor(cursorImageView.getImage(),
@@ -159,8 +155,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         Map<String, List<Pair<String, String>>> logs = flowExecution.getLogs();
         for (StepUsageDeclaration step :flowExecution.getFlowDefinition().getFlowSteps()) {
             List<Pair<String, String>> logsPerStep=logs.get(step.getFinalStepName());
-            for (Pair<String, String> log : logsPerStep) {
-                addLog(log);
+            if (logsPerStep!=null) {
+                for (Pair<String, String> log : logsPerStep) {
+                    if (log != null)
+                        addLog(log);
+                }
             }
         }
     }
@@ -209,7 +208,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             });
         }
         tableData.setItems(data);
-        tableData.getColumns().addAll(idCol, nameCol, timeCol, resCol);
+        //tableData.getColumns().addAll(idCol, nameCol, timeCol, resCol);
         resCol.setCellValueFactory(new PropertyValueFactory<>("result"));
 
         resCol.setCellFactory(column -> new TableCell<FlowExecutionTableItem, String>() {
@@ -223,7 +222,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         "-fx-alignment: CENTER; -fx-font-size: 14px; -fx-font-weight: bold;");
 
                 if (item != null && !empty) {
-                    setText(item);
+                    setText(item.toUpperCase());
 
                     // Set color based on the status value
                     if (item.toUpperCase().equals("FAIL")) {
@@ -238,7 +237,15 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         });
 
 // Add the status column to the TableView
-        tableData.getColumns().add(resCol);
+
+        //TableColumn<FlowExecutionTableItem,  String> columnToUpdate = null;
+        for (TableColumn<?, ?> column : tableData.getColumns()) {
+            if (column.getText().equals("Status")) { // Replace "ColumnName" with the actual column name
+                column = (TableColumn<FlowExecutionTableItem,  String>) resCol;
+                break;
+            }
+        }
+       // tableData.getColumns().add(resCol);
         //tableData.setStyle("-fx-background-color: transparent;");
 
         tableBinds();

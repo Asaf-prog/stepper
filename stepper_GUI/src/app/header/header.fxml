@@ -98,7 +98,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Label fx:id="loaded" alignment="CENTER" prefHeight="33.0" prefWidth="630.0" style="-fx-border-color: rgba(237,165,255,0.33);" text="---Path To Your XML---" textFill="#fffafa">
+                  <Label fx:id="loaded" alignment="CENTER" prefHeight="33.0" prefWidth="630.0" style="-fx-border-color: rgb(179,0,220);" text="---Path To Your XML---" textFill="#fffafa">
                      <font>
                         <Font size="16.0" />
                      </font>
