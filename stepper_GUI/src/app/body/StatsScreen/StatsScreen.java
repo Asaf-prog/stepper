@@ -6,24 +6,26 @@ import java.util.ResourceBundle;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
-import com.sun.javafx.property.adapter.PropertyDescriptor;
-import javafx.beans.InvalidationListener;
-import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
-import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
 
 public class StatsScreen implements bodyControllerDefinition {
-
+    FlowDefinitionImpl currSelectedFlow = null;//event on choosen flow
+    StepUsageDeclaration currSelectedStep = null;//event on choosen step
     @FXML
     private ResourceBundle resources;
-
+    @FXML
+    private HBox chartsPane;
     @FXML
     private URL location;
 
@@ -64,6 +66,7 @@ public class StatsScreen implements bodyControllerDefinition {
         assert flowStatsList != null : "fx:id=\"flowStatsList\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         assert flowExecutionsSize != null : "fx:id=\"flowExecutionsSize\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         assert stepperPane != null : "fx:id=\"stepperPane\" was not injected: check your FXML file 'StatsScreen.fxml'.";
+        assert chartsPane != null : "fx:id=\"chartsPane\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         setListsToVisible();
         stepperData= DataManager.getData();
         setListsView();
@@ -71,6 +74,74 @@ public class StatsScreen implements bodyControllerDefinition {
         updateLists(); //set Labels and check if needed to put on tables
         //set listeners
         setListeners();
+    }
+
+    private void setCharts(FlowDefinitionImpl selectedFlow) {
+
+
+        BarChart<String, Number> barChart = getBarChart(selectedFlow);
+        PieChart pie= getPieChart(selectedFlow);
+
+
+        chartsPane.getChildren().clear();
+        chartsPane.getChildren().add(barChart);
+        chartsPane.getChildren().add(pie);
+
+
+
+    }
+
+    private static BarChart<String, Number> getBarChart(FlowDefinitionImpl selectedFlow) {
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Steps");
+        yAxis.setLabel("Time (in ms)");
+        BarChart<String, Number> barChart;
+        // Create bar chart
+        barChart = new BarChart<>(xAxis, yAxis);
+        barChart.setTitle("Step Stats");
+        Label titleLabel = (Label) barChart.lookup(".chart-title");
+        titleLabel.setStyle("-fx-text-fill: #d000ff;");
+        barChart.lookup(".axis-label").setStyle("-fx-text-fill: #d000ff;");
+        barChart.lookup(".axis").setStyle(" -fx-text-fill: #4cffa4;");
+
+
+        // Create data series
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Time Taken");
+
+        // Add data to the series
+        for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+            series.getData().add(new XYChart.Data<>(step.getFinalStepName(), step.getAvgTime()));
+        }
+        barChart.lookup(".chart-plot-background")
+                .setStyle("-fx-background-color: #36393e;");  // Set the plot area background color
+        barChart.lookup(".chart-legend").setStyle("-fx-text-fill: #4cffa4;");
+        barChart.getStyleClass().add("bar-chart");
+        barChart.getData().add(series);
+        return barChart;
+    }
+
+    private static PieChart getPieChart(FlowDefinitionImpl selectedFlow) {
+        PieChart pieChart = new PieChart();
+        pieChart.getStyleClass().add("pie-chart");
+        pieChart.setTitle("Flow Time Division");
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        double totalFlowTime = 0.0;
+        for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+            totalFlowTime += step.getAvgTime();
+        }
+        for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+            double percentage = (step.getAvgTime() / totalFlowTime) * 100;
+            PieChart.Data data = new PieChart.Data(step.getFinalStepName(), percentage);
+            pieChartData.add(data);
+        }
+        pieChart.setData(pieChartData);
+        pieChart.lookup(".chart-title")
+                .setStyle("-fx-text-fill: #ba00ff;");
+        pieChart.lookup(".chart-legend").setStyle("-fx-text-fill: #4cffa4;");
+        return pieChart;
+
     }
 
     private void setListsView() {
@@ -178,8 +249,11 @@ public class StatsScreen implements bodyControllerDefinition {
                     if (selectedFlowRadioButton != null) {
                         FlowDefinitionImpl selectedFlow = getFlowFromRadioButton(selectedFlowRadioButton);
                         updateStepsList(selectedFlow);
+                        currSelectedFlow = selectedFlow;
+                        setCharts(selectedFlow);
                     }
                 });
+
                 flowsList.getItems().add(flowSelection);//check what happened her
             }
             flowDefinitionsSize.setText("There are "+stepperData.getFlows().size()+" Flow Definitions");
