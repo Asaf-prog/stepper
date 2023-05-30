@@ -77,6 +77,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private Label executionCounterLabel;
 
     @FXML
+    private Label exeTime;
+    @FXML
     private TableColumn<FlowExecutionTableItem,  String> timeCol;
 
     @FXML
@@ -195,7 +197,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
         for (FlowExecution flowExecution : stepperData.getFlowExecutions()) {
             FlowExecutionTableItem item =new FlowExecutionTableItem(flowExecution.getUniqueId(), flowExecution.getFlowDefinition().getName(),
-                    flowExecution.getTotalTime().toMillis(), flowExecution.getFlowExecutionResult());
+                    flowExecution.getStartDateTime(), flowExecution.getFlowExecutionResult());
             item.addToToggleGroup(group);
             data.add(item);
             item.id.setOnAction(event -> {
@@ -209,6 +211,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     updateLogs(selectedFlow,stepperData);
                     updateInputs(selectedFlow);
                     updateOutputs(selectedFlow);
+                    updateTime(selectedFlow);
 
                 }
             });
@@ -256,6 +259,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
         tableBinds();
 
+    }
+
+    private void updateTime(FlowExecution selectedFlow) {
+        exeTime.setDisable(false);
+        exeTime.setVisible(true);
+        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" MS ");
     }
 
     private void updateOutputs(FlowExecution selectedFlow) {

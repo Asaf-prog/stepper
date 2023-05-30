@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
-   <children>
-      <VBox  VBox.vgrow="ALWAYS" prefHeight="720.0" prefWidth="1080.0">
+<ScrollPane prefHeight="730.0" prefWidth="1100.0" style="-fx-hbar-policy: AS_NEEDED; -fx-vbar-policy: AS_NEEDED; -fx-background-color: #36394e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
+   <content>
+      <AnchorPane prefHeight="728.0" prefWidth="1098.0" style="-fx-background-color: #36393e;">
          <children>
-            <fx:include fx:id="headerComponent" source="../header/header.fxml" />
-            <VBox VBox.vgrow="ALWAYS" prefHeight="500.0" prefWidth="1080.0">
-               <fx:include fx:id="bodyComponent" source="../body/body.fxml"  />
+            <VBox prefHeight="720.0" prefWidth="1080.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <fx:include fx:id="headerComponent" source="../header/header.fxml" />
+                  <VBox prefHeight="500.0" prefWidth="1080.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <fx:include fx:id="bodyComponent" source="../body/body.fxml" />
+                     </children>
+                  </VBox>
+               </children>
             </VBox>
          </children>
-      </VBox>
-   </children>
-</AnchorPane>
+      </AnchorPane>
+   </content>
+</ScrollPane>

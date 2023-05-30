@@ -19,15 +19,15 @@ public class FlowExecutionTableItem {
         this.time = time;
         this.result = result;
     }
-    public FlowExecutionTableItem(UUID id, String name, double time, FlowExecutionResult result) {
+    public FlowExecutionTableItem(UUID id, String name, String time, FlowExecutionResult result) {
         String idString = id.toString();
         this.id = new RadioButton(idString);
         this.id.getStyleClass().add("radio-button-in-table");
         this.name = name;
         //get only the first 3 digits after the dot
         DecimalFormat decimalFormat = new DecimalFormat("#####.#####");
-        String formattedValue = decimalFormat.format(time);
-        this.time = ""+formattedValue+" MS";
+        //String formattedValue = decimalFormat.format(time);
+        this.time = time;
         if(result==FlowExecutionResult.SUCCESS)
             this.result = "Success";
         else if(result==FlowExecutionResult.WARNING)

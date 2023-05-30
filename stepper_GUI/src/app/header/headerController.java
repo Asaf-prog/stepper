@@ -6,6 +6,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -198,11 +199,15 @@ public class headerController {
     @FXML
     void changeTheme(ActionEvent event) {
         if (themeToggle.isSelected()) {
-            main.changeTheme("light");
+            Scene scene = themeToggle.getScene();
+            if (scene != null) {
+                scene.getStylesheets().add("app/body/theme/bodyLight.css");
+            }
         } else {
-            main.changeTheme("dark");
+            Scene scene = themeToggle.getScene();
+            if (scene != null) {
+            }
         }
-
     }
     @FXML
     void SaveData(ActionEvent event) {

@@ -58,14 +58,11 @@ public class mainController {
 
    public void changeTheme(String toSet) {
       if (toSet.equals("dark")) {
-       bodyComponent.setStyle("-fx-background-color: #e4e5f1\t");
-       headerComponent.setStyle("-fx-background-color: #e4e5f1\t");
-
+       bodyComponent.getStylesheets().add("app/body/theme/bodyDark.css");
+       headerComponent.getStylesheets().add("app/header/theme/headerDark.css");
       } else {
-         bodyComponent.setStyle("-fx-background-color:  #36393e\t");
-         headerComponent.setStyle("-fx-background-color: #36393e\t");
-
-
+            bodyComponent.getStylesheets().add("app/body/theme/bodyLight.css");
+            headerComponent.getStylesheets().add("app/header/theme/headerLight.css");
       }
 
 

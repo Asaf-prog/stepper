@@ -20,6 +20,7 @@ public class FLowExecutor {
         ArrayList<StepResult> flowExeStatus = new ArrayList<>();//flow execution status
         context.initializedCustomMapping(flowExecution);//sets custom mapping into the context
         flowExecution.setUserInputs();//sets user inputs into the flow execution and delete the original user inputs
+        boolean checkIfFlowFailed = false;
         try {
             Instant flowStartTime=flowExecution.startStepTimer();
             for (int i = 0; i < flowExecution.getFlowDefinition().getFlowSteps().size(); i++) {
@@ -43,9 +44,11 @@ public class FLowExecutor {
                     continue;
                 }
             }
+
             Instant flowEndTime=flowExecution.stopStepTimer();
             updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
-            return;
+            checkIfFlowFailed=true;
+
         }
         catch (IOException e) {
             return;
@@ -55,10 +58,14 @@ public class FLowExecutor {
             throw new MenuException(MenuExceptionItems.EMPTY, "Error in executing flow "+flowExecution.getFlowDefinition().getName());
         }
         finally {
-            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));
-            Instant flowStartTime=flowExecution.stopStepTimer();
-            Instant flowEndTime=flowExecution.stopStepTimer();
-            updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
+            if (checkIfFlowFailed!=true) {
+                Instant flowStartTime=flowExecution.stopStepTimer();
+                Instant flowEndTime=flowExecution.stopStepTimer();
+                updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
+
+            }
+            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));//if one step failed or warning the flow failed or warning
+
             return;
         }
     }
@@ -82,6 +89,7 @@ public class FLowExecutor {
             flowExecution.setLogs(context.getLogs());
             flowExecution.setSummaryLines(context.getSummaryLines());
             flowExecution.setAllExecutionOutputs(context);
+            flowExecution.setTotalTime(Duration.between(flowStartTime, flowEndTime));
 
     }
 
