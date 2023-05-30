@@ -70,6 +70,7 @@ public class headerController {
 
     @FXML
     private Button buypremiumBtn;
+    String buttonStyle;
     
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
@@ -127,61 +128,69 @@ public class headerController {
         FlowsExecution.getStyleClass().add("screenButton");
         ExecutionsHistory.getStyleClass().add("screenButton");
         Statistics.getStyleClass().add("screenButton");
+
         FlowsDefinition.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            FlowsDefinition.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle= FlowsDefinition.getStyle();
+            FlowsDefinition.setStyle("-fx-border-color: white;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(139,0,201);");
         });
         FlowsDefinition.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            FlowsDefinition.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+
+            FlowsDefinition.setStyle(buttonStyle);
         });
         FlowsExecution.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsExecution);
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            FlowsExecution.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle= FlowsExecution.getStyle();
+            FlowsExecution.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
         });
         FlowsExecution.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsExecution);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            FlowsExecution.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+
+            FlowsExecution.setStyle(buttonStyle);
         });
         ExecutionsHistory.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), ExecutionsHistory);
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            ExecutionsHistory.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle= ExecutionsHistory.getStyle();
+            ExecutionsHistory.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
         });
         ExecutionsHistory.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), ExecutionsHistory);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            ExecutionsHistory.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+
+            ExecutionsHistory.setStyle(buttonStyle);
         });
         Statistics.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), Statistics);
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            Statistics.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle= Statistics.getStyle();
+            Statistics.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
         });
         Statistics.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), Statistics);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            Statistics.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+            Statistics.setStyle(buttonStyle);
         });
 
     }
@@ -307,7 +316,8 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            path.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle=path.getStyle();
+            path.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
 
         });
         path.setOnMouseExited(event -> {
@@ -315,7 +325,7 @@ public class headerController {
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            path.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+            path.setStyle(buttonStyle);
 
         });
         path.setOnMousePressed( event -> {
@@ -335,14 +345,15 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle=loadData.getStyle();
+            loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
         });
         loadData.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            loadData.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+            loadData.setStyle(buttonStyle);
 
         });
         saveData.setOnMouseEntered(event -> {
@@ -350,14 +361,16 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-border-color: white");
+            buttonStyle=saveData.getStyle();
+            saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+
         });
         saveData.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), saveData);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
-            saveData.setStyle("-fx-background-color: transparent;-fx-border-color: white");
+            saveData.setStyle(buttonStyle);
         });
     }
 
