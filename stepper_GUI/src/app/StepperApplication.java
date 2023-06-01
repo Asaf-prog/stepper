@@ -14,7 +14,7 @@ public class StepperApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
-        Scene scene = new Scene(load,1090,730);
+        Scene scene = new Scene(load,1100,750);
         primaryStage.setScene(scene);
         setPrimaryStage(primaryStage);
         centerWindowOnScreen(primaryStage);
