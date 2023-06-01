@@ -1,7 +1,5 @@
 package app.body.ExecutionsHistory;
 import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLOutput;
 import java.util.*;
 
 import app.body.ExecutionsHistory.DataViewer.DataViewerController;
@@ -9,15 +7,11 @@ import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
 import modules.dataDefinition.impl.relation.RelationData;
@@ -40,6 +33,10 @@ import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
 
 public class ExecutionsHistory implements bodyControllerDefinition {
+
+
+    @FXML
+    private VBox stepTree;
     @FXML
     private TableColumn<FlowExecutionTableItem, RadioButton> idCol;
     @FXML
@@ -68,6 +65,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private TableColumn<FlowExecutionTableItem, String> nameCol;
 
     @FXML
+    private Pane logScrollPane;
+    @FXML
     private TableView<FlowExecutionTableItem> tableData;
 
     @FXML
@@ -84,7 +83,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
-    private static final String ERROR_LINE_STYLE = "-fx-text-fill: red;";
+    private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     KeyFrame keyFrame;
     KeyValue keyValueX;
     KeyValue keyValueY;
@@ -99,10 +98,20 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
+        setTree(stepperData);
         // Set selection listener for table
 
 
     }
+
+    private void setTree(Stepper stepperData) {
+//        TreeItem<String> root = new TreeItem<>("Steps");
+//        root.setExpanded(false);
+//        stepTree.setStyle("-fx-background-color: transparent; -fx-text-fill: black; -fx-background-radius: 8;" +
+//                "-fx-spacing: 4;");
+
+    }
+
     private void setBisli() {
         bisli.setOnMouseEntered(e -> {
             // Adjust the position if it is too close to the cursor
@@ -124,6 +133,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 cursorImageView.getImage().getHeight() * 55));
     }
     private void asserts() {
+        assert stepTree != null : "fx:id=\"stepTree\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsPane != null : "fx:id=\"logsPane\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert inputsVbox4Value != null : "fx:id=\"inputsVbox4Value\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert tableData != null : "fx:id=\"tableData\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
@@ -157,18 +167,22 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         Label logsLabel = new Label();
         logsLabel.setText("logs for flow with id : "+flowExecution.getUniqueId());
         logsLabel.setStyle("-fx-font-size: 14;"+LOG_LINE_STYLE);
-
         logsVbox.getChildren().add(logsLabel);
-        Map<String, List<Pair<String, String>>> logs = flowExecution.getLogs();
-        for (StepUsageDeclaration step :flowExecution.getFlowDefinition().getFlowSteps()) {
-            List<Pair<String, String>> logsPerStep=logs.get(step.getFinalStepName());
-            if (logsPerStep!=null) {
-                for (Pair<String, String> log : logsPerStep) {
-                    if (log != null)
-                        addLog(log);
-                }
-            }
-        }
+        logsVbox.getChildren().add(stepTree);
+
+//todo remove
+//        logsVbox.getChildren().add(logsLabel);
+//        Map<String, List<Pair<String, String>>> logs = flowExecution.getLogs();
+//        for (StepUsageDeclaration step :flowExecution.getFlowDefinition().getFlowSteps()) {
+//            List<Pair<String, String>> logsPerStep=logs.get(step.getFinalStepName());
+//            if (logsPerStep!=null) {
+//                for (Pair<String, String> log : logsPerStep) {
+//                    if (log != null)
+//                        addLog(log);
+//                }
+//            }
+//        }
+
     }
     private void addLog(Pair<String, String> log) {
         Label newlog = new Label(log.getValue() + " : " + log.getKey());
@@ -212,6 +226,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     updateInputs(selectedFlow);
                     updateOutputs(selectedFlow);
                     updateTime(selectedFlow);
+                    updateLogsTree(selectedFlow);
 
                 }
             });
@@ -258,6 +273,71 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         //tableData.setStyle("-fx-background-color: transparent;");
 
         tableBinds();
+
+    }
+
+    private void updateLogsTree(FlowExecution selectedFlow) {
+        stepTree.getChildren().clear();
+        TreeView<String> stepTreeView = new TreeView<>();
+        TreeItem<String> root = new TreeItem<>("Steps");
+        stepTreeView.setRoot(root);
+        for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
+            TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
+            List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
+            if (logsPerStep != null) {
+                for (Pair<String, String> log : logsPerStep) {
+                    if (log != null) {
+                        TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
+                        stepRoot.getChildren().add(logItem);
+                    }
+                }
+            }
+
+            stepTreeView.getRoot().getChildren().add(stepRoot);
+            stepTreeView.setCellFactory(treeView -> {
+                TreeCell<String> cell = new TreeCell<String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setText(item);
+                            setStyle("-fx-background-color: transparent; -fx-text-fill: green;"); // Set the style of each tree component
+                        }
+                    }
+                };
+
+                cell.setOnMouseClicked(event -> {
+                    if (!cell.isEmpty()) {
+                        TreeItem<String> treeItem = cell.getTreeItem();
+                        if (treeItem != null) {
+                            if (treeItem.isExpanded()) {
+                                treeItem.setExpanded(false);
+                            } else {
+                                treeItem.setExpanded(true);
+                            }
+                        }
+                    }
+                });
+
+                return cell;
+            });
+            stepTreeView.setShowRoot(false);
+            stepTreeView.getStyleClass().add("logsTree");
+
+        }
+        stepTree.getChildren().add(stepTreeView);
+        //logScrollPane.setStyle("-fx-background-color: transparent;");
+
+
+    }
+
+    private void addLogToTree(TreeView<String> stepItem, Pair<String, String> log) {
+        TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
+        stepItem.getRoot().getChildren().add(logItem);
+
 
     }
 

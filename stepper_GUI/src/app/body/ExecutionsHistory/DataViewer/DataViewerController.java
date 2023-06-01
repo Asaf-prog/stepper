@@ -37,6 +37,7 @@ public class DataViewerController {
     void closePopup(ActionEvent event) {
         //close Screen and back to the previous screen
         close.getScene().getWindow().hide();
+
     }
 
     @FXML

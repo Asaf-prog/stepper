@@ -61,8 +61,7 @@ public class headerController {
     @FXML
     private Button Statistics;
     private MVC_controller controller;
-    @FXML
-    private Button FlowsExecution;
+
     @FXML
     private Button ExecutionsHistory;
     private mainController main;
@@ -88,10 +87,6 @@ public class headerController {
         this.main =main;
     }
     @FXML
-    void FlowsExecutionFunc(ActionEvent event) {
-        main.FlowsExecutionInMenu();
-    }
-    @FXML
     void ExecutionsHistoryFunc(ActionEvent event) {
         main.showHistoryExe();
     }
@@ -113,7 +108,6 @@ public class headerController {
         assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
         assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
         assert progressGrid != null : "fx:id=\"ProgressGrid\" was not injected: check your FXML file 'header.fxml'.";
-        assert FlowsExecution != null : "fx:id=\"FlowsExecution\" was not injected: check your FXML file 'header.fxml'.";
         assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
         assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
         assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
@@ -126,7 +120,6 @@ public class headerController {
 
     private void setCssScreenButtons() {
         FlowsDefinition.getStyleClass().add("screenButton");
-        FlowsExecution.getStyleClass().add("screenButton");
         ExecutionsHistory.getStyleClass().add("screenButton");
         Statistics.getStyleClass().add("screenButton");
 
@@ -145,22 +138,6 @@ public class headerController {
             scaleTransition.play();
 
             FlowsDefinition.setStyle(buttonStyle);
-        });
-        FlowsExecution.setOnMouseEntered(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsExecution);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-            buttonStyle= FlowsExecution.getStyle();
-            FlowsExecution.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
-        });
-        FlowsExecution.setOnMouseExited(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsExecution);
-            scaleTransition.setToX(1);
-            scaleTransition.setToY(1);
-            scaleTransition.play();
-
-            FlowsExecution.setStyle(buttonStyle);
         });
         ExecutionsHistory.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), ExecutionsHistory);
@@ -397,7 +374,6 @@ public class headerController {
                 GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
                 ActivateMenuButtons();
                 DataManager.getData().setXmlPath(selectedFile.getPath());
-                FlowsExecution.setDisable(false);
                 FlowsDefinition.setDisable(false);
                 ExecutionsHistory.setDisable(false);//***
                // ExecutionsHistory.setDisable(false);//***
@@ -417,7 +393,6 @@ public class headerController {
     }
 
     private void ActivateMenuButtons() {
-        FlowsExecution.setDisable(false);
         FlowsDefinition.setDisable(false);
         Statistics.setDisable(false);
         if (DataManager.getData()!=null) {
