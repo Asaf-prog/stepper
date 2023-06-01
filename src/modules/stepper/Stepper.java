@@ -1,4 +1,5 @@
 package modules.stepper;
+ import modules.flow.execution.executionManager.ExecutionManager;
  import modules.mappings.*;
  import modules.flow.definition.api.FlowDefinitionImpl;
  import modules.flow.definition.api.StepUsageDeclaration;
@@ -18,6 +19,8 @@ public class Stepper implements Serializable {
     private Integer TPSize;//Thread pool size
     private  String XmlPath="";
 
+    private ExecutionManager executionManager;//handle doing execution according to the thread pool size
+
 
     public Integer getTPSize() {
         return TPSize;
@@ -25,6 +28,7 @@ public class Stepper implements Serializable {
 
     public void setTPSize(Integer TPSize) {
         this.TPSize = TPSize;
+        this.executionManager.setNumberOfThreads(TPSize);
     }
 
     public String getXmlPath() {
@@ -53,6 +57,7 @@ public class Stepper implements Serializable {
     public Stepper(){
         flows = new ArrayList<>();
         flowExecutions = new ArrayList<>();
+        executionManager = new ExecutionManager();
     }
 
     public void setFlows(List<FlowDefinitionImpl> flows) {
@@ -263,4 +268,7 @@ public class Stepper implements Serializable {
         //maybe logic of time and stuff
     }
 
+    public ExecutionManager getExecutionManager() {
+        return executionManager;
+    }
 }

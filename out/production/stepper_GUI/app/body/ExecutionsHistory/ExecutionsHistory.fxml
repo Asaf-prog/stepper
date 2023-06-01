@@ -44,7 +44,7 @@
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="stepTree" prefHeight="196.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="196.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
                </children>
             </VBox>
          </children>

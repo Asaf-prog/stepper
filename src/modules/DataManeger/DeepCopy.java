@@ -25,9 +25,10 @@ private List <STFlow> Flows;
 
     public Stepper copyAllDataInFields() throws FlowDefinitionException {
         //Stepper res = new Stepper();
-    for (STFlow flow : Flows){
-    stepper.copyFlowFromXMLObject(flow);
-    }
-    return stepper;
-    }
+        stepper.setTPSize(stStepper.getSTThreadPool());
+        for (STFlow flow : Flows){
+        stepper.copyFlowFromXMLObject(flow);
+        }
+        return stepper;
+        }
 }

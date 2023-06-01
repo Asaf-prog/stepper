@@ -6,6 +6,8 @@ import app.management.mainController;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
+import modules.flow.execution.executionManager.ExecutionManager;
+import modules.flow.execution.executionManager.tasks.ExecutionTask;
 import modules.flow.execution.runner.FLowExecutor;
 
 import java.util.List;
@@ -27,8 +29,10 @@ public class MVC_controller {
         FLowExecutor fLowExecutor = new FLowExecutor();
         flow.setUserInputs(getFreeInputs());
         flowTestExecution = new FlowExecution(flow);
+        ExecutionManager ExeManager = stepperData.getExecutionManager();//get the one and only ExecutionManager
         try {
-            fLowExecutor.executeFlow(flowTestExecution);
+            ExeManager.executeTask(new ExecutionTask(flowTestExecution.getFlowDefinition().getName() , flowTestExecution, fLowExecutor));
+            //todo do some logic and update gui accordingly
             header.setDisableOnExecutionsHistory();
         } catch (Exception e) {
             throw new RuntimeException(e);
