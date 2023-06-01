@@ -27,7 +27,7 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="logsPane" layoutX="620.0" layoutY="242.0" prefHeight="258.0" prefWidth="443.0">
+      <Pane fx:id="logsPane" layoutX="620.0" layoutY="242.0" prefHeight="258.0" prefWidth="437.0" style="-fx-background-color: transparent;">
          <children>
             <ImageView fitHeight="254.0" fitWidth="447.0" layoutX="-6.0" layoutY="5.0">
                <image>
@@ -37,13 +37,14 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" layoutY="29.0" prefHeight="226.0" prefWidth="443.0">
+            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="224.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
                <children>
-                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="441.0" textFill="#24ff21" wrapText="true">
+                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="441.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="196.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
                </children>
             </VBox>
          </children>
@@ -112,7 +113,7 @@
             <Font name="Arial Narrow" size="18.0" />
          </font>
       </Button>
-      <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="165.0" fitWidth="192.0" layoutX="-51.0" layoutY="454.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="166.0" fitWidth="169.0" layoutX="-50.0" layoutY="465.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@content/bisliGrill.png" />
          </image>

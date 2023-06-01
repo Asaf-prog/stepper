@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -8,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="1080.0" stylesheets="@header.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="1080.0" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
       <VBox prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #36393e;">
          <children>
@@ -122,9 +121,9 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="1065.0" spacing="20.0">
+            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="1065.0" spacing="30.0">
                <children>
-                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefHeight="10.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="Flows Definition" textFill="WHITE">
+                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="Flows Definition" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -142,30 +141,12 @@
                            </children>
                         </HBox>
                      </graphic></Button>
-                  <Button fx:id="FlowsExecution" disable="true" mnemonicParsing="false" onAction="#FlowsExecutionFunc" prefHeight="10.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="Excution" textFill="WHITE">
+                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="Statistics" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                      <graphic>
-                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
-                           <children>
-                              <ImageView fitHeight="17.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@content/menu%20icons/exe.png" />
-                                 </image></ImageView>
-                              <Label prefHeight="6.0" prefWidth="88.0" style="-fx-text-fill: white;" text="Execution">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="18.0" />
-                                 </font></Label>
-                           </children>
-                        </HBox>
-                     </graphic></Button>
-                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" prefHeight="10.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="Statistics" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <graphic>
-                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="133.0" spacing="10.0">
                            <children>
                               <ImageView fitHeight="21.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -179,7 +160,7 @@
                            </children>
                         </HBox>
                      </graphic></Button>
-                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" prefHeight="10.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="History" textFill="WHITE">
+                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" prefHeight="36.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="History" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

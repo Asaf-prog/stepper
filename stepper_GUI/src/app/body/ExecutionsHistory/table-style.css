@@ -32,6 +32,17 @@
 .radio-button-in-table {
     -fx-alignment: top-left;
     -fx-pref-width: 351px;
-
-
+}
+.VBox {
+    -fx-alignment: transparent;
+}
+.logsTree{
+    -fx-background-color: transparent;
+    -fx-text-fill: #07ff0f;
+    -fx-spacing: 7px;
+}
+.logsTree.tree-cell{
+    -fx-background-color: transparent;
+    -fx-text-fill: #0eff0e;
+    -fx-spacing: 7px;
 }
