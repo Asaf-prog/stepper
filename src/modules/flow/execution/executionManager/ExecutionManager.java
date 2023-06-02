@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ExecutionManager implements Serializable {
-    List<ExecutionTask> executionTasks;
     Integer numberOfThreads;//number of threads in the thread pool
     transient ExecutorService threadExecutor;
 
@@ -32,18 +31,15 @@ public class ExecutionManager implements Serializable {
     }
 
     public ExecutionManager() {
-        executionTasks=new ArrayList<>();
-        numberOfThreads=4;//todo change !!!
+
+        numberOfThreads=1;//default
         threadExecutor = Executors.newFixedThreadPool(numberOfThreads);
     }
      ExecutionManager(int numberOfThreads) {
-        executionTasks=new ArrayList<>();
+
         this.numberOfThreads=numberOfThreads;
         threadExecutor = Executors.newFixedThreadPool(numberOfThreads);
 
-    }
-    public void addTask(ExecutionTask executionTask){
-        executionTasks.add(executionTask);
     }
     public void executeTask(ExecutionTask executionTask){
         threadExecutor.execute(executionTask);

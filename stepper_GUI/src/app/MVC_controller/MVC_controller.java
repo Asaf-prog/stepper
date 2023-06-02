@@ -36,7 +36,7 @@ public class MVC_controller {
         flowTestExecution = new FlowExecution(flow);
         ExecutionManager ExeManager = stepperData.getExecutionManager();//get the one and only ExecutionManager
         try {
-            ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName() , flowTestExecution, fLowExecutor);
+            ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName(),flowTestExecution.getUniqueId() , flowTestExecution, fLowExecutor);
             setProgressor(task);
             ExeManager.executeTask(task);
             //todo do some logic and update gui accordingly\
@@ -49,11 +49,12 @@ public class MVC_controller {
     }
 
     private void setProgressor(ExecutionTask task) {
-        ProgressBar progressBar = header.getProgressBar();
+        int nextIndex = header.getNextFreeProgress();
+        ProgressBar progressBar = header.getNextProgressBar(nextIndex);
         progressBar.progressProperty().bind(task.getProgress());
-        Label label = new Label();
-        label.setText(task.getName());
-        header.addProgress(progressBar,label);
+        Label label = header.getNextLabel(nextIndex);
+        label.setText(task.get4DigId());
+       // header.addProgress(progressBar,label,nextIndex);
     }
 
     private GuiAdapter createGuiAdapter() {

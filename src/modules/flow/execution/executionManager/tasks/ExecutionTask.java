@@ -7,15 +7,18 @@ import modules.flow.execution.FlowExecution;
 import modules.flow.execution.runner.FLowExecutor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class ExecutionTask implements Runnable , Serializable {
     private String name;
+    private UUID id;
     private FlowExecution flowExecution;
     private FLowExecutor fLowExecutor;
     private DoubleProperty progress=new SimpleDoubleProperty(0);
 
-    public ExecutionTask(String name, FlowExecution flowExecution, FLowExecutor fLowExecutor) {
+    public ExecutionTask(String name, UUID id,FlowExecution flowExecution, FLowExecutor fLowExecutor) {
         this.name = name;
+        this.id = id;
         this.flowExecution = flowExecution;
         this.fLowExecutor = fLowExecutor;
     }
@@ -38,5 +41,16 @@ public class ExecutionTask implements Runnable , Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id.toString();
+    }
+    public String get4DigId() {
+        return id.toString().substring(0,4);
+    }
+
+    public FlowExecution getFlowExecution() {
+        return flowExecution;
     }
 }
