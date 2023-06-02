@@ -35,7 +35,23 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     protected List<Continuation> continuations;
 
     protected List<InitialInputValues> InitialInputValues;
+    public FlowDefinitionImpl(String name, String description) {
+        this.name = name;
+        this.description = description;
+        flowOutputs = new ArrayList<>();
+        steps = new ArrayList<>();
+        freeInputs = new ArrayList<>();
+        customMappings = new ArrayList<>();
+        flowLevelAliases = new ArrayList<>();
+        userInputs=new ArrayList<>();
+        flowOfAllStepsOutputs= new ArrayList<>();
+        readOnly=true;
+        timesUsed=0;
+        avgTime=0;
+        continuations=new ArrayList<>();
+        InitialInputValues=new ArrayList<>();
 
+    }
     public void setFlowOutputs(List<String> flowOutputs) {
         this.flowOutputs = flowOutputs;
     }
@@ -75,35 +91,12 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void setInitialInputValues(List<modules.mappings.InitialInputValues> initialInputValues) {
         InitialInputValues = initialInputValues;
     }
-
     @Override
     public List<String> getFlowOfAllStepsOutputs() {
         return flowOfAllStepsOutputs;
     }
     public void setUserInputs(List<Pair<String, String>> userInputs) {
         this.userInputs = userInputs;
-    }
-
-
-
-
-
-    public FlowDefinitionImpl(String name, String description) {
-        this.name = name;
-        this.description = description;
-        flowOutputs = new ArrayList<>();
-        steps = new ArrayList<>();
-        freeInputs = new ArrayList<>();
-        customMappings = new ArrayList<>();
-        flowLevelAliases = new ArrayList<>();
-        userInputs=new ArrayList<>();
-        flowOfAllStepsOutputs= new ArrayList<>();
-        readOnly=true;
-        timesUsed=0;
-        avgTime=0;
-        continuations=new ArrayList<>();
-        InitialInputValues=new ArrayList<>();
-
     }
     public void setTimesUsed(int timesUsed) {this.timesUsed = timesUsed;}
     public void setAvgTime(double avgTime) {this.avgTime = avgTime;}
