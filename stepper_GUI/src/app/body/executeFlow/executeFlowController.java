@@ -91,7 +91,7 @@ public class executeFlowController implements bodyControllerDefinition {
             nameAndAddOrEdit.getChildren().add(addButton);
             nameAndAddOrEdit.setSpacing(10);
 
-            addButton.setOnAction(e->handleButtonAction(addButton,textField.getText(),optional.getKey(),optional.getValue().dataDefinition().getType()));
+            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),optional.getKey(),optional.getValue().dataDefinition().getType()));
             textField.setPromptText(optional.getValue().getUserString());
             optionalList.getChildren().add(label);
             optionalList.getChildren().add(nameAndAddOrEdit);
@@ -111,7 +111,7 @@ public class executeFlowController implements bodyControllerDefinition {
                     event.consume();
                 }
             });
-            if (mandatory.getValue().dataDefinition().getTypeName() == "File")
+            if (mandatory.getKey().equals("FOLDER_NAME"))
             {
                 textField.setEditable(false);
             }
@@ -119,7 +119,7 @@ public class executeFlowController implements bodyControllerDefinition {
             nameAndAddOrEdit.getChildren().add(addButton);
             nameAndAddOrEdit.setSpacing(10);
 
-            addButton.setOnAction(e->handleButtonAction(addButton,textField.getText(),mandatory.getKey(),mandatory.getValue().dataDefinition().getType()));
+            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),mandatory.getKey(),mandatory.getValue().dataDefinition().getType()));
             textField.setPromptText(mandatory.getValue().getUserString());
             mandatoryList.getChildren().add(label);
             mandatoryList.getChildren().add(nameAndAddOrEdit);
@@ -158,19 +158,56 @@ public class executeFlowController implements bodyControllerDefinition {
             continuation.setDisable(false);
         }
     }
-    private void handleButtonAction(Button addButton,String data,String nameOfDD,Class<?> type){
-        if(!data.isEmpty()){
-            freeInputsTemp.add(new Pair<>(nameOfDD,data));
-            addButton.setText("Edit");
+    private void handleButtonAction(Button addButton,TextField textField,String data,String nameOfDD,Class<?> type) {
+        if (addButton.getText().equals("Edit")) {
+            //addButton.setText("Save");
+
+            for (Pair<String, String> pair : freeInputsTemp) {
+                if (pair.getKey().equals(nameOfDD)) {
+                    freeInputsTemp.remove(pair);
+                    if (freeInputsTemp.isEmpty()){
+                      //  handleButtonActionForEdit(addButton,textField,data,nameOfDD);
+                        break;
+                }}
+            }
+            textField.clear();
+            addButton.setText("Save");
+            if (freeInputsTemp.size() != getSizeOfMandatoryList()){
+                startExecute.setDisable(true);
+            }
         }
-        else if(nameOfDD == "FOLDER_NAME") {
+        else {
+            if (!data.isEmpty()) {
+                freeInputsTemp.add(new Pair<>(nameOfDD, data));
+                addButton.setText("Edit");
+            } else if (nameOfDD.equals("FOLDER_NAME")) {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Choose File");
+                File selectedFile = directoryChooser.showDialog(null);
+                freeInputsTemp.add(new Pair<>(nameOfDD, selectedFile.toString()));
+                addButton.setText("Edit");
+                textField.setText(selectedFile.toString());
+            }
+            if (freeInputsTemp.size() == getSizeOfMandatoryList()) {
+                startExecute.setDisable(false);
+                startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
+                startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
+            }
+        }
+    }
+    private void handleButtonActionForEdit(Button addButton,TextField textField,String data,String nameOfDD){
+        if (!data.isEmpty()) {
+            freeInputsTemp.add(new Pair<>(nameOfDD, data));
+            addButton.setText("Edit");
+        } else if (nameOfDD.equals("FOLDER_NAME")) {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setTitle("Choose File");
             File selectedFile = directoryChooser.showDialog(null);
-            freeInputsTemp.add(new Pair<>(nameOfDD,selectedFile.toString()));
+            freeInputsTemp.add(new Pair<>(nameOfDD, selectedFile.toString()));
             addButton.setText("Edit");
+            textField.setText(selectedFile.toString());
         }
-        if (freeInputsTemp.size() == getSizeOfMandatoryList()){
+        if (freeInputsTemp.size() == getSizeOfMandatoryList()) {
             startExecute.setDisable(false);
             startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
             startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
