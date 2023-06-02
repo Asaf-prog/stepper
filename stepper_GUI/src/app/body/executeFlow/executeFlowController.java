@@ -5,14 +5,13 @@ import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 
 import java.util.ArrayList;
@@ -27,7 +26,11 @@ public class executeFlowController implements bodyControllerDefinition {
     @FXML
     private VBox mandatoryList;
     @FXML
+    private Label continuationLabel;
+    @FXML
     private VBox optionalList;
+    @FXML
+    private VBox continuationVbox;
     private List<Pair<String,String>> freeInputsTemp;
     @Override
     public void SetCurrentFlow(FlowDefinitionImpl flow){
@@ -37,10 +40,18 @@ public class executeFlowController implements bodyControllerDefinition {
         return currentFlow;
     }
     @FXML
+    private Button continuation;
+    @FXML
     void initialize() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert mandatoryList != null : "fx:id=\"mandatoryList\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert optionalList != null : "fx:id=\"optionalList\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+        assert continuation != null : "fx:id=\"continuation\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+        assert continuationVbox != null : "fx:id=\"continuationVbox\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+        assert continuationLabel != null : "fx:id=\"continuationLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+
+        continuation.setVisible(false);
+        continuationVbox.setVisible(false);
 
     }
     @Override
@@ -79,7 +90,23 @@ public class executeFlowController implements bodyControllerDefinition {
             optionalList.getChildren().add(textField);
         }
         setSizeOfMandatoryList(mandatoryInputs.size());
-       // currentFlow.setUserInputs(freeInputsTemp);
+    }
+    @FXML
+    void startContinuationAfterGetFreeInputs(ActionEvent event) {
+        ToggleGroup group = new ToggleGroup();
+        for (Continuation continuation : currentFlow.getContinuations()){
+            RadioButton button = new RadioButton(continuation.getTargetFlow());
+            button.setStyle("-fx-text-fill: white");
+            button.setOnAction(e-> handleButtonActionForContinuation(continuation.getTargetFlow()));
+            button.setToggleGroup(group);
+            continuationVbox.getChildren().add(button);
+        }
+        continuationVbox.setSpacing(10);
+        continuationVbox.setVisible(true);
+        continuationLabel.setText("Continuation for "+ currentFlow.getName());
+    }
+    private void handleButtonActionForContinuation(String nameOfTargetFlow){
+
     }
     private void setSizeOfMandatoryList(int size){
         this.sizeOfMandatoryList = size;
@@ -90,7 +117,11 @@ public class executeFlowController implements bodyControllerDefinition {
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        continuation.setVisible(true);
         body.getMVC_controller().executeFlow(currentFlow);
+        if (currentFlow.getContinuations().size() != 0){
+            continuation.setDisable(false);
+        }
     }
     private void handleButtonAction(String data,String nameOfDD){
         if(!data.isEmpty()){
