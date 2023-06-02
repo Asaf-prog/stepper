@@ -49,7 +49,7 @@ public class MVC_controller {
     }
 
     private void setProgressor(ExecutionTask task) {
-        ProgressBar progressBar = new ProgressBar();
+        ProgressBar progressBar = header.getProgressBar();
         progressBar.progressProperty().bind(task.getProgress());
         Label label = new Label();
         label.setText(task.getName());

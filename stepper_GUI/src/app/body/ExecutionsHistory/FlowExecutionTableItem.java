@@ -33,7 +33,7 @@ public class FlowExecutionTableItem {
         else if(result==FlowExecutionResult.WARNING)
             this.result = "Warning";
         else
-            this.result = "FAIL";
+            this.result = "Fail";
     }
 
 

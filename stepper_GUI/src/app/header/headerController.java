@@ -153,7 +153,7 @@ public class headerController {
         assert flow3ProgressLabel != null : "fx:id=\"flow3ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
         assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
         assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
-        assert progressGrid != null : "fx:id=\"ProgressGrid\" was not injected: check your FXML file 'header.fxml'.";
+        assert progressGrid != null : "fx:id=\"progressGrid\" was not injected: check your FXML file 'header.fxml'.";
         assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
         assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
         assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
@@ -306,32 +306,42 @@ public class headerController {
             buypremiumBtn.setPrefWidth(Region.USE_COMPUTED_SIZE);
         }else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
             alert.setTitle("I LOVE YOU <3");
             alert.setHeaderText(null);
-            alert.setContentText("⠀⠀⠀⠀⠀⠀⠀⠀⣠⣶⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⢀⣾⡿⠋⠀⠿⠇⠉⠻⣿⣄⠀⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⢠⣿⠏⠀⠀⠀⠀⠀⠀⠀⠙⣿⣆⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⢠⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣆⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⢸⣿⡄⠀⠀⠀⢀⣤⣀⠀⠀⠀⠀⣿⡿⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠻⣿⣶⣶⣾⡿⠟⢿⣷⣶⣶⣿⡟⠁⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡏⠉⠁⠀⠀⠀⠀⠉⠉⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⣸⣿⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⠀⠀⠀⣿⡇⢀⣴⣿⠇⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀\n" +
-                    "⠀⠀⠀⢀⣠⣴⣿⣷⣿⠟⠁⠀⠀⠀⠀⠀⣿⣧⣄⡀⠀⠀⠀\n" +
-                    "⠀⢀⣴⡿⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⢿⣷⣄⠀\n" +
-                    "⢠⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣆\n" +
-                    "⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿\n" +
-                    "⣿⣇⠀⠀⠀⠀⠀⠀⢸⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿\n" +
-                    "⢹⣿⡄⠀⠀⠀⠀⠀⠀⢿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⡿\n" +
-                    "⠀⠻⣿⣦⣀⠀⠀⠀⠀⠈⣿⣷⣄⡀⠀⠀⠀⠀⣀⣤⣾⡟⠁\n" +
-                    "⠀⠀⠈⠛⠿⣿⣷⣶⣾⡿⠿⠛⠻⢿⣿⣶⣾⣿⠿⠛⠉⠀⠀");
+            alert.setContentText("                                                                             \n" +
+                    "                      *          ,&&&&&,    ./                                  \n" +
+                    "                            %#/*//((###%%%%##%%/                                \n" +
+                    "                         #/**/(#%%%%%%%%%%%%%%%%###                             \n" +
+                    "                   .  %/*,,*(##%%%%%%%%%%%%%%%%%%%#%*                           \n" +
+                    "                     #,,,,/(###%%%%%%%%%%%%%%%%%%%%%##*                         \n" +
+                    "                    #*,,,*/###((/////(#%%%%%%%%%%%%%%(#*                        \n" +
+                    "                 #/*,,,,,*((/,,,,,,,,*/(###(/**/(#%%%(*(*      .,               \n" +
+                    "             ,.#*,,,....,//**/**,,,,***,*****,,,,,*##/*,/%        /             \n" +
+                    "             %/,.,,,,..,/(#########(***/%#/*,,,,**,*(*,,,/&                     \n" +
+                    "            (*,..,,.,.,(##%%%%%%%%%%%%%%%%%%####(((/*,.,,,*%                    \n" +
+                    "            (,...,....,((((####%%%%%##%%%%%%%%%%%%%%#*,..,*#.                   \n" +
+                    "        ,   %*........,/((((######((##(#####%%%%%%%%%/,...,*#                   \n" +
+                    "            %*,...,,.,**/((####((/**,,,*/*/((##%%###(*,,,,*/%                   \n" +
+                    "             /,..,......,/((((//*,,.,,,,,,,,*/#####/,,..,*%                     \n" +
+                    "             %/,,,**,...,,/((*,..,**//(((/**,,*##(*,.,,.,*(.                    \n" +
+                    "               %##&#*.....,,*,.*/(((((((#(/*,,,/*,,..,,,*(       .              \n" +
+                    "                  (*,,,....,..,*(((*,,,*/##(/,,,,....,/##(//%                   \n" +
+                    "                 ## **/#((/*,,.,,,,....,,//*,,,,...,/#          (               \n" +
+                    "                           %//,,...........,**,,.,*%                            \n" +
+                    "                         #&%%&&&%%%%%%%%%%%&  .%%%&            ,           ");
             Window window = buypremiumBtn.getScene().getWindow();
+            double width =900;
+            double height = 700;
+
+            // Set the alert window size
+            alert.getDialogPane().setMinWidth(width);
+            alert.getDialogPane().setMinHeight(height);
+            alert.getDialogPane().setMaxWidth(width);
+            alert.getDialogPane().setMaxHeight(height);
+            alert.getDialogPane().setPrefWidth(width);
+            alert.getDialogPane().setPrefHeight(height);
+            alert.getDialogPane().setPrefSize(width, height);
             alert.initOwner(window instanceof Stage ? (Stage) window : null);
             alert.showAndWait();
         }
@@ -455,6 +465,22 @@ public class headerController {
     private void initializedData(){
         Stepper stepperData = DataManager.getData();
         main.setFlows(stepperData.getFlows());
+    }
+
+    public ProgressBar getProgressBar() {
+        int free=getNextFreeProgress();
+        switch (free){
+            case 1:
+                return flow1ProgressBar;
+            case 2:
+                return flow2ProgressBar;
+            case 3:
+                return flow3ProgressBar;
+            case 4:
+                return flow4ProgressBar;
+
+        }
+        return null;
     }
 }
 

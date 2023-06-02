@@ -246,7 +246,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         "-fx-alignment: CENTER; -fx-font-size: 14px; -fx-font-weight: bold;");
 
                 if (item != null && !empty) {
-                    setText(item.toUpperCase());
+                    setText(item);
 
                     // Set color based on the status value
                     if (item.toUpperCase().equals("FAIL")) {

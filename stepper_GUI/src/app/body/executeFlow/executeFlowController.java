@@ -98,7 +98,7 @@ public class executeFlowController implements bodyControllerDefinition {
         }
         if (freeInputsTemp.size() == getSizeOfMandatoryList()){
             startExecute.setDisable(false);
-            startExecute.setStyle("-fx-background-color: #4CAF50; -fx-background-radius: 20; -fx-text-fill: black;) ");
+           // startExecute.setStyle("-fx-background-color: #4CAF50; -fx-background-radius: 20; -fx-text-fill: black;) ");
             startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
             startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
         }
