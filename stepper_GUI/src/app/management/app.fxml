@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane prefHeight="730.0" prefWidth="1100.0" style="-fx-hbar-policy: AS_NEEDED; -fx-vbar-policy: AS_NEEDED; -fx-background-color: #36394e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
+<ScrollPane prefHeight="720.0" prefWidth="1080.0" style="-fx-hbar-policy: AS_NEEDED; -fx-vbar-policy: AS_NEEDED; -fx-background-color: #36394e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
    <content>
-      <AnchorPane prefHeight="728.0" prefWidth="1098.0" style="-fx-background-color: #36393e;">
+      <AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #36393e;">
          <children>
             <VBox prefHeight="720.0" prefWidth="1080.0" VBox.vgrow="ALWAYS">
                <children>

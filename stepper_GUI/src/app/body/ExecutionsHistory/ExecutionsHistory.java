@@ -170,18 +170,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         logsVbox.getChildren().add(logsLabel);
         logsVbox.getChildren().add(stepTree);
 
-//todo remove
-//        logsVbox.getChildren().add(logsLabel);
-//        Map<String, List<Pair<String, String>>> logs = flowExecution.getLogs();
-//        for (StepUsageDeclaration step :flowExecution.getFlowDefinition().getFlowSteps()) {
-//            List<Pair<String, String>> logsPerStep=logs.get(step.getFinalStepName());
-//            if (logsPerStep!=null) {
-//                for (Pair<String, String> log : logsPerStep) {
-//                    if (log != null)
-//                        addLog(log);
-//                }
-//            }
-//        }
 
     }
     private void addLog(Pair<String, String> log) {

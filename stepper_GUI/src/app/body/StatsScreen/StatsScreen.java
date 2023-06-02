@@ -1,6 +1,7 @@
 package app.body.StatsScreen;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -220,12 +221,17 @@ public class StatsScreen implements bodyControllerDefinition {
         if (selectedFlow != null) {
             for (StepUsageDeclaration step : selectedFlow.getSteps()) {
                 stepsList.getItems().add(step.getFinalStepName());
-                stepStatsList.getItems().add("Used "+step.getTimeUsed()+" times  ||" + "  Average time: "+step.getAvgTime()+" MS");
+                stepStatsList.getItems().add("Used "+step.getTimeUsed()+" times ||" + " Average time: "+GoodLookingDouble(step.getAvgTime())+" ms");
             }
             flowExecutionsSize.setText("There are "+selectedFlow.getFlowSteps().size()+" Steps in this flow");
         } else {
             flowExecutionsSize.setText("Nothing Selected yet");
         }
+    }
+
+    private String GoodLookingDouble(double avgTime) {
+        DecimalFormat df = new DecimalFormat("#######.##");
+        return df.format(avgTime);
     }
 
     private FlowDefinitionImpl getFlowFromRadioButton(RadioButton pick) {
@@ -260,7 +266,7 @@ public class StatsScreen implements bodyControllerDefinition {
             //set stats table here
             //maybe add listener to the second list
             for (FlowDefinitionImpl flow:stepperData.getFlows()){
-                String singleFlowStats= "Used "+flow.getTimesUsed()+" times  ||" + "  Average time: "+flow.getAvgTime()+" MS";
+                String singleFlowStats= "Used "+flow.getTimesUsed()+" times ||" + " Average time: "+GoodLookingDouble(flow.getAvgTime())+" ms";
                 flowStatsList.getItems().add(singleFlowStats);
             }
             flowExecutionsSize.setText("");

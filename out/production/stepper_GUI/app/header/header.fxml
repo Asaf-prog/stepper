@@ -63,22 +63,22 @@
                               <Insets right="10.0" />
                            </GridPane.margin>
                         </ProgressBar>
-                        <Label fx:id="flow1ProgressLabel" prefHeight="17.0" prefWidth="55.0" text="Flow No.1" textFill="#fff200">
+                        <Label fx:id="flow1ProgressLabel" prefHeight="17.0" prefWidth="55.0" text="Flow 1 ID" textFill="#fff200">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="flow2ProgressLabel" prefHeight="17.0" prefWidth="72.0" text="Flow No.2" textFill="#fff200" GridPane.rowIndex="1">
+                        <Label fx:id="flow2ProgressLabel" prefHeight="17.0" prefWidth="72.0" text="Flow 2 ID" textFill="#fff200" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="flow3ProgressLabel" prefHeight="17.0" prefWidth="67.0" text="Flow No.3" textFill="#fff200" GridPane.columnIndex="1">
+                        <Label fx:id="flow3ProgressLabel" prefHeight="17.0" prefWidth="67.0" text="Flow 3 ID" textFill="#fff200" GridPane.columnIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="flow4ProgressLabel" prefHeight="17.0" prefWidth="66.0" text="Flow No.4" textFill="#fff200" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label fx:id="flow4ProgressLabel" prefHeight="17.0" prefWidth="66.0" text="Flow 4 ID" textFill="#fff200" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -94,9 +94,9 @@
             </Pane>
             <HBox alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0">
                <children>
-                  <Button fx:id="path" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font></Button>
                   <Label fx:id="loaded" alignment="CENTER" prefHeight="34.0" prefWidth="630.0" style="-fx-border-color: rgb(179,0,220); -fx-border-width: 2; -fx-background-radius: 20; -fx-border-radius: 20;" text="---Path To Your XML---" textFill="#fffafa">
                      <font>
@@ -105,12 +105,12 @@
                   </Label>
                   <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Save Data" textAlignment="CENTER" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font>
                   </Button>
                   <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load Data" textAlignment="CENTER" textFill="WHITE">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="14.0" />

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="37.0" prefHeight="180.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
+      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="18.0" prefHeight="188.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
          <columns>
             <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" text="Flow ID" />
 
@@ -18,18 +17,18 @@
             <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Status" />
          </columns>
       </TableView>
-      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-1.0" prefHeight="39.0" prefWidth="231.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
+      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-5.0" prefHeight="30.0" prefWidth="231.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font></Label>
-      <Label fx:id="flowOutputsLabel" layoutX="14.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Flow Outputs:" textFill="#fffb05">
+      <Label fx:id="flowOutputsLabel" layoutX="10.0" layoutY="206.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Flow Outputs:" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="logsPane" layoutX="620.0" layoutY="242.0" prefHeight="258.0" prefWidth="437.0" style="-fx-background-color: transparent;">
+      <Pane fx:id="logsPane" layoutX="616.0" layoutY="221.0" prefHeight="238.0" prefWidth="437.0" style="-fx-background-color: transparent;">
          <children>
-            <ImageView fitHeight="254.0" fitWidth="447.0" layoutX="-6.0" layoutY="5.0">
+            <ImageView fitHeight="231.0" fitWidth="447.0" layoutX="-6.0" layoutY="7.0">
                <image>
                   <Image url="@content/commandScreen.png" />
                </image>
@@ -37,34 +36,29 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="224.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
+            <VBox fx:id="logsVbox" alignment="TOP_RIGHT" layoutY="31.0" prefHeight="209.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
                <children>
-                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="441.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
+                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="419.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="196.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="191.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
                </children>
             </VBox>
          </children>
       </Pane>
-      <Label fx:id="logslabel" layoutX="611.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Logs:" textFill="#fffb05">
+      <Label fx:id="logslabel" layoutX="607.0" layoutY="206.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Logs:" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="logslabel1" layoutX="318.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Flow Inputs:" textFill="#fffb05">
+      <Label fx:id="logslabel1" layoutX="314.0" layoutY="206.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Flow Inputs:" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <ImageView fitHeight="15.0" fitWidth="29.0" layoutX="975.0" layoutY="517.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@content/flash.png" />
-         </image>
-      </ImageView>
-      <HBox layoutX="318.0" layoutY="251.0" prefHeight="249.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="314.0" layoutY="230.0" prefHeight="249.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
             <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
@@ -86,7 +80,7 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="14.0" layoutY="252.0" prefHeight="247.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="10.0" layoutY="231.0" prefHeight="247.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
             <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
@@ -108,12 +102,19 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="execute" alignment="CENTER_RIGHT" disable="true" layoutX="969.0" layoutY="507.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow;" text="Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+      <Button fx:id="execute" alignment="CENTER" disable="true" layoutX="954.0" layoutY="461.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="17.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow;" text="Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
          <font>
             <Font name="Arial Narrow" size="18.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@content/flash.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="166.0" fitWidth="169.0" layoutX="-50.0" layoutY="465.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="134.0" fitWidth="137.0" layoutX="-32.0" layoutY="429.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@content/bisliGrill.png" />
          </image>
@@ -121,7 +122,7 @@
             <Bloom threshold="1.0" />
          </effect>
       </ImageView>
-      <Label fx:id="exeTime" disable="true" layoutX="842.0" layoutY="227.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Took X MS" textFill="#fffb05" visible="false">
+      <Label fx:id="exeTime" disable="true" layoutX="838.0" layoutY="206.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Took X MS" textFill="#fffb05" visible="false">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>

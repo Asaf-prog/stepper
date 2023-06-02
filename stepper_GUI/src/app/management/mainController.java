@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
+import java.awt.*;
 import java.util.List;
 
 public class mainController {
@@ -17,10 +18,13 @@ public class mainController {
    @FXML private Parent bodyComponent;
    @FXML private AnchorPane generalPane;
    @FXML private headerController headerComponentController;
-;
+
+   @FXML private ScrollPane scrollPane;
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
    private MVC_controller mvcController;
+
+
    public void PresentTpBodyFlowDefinition(){
 
    }
@@ -35,6 +39,9 @@ public class mainController {
          mvcController = new MVC_controller(this,headerComponentController,bodyComponentController);
          bodyComponentController.setMVCController(mvcController);
          headerComponentController.setMVCController(mvcController);
+         if (scrollPane != null) {
+            scrollPane.setLayout(new BorderLayout());
+         }
       }
    }
    public void setFlows(List<FlowDefinitionImpl> f){
