@@ -443,7 +443,6 @@ public class headerController {
 
     }
 
-
     public void setDisableOnExecutionsHistory(){
         ExecutionsHistory.setDisable(false);
     }
@@ -467,6 +466,7 @@ public class headerController {
         }
         return null;
     }
+
 }
 
 

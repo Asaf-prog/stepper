@@ -67,4 +67,5 @@ public class MVC_controller {
     public List<Pair<String,String>> getFreeInputs(){
         return  freeInputs;
     }
+
 }
