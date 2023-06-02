@@ -43,7 +43,7 @@
       </Button>
       <VBox fx:id="continuationVbox" layoutX="601.0" layoutY="88.0" prefHeight="316.0" prefWidth="260.0" style="-fx-border-color: white;">
          <children>
-            <Label prefHeight="36.0" prefWidth="162.0" text="CONTINUATION" textFill="#f5eb38">
+            <Label fx:id="continuationLabel" prefHeight="36.0" prefWidth="162.0" text="CONTINUATION" textFill="#f5eb38">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
