@@ -16,6 +16,6 @@ public class Enumerator implements Serializable {
         return stringSet;
     }
     public boolean containVal(String val){
-        return stringSet.contains(val);
+        return stringSet.equals(val);
     }
 }

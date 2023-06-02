@@ -18,8 +18,8 @@ public class Zipper extends AbstractStepDefinition {
     public Zipper() {
         super("Zipper", false);
 
-       addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, " Source ", DataDefinitionRegistry.STRING));
-       addInput(new DataDefinitionDeclarationImpl("OPERATION", DataNecessity.MANDATORY, " Operation type ", DataDefinitionRegistry.ENUMERATION));
+       addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source ", DataDefinitionRegistry.STRING));
+       addInput(new DataDefinitionDeclarationImpl("OPERATION", DataNecessity.MANDATORY, "Operation type ", DataDefinitionRegistry.ENUMERATION));
 
         addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "Zip operation result", DataDefinitionRegistry.STRING));
     }
@@ -31,15 +31,49 @@ public class Zipper extends AbstractStepDefinition {
 
         String path = context.getDataValue("SOURCE", String.class);
         Enumerator zipOrUnzip = context.getDataValue("OPERATION", Enumerator.class);
-        if(zipOrUnzip.containVal("zip")){
+        if(zipOrUnzip.containVal("ZIP")){
             zipFile(path,path);
+            context.setLogsForStep("Zipper", "End with Success ,Zip operation was done");
+            context.addSummaryLine("Zipper", "End with Success ,Zip operation was done");
+            String result = "Success";
+            context.storeDataValue("RESULT", result);
+            return StepResult.SUCCESS;
+        }else if(zipOrUnzip.containVal("UNZIP")) {
+            boolean check = checkIfFileValid(path);
+            if (!check)
+            {
+                //mean that the file is not file.zip
+                context.setLogsForStep("Zipper", "Error: File is not unzippable");
+                context.addSummaryLine("Zipper", "End with Failure ,File is not valid");
+                String result = "Error: File is not valid";
+                context.storeDataValue("RESULT", result);
+                return StepResult.FAILURE;
+            }
+            unzipFile(path, path);
+            context.setLogsForStep("Zipper", "End with Success ,Unzip operation was done");
+            context.addSummaryLine("Zipper", "End with Success ,Unzip operation was done");
+            String result = "Success";
+            context.storeDataValue("RESULT", result);
+            return StepResult.SUCCESS;
+        }else {
+            context.setLogsForStep("Zipper", "Error: Operation type is not valid");
+            context.addSummaryLine("Zipper", "End with Failure ,Operation type is not valid");
+            String result = "Error: Operation type is not valid";
+            context.storeDataValue("RESULT", result);
+            return StepResult.FAILURE;
         }
-        else {
-            unzipFile(path,path);
-        }
-
-        return null;
     }
+
+    private boolean checkIfFileValid(String path) {
+        //check if file path end with .zip\
+        String[] split = path.split("\\.");
+        String endOfFile = split[split.length - 1];
+        if(!endOfFile.equals("zip")){
+           return false;
+        }
+        return true;
+    }
+
     private void zipFile(String sourceFilePath, String zipFilePath) throws IOException {
 
         File fileToZip = new File(sourceFilePath);
@@ -57,6 +91,7 @@ public class Zipper extends AbstractStepDefinition {
                 zipOut.write(bytes, 0, length);
             }
         }
+
     }
 
     private  void unzipFile(String zipFilePath, String destDirectory) throws IOException {
