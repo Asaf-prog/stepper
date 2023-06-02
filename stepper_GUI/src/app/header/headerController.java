@@ -149,7 +149,7 @@ public class headerController {
                 break;
         }
     }
-    private int getNextFreeProgress() {
+    public int getNextFreeProgress() {
         if (nextFreeProgressor == 4) {
             nextFreeProgressor = 1;
             return 4;
@@ -467,6 +467,38 @@ public class headerController {
         return null;
     }
 
+    public ProgressBar getNextProgressBar(int nextIndex) {
+        switch (nextIndex){
+            case 1:
+                return flow1ProgressBar;
+            case 2:
+                return flow2ProgressBar;
+            case 3:
+                return flow3ProgressBar;
+            case 4:
+                return flow4ProgressBar;
+
+        }
+        return null;
+
+    }
+
+    public Label getNextLabel(int nextIndex) {
+
+        switch (nextIndex){
+            case 1:
+                return flow1ProgressLabel;
+            case 2:
+                return flow2ProgressLabel;
+            case 3:
+                return flow3ProgressLabel;
+            case 4:
+                return flow4ProgressLabel;
+
+        }
+        return null;
+
+    }
 }
 
 
