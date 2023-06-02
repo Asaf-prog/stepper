@@ -2,6 +2,7 @@ package modules.flow.execution.executionManager;
 
 import modules.flow.execution.executionManager.tasks.ExecutionTask;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ExecutionManager {
+public class ExecutionManager implements Serializable {
     List<ExecutionTask> executionTasks;
     Integer numberOfThreads;//number of threads in the thread pool
     ExecutorService threadExecutor;
@@ -34,10 +35,5 @@ public class ExecutionManager {
     public void setNumberOfThreads(Integer numberOfThreads){
         this.numberOfThreads = numberOfThreads;
         threadExecutor=Executors.newFixedThreadPool(numberOfThreads);
-    }
-    public static void main(String[] args) {
-        while(true){
-            System.out.println("hi");
-        }
     }
 }

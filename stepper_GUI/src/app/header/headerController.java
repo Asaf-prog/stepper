@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -20,7 +19,6 @@ import modules.DataManeger.GetDataFromXML;
 import modules.stepper.Stepper;
 
 import java.io.File;
-import java.nio.file.Path;
 
 public class headerController {
 
@@ -39,11 +37,8 @@ public class headerController {
     private Label flow4ProgressLabel;
     @FXML
     private Button saveData;
-
     @FXML
     private Button loadData;
-    Stepper stepperData;
-
     @FXML
     private ProgressBar flow1ProgressBar;
     @FXML
@@ -71,6 +66,7 @@ public class headerController {
     @FXML
     private Button buypremiumBtn;
     String buttonStyle;
+    int nextFreeProgressor=1;
     
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
@@ -89,6 +85,56 @@ public class headerController {
     @FXML
     void ExecutionsHistoryFunc(ActionEvent event) {
         main.showHistoryExe();
+    }
+
+
+    public void addProgress(ProgressBar progressBar, Label label) {
+        String style4Bar,style4Label;
+        int free = getNextFreeProgress();
+        switch (free){
+            case 1:
+                style4Bar=flow1ProgressBar.getStyle();
+                style4Label=flow1ProgressLabel.getStyle();
+                flow1ProgressBar.setProgress(progressBar.getProgress());
+                //flow1ProgressBar=progressBar;
+                flow1ProgressLabel=label;
+                flow1ProgressBar.setStyle(style4Bar);
+                flow1ProgressLabel.setStyle(style4Label);
+                break;
+            case 2:
+                style4Bar=flow2ProgressBar.getStyle();
+                style4Label=flow2ProgressLabel.getStyle();
+                flow2ProgressBar=progressBar;
+                flow2ProgressLabel=label;
+                flow2ProgressBar.setStyle(style4Bar);
+                flow2ProgressLabel.setStyle(style4Label);
+                break;
+            case 3:
+                style4Bar=flow3ProgressBar.getStyle();
+                style4Label=flow3ProgressLabel.getStyle();
+                flow3ProgressBar=progressBar;
+                flow3ProgressLabel=label;
+                flow3ProgressBar.setStyle(style4Bar);
+                flow3ProgressLabel.setStyle(style4Label);
+                break;
+            case 4:
+                style4Bar=flow4ProgressBar.getStyle();
+                style4Label=flow4ProgressLabel.getStyle();
+                flow4ProgressBar=progressBar;
+                flow4ProgressLabel=label;
+                flow4ProgressBar.setStyle(style4Bar);
+                flow4ProgressLabel.setStyle(style4Label);
+                break;
+        }
+
+
+    }
+    private int getNextFreeProgress() {
+        if (nextFreeProgressor == 4) {
+            nextFreeProgressor = 1;
+            return 4;
+        }
+        return nextFreeProgressor++;
     }
 
     @FXML
@@ -114,7 +160,6 @@ public class headerController {
         Events();
         screensToggleGrouping();
         setCssScreenButtons();
-
 
     }
 
@@ -376,7 +421,6 @@ public class headerController {
                 DataManager.getData().setXmlPath(selectedFile.getPath());
                 FlowsDefinition.setDisable(false);
                 ExecutionsHistory.setDisable(false);//***
-               // ExecutionsHistory.setDisable(false);//***
                 path.setText("Loaded:");
                 loaded.setText(DataManager.getData().getXmlPath());
                 initializedData();

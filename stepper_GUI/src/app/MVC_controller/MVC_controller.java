@@ -3,6 +3,8 @@ package app.MVC_controller;
 import app.body.bodyController;
 import app.header.headerController;
 import app.management.mainController;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
@@ -19,11 +21,14 @@ public class MVC_controller {
     private  headerController header;
     private bodyController body;
     List<Pair<String,String>> freeInputs;
+    private GuiAdapter guiAdapter;
+
     public MVC_controller(mainController main, headerController header, bodyController body){
         this.main = main;
         this.header=header;
         this.body = body;
     }
+
     public void executeFlow(FlowDefinitionImpl flow){
         FlowExecution flowTestExecution = null;
         FLowExecutor fLowExecutor = new FLowExecutor();
@@ -31,14 +36,30 @@ public class MVC_controller {
         flowTestExecution = new FlowExecution(flow);
         ExecutionManager ExeManager = stepperData.getExecutionManager();//get the one and only ExecutionManager
         try {
-            ExeManager.executeTask(new ExecutionTask(flowTestExecution.getFlowDefinition().getName() , flowTestExecution, fLowExecutor));
-            //todo do some logic and update gui accordingly
+            ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName() , flowTestExecution, fLowExecutor);
+            setProgressor(task);
+            ExeManager.executeTask(task);
+            //todo do some logic and update gui accordingly\
+            //todo check if gui updated correctly
             header.setDisableOnExecutionsHistory();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         stepperData.addFlowExecution(flowTestExecution);
     }
+
+    private void setProgressor(ExecutionTask task) {
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.progressProperty().bind(task.getProgress());
+        Label label = new Label();
+        label.setText(task.getName());
+        header.addProgress(progressBar,label);
+    }
+
+    private GuiAdapter createGuiAdapter() {
+        return new GuiAdapter(null,null);
+    }
+
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;
     }

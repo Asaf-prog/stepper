@@ -1,6 +1,7 @@
 package modules.flow.execution.runner;
 import Menu.MenuException;
 import Menu.MenuExceptionItems;
+import javafx.beans.property.DoubleProperty;
 import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
@@ -14,6 +15,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 public class FLowExecutor {
     public void executeFlow(FlowExecution flowExecution) throws Exception {//This class implements the flow
+
+
+
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
         context.setUserInputs(flowExecution);//sets user inputs into the context
@@ -114,5 +118,66 @@ public class FLowExecutor {
         if(warning)
             return FlowExecutionResult.WARNING;
         return FlowExecutionResult.SUCCESS;
+    }
+
+    public void executeFlow(FlowExecution flowExecution, DoubleProperty progress) throws Exception {
+        StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
+        context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
+        context.setUserInputs(flowExecution);//sets user inputs into the context
+        ArrayList<StepResult> flowExeStatus = new ArrayList<>();//flow execution status
+        context.initializedCustomMapping(flowExecution);//sets custom mapping into the context
+        flowExecution.setUserInputs();//sets user inputs into the flow execution and delete the original user inputs
+        boolean checkIfFlowFailed = false;
+        try {
+            Instant flowStartTime=flowExecution.startStepTimer();
+            for (int i = 0; i < flowExecution.getFlowDefinition().getFlowSteps().size(); i++) {
+                StepUsageDeclaration step = flowExecution.getFlowDefinition().getFlowSteps().get(i);
+                step.addUsage();
+                context.setStep(step);
+                context.setInputOfCurrentStep(step.getInputFromNameToAlias());
+                context.setOutputOfCurrentStep(step.getOutputFromNameToAlias());
+                Instant stepStartTime=step.startStepTimer();//start duration timer
+                StepResult stepResult = step.getStepDefinition().invoke(context);
+                step.setStepResult(stepResult);
+                Instant stepEndTime=step.startStepTimer();
+                flowExeStatus.add(stepResult);
+                step.setStepDuration(Duration.between(stepStartTime,stepEndTime));
+
+
+                //update progress
+                progress.setValue((double)(i+1)/flowExecution.getFlowDefinition().getFlowSteps().size());
+                // check if you should continue etc..
+                if (stepResult == StepResult.FAILURE && !step.skipIfFail()) {//means all flow failed
+                    setRestOfStepsAsFailed(flowExeStatus, i,flowExecution);
+                    break;
+                }
+                if (stepResult == StepResult.FAILURE && step.skipIfFail()) {
+                    continue;
+                }
+            }
+
+            Instant flowEndTime=flowExecution.stopStepTimer();
+            updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
+            checkIfFlowFailed=true;
+
+        }
+        catch (IOException e) {
+            return;
+        }
+        catch (Exception e) {
+            //System.out.println(e.getMessage());
+            throw new MenuException(MenuExceptionItems.EMPTY, "Error in executing flow "+flowExecution.getFlowDefinition().getName());
+        }
+        finally {
+            if (checkIfFlowFailed!=true) {
+                Instant flowStartTime=flowExecution.stopStepTimer();
+                Instant flowEndTime=flowExecution.stopStepTimer();
+                updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
+
+            }
+            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));//if one step failed or warning the flow failed or warning
+
+            return;
+        }
     }
 }
