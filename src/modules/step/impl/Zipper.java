@@ -42,6 +42,7 @@ public class Zipper extends AbstractStepDefinition {
             boolean check = checkIfFileValid(path);
             if (!check)
             {
+                
                 //mean that the file is not file.zip
                 context.setLogsForStep("Zipper", "Error: File is not unzippable");
                 context.addSummaryLine("Zipper", "End with Failure ,File is not valid");
