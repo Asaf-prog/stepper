@@ -1,19 +1,20 @@
 package app.body.executeFlow;
 
-import app.MVC_controller.MVC_controller;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +53,10 @@ public class executeFlowController implements bodyControllerDefinition {
 
         continuation.setVisible(false);
         continuationVbox.setVisible(false);
-
     }
     @Override
     public void show() {
-        //first of all create a two list : mandatoryInputs and optionalInputs:
+        //first of all, create a two list : mandatoryInputs and optionalInputs:
         List<Pair<String, DataDefinitionDeclaration>> freeInputs= getCurrentFlow().getFlowFreeInputs();
         List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
         List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
@@ -69,27 +69,62 @@ public class executeFlowController implements bodyControllerDefinition {
             }
         }
          freeInputsTemp = new ArrayList<>();
-        for (Pair<String, DataDefinitionDeclaration> mandatory: mandatoryInputs){
-            Label label = new Label(mandatory.getKey());
-            TextField textField = new TextField();
-
-            textField.setOnAction(e->handleButtonAction(textField.getText(),mandatory.getKey()));
-            textField.setPromptText(mandatory.getValue().getUserString());
-
-            mandatoryList.getChildren().add(label);
-            mandatoryList.getChildren().add(textField);
-        }
+        mandatoryHandler(mandatoryInputs);
+        optionalHandler(optionalInputs);
+        setSizeOfMandatoryList(mandatoryInputs.size());
+    }
+    private void optionalHandler(List<Pair<String, DataDefinitionDeclaration>> optionalInputs) {
         for (Pair<String, DataDefinitionDeclaration> optional: optionalInputs){
             Label label = new Label(optional.getKey());
+            label.setStyle("-fx-text-fill: white");
             TextField textField = new TextField();
 
-            textField.setOnAction(e->handleButtonAction(textField.getText(),optional.getKey()));
+            Button addButton = new Button("Save");
+            HBox nameAndAddOrEdit = new HBox();
+
+            textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    event.consume();
+                }
+            });
+            nameAndAddOrEdit.getChildren().add(textField);
+            nameAndAddOrEdit.getChildren().add(addButton);
+            nameAndAddOrEdit.setSpacing(10);
+
+            addButton.setOnAction(e->handleButtonAction(addButton,textField.getText(),optional.getKey(),optional.getValue().dataDefinition().getType()));
             textField.setPromptText(optional.getValue().getUserString());
 
-            optionalList.getChildren().add(label);
-            optionalList.getChildren().add(textField);
+            optionalList.getChildren().add(nameAndAddOrEdit);
+            optionalList.setSpacing(10);
         }
-        setSizeOfMandatoryList(mandatoryInputs.size());
+    }
+    private void mandatoryHandler(List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs) {
+        for (Pair<String, DataDefinitionDeclaration> mandatory: mandatoryInputs){
+            Label label = new Label(mandatory.getKey());
+            label.setStyle("-fx-text-fill: white");
+            TextField textField = new TextField();
+            Button addButton = new Button("Save");
+
+            HBox nameAndAddOrEdit = new HBox();
+            textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    event.consume();
+                }
+            });
+            if (mandatory.getValue().dataDefinition().getTypeName() == "File")
+            {
+                textField.setEditable(false);
+            }
+            nameAndAddOrEdit.getChildren().add(textField);
+            nameAndAddOrEdit.getChildren().add(addButton);
+            nameAndAddOrEdit.setSpacing(10);
+
+            addButton.setOnAction(e->handleButtonAction(addButton,textField.getText(),mandatory.getKey(),mandatory.getValue().dataDefinition().getType()));
+            textField.setPromptText(mandatory.getValue().getUserString());
+
+            mandatoryList.getChildren().add(nameAndAddOrEdit);
+            mandatoryList.setSpacing(10);
+        }
     }
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
@@ -106,7 +141,7 @@ public class executeFlowController implements bodyControllerDefinition {
         continuationLabel.setText("Continuation for "+ currentFlow.getName());
     }
     private void handleButtonActionForContinuation(String nameOfTargetFlow){
-
+        //todo this function handling the continuation
     }
     private void setSizeOfMandatoryList(int size){
         this.sizeOfMandatoryList = size;
@@ -123,13 +158,20 @@ public class executeFlowController implements bodyControllerDefinition {
             continuation.setDisable(false);
         }
     }
-    private void handleButtonAction(String data,String nameOfDD){
+    private void handleButtonAction(Button addButton,String data,String nameOfDD,Class<?> type){
         if(!data.isEmpty()){
             freeInputsTemp.add(new Pair<>(nameOfDD,data));
+            addButton.setText("Edit");
+        }
+        else if(nameOfDD == "FOLDER_NAME") {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Choose File");
+            File selectedFile = directoryChooser.showDialog(null);
+            freeInputsTemp.add(new Pair<>(nameOfDD,selectedFile.toString()));
+            addButton.setText("Edit");
         }
         if (freeInputsTemp.size() == getSizeOfMandatoryList()){
             startExecute.setDisable(false);
-           // startExecute.setStyle("-fx-background-color: #4CAF50; -fx-background-radius: 20; -fx-text-fill: black;) ");
             startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
             startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
         }
@@ -138,7 +180,6 @@ public class executeFlowController implements bodyControllerDefinition {
     public void setBodyController(bodyController body) {
       this.body = body;
     }
-
     @Override
     public void setFlowsDetails(List<FlowDefinitionImpl> list) {
 

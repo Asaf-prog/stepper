@@ -21,7 +21,6 @@ import modules.stepper.Stepper;
 import java.io.File;
 
 public class headerController {
-
     @FXML
     private Button path;
     @FXML
@@ -67,7 +66,32 @@ public class headerController {
     private Button buypremiumBtn;
     String buttonStyle;
     int nextFreeProgressor=1;
-    
+
+    @FXML
+    void initialize() {
+        assert flow3ProgressBar != null : "fx:id=\"flow3ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow2ProgressBar != null : "fx:id=\"flow2ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert Statistics != null : "fx:id=\"Statistics\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow4ProgressLabel != null : "fx:id=\"flow4ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow2ProgressLabel != null : "fx:id=\"flow2ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert loaded != null : "fx:id=\"loaded\" was not injected: check your FXML file 'header.fxml'.";
+        assert buypremiumBtn != null : "fx:id=\"buypremiumBtn\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow1ProgressLabel != null : "fx:id=\"flow1ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert path != null : "fx:id=\"path\" was not injected: check your FXML file 'header.fxml'.";
+        assert themeToggle != null : "fx:id=\"themeToggle\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow4ProgressBar != null : "fx:id=\"flow4ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow3ProgressLabel != null : "fx:id=\"flow3ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
+        assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
+        assert progressGrid != null : "fx:id=\"progressGrid\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
+        assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
+        Events();
+        screensToggleGrouping();
+        setCssScreenButtons();
+
+    }
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
         main.showFlowDefinition();
@@ -86,8 +110,6 @@ public class headerController {
     void ExecutionsHistoryFunc(ActionEvent event) {
         main.showHistoryExe();
     }
-
-
     public void addProgress(ProgressBar progressBar, Label label) {
         String style4Bar,style4Label;
         int free = getNextFreeProgress();
@@ -126,8 +148,6 @@ public class headerController {
                 flow4ProgressLabel.setStyle(style4Label);
                 break;
         }
-
-
     }
     private int getNextFreeProgress() {
         if (nextFreeProgressor == 4) {
@@ -136,33 +156,6 @@ public class headerController {
         }
         return nextFreeProgressor++;
     }
-
-    @FXML
-    void initialize() {
-        assert flow3ProgressBar != null : "fx:id=\"flow3ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow2ProgressBar != null : "fx:id=\"flow2ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert Statistics != null : "fx:id=\"Statistics\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow4ProgressLabel != null : "fx:id=\"flow4ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow2ProgressLabel != null : "fx:id=\"flow2ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert loaded != null : "fx:id=\"loaded\" was not injected: check your FXML file 'header.fxml'.";
-        assert buypremiumBtn != null : "fx:id=\"buypremiumBtn\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow1ProgressLabel != null : "fx:id=\"flow1ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert path != null : "fx:id=\"path\" was not injected: check your FXML file 'header.fxml'.";
-        assert themeToggle != null : "fx:id=\"themeToggle\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow4ProgressBar != null : "fx:id=\"flow4ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow3ProgressLabel != null : "fx:id=\"flow3ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
-        assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
-        assert progressGrid != null : "fx:id=\"progressGrid\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
-        assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
-        Events();
-        screensToggleGrouping();
-        setCssScreenButtons();
-
-    }
-
     private void setCssScreenButtons() {
         FlowsDefinition.getStyleClass().add("screenButton");
         ExecutionsHistory.getStyleClass().add("screenButton");
@@ -215,9 +208,7 @@ public class headerController {
             scaleTransition.play();
             Statistics.setStyle(buttonStyle);
         });
-
     }
-
     @FXML
     void changeTheme(ActionEvent event) {
         if (themeToggle.isSelected()) {
@@ -249,10 +240,7 @@ public class headerController {
                 alert.showAndWait();
             }
         }
-
-
     }
-
     @FXML
     void loadData(ActionEvent event) {
 
@@ -281,7 +269,6 @@ public class headerController {
     private void screensToggleGrouping() {
        //todo change screens to be in toggle group and maybe change components to be in toggle group
         //update progress grid
-
     }
     @FXML
     void BuyPremium(ActionEvent event) {
@@ -345,7 +332,6 @@ public class headerController {
             alert.initOwner(window instanceof Stage ? (Stage) window : null);
             alert.showAndWait();
         }
-
     }
     private void Events() {
         path.setOnMouseEntered(event -> {
@@ -414,7 +400,6 @@ public class headerController {
     @FXML
     void StatisticsFunc(ActionEvent event) {
         main.showStats();
-
     }
     @FXML
     void loadDataXML(ActionEvent event){
