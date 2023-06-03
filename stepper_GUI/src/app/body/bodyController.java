@@ -17,6 +17,7 @@ import modules.step.api.DataDefinitionDeclaration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.OptionalInt;
 
 public class bodyController {
     private mainController main;
@@ -111,11 +112,12 @@ public class bodyController {
         return controller;
     }
     public void handlerContinuation(FlowDefinitionImpl flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                    List<Pair<String, DataDefinitionDeclaration>> optional){
-        executeExistFlowScreenOfContinuation(flow,mandatory,optional);
+                                    List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,List<Pair<String, String>>optionalIn){
+        executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn);
     }
     public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                                     List<Pair<String, DataDefinitionDeclaration>> optional) {
+                                                     List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
+                                                     List<Pair<String, String>>optionalIn) {
         setCurrentFlow(flow);
 
         try {
@@ -124,19 +126,20 @@ public class bodyController {
             URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
             fxmlLoader.setLocation(url);
 
-            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional);
+            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional,mandatoryIn,optionalIn);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
     private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                                          List<Pair<String, DataDefinitionDeclaration>> optional) {
+                                                          List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
+                                                          List<Pair<String, String>>optionalIn) {
         try {
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(flow);
-            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional);
+            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn);
             bodyController.showForContinuation();
 
             bodyPane.getChildren().setAll(screen);

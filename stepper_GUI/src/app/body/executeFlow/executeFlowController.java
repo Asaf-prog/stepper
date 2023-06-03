@@ -24,6 +24,8 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
+import modules.stepper.Stepper;
+
 import static modules.DataManeger.DataManager.stepperData;
 
 import java.io.File;
@@ -33,7 +35,6 @@ import java.util.List;
 public class executeFlowController implements bodyControllerDefinition,bodyControllerForContinuation {
     @FXML
     private Button showDetails;
-
     private FlowDefinitionImpl currentFlow;
     @FXML
     private Button startExecute;
@@ -48,19 +49,19 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @FXML
     private VBox continuationVbox;
     private List<Pair<String, String>> freeInputsTemp;
+    private List<Pair<String, String>>  freeInputsTempForContinuation = new ArrayList<>();
+    private List<Pair<String, String>> freeInputsMandatory ;
+    private List<Pair<String, String>> freeInputsOptional;
     @FXML
     private Button continuation;
-
 
     private List<Pair<String, DataDefinitionDeclaration>> currentMandatoryFreeInput;
 
     private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
 
-
     @FXML
     void initialize() {
         asserts();
-
         continuation.setVisible(false);
         continuationVbox.setVisible(false);
     }
@@ -74,25 +75,129 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         assert continuationVbox != null : "fx:id=\"continuationVbox\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert continuationLabel != null : "fx:id=\"continuationLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
     }
-
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
-        currentFlow = flow;
+    public void show() {
+        //first of all, create a two list : mandatoryInputs and optionalInputs:
+        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
+        List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
+        List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
+
+        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
+            if (pair.getValue().isMandatory()) {
+                mandatoryInputs.add(pair);
+            } else {
+                optionalInputs.add(pair);
+            }
+        }
+        freeInputsTemp = new ArrayList<>();
+        mandatoryHandler(mandatoryInputs);
+        optionalHandler(optionalInputs);
+        setSizeOfMandatoryList(mandatoryInputs.size());
+        currentMandatoryFreeInput = mandatoryInputs;
+        currentOptionalFreeInput = optionalInputs;
+
     }
-
-    public FlowDefinitionImpl getCurrentFlow() {
-        return currentFlow;
-    }
-
-
-
     @Override
     public void showForContinuation() {
         //first, create a list of mandatory and optional that the user need to supply
         //secondly, create the component
         List<Pair<String, DataDefinitionDeclaration>> needToSupply = createListThatTheUserNeedToSupply();
+        handelMandatoryForContinuationCreateLabelForInput(needToSupply);
+        fillDataForExecuteFlow(needToSupply);
+
+    }
+    private void fillDataForExecuteFlow(List<Pair<String, DataDefinitionDeclaration>> needToSupply){
+        for (Pair<String, DataDefinitionDeclaration> data: needToSupply){
+            if (data.getValue().isMandatory()){
+                TextField textField = new TextField();
+
+                Button addButton = new Button("Save");
+                HBox nameAndAddOrEdit = new HBox();
+
+                textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        event.consume();
+                    }
+                });
+                addButton.setOnAction(e-> handelButtonForNewDataForContinuation());
+                nameAndAddOrEdit.getChildren().add(textField);
+                nameAndAddOrEdit.getChildren().add(addButton);
+                nameAndAddOrEdit.setSpacing(10);
+
+                textField.setPromptText(data.getValue().getUserString());
+                //mandatoryList.getChildren().add(label);
+                mandatoryList.getChildren().add(nameAndAddOrEdit);
+                mandatoryList.setSpacing(10);
+            }
+            else{//is optional
+
+            }
+        }
+
+    }
+    private void handelButtonForNewDataForContinuation(){
+
+    }
+
+    private void handelMandatoryForContinuationCreateLabelForInput(List<Pair<String, DataDefinitionDeclaration>> needToSupply) {
+
         List<Pair<String, DataDefinitionDeclaration>> thisDataExist = dataThatSupplyByUser(needToSupply);
 
+        for (Pair<String, DataDefinitionDeclaration> mandatory: thisDataExist){
+            if (mandatory.getValue().isMandatory()){
+                Label labelDetails = new Label(mandatory.getKey());
+                labelDetails.setStyle("-fx-text-fill: #ffffff");
+                String dataThatCollect =getDataBYName(mandatory.getKey(),true);
+                Label label = new Label(dataThatCollect);
+               mandatoryList.getChildren().add(labelDetails);
+                mandatoryList.getChildren().add(label);
+            }
+            else {
+                Label labelDetails = new Label(mandatory.getKey());
+                labelDetails.setStyle("-fx-text-fill: #ffffff");
+                Label label = new Label(getDataBYName(mandatory.getKey(),true));
+                optionalList.getChildren().add(labelDetails);
+                optionalList.getChildren().add(label);
+            }
+        }
+    }
+    private String getDataBYName(String dataToSearch, boolean isMandatory){
+        // this function search if the target exist or if this continuation is with same name
+        if (isMandatory){
+            for (Pair<String,String>mandatory:freeInputsMandatory){
+                if (mandatory.getKey().equals(dataToSearch) || thisNameIsACustomMappingContinuation(dataToSearch,mandatory.getKey())) {
+                    freeInputsTempForContinuation.add(mandatory);
+                    return mandatory.getValue();
+                }
+            }
+            return null;
+        }
+        else {
+            for (Pair<String,String>optional:freeInputsOptional){
+                if (optional.getKey().equals(dataToSearch)) {
+                    freeInputsTempForContinuation.add(optional);
+                    return optional.getValue();
+                }
+            }
+            return null;
+        }
+    }
+    private boolean thisNameIsACustomMappingContinuation(String dataToSearch,String dataThatExist){
+        List<Continuation> continuations = currentFlow.getContinuations();
+        for (Continuation continuation1: continuations){
+//           if (continuation1.getMappingList())
+                return true;
+        }
+
+
+        return false;
+    }
+    @Override
+    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+        currentFlow = flow;
+    }
+    public FlowDefinitionImpl getCurrentFlow() {
+        return currentFlow;
     }
 
     private List<Pair<String, DataDefinitionDeclaration>> dataThatSupplyByUser(List<Pair<String, DataDefinitionDeclaration>> needToSupply) {
@@ -134,9 +239,13 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
 
     @Override
-    public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory, List<Pair<String, DataDefinitionDeclaration>> optional) {
+    public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory, List<Pair<String, DataDefinitionDeclaration>> optional
+            ,List<Pair<String, String>>mandatoryIn,
+                                               List<Pair<String, String>>optionalIn) {
         currentMandatoryFreeInput = mandatory;
         currentOptionalFreeInput = optional;
+        freeInputsMandatory = mandatoryIn;
+        freeInputsOptional = optionalIn;
     }
 
     private List<Pair<String, DataDefinitionDeclaration>> getCurrentMandatoryFreeInput() {
@@ -146,29 +255,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, DataDefinitionDeclaration>> getCurrentOptionalFreeInput() {
         return currentOptionalFreeInput;
     }
-
-    @Override
-    public void show() {
-        //first of all, create a two list : mandatoryInputs and optionalInputs:
-        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
-        List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
-        List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
-        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
-            if (pair.getValue().isMandatory()) {
-                mandatoryInputs.add(pair);
-            } else {
-                optionalInputs.add(pair);
-            }
-        }
-        freeInputsTemp = new ArrayList<>();
-        mandatoryHandler(mandatoryInputs);
-        optionalHandler(optionalInputs);
-        setSizeOfMandatoryList(mandatoryInputs.size());
-        currentMandatoryFreeInput = mandatoryInputs;
-        currentOptionalFreeInput = optionalInputs;
-
-    }
-
     private void optionalHandler(List<Pair<String, DataDefinitionDeclaration>> optionalInputs) {
         for (Pair<String, DataDefinitionDeclaration> optional : optionalInputs) {
             Label label = new Label(optional.getKey());
@@ -230,7 +316,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             mandatoryList.setSpacing(10);
         }
     }
-
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
         ToggleGroup group = new ToggleGroup();
@@ -255,11 +340,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
         FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
         if (targetFlow != null) {
-            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput);
+
+            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional);
         } else
             throw new Exception("Target flow is null");
     }
-
     private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow) {
         List<FlowDefinitionImpl> flows = stepperData.getFlows();
         for (FlowDefinitionImpl targetFlow : flows) {
@@ -279,6 +364,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
+        setTheNewInputsThatTheUserSupply();
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
         continuation.setVisible(true);
         body.getMVC_controller().executeFlow(currentFlow);
@@ -297,9 +383,21 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 showDetails.setVisible(true);
             }
         });
-
     }
-
+    private void setTheNewInputsThatTheUserSupply(){
+        freeInputsMandatory = new ArrayList<>();
+        freeInputsOptional = new ArrayList<>();
+        for (Pair<String, String> data : freeInputsTemp){
+            for (Pair<String, DataDefinitionDeclaration> run: currentMandatoryFreeInput){
+                if (run.getKey().equals(data.getKey()))
+                    freeInputsMandatory.add(new Pair<>(data.getKey(),data.getValue()));
+            }
+            for (Pair<String, DataDefinitionDeclaration> run: currentOptionalFreeInput){
+                if (run.getKey().equals(data.getKey()))
+                    freeInputsOptional.add(new Pair<>(data.getKey(),data.getValue()));
+            }
+        }
+    }
     private void handleButtonActionForShowDetails() {
         showExecutionDetails();
     }
@@ -317,11 +415,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             e.printStackTrace();
         }
     }
-
     private FlowExecution getLastFlowExecution() {
         return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
     }
-
     private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, Class<?> type, HBox Hbox) {
         if (addButton.getText().equals("Edit")) {
             if (nameOfDD.equals("FOLDER_NAME")) {
@@ -408,19 +504,15 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
         }
     }
-
     @Override
     public void setBodyController(bodyController body) {
         this.body = body;
     }
-
     @Override
     public void setFlowsDetails(List<FlowDefinitionImpl> list) {
 
     }
-
-    public void showDetails(ActionEvent actionEvent) {
+    public void showDetails(ActionEvent actionEvent)
         showExecutionDetails();
     }
 }
-

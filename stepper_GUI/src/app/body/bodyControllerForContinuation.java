@@ -10,5 +10,6 @@ public interface bodyControllerForContinuation {
     void showForContinuation();
     void setCurrentFlowForContinuation(FlowDefinitionImpl flow);
     void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                        List<Pair<String, DataDefinitionDeclaration>> optional);
+                                        List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
+                                        List<Pair<String, String>>optionalIn);
 }
