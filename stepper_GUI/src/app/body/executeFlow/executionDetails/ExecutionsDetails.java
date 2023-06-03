@@ -108,7 +108,7 @@ public class ExecutionsDetails {
             newLog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
         logsVbox.getChildren().add(newLog);
     }
-    private void updateLogsTree(FlowExecution selectedFlow) {
+    private void updateLogsTree(FlowExecution selectedFlow) {//check
         stepTree.getChildren().clear();
         TreeView<String> stepTreeView = new TreeView<>();
         TreeItem<String> root = new TreeItem<>("Steps");
