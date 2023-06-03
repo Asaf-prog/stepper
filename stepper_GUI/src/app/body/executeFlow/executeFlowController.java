@@ -188,7 +188,8 @@ public class executeFlowController implements bodyControllerDefinition {
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
-        //pops out flows Details
+
+        //pops out flows Details...
         // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setDisable(false);
