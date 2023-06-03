@@ -5,6 +5,7 @@ import app.body.bodyControllerDefinition;
 import app.body.executeFlow.executionDetails.ExecutionsDetails;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import app.body.bodyControllerForContinuation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
 import modules.mappings.Continuation;
@@ -28,10 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-public class executeFlowController implements bodyControllerDefinition {
-
-
+public class executeFlowController implements bodyControllerDefinition,bodyControllerForContinuation {
     @FXML
     private Button showDetails;
 
@@ -48,17 +47,16 @@ public class executeFlowController implements bodyControllerDefinition {
     private VBox optionalList;
     @FXML
     private VBox continuationVbox;
-    private List<Pair<String,String>> freeInputsTemp;
-
-    @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow){
-        currentFlow = flow;
-    }
-    public FlowDefinitionImpl getCurrentFlow(){
-        return currentFlow;
-    }
+    private List<Pair<String, String>> freeInputsTemp;
     @FXML
     private Button continuation;
+
+
+    private List<Pair<String, DataDefinitionDeclaration>> currentMandatoryFreeInput;
+
+    private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
+
+
     @FXML
     void initialize() {
         asserts();
@@ -78,16 +76,87 @@ public class executeFlowController implements bodyControllerDefinition {
     }
 
     @Override
+    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+        currentFlow = flow;
+    }
+
+    public FlowDefinitionImpl getCurrentFlow() {
+        return currentFlow;
+    }
+
+
+
+    @Override
+    public void showForContinuation() {
+        //first, create a list of mandatory and optional that the user need to supply
+        //secondly, create the component
+        List<Pair<String, DataDefinitionDeclaration>> needToSupply = createListThatTheUserNeedToSupply();
+        List<Pair<String, DataDefinitionDeclaration>> thisDataExist = dataThatSupplyByUser(needToSupply);
+
+    }
+
+    private List<Pair<String, DataDefinitionDeclaration>> dataThatSupplyByUser(List<Pair<String, DataDefinitionDeclaration>> needToSupply) {
+        List<Pair<String, DataDefinitionDeclaration>> thisDataExist = new ArrayList<>();
+        for (Pair<String, DataDefinitionDeclaration> run : getCurrentFlow().getFlowFreeInputs()) {
+            for (Pair<String, DataDefinitionDeclaration> runOfSupply : needToSupply) {
+                if (run.getKey().equals(runOfSupply.getKey()))
+                    thisDataExist.add(run);
+            }
+        }
+        return thisDataExist;
+    }
+
+    private List<Pair<String, DataDefinitionDeclaration>> createListThatTheUserNeedToSupply() {
+        List<Pair<String, DataDefinitionDeclaration>> needToSupply = new ArrayList<>();
+        List<Pair<String, DataDefinitionDeclaration>> inputThatTheFlowNeeded = getCurrentFlow().getFlowFreeInputs();
+        for (Pair<String, DataDefinitionDeclaration> run : inputThatTheFlowNeeded) {
+            if (!existInData(run.getKey()))
+                needToSupply.add(run);
+        }
+        return needToSupply;
+    }
+
+    private boolean existInData(String nameOfDD) {
+        for (Pair<String, DataDefinitionDeclaration> run : currentOptionalFreeInput) {
+            if (run.getKey().equals(nameOfDD))
+                return true;
+        }
+        for (Pair<String, DataDefinitionDeclaration> run : currentMandatoryFreeInput) {
+            if (run.getKey().equals(nameOfDD))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setCurrentFlowForContinuation(FlowDefinitionImpl flow) {
+        currentFlow = flow;
+    }
+
+    @Override
+    public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory, List<Pair<String, DataDefinitionDeclaration>> optional) {
+        currentMandatoryFreeInput = mandatory;
+        currentOptionalFreeInput = optional;
+    }
+
+    private List<Pair<String, DataDefinitionDeclaration>> getCurrentMandatoryFreeInput() {
+        return currentMandatoryFreeInput;
+    }
+
+    private List<Pair<String, DataDefinitionDeclaration>> getCurrentOptionalFreeInput() {
+        return currentOptionalFreeInput;
+    }
+
+    @Override
     public void show() {
         //first of all, create a two list : mandatoryInputs and optionalInputs:
-        List<Pair<String, DataDefinitionDeclaration>> freeInputs= getCurrentFlow().getFlowFreeInputs();
+        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
         List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
         List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
-        for (Pair<String, DataDefinitionDeclaration> pair: freeInputs){
-            if (pair.getValue().isMandatory()){
+        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
+            if (pair.getValue().isMandatory()) {
                 mandatoryInputs.add(pair);
-            }
-            else {
+            } else {
                 optionalInputs.add(pair);
             }
         }
@@ -95,9 +164,13 @@ public class executeFlowController implements bodyControllerDefinition {
         mandatoryHandler(mandatoryInputs);
         optionalHandler(optionalInputs);
         setSizeOfMandatoryList(mandatoryInputs.size());
+        currentMandatoryFreeInput = mandatoryInputs;
+        currentOptionalFreeInput = optionalInputs;
+
     }
+
     private void optionalHandler(List<Pair<String, DataDefinitionDeclaration>> optionalInputs) {
-        for (Pair<String, DataDefinitionDeclaration> optional: optionalInputs){
+        for (Pair<String, DataDefinitionDeclaration> optional : optionalInputs) {
             Label label = new Label(optional.getKey());
             label.setStyle("-fx-text-fill: white");
             TextField textField = new TextField();
@@ -114,15 +187,17 @@ public class executeFlowController implements bodyControllerDefinition {
             nameAndAddOrEdit.getChildren().add(addButton);
             nameAndAddOrEdit.setSpacing(10);
 
-            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),optional.getKey(),optional.getValue().dataDefinition().getType(),nameAndAddOrEdit));
+            addButton.setOnAction(e -> handleButtonAction(addButton, textField, textField.getText(), optional.getKey(), optional.getValue().dataDefinition().getType(), nameAndAddOrEdit));
+
             textField.setPromptText(optional.getValue().getUserString());
             optionalList.getChildren().add(label);
             optionalList.getChildren().add(nameAndAddOrEdit);
             optionalList.setSpacing(10);
         }
     }
+
     private void mandatoryHandler(List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs) {
-        for (Pair<String, DataDefinitionDeclaration> mandatory: mandatoryInputs){
+        for (Pair<String, DataDefinitionDeclaration> mandatory : mandatoryInputs) {
             Label label = new Label(mandatory.getKey());
             label.setStyle("-fx-text-fill: #ffffff");
             TextField textField = new TextField();
@@ -134,8 +209,7 @@ public class executeFlowController implements bodyControllerDefinition {
                     event.consume();
                 }
             });
-            if (mandatory.getKey().equals("FOLDER_NAME"))
-            {
+            if (mandatory.getKey().equals("FOLDER_NAME")) {
                 textField.setEditable(false);
                 addButton.setText("Browse");
                 textField.setText("FOLDER_PATH");
@@ -143,43 +217,66 @@ public class executeFlowController implements bodyControllerDefinition {
                 nameAndAddOrEdit.getChildren().add(textField);
                 nameAndAddOrEdit.getChildren().add(addButton);
                 nameAndAddOrEdit.setSpacing(10);
-            }else {
+            } else {
                 nameAndAddOrEdit.getChildren().add(textField);
                 nameAndAddOrEdit.getChildren().add(addButton);
                 nameAndAddOrEdit.setSpacing(10);
             }
+            addButton.setOnAction(e -> handleButtonAction(addButton, textField, textField.getText(), mandatory.getKey(), mandatory.getValue().dataDefinition().getType(), nameAndAddOrEdit));
 
-
-            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),mandatory.getKey(),mandatory.getValue().dataDefinition().getType(),nameAndAddOrEdit));
             textField.setPromptText(mandatory.getValue().getUserString());
             mandatoryList.getChildren().add(label);
             mandatoryList.getChildren().add(nameAndAddOrEdit);
             mandatoryList.setSpacing(10);
         }
     }
+
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
         ToggleGroup group = new ToggleGroup();
-        for (Continuation continuation : currentFlow.getContinuations()){
+        for (Continuation continuation : currentFlow.getContinuations()) {
             RadioButton button = new RadioButton(continuation.getTargetFlow());
             button.setStyle("-fx-text-fill: white");
-            button.setOnAction(e-> handleButtonActionForContinuation(continuation.getTargetFlow()));
+            button.setOnAction(e -> {
+                try {
+                    handleButtonActionForContinuation(continuation.getTargetFlow());
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             button.setToggleGroup(group);
             continuationVbox.getChildren().add(button);
         }
         continuationVbox.setSpacing(10);
         continuationVbox.setVisible(true);
-        continuationLabel.setText("Continuation for "+ currentFlow.getName());
+        continuationLabel.setText("Continuation for " + currentFlow.getName());
     }
-    private void handleButtonActionForContinuation(String nameOfTargetFlow){
-        //todo this function handling the continuation
+
+    private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
+        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
+        if (targetFlow != null) {
+            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput);
+        } else
+            throw new Exception("Target flow is null");
     }
-    private void setSizeOfMandatoryList(int size){
+
+    private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow) {
+        List<FlowDefinitionImpl> flows = stepperData.getFlows();
+        for (FlowDefinitionImpl targetFlow : flows) {
+            if (targetFlow.getName().equals(nameOfTargetFlow))
+                return targetFlow;
+        }
+        return null;
+    }
+
+    private void setSizeOfMandatoryList(int size) {
         this.sizeOfMandatoryList = size;
     }
-    public int getSizeOfMandatoryList(){
+
+    public int getSizeOfMandatoryList() {
         return sizeOfMandatoryList;
     }
+
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
@@ -192,6 +289,7 @@ public class executeFlowController implements bodyControllerDefinition {
         //pops out flows Details...
         // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
         FlowExecution lastFlowExecution = getLastFlowExecution();
+        showDetails.setVisible(true);
         showDetails.setDisable(false);
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
             @Override
@@ -221,10 +319,10 @@ public class executeFlowController implements bodyControllerDefinition {
     }
 
     private FlowExecution getLastFlowExecution() {
-        return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size()-1);
+        return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
     }
 
-    private void handleButtonAction(Button addButton,TextField textField,String data,String nameOfDD,Class<?> type, HBox Hbox) {
+    private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, Class<?> type, HBox Hbox) {
         if (addButton.getText().equals("Edit")) {
             if (nameOfDD.equals("FOLDER_NAME")) {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -254,8 +352,7 @@ public class executeFlowController implements bodyControllerDefinition {
                     startExecute.setDisable(true);
                 }
             }
-        }
-        else {
+        } else {
             if (!data.isEmpty() && !nameOfDD.equals("FOLDER_NAME")) {
                 freeInputsTemp.add(new Pair<>(nameOfDD, data));
                 addButton.setText("Edit");
@@ -268,28 +365,30 @@ public class executeFlowController implements bodyControllerDefinition {
                 int index = Hbox.getChildren().indexOf(textField);
                 Label label = new Label(selectedFile.toString());
                 label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
-                Hbox.getChildren().set(index,label);
+                Hbox.getChildren().set(index, label);
                 textField.setText(selectedFile.toString());
             }
             if (freeInputsTemp.size() == getSizeOfMandatoryList()) {
                 startExecute.setDisable(false);
-                startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
-                startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
+                startExecute.setOnMouseEntered(event ->
+                        startExecute.setStyle("-fx-background-color: #36e6f3;"));
+                startExecute.setOnMouseExited(event ->
+                        startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
             }
         }
     }
 
     private int getIndexOfLabel(HBox hbox) {
         int index = 0;
-        for (Node node : hbox.getChildren()){
-            if (node instanceof Label){
+        for (Node node : hbox.getChildren()) {
+            if (node instanceof Label) {
                 index = hbox.getChildren().indexOf(node);
             }
         }
         return index;
     }
 
-    private void handleButtonActionForEdit(Button addButton,TextField textField,String data,String nameOfDD){
+    private void handleButtonActionForEdit(Button addButton, TextField textField, String data, String nameOfDD) {
         if (!data.isEmpty()) {
             freeInputsTemp.add(new Pair<>(nameOfDD, data));
             addButton.setText("Edit");
@@ -303,14 +402,18 @@ public class executeFlowController implements bodyControllerDefinition {
         }
         if (freeInputsTemp.size() == getSizeOfMandatoryList()) {
             startExecute.setDisable(false);
-            startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
-            startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
+            startExecute.setOnMouseEntered(event ->
+                    startExecute.setStyle("-fx-background-color: #36e6f3;"));
+            startExecute.setOnMouseExited(event ->
+                    startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
         }
     }
+
     @Override
     public void setBodyController(bodyController body) {
         this.body = body;
     }
+
     @Override
     public void setFlowsDetails(List<FlowDefinitionImpl> list) {
 
@@ -320,3 +423,4 @@ public class executeFlowController implements bodyControllerDefinition {
         showExecutionDetails();
     }
 }
+
