@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
 
@@ -18,12 +19,24 @@ public class StepperApplication extends Application {
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
         Scene scene = new Scene(load,1100,750);
+        primaryStage.initStyle(StageStyle.UNIFIED);
+        scene.setOnMouseEntered(e -> showWindow(primaryStage));
+        scene.setOnMouseExited(e -> hideWindow(primaryStage));
         primaryStage.getIcons().add(new Image(("app/management/content/aviadsIcon.png")));
         primaryStage.setScene(scene);
         setPrimaryStage(primaryStage);
         centerWindowOnScreen(primaryStage);
         primaryStage.show();
     }
+
+    private void showWindow(Stage primaryStage) {
+        primaryStage.setOpacity(1.0); // Make the window fully opaque
+    }
+
+    private void hideWindow(Stage primaryStage) {
+        primaryStage.setOpacity(0.2); // Make the window fully transparent
+    }
+
 
     private static void setPrimaryStage(Stage primaryStage) {
         primaryStage.setResizable(true);
