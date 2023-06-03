@@ -92,7 +92,9 @@ public class DataViewerController {
         otherLabel.setText(data.toString());
         otherLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"
                 + "-fx-font-family: \"Segoe UI Semibold\";"
-                + "-fx-alignment: top-center;");
+                + "-fx-alignment: top-center; -fx-font-size: 18px;");
+        otherLabel.setWrapText(true);
+        otherLabel.setPrefWidth(mainPane.getPrefWidth()-20);
     }
 
     private int selectRelevantPane() {//intended to sent real type

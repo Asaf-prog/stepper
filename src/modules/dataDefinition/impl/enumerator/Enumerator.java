@@ -1,21 +1,29 @@
 package modules.dataDefinition.impl.enumerator;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Enumerator implements Serializable {
-   private Set<String> stringSet;
-    Enumerator(){
-         stringSet = new HashSet<>();
+   private String first;
+   private String second;
+
+    public Enumerator(String first, String second) {
+        this.first = first;
+        this.second = second;
     }
-    public void add(String val){
-        stringSet.add(val);
+    public Enumerator(String first){
+        this.first = first;
+        this.second = "";
     }
-    public Set<String> getStringSet(){
-        return stringSet;
+    public boolean isBothContainVal(String val){
+        if(first.equals(val) || second.equals(val)){
+            return true;
+        }
+        return false;
     }
-    public boolean containVal(String val){
-        return stringSet.equals(val);
+    public boolean isFirstContainVal(String val){
+        if(first.equals(val)){
+            return true;
+        }
+        return false;
     }
 }

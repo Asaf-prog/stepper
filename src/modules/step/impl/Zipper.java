@@ -28,17 +28,20 @@ public class Zipper extends AbstractStepDefinition {
 
         //the get data enumeration from the context tell us if we need to do zip or unzip
         // todo if in the enumerator was written unzip we need to check that the end of the file is: .zip
-
+//todo change string back to enum !! its donnt work that way
         String path = context.getDataValue("SOURCE", String.class);
         Enumerator zipOrUnzip = context.getDataValue("OPERATION", Enumerator.class);
-        if(zipOrUnzip.containVal("ZIP")){
+        //String action = zipOrUnzip.isFirstContainVal("ZIP") ? "Zip" : "Unzip";
+       // Enumerator zipOrUnzip=new Enumerator(action);
+        if(zipOrUnzip.isFirstContainVal("ZIP")){
+
             zipFile(path,path);
             context.setLogsForStep("Zipper", "End with Success ,Zip operation was done");
             context.addSummaryLine("Zipper", "End with Success ,Zip operation was done");
             String result = "Success";
             context.storeDataValue("RESULT", result);
             return StepResult.SUCCESS;
-        }else if(zipOrUnzip.containVal("UNZIP")) {
+        }else if(zipOrUnzip.isFirstContainVal("UNZIP")) {
             boolean check = checkIfFileValid(path);
             if (!check)
             {
@@ -76,6 +79,7 @@ public class Zipper extends AbstractStepDefinition {
     }
 
     private void zipFile(String sourceFilePath, String zipFilePath) throws IOException {
+        zipFilePath += ".zip";
 
         File fileToZip = new File(sourceFilePath);
 

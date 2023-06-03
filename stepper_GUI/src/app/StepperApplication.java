@@ -5,8 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
 
 public class StepperApplication extends Application {
 
@@ -15,6 +18,7 @@ public class StepperApplication extends Application {
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
         Scene scene = new Scene(load,1100,750);
+        primaryStage.getIcons().add(new Image(("app/management/content/aviadsIcon.png")));
         primaryStage.setScene(scene);
         setPrimaryStage(primaryStage);
         centerWindowOnScreen(primaryStage);

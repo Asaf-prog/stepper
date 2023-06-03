@@ -11,10 +11,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -92,41 +94,57 @@ public class StatsScreen implements bodyControllerDefinition {
 
     }
 
-    private static BarChart<String, Number> getBarChart(FlowDefinitionImpl selectedFlow) {
+    private BarChart<String, Number> getBarChart(FlowDefinitionImpl selectedFlow) {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Steps");
         yAxis.setLabel("Time (in ms)");
-        BarChart<String, Number> barChart;
-        // Create bar chart
-        barChart = new BarChart<>(xAxis, yAxis);
-        barChart.setTitle("Step Stats");
-        Label titleLabel = (Label) barChart.lookup(".chart-title");
-        titleLabel.setStyle("-fx-text-fill: #d000ff;");
-        barChart.lookup(".axis-label").setStyle("-fx-text-fill: #d000ff;");
-        barChart.lookup(".axis").setStyle(" -fx-text-fill: #4cffa4;");
 
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        barChart.getStylesheets().add("charts.css");
+        barChart.setTitle("Step Stats");
+        barChart.setMinHeight(300); // Adjust the desired height of the chart
+
+        // Set styling for title and axes labels
+        barChart.lookup(".chart-title").setStyle("-fx-text-fill: #d000ff;");
+        barChart.getXAxis().setStyle("-fx-text-fill: #ffffff; -fx-font-size: 30"); // Set X-axis label color to white
+        barChart.getYAxis().setStyle("-fx-text-fill: #ffffff;-fx-font-size: 30"); // Set Y-axis label color to white
 
         // Create data series
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Time Taken");
-
+        xAxis.setTickLabelRotation(90);
         // Add data to the series
         for (StepUsageDeclaration step : selectedFlow.getSteps()) {
             series.getData().add(new XYChart.Data<>(step.getFinalStepName(), step.getAvgTime()));
         }
-        barChart.lookup(".chart-plot-background")
-                .setStyle("-fx-background-color: #36393e;");  // Set the plot area background color
-        barChart.lookup(".chart-legend").setStyle("-fx-text-fill: #4cffa4;");
-        barChart.getStyleClass().add("bar-chart");
+
+        // Set styling for the chart plot and legend
+        barChart.lookup(".chart-plot-background").setStyle("-fx-background-color: #36393e;");
+        barChart.lookup(".chart-legend").setStyle("-fx-text-fill: #ffffff;");
+
+        // Set styling for the bars
+        for (Node node : barChart.lookupAll(".bar")) {
+            node.setStyle("-fx-bar-fill: #4cffa4;");
+        }
+        Font labelFont = Font.font("Arial", 14); // Adjust the desired font size
+        String labelStyle = "-fx-text-fill: #ffce08;"; // Adjust the desired label color
+        xAxis.setTickLabelFont(labelFont);
+        xAxis.setStyle(labelStyle);
+        String css = "-fx-stroke: transparent; -fx-text-fill: #ffffff;"; // Adjust the desired label color
+        barChart.getStylesheets().add(getClass().getResource("charts.css").toExternalForm());
+        xAxis.setStyle(css);
+        // Add series to the chart
         barChart.getData().add(series);
         return barChart;
     }
+
 
     private static PieChart getPieChart(FlowDefinitionImpl selectedFlow) {
         PieChart pieChart = new PieChart();
         pieChart.getStyleClass().add("pie-chart");
         pieChart.setTitle("Flow Time Division");
+        pieChart.setPrefHeight(300);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         double totalFlowTime = 0.0;
         for (StepUsageDeclaration step : selectedFlow.getSteps()) {
@@ -140,6 +158,7 @@ public class StatsScreen implements bodyControllerDefinition {
         pieChart.setData(pieChartData);
         pieChart.lookup(".chart-title")
                 .setStyle("-fx-text-fill: #ba00ff;");
+        pieChart.getStylesheets().add("charts.css");
         pieChart.lookup(".chart-legend").setStyle("-fx-text-fill: #4cffa4;");
         return pieChart;
 

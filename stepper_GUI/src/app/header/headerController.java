@@ -268,7 +268,7 @@ public class headerController {
         if (file != null) {
             try {
                 DataManager.loadDataGui(file.getPath());
-                DataManager.getData().setXmlPath(file.getPath());
+                DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
                 ActivateMenuButtons();
                 loadXMLbutton.setText("Loaded:");
                 loaded.setText(DataManager.getData().getXmlPath());

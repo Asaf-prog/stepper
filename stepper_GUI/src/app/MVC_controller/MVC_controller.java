@@ -36,7 +36,8 @@ public class MVC_controller {
         flowTestExecution = new FlowExecution(flow);
         ExecutionManager ExeManager = stepperData.getExecutionManager();//get the one and only ExecutionManager
         try {
-            ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName(),flowTestExecution.getUniqueId() , flowTestExecution, fLowExecutor);
+            ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName(),
+                    flowTestExecution.getUniqueId() , flowTestExecution, fLowExecutor);
             setProgressor(task);
             ExeManager.executeTask(task);
             //todo do some logic and update gui accordingly\
@@ -44,7 +45,7 @@ public class MVC_controller {
             header.setDisableOnExecutionsHistory();
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }//finally {
         stepperData.addFlowExecution(flowTestExecution);
     }
 
