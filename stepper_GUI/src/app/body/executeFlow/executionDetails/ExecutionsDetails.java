@@ -115,6 +115,7 @@ public class ExecutionsDetails {
         stepTreeView.setRoot(root);
         for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
+            //todo here collaps check if null or empty
             List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
             if (logsPerStep != null) {
                 for (Pair<String, String> log : logsPerStep) {
