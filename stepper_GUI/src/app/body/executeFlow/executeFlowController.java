@@ -2,6 +2,7 @@ package app.body.executeFlow;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import app.body.bodyControllerForContinuation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,15 +11,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Pair;
+import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
+import modules.stepper.Stepper;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class executeFlowController implements bodyControllerDefinition {
+public class executeFlowController implements bodyControllerDefinition, bodyControllerForContinuation {
     private FlowDefinitionImpl currentFlow;
     @FXML
     private Button startExecute;
@@ -33,15 +36,10 @@ public class executeFlowController implements bodyControllerDefinition {
     @FXML
     private VBox continuationVbox;
     private List<Pair<String,String>> freeInputsTemp;
-    @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow){
-        currentFlow = flow;
-    }
-    public FlowDefinitionImpl getCurrentFlow(){
-        return currentFlow;
-    }
-    @FXML
-    private Button continuation;
+
+    private List<Pair<String, DataDefinitionDeclaration>> currentMandatoryFreeInput;
+
+    private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
     @FXML
     void initialize() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
@@ -54,6 +52,69 @@ public class executeFlowController implements bodyControllerDefinition {
         continuation.setVisible(false);
         continuationVbox.setVisible(false);
     }
+    @Override
+    public void SetCurrentFlow(FlowDefinitionImpl flow){
+        currentFlow = flow;
+    }
+    public FlowDefinitionImpl getCurrentFlow(){
+        return currentFlow;
+    }
+    @FXML
+    private Button continuation;
+    @Override
+    public void showForContinuation() {
+        //first, create a list of mandatory and optional that the user need to supply
+        //secondly, create the component
+        List<Pair<String, DataDefinitionDeclaration>> needToSupply = createListThatTheUserNeedToSupply();
+        List<Pair<String, DataDefinitionDeclaration>> thisDataExist = dataThatSupplyByUser(needToSupply);
+        
+    }
+    private List<Pair<String, DataDefinitionDeclaration>> dataThatSupplyByUser(List<Pair<String, DataDefinitionDeclaration>> needToSupply){
+        List<Pair<String, DataDefinitionDeclaration>> thisDataExist = new ArrayList<>();
+        for (Pair<String, DataDefinitionDeclaration>run:getCurrentFlow().getFlowFreeInputs()){
+         for (Pair<String, DataDefinitionDeclaration>runOfSupply: needToSupply){
+             if (run.getKey().equals(runOfSupply.getKey()))
+                 thisDataExist.add(run);
+         }
+     }
+        return thisDataExist;
+    }
+    private List<Pair<String, DataDefinitionDeclaration>> createListThatTheUserNeedToSupply(){
+        List<Pair<String, DataDefinitionDeclaration>> needToSupply= new ArrayList<>();
+        List<Pair<String, DataDefinitionDeclaration>> inputThatTheFlowNeeded = getCurrentFlow().getFlowFreeInputs();
+        for (Pair<String, DataDefinitionDeclaration> run: inputThatTheFlowNeeded){
+            if (!existInData(run.getKey()))
+                needToSupply.add(run);
+        }
+        return needToSupply;
+    }
+    private boolean existInData(String nameOfDD){
+        for (Pair<String, DataDefinitionDeclaration> run: currentOptionalFreeInput){
+            if (run.getKey().equals(nameOfDD))
+                return true;
+        }
+        for (Pair<String, DataDefinitionDeclaration> run: currentMandatoryFreeInput){
+            if (run.getKey().equals(nameOfDD))
+                return true;
+        }
+        return false;
+    }
+    @Override
+    public void setCurrentFlowForContinuation(FlowDefinitionImpl flow) {
+        currentFlow = flow;
+    }
+    @Override
+    public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory, List<Pair<String, DataDefinitionDeclaration>> optional) {
+        currentMandatoryFreeInput = mandatory;
+        currentOptionalFreeInput = optional;
+    }
+    private List<Pair<String, DataDefinitionDeclaration>> getCurrentMandatoryFreeInput(){
+        return currentMandatoryFreeInput;
+    }
+    private List<Pair<String, DataDefinitionDeclaration>> getCurrentOptionalFreeInput(){
+        return currentOptionalFreeInput;
+    }
+
     @Override
     public void show() {
         //first of all, create a two list : mandatoryInputs and optionalInputs:
@@ -72,6 +133,9 @@ public class executeFlowController implements bodyControllerDefinition {
         mandatoryHandler(mandatoryInputs);
         optionalHandler(optionalInputs);
         setSizeOfMandatoryList(mandatoryInputs.size());
+        currentMandatoryFreeInput = mandatoryInputs;
+        currentOptionalFreeInput = optionalInputs;
+
     }
     private void optionalHandler(List<Pair<String, DataDefinitionDeclaration>> optionalInputs) {
         for (Pair<String, DataDefinitionDeclaration> optional: optionalInputs){
@@ -91,7 +155,8 @@ public class executeFlowController implements bodyControllerDefinition {
             nameAndAddOrEdit.getChildren().add(addButton);
             nameAndAddOrEdit.setSpacing(10);
 
-            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),optional.getKey(),optional.getValue().dataDefinition().getType()));
+            addButton.setOnAction(e->handleButtonAction(addButton,textField,
+                    textField.getText(),optional.getKey(),optional.getValue().dataDefinition().getType()));
             textField.setPromptText(optional.getValue().getUserString());
             optionalList.getChildren().add(label);
             optionalList.getChildren().add(nameAndAddOrEdit);
@@ -119,7 +184,8 @@ public class executeFlowController implements bodyControllerDefinition {
             nameAndAddOrEdit.getChildren().add(addButton);
             nameAndAddOrEdit.setSpacing(10);
 
-            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),mandatory.getKey(),mandatory.getValue().dataDefinition().getType()));
+            addButton.setOnAction(e->handleButtonAction(addButton,textField,textField.getText(),mandatory.getKey(),
+                    mandatory.getValue().dataDefinition().getType()));
             textField.setPromptText(mandatory.getValue().getUserString());
             mandatoryList.getChildren().add(label);
             mandatoryList.getChildren().add(nameAndAddOrEdit);
@@ -132,7 +198,13 @@ public class executeFlowController implements bodyControllerDefinition {
         for (Continuation continuation : currentFlow.getContinuations()){
             RadioButton button = new RadioButton(continuation.getTargetFlow());
             button.setStyle("-fx-text-fill: white");
-            button.setOnAction(e-> handleButtonActionForContinuation(continuation.getTargetFlow()));
+            button.setOnAction(e-> {
+                try {
+                    handleButtonActionForContinuation(continuation.getTargetFlow());
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             button.setToggleGroup(group);
             continuationVbox.getChildren().add(button);
         }
@@ -140,8 +212,22 @@ public class executeFlowController implements bodyControllerDefinition {
         continuationVbox.setVisible(true);
         continuationLabel.setText("Continuation for "+ currentFlow.getName());
     }
-    private void handleButtonActionForContinuation(String nameOfTargetFlow){
-        //todo this function handling the continuation
+    private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
+        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
+        if (targetFlow != null) {
+            body.handlerContinuation(targetFlow,currentMandatoryFreeInput,currentOptionalFreeInput);
+        }
+        else
+            throw new Exception("Target flow is null");
+    }
+    private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow){
+        Stepper stepperData = DataManager.getData();
+        List<FlowDefinitionImpl> flows = stepperData.getFlows();
+        for (FlowDefinitionImpl targetFlow: flows ){
+            if (targetFlow.getName().equals(nameOfTargetFlow))
+                return targetFlow;
+        }
+        return null;
     }
     private void setSizeOfMandatoryList(int size){
         this.sizeOfMandatoryList = size;
@@ -190,8 +276,10 @@ public class executeFlowController implements bodyControllerDefinition {
             }
             if (freeInputsTemp.size() == getSizeOfMandatoryList()) {
                 startExecute.setDisable(false);
-                startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
-                startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
+                startExecute.setOnMouseEntered(event ->
+                        startExecute.setStyle("-fx-background-color: #36e6f3;"));
+                startExecute.setOnMouseExited(event ->
+                        startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
             }
         }
     }
@@ -209,8 +297,10 @@ public class executeFlowController implements bodyControllerDefinition {
         }
         if (freeInputsTemp.size() == getSizeOfMandatoryList()) {
             startExecute.setDisable(false);
-            startExecute.setOnMouseEntered(event -> startExecute.setStyle("-fx-background-color: #36e6f3;"));
-            startExecute.setOnMouseExited(event -> startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
+            startExecute.setOnMouseEntered(event ->
+                    startExecute.setStyle("-fx-background-color: #36e6f3;"));
+            startExecute.setOnMouseExited(event ->
+                    startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
         }
     }
     @Override

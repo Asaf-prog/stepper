@@ -163,7 +163,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         treeList.setRoot(rootItem);
         treeList.setShowRoot(false);
         treeList.setVisible(true);
-
     }
     private TreeItem<String> createTreeItem(List<StepUsageDeclaration> steps) {
         for (StepUsageDeclaration step : steps){

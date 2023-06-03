@@ -10,7 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.step.api.DataDefinitionDeclaration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -81,7 +83,6 @@ public class bodyController {
             bController.SetCurrentFlow(flow);
             bController.show();
 
-
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
@@ -108,5 +109,40 @@ public class bodyController {
     }
     public MVC_controller getMVC_controller(){
         return controller;
+    }
+    public void handlerContinuation(FlowDefinitionImpl flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
+                                    List<Pair<String, DataDefinitionDeclaration>> optional){
+        executeExistFlowScreenOfContinuation(flow,mandatory,optional);
+    }
+    public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
+                                                     List<Pair<String, DataDefinitionDeclaration>> optional) {
+        setCurrentFlow(flow);
+
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
+            fxmlLoader.setLocation(url);
+
+            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
+                                                          List<Pair<String, DataDefinitionDeclaration>> optional) {
+        try {
+            Parent screen = fxmlLoader.load(url.openStream());
+            bodyControllerForContinuation bodyController = fxmlLoader.getController();
+            bodyController.setCurrentFlowForContinuation(flow);
+            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional);
+            bodyController.showForContinuation();
+
+            bodyPane.getChildren().setAll(screen);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

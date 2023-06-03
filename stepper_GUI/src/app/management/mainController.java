@@ -23,11 +23,6 @@ public class mainController {
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
    private MVC_controller mvcController;
-
-
-   public void PresentTpBodyFlowDefinition(){
-
-   }
    @FXML
    public void initialize() {
       if (headerComponentController != null && bodyComponentController != null) {
@@ -71,8 +66,5 @@ public class mainController {
             bodyComponent.getStylesheets().add("app/body/theme/bodyLight.css");
             headerComponent.getStylesheets().add("app/header/theme/headerLight.css");
       }
-
-
    }
-
 }
