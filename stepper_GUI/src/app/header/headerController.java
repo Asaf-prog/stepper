@@ -355,14 +355,7 @@ public class headerController {
             double width = 900;
             double height = 700;
 
-            // Set the alert window size
-            alert.getDialogPane().setMinWidth(width);
-            alert.getDialogPane().setMinHeight(height);
-            alert.getDialogPane().setMaxWidth(width);
-            alert.getDialogPane().setMaxHeight(height);
-            alert.getDialogPane().setPrefWidth(width);
-            alert.getDialogPane().setPrefHeight(height);
-            alert.getDialogPane().setPrefSize(width, height);
+            // Set the alert window siz
             alert.initOwner(window instanceof Stage ? (Stage) window : null);
             alert.showAndWait();
         }

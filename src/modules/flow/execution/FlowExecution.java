@@ -1,5 +1,7 @@
 package modules.flow.execution;
 
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.util.Pair;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.FlowDefinition;
@@ -24,6 +26,8 @@ public class FlowExecution implements Serializable {//This class accumulates all
     private Map<String, Object> executionFormalOutputs = new HashMap<>();
     private Map<String, Object> allExecutionOutputs = new HashMap<>();
     protected List<Pair<String,String>> userInputs;
+
+    public SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
     public List<Pair<String, String>> getUserInputs() {
         return userInputs;
@@ -198,6 +202,14 @@ public class FlowExecution implements Serializable {//This class accumulates all
             }
 
         }
+    }
+
+    public void endExecution() {
+        isDone.setValue(true);
+    }
+
+    public Observable isDoneProperty() {
+        return isDone;
     }
 }
 
