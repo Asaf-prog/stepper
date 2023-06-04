@@ -3,6 +3,7 @@ package app.body.executeFlow;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.body.executeFlow.executionDetails.ExecutionsDetails;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import app.body.bodyControllerForContinuation;
@@ -13,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -366,6 +368,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
         setTheNewInputsThatTheUserSupply();
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        showDetails.setDisable(true);
         continuation.setVisible(true);
         body.getMVC_controller().executeFlow(currentFlow);
         if (currentFlow.getContinuations().size() != 0) {
@@ -376,11 +379,15 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
-        showDetails.setDisable(false);
+
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-                showDetails.setVisible(true);
+
+                Platform.runLater(() -> {
+                    popupDetails();
+                });
+
             }
         });
     }
@@ -398,6 +405,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
+    private void popupDetails() {
+        showExecutionDetails();
+        showDetails.setDisable(false);
+        showDetails.setVisible(true);
+    }
     private void handleButtonActionForShowDetails() {
         showExecutionDetails();
     }
@@ -409,6 +422,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Flow Details");
+            //set icon as previous stage
+            stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
             stage.setScene(new Scene(root, 1060, 365));
             stage.showAndWait();
         } catch (IOException e) {
@@ -512,7 +527,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public void setFlowsDetails(List<FlowDefinitionImpl> list) {
 
     }
-    public void showDetails(ActionEvent actionEvent)
+    public void showDetails(ActionEvent actionEvent){
         showExecutionDetails();
     }
 }

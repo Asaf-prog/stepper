@@ -40,4 +40,8 @@ public class FileData  implements Serializable {
         this.name = file.getName();
         this.file = file;
     }
+    @Override
+    public String toString() {
+        return "name : "+name + " path : "+file.getPath();
+    }
 }

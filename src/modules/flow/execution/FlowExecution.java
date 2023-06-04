@@ -9,6 +9,9 @@ import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.DataDefinitionDeclaration;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.Duration;
 import java.text.SimpleDateFormat;
@@ -27,8 +30,18 @@ public class FlowExecution implements Serializable {//This class accumulates all
     private Map<String, Object> allExecutionOutputs = new HashMap<>();
     protected List<Pair<String,String>> userInputs;
 
-    public SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
+    public transient SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeBoolean(isDone.get());
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        isDone = new SimpleBooleanProperty(in.readBoolean());
+    }
     public List<Pair<String, String>> getUserInputs() {
         return userInputs;
     }

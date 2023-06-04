@@ -372,11 +372,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                             controller.setData(value, name);
                             Stage stage = new Stage();
                             stage.setTitle("Data Viewer");
-                            stage.setScene(new Scene(root, 500, 300));
+                            stage.setScene(new Scene(root, 600, 400));
                             stage.showAndWait();
                         }
                     } catch (IOException e) {
                         System.out.println("failed to load data viewer");
+                        e.printStackTrace();
                     }
                 }
         );
@@ -409,7 +410,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                                 controller.setData(entry.getValue(), entry.getKey());
                                 Stage stage = new Stage();
                                 stage.setTitle("Data Viewer");
-                                stage.setScene(new Scene(root, 500, 300));
+                                stage.setScene(new Scene(root, 600, 400));
                                 stage.showAndWait();
                             } catch (IOException e) {
                                 //giveup

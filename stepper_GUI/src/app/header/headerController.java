@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -142,6 +143,23 @@ public class headerController {
 
     @FXML
     void initialize() {
+        asserts();
+        Events();
+        screensToggleGrouping();
+        setCssScreenButtons();
+        setVGrow();
+
+    }
+
+    private void setVGrow() {
+        GridPane.setVgrow(loaded, Priority.ALWAYS);
+        GridPane.setVgrow(progressGrid, Priority.ALWAYS);
+
+
+
+    }
+
+    private void asserts() {
         assert flow3ProgressBar != null : "fx:id=\"flow3ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
         assert flow2ProgressBar != null : "fx:id=\"flow2ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
         assert Statistics != null : "fx:id=\"Statistics\" was not injected: check your FXML file 'header.fxml'.";
@@ -160,10 +178,6 @@ public class headerController {
         assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
         assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
         assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
-        Events();
-        screensToggleGrouping();
-        setCssScreenButtons();
-
     }
 
     private void setCssScreenButtons() {
@@ -268,7 +282,7 @@ public class headerController {
         if (file != null) {
             try {
                 DataManager.loadDataGui(file.getPath());
-                DataManager.getData().setXmlPath(file.getPath());
+                DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
                 ActivateMenuButtons();
                 loadXMLbutton.setText("Loaded:");
                 loaded.setText(DataManager.getData().getXmlPath());

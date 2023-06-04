@@ -56,6 +56,10 @@ public class ExecutionsDetails {
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private FlowExecution theFlow=null;
 
+    public String currStyle="";
+
+    @FXML
+    private Label statusLabel;
     //ctor
     @FXML
     void initialize() {
@@ -71,7 +75,28 @@ public class ExecutionsDetails {
         updateLogsTree(theFlow);
         updateInputs(theFlow);
         updateOutputs(theFlow);
+        updateStatusAndTime(theFlow);
         }
+    }
+
+    private void updateStatusAndTime(FlowExecution theFlow) {
+        switch (theFlow.getFlowExecutionResult()){
+            case SUCCESS:
+                statusLabel.setText("Result: Success");
+                statusLabel.setStyle("-fx-text-fill: #24ff21;");
+                break;
+            case WARNING:
+                statusLabel.setText("Result: Warning");
+                statusLabel.setStyle("-fx-text-fill: #fffa00;");
+                break;
+            case FAILURE:
+                statusLabel.setText("Result: Failure");
+                statusLabel.setStyle("-fx-text-fill: #ff0000;");
+                break;
+        }
+
+        exeTime.setText("Execution time: "+theFlow.getTotalTime().toMillis()+" ms");
+        executionCounterLabel.setText("Execution number: "+theFlow.getUniqueId());
     }
 
     private static FlowExecution getLastFlowExecution(Stepper stepperData) {
@@ -179,8 +204,8 @@ public class ExecutionsDetails {
     }
 
     private void updateOutputs(FlowExecution selectedFlow) {
-        Label title= (Label) this.outputsVbox.getChildren().get(0);//todo 333
-        Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);//todo 333
+        Label title= (Label) this.outputsVbox.getChildren().get(0);
+        Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
         this.outputsVbox4Value.getChildren().clear();
         this.outputsVbox.getChildren().clear();
         this.outputsVbox.getChildren().add(title);
@@ -189,13 +214,15 @@ public class ExecutionsDetails {
         if(outputs!=null) {
             for (Map.Entry<String, Object> entry : outputs.entrySet()) {
                 Label newOutput = new Label(entry.getKey());
-                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());//todo implement
-                newOutput.getStyleClass().add("DDLabel");
-                outputValue.getStyleClass().add("DDLabel");
+                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());
                 newOutput.setPrefWidth(outputsVbox.getPrefWidth());
                 outputValue.setPrefWidth(outputsVbox4Value.getPrefWidth());
                 newOutput.setPrefHeight(28);
                 outputValue.setPrefHeight(28);
+                newOutput.setStyle("-fx-alignment: top-center; -fx-border-color: yellow; -fx-font-size: 14px;"
+               +" -fx-text-fill: #ffffff; -fx-font-weight: bold;-fx-wrap-text: true; -fx-border-width: 1px;");
+                outputValue.setStyle("-fx-alignment: top-center; -fx-border-color: yellow; -fx-font-size: 14px;"
+                        +" -fx-text-fill: #ffffff; -fx-font-weight: bold;-fx-wrap-text: true; -fx-border-width: 1px;");
                 this.outputsVbox4Value.getChildren().add(outputValue);
                 this.outputsVbox.getChildren().add(newOutput);
             }
@@ -216,14 +243,15 @@ public class ExecutionsDetails {
             result.setText(value.toString());
         }
         result.setOnMouseEntered(event -> {
-            result.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
+            currStyle = result.getStyle();
+            result.setStyle("-fx-border-color: blue; -fx-border-width: 3px; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-alignment: top-center;");
         });
         result.setOnMouseExited(event -> {
-            result.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
+            result.setStyle(currStyle);
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/DataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -231,7 +259,7 @@ public class ExecutionsDetails {
                             controller.setData(value, name);
                             Stage stage = new Stage();
                             stage.setTitle("Data Viewer");
-                            stage.setScene(new Scene(root, 500, 300));
+                            stage.setScene(new Scene(root, 600, 400));
                             stage.showAndWait();
                         }
                     } catch (IOException e) {
@@ -254,11 +282,16 @@ public class ExecutionsDetails {
             for (Pair<String, String> entry : inputs) {
                 Label newInput = new Label(entry.getKey());
                 Label inputValue = new Label(entry.getValue());
+                newInput.setStyle("-fx-alignment: top-center; -fx-border-color: yellow; -fx-font-size: 14px;"
+                        +" -fx-text-fill: #ffffff; -fx-font-weight: bold;-fx-wrap-text: true; -fx-border-width: 1px;");
+                inputValue.setStyle("-fx-alignment: top-center; -fx-border-color: yellow; -fx-font-size: 14px;"
+                        +" -fx-text-fill: #ffffff; -fx-font-weight: bold;-fx-wrap-text: true; -fx-border-width: 1px;");
                 inputValue.setOnMouseEntered(event -> {
-                    inputValue.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
+                    currStyle = inputValue.getStyle();
+                    inputValue.setStyle("-fx-border-color: blue; -fx-border-width: 3px; -fx-text-fill: #ffffff; -fx-font-weight: bold;-fx-alignment: top-center;");
                 });
                 inputValue.setOnMouseExited(event -> {
-                    inputValue.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
+                    inputValue.setStyle(currStyle);
                 });
                 inputValue.setOnMouseClicked(event -> {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
@@ -275,9 +308,6 @@ public class ExecutionsDetails {
                             }
                         }
                 );
-
-                newInput.getStyleClass().add("DDLabel");
-                inputValue.getStyleClass().add("DDLabel");
                 newInput.setPrefWidth(inputsVbox.getPrefWidth());
                 inputValue.setPrefWidth(inputsVbox4Value.getPrefWidth());
                 newInput.setPrefHeight(28);

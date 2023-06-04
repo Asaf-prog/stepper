@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="18.0" prefHeight="188.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
+      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="26.0" prefHeight="180.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
          <columns>
             <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" text="Flow ID" />
 
@@ -17,7 +17,7 @@
             <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Status" />
          </columns>
       </TableView>
-      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-5.0" prefHeight="30.0" prefWidth="231.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
+      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-1.0" prefHeight="30.0" prefWidth="231.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font></Label>
@@ -26,9 +26,9 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="logsPane" layoutX="616.0" layoutY="221.0" prefHeight="238.0" prefWidth="437.0" style="-fx-background-color: transparent;">
+      <Pane fx:id="logsPane" layoutX="616.0" layoutY="221.0" prefHeight="265.0" prefWidth="437.0" style="-fx-background-color: transparent;">
          <children>
-            <ImageView fitHeight="231.0" fitWidth="447.0" layoutX="-6.0" layoutY="7.0">
+            <ImageView fitHeight="263.0" fitWidth="447.0" layoutX="-6.0" layoutY="7.0">
                <image>
                   <Image url="@content/commandScreen.png" />
                </image>
@@ -36,14 +36,14 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" alignment="TOP_RIGHT" layoutY="31.0" prefHeight="209.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
+            <VBox fx:id="logsVbox" alignment="TOP_RIGHT" layoutY="31.0" prefHeight="233.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
                <children>
-                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="419.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
+                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="426.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="191.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="205.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
                </children>
             </VBox>
          </children>
@@ -58,18 +58,18 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <HBox layoutX="314.0" layoutY="230.0" prefHeight="249.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="314.0" layoutY="230.0" prefHeight="265.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
-            <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox" prefHeight="263.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Input" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="144.0" style="-fx-border-color: white;" text="Input" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="inputsVbox4Value" prefHeight="216.0" prefWidth="158.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox4Value" prefHeight="263.0" prefWidth="153.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
                      <font>
@@ -80,18 +80,18 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="231.0" prefHeight="247.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="10.0" layoutY="231.0" prefHeight="265.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
-            <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="outputsVbox" prefHeight="263.0" prefWidth="152.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Output" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="147.0" style="-fx-border-color: white;" text="Output" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="outputsVbox4Value" prefHeight="245.0" prefWidth="159.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="outputsVbox4Value" prefHeight="263.0" prefWidth="159.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
                      <font>
@@ -102,7 +102,7 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="execute" alignment="CENTER" disable="true" layoutX="954.0" layoutY="461.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="17.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow;" text="Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+      <Button fx:id="execute" alignment="CENTER" disable="true" layoutX="954.0" layoutY="496.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="17.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" text="Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
          <font>
             <Font name="Arial Narrow" size="18.0" />
          </font>
@@ -114,7 +114,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="134.0" fitWidth="137.0" layoutX="-32.0" layoutY="429.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="190.0" fitWidth="172.0" layoutX="-45.0" layoutY="429.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@content/bisliGrill.png" />
          </image>

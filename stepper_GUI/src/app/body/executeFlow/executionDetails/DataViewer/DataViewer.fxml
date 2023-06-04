@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<AnchorPane fx:id="mainPane" prefHeight="300.0" prefWidth="501.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.DataViewer.DataViewerController">
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.DataViewer.DataViewerController">
    <children>
       <Label fx:id="name" layoutX="14.0" layoutY="6.0" prefHeight="29.0" prefWidth="93.0" text="Data Name:" textFill="#fffb09">
          <font>
