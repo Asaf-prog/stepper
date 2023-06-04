@@ -35,8 +35,6 @@ public class mainController {
          bodyComponentController.setMainController(this);
 
 
-
-
          //initialize a controller that communicate with the engine
          mvcController = new MVC_controller(this,headerComponentController,bodyComponentController);
          bodyComponentController.setMVCController(mvcController);

@@ -5,11 +5,7 @@ import app.management.mainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.step.api.DataDefinitionDeclaration;
@@ -17,7 +13,7 @@ import modules.step.api.DataDefinitionDeclaration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.OptionalInt;
+import java.util.Map;
 
 public class bodyController {
     private mainController main;
@@ -112,12 +108,13 @@ public class bodyController {
         return controller;
     }
     public void handlerContinuation(FlowDefinitionImpl flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                    List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,List<Pair<String, String>>optionalIn){
-        executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn);
+                                    List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,List<Pair<String, String>>optionalIn,
+                                    Map<String,Object> outputs,FlowDefinitionImpl currentFlow){
+        executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn,outputs,currentFlow);
     }
     public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                      List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
-                                                     List<Pair<String, String>>optionalIn) {
+                                                     List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
         setCurrentFlow(flow);
 
         try {
@@ -126,7 +123,7 @@ public class bodyController {
             URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
             fxmlLoader.setLocation(url);
 
-            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional,mandatoryIn,optionalIn);
+            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -134,12 +131,12 @@ public class bodyController {
     }
     private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                           List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
-                                                          List<Pair<String, String>>optionalIn) {
+                                                          List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
         try {
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(flow);
-            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn);
+            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
             bodyController.showForContinuation();
 
             bodyPane.getChildren().setAll(screen);

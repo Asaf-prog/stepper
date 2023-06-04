@@ -94,29 +94,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
     }
-
-
-
-    private void setBisli() {
-        bisli.setOnMouseEntered(e -> {
-            // Adjust the position if it is too close to the cursor
-            double sceneWidth = mainPane.getWidth()-50;
-            double sceneHeight = mainPane.getHeight()-50;
-            // Update the position of bisli
-            double randomX = Math.random() * (sceneWidth - 50)%sceneWidth;
-            double randomY = Math.random() * (sceneHeight - 50)%sceneHeight;
-            bisli.setLayoutX(randomX);
-            bisli.setLayoutY(randomY);
-        });
-    }
-    private void setAviadCursor() {
-        Image cursorImage = new Image(getClass().getResourceAsStream("cursor3.png"));
-        ImageView cursorImageView = new ImageView(cursorImage);
-        double scaleFactor = 1.5; // Change this value to adjust the size
-        mainPane.setCursor(new ImageCursor(cursorImageView.getImage(),
-                cursorImageView.getImage().getWidth() *55 ,
-                cursorImageView.getImage().getHeight() * 55));
-    }
     private void asserts() {
         assert stepTree != null : "fx:id=\"stepTree\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsPane != null : "fx:id=\"logsPane\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
@@ -137,6 +114,26 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
 
 
+    }
+    private void setBisli() {
+        bisli.setOnMouseEntered(e -> {
+            // Adjust the position if it is too close to the cursor
+            double sceneWidth = mainPane.getWidth()-50;
+            double sceneHeight = mainPane.getHeight()-50;
+            // Update the position of bisli
+            double randomX = Math.random() * (sceneWidth - 50)%sceneWidth;
+            double randomY = Math.random() * (sceneHeight - 50)%sceneHeight;
+            bisli.setLayoutX(randomX);
+            bisli.setLayoutY(randomY);
+        });
+    }
+    private void setAviadCursor() {
+        Image cursorImage = new Image(getClass().getResourceAsStream("cursor3.png"));
+        ImageView cursorImageView = new ImageView(cursorImage);
+        double scaleFactor = 1.5; // Change this value to adjust the size
+        mainPane.setCursor(new ImageCursor(cursorImageView.getImage(),
+                cursorImageView.getImage().getWidth() *55 ,
+                cursorImageView.getImage().getHeight() * 55));
     }
     @FXML
     void executeFlow(ActionEvent event) {
