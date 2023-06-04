@@ -33,7 +33,7 @@ public class FlowExecutionTableItem {
         else if(result==FlowExecutionResult.WARNING)
             this.result = "Warning";
         else
-            this.result = "Fail";
+            this.result = "Failure";
     }
 
 
@@ -72,5 +72,12 @@ public class FlowExecutionTableItem {
         id.getStyleClass().add("radio-button-for-table");
         id.setToggleGroup(group);
         id.setStyle("-fx-text-fill: white;");
+    }
+    public boolean matchesFilter(String filterText) {
+        if (filterText.equals("ALL")) {
+            return true;
+        } else {
+            return result.equals(filterText);
+        }
     }
 }

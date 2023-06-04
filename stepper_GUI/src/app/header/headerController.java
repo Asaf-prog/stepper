@@ -340,6 +340,8 @@ public class headerController {
             buypremiumBtn.setText("You are now Subscribed to Premium!");
             buypremiumBtn.setPrefWidth(Region.USE_COMPUTED_SIZE);
         } else {
+            Stage stage = (Stage) buypremiumBtn.getScene().getWindow();
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
             alert.setTitle("I LOVE YOU <3");
@@ -367,10 +369,10 @@ public class headerController {
                     "                         #&%%&&&%%%%%%%%%%%&  .%%%&            ,           ");
             Window window = buypremiumBtn.getScene().getWindow();
             double width = 900;
-            double height = 700;
+            double height = 20;
 
             // Set the alert window siz
-            alert.initOwner(window instanceof Stage ? (Stage) window : null);
+            //alert.initOwner(window instanceof Stage ? (Stage) window : null);
             alert.showAndWait();
         }
 

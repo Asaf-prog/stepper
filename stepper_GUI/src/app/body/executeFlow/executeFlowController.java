@@ -125,6 +125,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 nameAndAddOrEdit.getChildren().add(textField);
                 nameAndAddOrEdit.getChildren().add(addButton);
                 nameAndAddOrEdit.setSpacing(10);
+                nameAndAddOrEdit.setPrefWidth(mandatoryList.getPrefWidth());
 
                 textField.setPromptText(data.getValue().getUserString());
                 //mandatoryList.getChildren().add(label);
@@ -274,7 +275,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             nameAndAddOrEdit.getChildren().add(textField);
             nameAndAddOrEdit.getChildren().add(addButton);
             nameAndAddOrEdit.setSpacing(10);
-
+            nameAndAddOrEdit.setPrefWidth(optionalList.getPrefWidth());
             addButton.setOnAction(e -> handleButtonAction(addButton, textField, textField.getText(), optional.getKey(), optional.getValue().dataDefinition().getType(), nameAndAddOrEdit));
 
             textField.setPromptText(optional.getValue().getUserString());
@@ -311,7 +312,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 nameAndAddOrEdit.setSpacing(10);
             }
             addButton.setOnAction(e -> handleButtonAction(addButton, textField, textField.getText(), mandatory.getKey(), mandatory.getValue().dataDefinition().getType(), nameAndAddOrEdit));
-
+            nameAndAddOrEdit.setPrefWidth(mandatoryList.getPrefWidth());
             textField.setPromptText(mandatory.getValue().getUserString());
             mandatoryList.getChildren().add(label);
             mandatoryList.getChildren().add(nameAndAddOrEdit);

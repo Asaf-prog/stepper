@@ -126,9 +126,11 @@ public class DataViewerController {
         tablePane.setVisible(true);
         tableView.setDisable(false);
         tableView.setVisible(true);
-        RelationData relationData =(RelationData.Demo());//(RelationData) data;
+        RelationData relationData =(RelationData) data;
 
         ObservableList<RelationData.SingleRow> rowData = FXCollections.observableArrayList(relationData.getRows());
+
+
         for (int i = 0; i < relationData.getNumColumns(); i++) {
             TableColumn<RelationData.SingleRow, String> column = new TableColumn<>(relationData.getValInList(i));
             final int columnIndex = i;
@@ -138,6 +140,14 @@ public class DataViewerController {
             tableView.getColumns().add(column);
         }
         tableView.setItems(rowData);
+        tableView.setPrefWidth(tablePane.getPrefWidth()-10);
+        tableView.prefWidthProperty().bind(tablePane.widthProperty());
+        tableView.prefHeightProperty().bind(tablePane.heightProperty());
+        tableView.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;"
+                + "-fx-font-family: \"Segoe UI Semibold\";"
+                + "-fx-alignment: top-center; -fx-background-color: blue; -fx-text-fill: purple;" +
+                "-fx-border-color: white; -fx-border-width: 1px;");
+       tablePane.getChildren().add(tableView);
 
 
     }

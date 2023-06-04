@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="26.0" prefHeight="180.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
+      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="35.0" prefHeight="175.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
          <columns>
             <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" text="Flow ID" />
 
@@ -17,7 +17,7 @@
             <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Status" />
          </columns>
       </TableView>
-      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-1.0" prefHeight="30.0" prefWidth="231.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
+      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-4.0" prefHeight="37.0" prefWidth="251.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font></Label>
@@ -38,7 +38,7 @@
             </ImageView>
             <VBox fx:id="logsVbox" alignment="TOP_RIGHT" layoutY="31.0" prefHeight="233.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
                <children>
-                  <Label fx:id="logsLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="19.0" prefHeight="18.0" prefWidth="426.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
+                  <Label fx:id="logsLabel" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="433.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -122,9 +122,15 @@
             <Bloom threshold="1.0" />
          </effect>
       </ImageView>
-      <Label fx:id="exeTime" disable="true" layoutX="838.0" layoutY="206.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Took X MS" textFill="#fffb05" visible="false">
+      <Label fx:id="exeTime" disable="true" layoutX="876.0" layoutY="206.0" prefHeight="20.0" prefWidth="193.0" styleClass="titles" text="Took X MS" textFill="#fffb05" visible="false">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="filterChoiceBox" layoutX="947.0" layoutY="1.0" prefHeight="10.0" prefWidth="115.0" style="-fx-background-color: transparent; -fx-border-color: yellow; -fx-border-radius: 5;" />
+      <Label layoutX="887.0" layoutY="2.0" prefHeight="25.0" prefWidth="53.0" text="Filter" textFill="#fff600">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
       </Label>
    </children>

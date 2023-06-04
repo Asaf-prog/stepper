@@ -34,7 +34,7 @@ public class StepperApplication extends Application {
     }
 
     private void hideWindow(Stage primaryStage) {
-        primaryStage.setOpacity(0.2); // Make the window fully transparent
+        primaryStage.setOpacity(0.99); // Make the window fully transparent
     }
 
 

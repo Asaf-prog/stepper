@@ -7,6 +7,8 @@ import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +33,8 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
+
+import static modules.DataManeger.DataManager.stepperData;
 
 public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
@@ -58,6 +62,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private Label logsLabel;
     @FXML
     private ImageView bisli;
+    private String styleOfChoiceBox;
 
     @FXML
     private TableColumn<FlowExecutionTableItem, String> nameCol;
@@ -84,6 +89,10 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
 
     @FXML
+    private ChoiceBox<String> filterChoiceBox;
+
+    ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
+    @FXML
     void initialize() {
         Stepper stepperData = DataManager.getData();
         asserts();
@@ -93,8 +102,64 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
+        setFilter2Table();
     }
 
+    private void setFilter2Table() {
+
+        //filterChoiceBox = new ChoiceBox<>();
+        filterChoiceBox.getItems().addAll("All", "Success", "Warning", "Failure");
+        filterChoiceBox.setValue("All");
+        filterChoiceBox.setOnAction(event -> applyFilter(filterChoiceBox.getValue()));
+        filterChoiceBox.setStyle(filterChoiceBox.getStyle()+ " -fx-border-color: black; " +
+                "-fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 10px; -fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
+        styleOfChoiceBox= filterChoiceBox.getStyle();
+        filterChoiceBox.setStyle(styleOfChoiceBox + "-fx-background-color: #ffffff;");
+        filterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.equals("All")) {
+                    filterChoiceBox.setStyle(styleOfChoiceBox + "-fx-background-color: #ffffff;");
+                } else if (newValue.equals("Success")) {
+                    filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #00ff00;");
+                } else if (newValue.equals("Warning")) {
+                    filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #fff400;");
+                }
+                else{// if (newValue.equals("Failure")) {
+                    filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #ff0000;");
+                }
+            }
+        });
+
+        setChoiceBoxColors();
+    }
+
+    private void setChoiceBoxColors() {
+
+    }
+
+    private void applyFilter(String value) {
+        ObservableList<FlowExecutionTableItem> items = allExecutions;
+        ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
+        //tableData.getItems().clear();
+        ToggleGroup group = new ToggleGroup();
+
+        for (FlowExecutionTableItem item : items) {
+            if (item.getResult().equals(value) || value.equals("All")) {
+                item.addToToggleGroup(group);
+                data.add(item);
+                tableItemEvents(stepperData, group, item);
+            }
+        }
+        tableData.setItems(data);
+        setResultColumn();
+        for (TableColumn<?, ?> column : tableData.getColumns()) {
+            if (column.getText().equals("Status")) { // Replace "ColumnName" with the actual column name
+                column = (TableColumn<FlowExecutionTableItem,  String>) resCol;
+                break;
+            }
+        }
+    }
 
 
     private void setBisli() {
@@ -182,6 +247,10 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         }
         tableData.setItems(data);
         setResultColumn();
+        allExecutions=data;
+
+
+
         // Add the status column to the TableView
         for (TableColumn<?, ?> column : tableData.getColumns()) {
             if (column.getText().equals("Status")) { // Replace "ColumnName" with the actual column name
@@ -221,7 +290,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
     private void setResultColumn() {
         resCol.setCellValueFactory(new PropertyValueFactory<>("result"));
-
         resCol.setCellFactory(column -> new TableCell<FlowExecutionTableItem, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -236,7 +304,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     setText(item);
 
                     // Set color based on the status value
-                    if (item.toUpperCase().equals("FAIL")) {
+                    if (item.toUpperCase().equals("FAILURE")) {
                         setTextFill(Color.RED);
                     } else if (item.toUpperCase().equals("WARNING")) {
                         setTextFill(Color.YELLOW);
@@ -276,7 +344,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                             setGraphic(null);
                         } else {
                             setText(item);
-                            setStyle("-fx-background-color: transparent; -fx-text-fill: green;"); // Set the style of each tree component
+                            setStyle("-fx-background-color: transparent; -fx-text-fill: #24ff21;"); // Set the style of each tree component
                         }
                     }
                 };
@@ -347,13 +415,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private Label setLabelForOutput(Object value, String name) {
         Label result = new Label();
         if (value instanceof RelationData) {
-            result.setText("relation");
-        } else if (value instanceof ArrayList) {//print an arraylist
-            result.setText("arraylist");
-        }
-        if (value instanceof List) {
-            result.setText("list");
-        } else {
+            result.setText("Relation");
+        }else if (value instanceof ArrayList) {//print an arraylist
+            result.setText("List");
+        }else if (value instanceof List) {
+            result.setText("List");
+        }else {
             result.setText(value.toString());
         }
         result.setOnMouseEntered(event -> {

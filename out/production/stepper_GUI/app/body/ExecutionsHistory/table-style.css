@@ -46,3 +46,13 @@
     -fx-text-fill: #0eff0e;
     -fx-spacing: 7px;
 }
+.choice-box {
+    -fx-text-fill: yellow;
+    -fx-font-size: 12;
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-border-color: #ffff00;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
