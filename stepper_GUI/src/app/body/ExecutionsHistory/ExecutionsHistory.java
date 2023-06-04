@@ -377,6 +377,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         }
                     } catch (IOException e) {
                         System.out.println("failed to load data viewer");
+                        e.printStackTrace();
                     }
                 }
         );

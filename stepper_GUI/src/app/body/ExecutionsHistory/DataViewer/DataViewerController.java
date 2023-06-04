@@ -1,8 +1,10 @@
 package app.body.ExecutionsHistory.DataViewer;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import modules.dataDefinition.impl.enumerator.Enumerator;
@@ -34,6 +36,12 @@ public class DataViewerController {
     @FXML
     private Button close;
     @FXML
+    private ListView<String> list;
+
+
+    @FXML
+    private TableView<RelationData.SingleRow> tableView;
+    @FXML
     void closePopup(ActionEvent event) {
         //close Screen and back to the previous screen
         close.getScene().getWindow().hide();
@@ -50,6 +58,8 @@ public class DataViewerController {
         assert type != null : "fx:id=\"type\" was not injected: check your FXML file 'DataViewer.fxml'.";
         assert close != null : "fx:id=\"close\" was not injected: check your FXML file 'DataViewer.fxml'.";
         assert otherLabel != null : "fx:id=\"otherLabel\" was not injected: check your FXML file 'DataViewer.fxml'.";
+        assert list != null : "fx:id=\"list\" was not injected: check your FXML file 'DataViewer.fxml'.";
+        assert tableView != null : "fx:id=\"tableView\" was not injected: check your FXML file 'DataViewer.fxml'.";
 
        // init();
 
@@ -77,14 +87,58 @@ public class DataViewerController {
             case 3:
                 presentListData();
                 break;
+            default://Enum ? todo
+                presentOtherData();
         }
     }
 
     private void presentListData() {
+        list=new ListView<>();
+        listPane.setDisable(false);
+        listPane.setVisible(true);
+        ObservableList<?> listData = FXCollections.observableArrayList((List<?>) data);
+       // listData.forEach(System.out::println);
+        ObservableList<String> listData2=FXCollections.observableArrayList();
+        for (Object o:listData) {//convert to string
+            String item =o.toString();
+            listData2.add(item);
+        }
 
+        list.setItems(listData2);
+
+        list.setPrefWidth(listPane.getPrefWidth()-10);
+        listPane.getChildren().add(list);
+        list.prefWidthProperty().bind(listPane.widthProperty());
+        list.prefHeightProperty().bind(listPane.heightProperty());
+        list.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;"
+                + "-fx-font-family: \"Segoe UI Semibold\";"
+                + "-fx-alignment: top-center; -fx-background-color: blue; -fx-text-fill: purple;" +
+                "-fx-border-color: white; -fx-border-width: 1px;");
+        listPane.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;"
+                + "-fx-font-family: \"Segoe UI Semibold\";"
+                + "-fx-alignment: top-center; -fx-background-color: blue; -fx-text-fill: purple;" +
+                "-fx-border-color: white; -fx-border-width: 1px;");
     }
 
     private void presentTableData() {
+        tableView= new TableView<>();
+        tablePane.setDisable(false);
+        tablePane.setVisible(true);
+        tableView.setDisable(false);
+        tableView.setVisible(true);
+        RelationData relationData =(RelationData.Demo());//(RelationData) data;
+
+        ObservableList<RelationData.SingleRow> rowData = FXCollections.observableArrayList(relationData.getRows());
+        for (int i = 0; i < relationData.getNumColumns(); i++) {
+            TableColumn<RelationData.SingleRow, String> column = new TableColumn<>(relationData.getValInList(i));
+            final int columnIndex = i;
+            column.setCellValueFactory(cellData -> {
+                String value = cellData.getValue().getData().get(columnIndex);
+                return new SimpleStringProperty(value);            });
+            tableView.getColumns().add(column);
+        }
+        tableView.setItems(rowData);
+
 
     }
 

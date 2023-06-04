@@ -18,7 +18,7 @@ public class StepperApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
-        Scene scene = new Scene(load,1100,750);
+        Scene scene = new Scene(load,1100,720);
         primaryStage.initStyle(StageStyle.UNIFIED);
         scene.setOnMouseEntered(e -> showWindow(primaryStage));
         scene.setOnMouseExited(e -> hideWindow(primaryStage));
@@ -40,8 +40,8 @@ public class StepperApplication extends Application {
 
     private static void setPrimaryStage(Stage primaryStage) {
         primaryStage.setResizable(true);
-        primaryStage.setMaxWidth(1100);
-        primaryStage.setMaxHeight(725);
+        primaryStage.setMaxWidth(1440);
+        primaryStage.setMaxHeight(960);
 
     }
     private void centerWindowOnScreen(Stage stage) {
@@ -58,6 +58,9 @@ public class StepperApplication extends Application {
 
         stage.setX(windowX);
         stage.setY(windowY);
+
+
+
     }
     public static void main(String[] args) {
         launch(args);

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1080.0" style="-fx-background-color: #36393e; " styleClass="bodyPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.StatsScreen.StatsScreen">
+<AnchorPane prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #36393e; " styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.StatsScreen.StatsScreen">
          <children>
             <Label fx:id="flowDefinitionsSize" layoutX="14.0" prefHeight="30.0" prefWidth="306.0" style="-fx-text-fill: yellow;" styleClass="titles" text="there are X Flows Choose one ">
                <font>
@@ -29,9 +28,9 @@
                   <ListView fx:id="flowStatsList" layoutX="247.0" layoutY="4.0" prefHeight="285.0" prefWidth="254.0" />
                </children>
             </Pane>
-      <Pane layoutX="14.0" layoutY="215.0" prefHeight="265.0" prefWidth="996.0">
+      <Pane layoutX="14.0" layoutY="236.0" prefHeight="285.0" prefWidth="996.0">
          <children>
-            <HBox fx:id="chartsPane" layoutY="8.0" prefHeight="248.0" prefWidth="996.0" />
+            <HBox fx:id="chartsPane" layoutY="26.0" prefHeight="278.0" prefWidth="996.0" />
          </children>
       </Pane>
          </children>

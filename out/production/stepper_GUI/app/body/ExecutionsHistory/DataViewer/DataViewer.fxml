@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.DataViewer.DataViewerController">
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.DataViewer.DataViewerController">
    <children>
-      <Label fx:id="name" layoutX="14.0" layoutY="6.0" prefHeight="29.0" prefWidth="93.0" text="Data Name:" textFill="#fffb09">
+      <Label fx:id="name" layoutX="14.0" layoutY="6.0" prefHeight="34.0" prefWidth="568.0" text="Data Name:" textFill="#fffb09">
          <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
+            <Font name="Arial Rounded MT Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="type" layoutX="359.0" layoutY="6.0" prefHeight="29.0" prefWidth="93.0" text="Type:" textFill="#fffb09">
+      <Label fx:id="type" layoutX="359.0" layoutY="6.0" prefHeight="29.0" prefWidth="93.0" text="Type:" textFill="#fffb0a00">
          <font>
             <Font name="Arial Rounded MT Bold" size="15.0" />
          </font>
@@ -27,19 +26,19 @@
                      </font></Label>
                </children>
             </Pane>
-            <Pane fx:id="listPane" disable="true">
+            <Pane fx:id="listPane" disable="true" prefHeight="301.0" prefWidth="576.0">
                <children>
-                  <ListView prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e;" />
+                  <ListView maxHeight="301.0" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e; -fx-max-height: 300;" />
                </children>
             </Pane>
             <Pane fx:id="tablePane" disable="true" prefHeight="192.0" prefWidth="468.0">
                <children>
-                  <TableView prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e;" />
+                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e;" />
                </children>
             </Pane>
          </children>
       </StackPane>
-      <Button fx:id="close" cancelButton="true" layoutX="258.0" layoutY="352.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: yellow;" text="Close" textFill="#36393e">
+      <Button fx:id="close" cancelButton="true" defaultButton="true" layoutX="258.0" layoutY="352.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: yellow;" text="Close" textFill="#36393e">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
