@@ -1,12 +1,8 @@
 package app.body.ExecutionsHistory;
-import java.io.IOException;
-import java.util.*;
 
 import app.body.ExecutionsHistory.DataViewer.DataViewerController;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +27,12 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
@@ -77,7 +79,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private Label exeTime;
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> timeCol;
-
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
@@ -112,7 +113,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert executionCounterLabel != null : "fx:id=\"executionCounterLabel\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert timeCol != null : "fx:id=\"timeCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
-
 
     }
     private void setBisli() {
@@ -152,7 +152,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         logsVbox.getChildren().add(logsLabel);
         logsVbox.getChildren().add(stepTree);
 
-
     }
     private void addLog(Pair<String, String> log) {
         Label newlog = new Label(log.getValue() + " : " + log.getKey());
@@ -187,7 +186,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             }
         }
     }
-
     private void initTable() {
         idCol.getStyleClass().add("titleOfColumn");
         nameCol.getStyleClass().add("titleOfColumn");

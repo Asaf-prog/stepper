@@ -13,4 +13,5 @@ public interface bodyControllerForContinuation {
     void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                         List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
                                         List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow);
+    void setBodyControllerContinuation(bodyController body);
 }

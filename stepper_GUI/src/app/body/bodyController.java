@@ -136,6 +136,7 @@ public class bodyController {
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(flow);
+            bodyController.setBodyControllerContinuation(this);
             bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
             bodyController.showForContinuation();
 
