@@ -51,8 +51,9 @@ public class FlowGraphBuilder {
         dotCode.append("}\n");
 
 
-
-        String folderPath = "C:\\Users\\Saar Cohen\\Documents\\GitHub\\stepper\\stepper_GUI\\src\\app\\body\\flowDefinitionPresent\\";
+//C:\Users\Saar Cohen\Documents\GitHub\stepper\stepper_GUI\src\
+        //collapse
+        String folderPath = "app/body/flowDefinitionPresent/";
         String dotFilePath = folderPath + "flow.dot";
         String pngFilePath = folderPath + "flow.png";
         try (PrintWriter writer = new PrintWriter(dotFilePath)) {

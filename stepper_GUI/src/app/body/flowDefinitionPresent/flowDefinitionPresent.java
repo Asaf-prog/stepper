@@ -148,8 +148,10 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     private void scatchFlow(FlowDefinitionImpl flow) {
         FlowGraphBuilder.buildFlowGraph(flow);
-        Image image = new Image("file:/C:/Users/Saar%20Cohen/Documents/GitHub/stepper/stepper_GUI/src/app/body/flowDefinitionPresent/flow.png");
+        //file:/C:/Users/Saar%20Cohen/Documents/GitHub/stepper/stepper_GUI/src
+        Image image = new Image("/app/body/flowDefinitionPresent/flow.png");
         graphPNG.setImage(image);
+        //graphPNG.setImage(null);
         graphPNG.setOnMouseClicked( event -> {
                     //open the image in big in new window
                     Stage stage = new Stage();

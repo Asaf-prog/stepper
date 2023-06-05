@@ -158,7 +158,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         mandatory.getKey(), mandatory.getValue().dataDefinition().getType(), nameAndAddOrEdit,false));
                 nameAndAddOrEdit.getChildren().add(textField);
                 nameAndAddOrEdit.getChildren().add(addButton);
-//<<<<<<< HEAD
+
 //                nameAndAddOrEdit.setSpacing(10);
 //                nameAndAddOrEdit.setPrefWidth(mandatoryList.getPrefWidth());
 //
@@ -350,7 +350,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     event.consume();
                 }
             });
-
             if (!existInInitialValue(optional.getKey())) {
                 nameAndAddOrEdit.getChildren().add(textField);
                 nameAndAddOrEdit.getChildren().add(addButton);
@@ -452,7 +451,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             FlowExecution flowThatCurrentFinish = getFlowExecutionByName(currentFlow.getName());
             if (flowThatCurrentFinish != null){
                 Map<String,Object> outputs = flowThatCurrentFinish.getAllExecutionOutputs();
-
             body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,currentFlow);
         }
             else
@@ -646,6 +644,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
+        showDetails.setDisable(true);
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
     }
