@@ -17,6 +17,7 @@
             <Font name="Arial Rounded MT Bold" size="20.0" />
          </font>
       </Label>
+
       <VBox fx:id="mandatoryList" layoutX="28.0" layoutY="57.0" prefHeight="329.0" prefWidth="357.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
          <children>
             <Label alignment="CENTER" prefHeight="40.0" prefWidth="350.0" styleClass="titles" text="MANDATORY INPUTS" textFill="#f5eb38" underline="true">
@@ -48,10 +49,12 @@
          </children>
       </VBox>
       <Button fx:id="continuation" disable="true" layoutX="553.0" layoutY="433.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Continuation" textFill="#eeff00">
+
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
+
       <VBox fx:id="continuationVbox" layoutX="28.0" layoutY="398.0" prefHeight="111.0" prefWidth="505.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
          <children>
             <Label fx:id="continuationLabel" alignment="CENTER" prefHeight="36.0" prefWidth="559.0" text="CONTINUATION OPTIONS" textFill="#f5eb38" underline="true">
@@ -68,6 +71,11 @@
          </children>
       </VBox>
       <Button fx:id="showDetails" disable="true" layoutX="726.0" layoutY="433.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Details" textFill="#eeff00">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="continuationExe" layoutX="883.0" layoutY="378.0" mnemonicParsing="false" onAction="#ContinuationExecution" prefHeight="41.0" prefWidth="191.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Run Continuation" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>

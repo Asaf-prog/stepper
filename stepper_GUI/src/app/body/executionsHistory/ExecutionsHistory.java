@@ -1,6 +1,8 @@
+
 package app.body.executionsHistory;
 import java.io.IOException;
 import java.util.*;
+
 
 import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.bodyController;
@@ -35,6 +37,12 @@ import modules.stepper.Stepper;
 
 import static modules.DataManeger.DataManager.stepperData;
 import app.body.executionsHistory.continuation.ContinuationPopUp;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private VBox stepTree;
@@ -79,7 +87,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private Label exeTime;
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> timeCol;
-
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
@@ -192,6 +199,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert executionCounterLabel != null : "fx:id=\"executionCounterLabel\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert timeCol != null : "fx:id=\"timeCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
+
     }
     @FXML
     void executeFlow(ActionEvent event) {
@@ -246,10 +254,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
-        logsLabel.setText("   logs for flow with id : "+flowExecution.getUniqueId());
-        logsLabel.setStyle("-fx-font-size: 14;"+LOG_LINE_STYLE);
+        logsLabel.setText("   logs for flow with id : " + flowExecution.getUniqueId());
+        logsLabel.setStyle("-fx-font-size: 14;" + LOG_LINE_STYLE);
         logsVbox.getChildren().add(logsLabel);
         logsVbox.getChildren().add(stepTree);
+
+
     }
     private void addLog(Pair<String, String> log) {
         Label newlog = new Label(log.getValue() + " : " + log.getKey());
@@ -287,7 +297,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             }
         }
     }
-
     private void initTable() {
         idCol.getStyleClass().add("titleOfColumn");
         nameCol.getStyleClass().add("titleOfColumn");

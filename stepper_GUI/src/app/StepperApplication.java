@@ -10,7 +10,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
+//import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
 
 public class StepperApplication extends Application {
 
