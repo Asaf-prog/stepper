@@ -22,7 +22,7 @@ public class StepperApplication extends Application {
         primaryStage.initStyle(StageStyle.UNIFIED);
         scene.setOnMouseEntered(e -> showWindow(primaryStage));
         scene.setOnMouseExited(e -> hideWindow(primaryStage));
-        primaryStage.getIcons().add(new Image(("app/management/content/aviadsIcon.png")));
+        primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
         primaryStage.setScene(scene);
         setPrimaryStage(primaryStage);
         centerWindowOnScreen(primaryStage);

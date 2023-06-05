@@ -12,9 +12,9 @@
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="16.0" layoutY="6.0" prefHeight="30.0" prefWidth="1049.0" styleClass="titles" text="Collect Flow Inputs" textFill="#fff83b">
+      <Label alignment="CENTER" layoutX="16.0" layoutY="6.0" prefHeight="21.0" prefWidth="1049.0" styleClass="titles" text="Collect Flow Inputs" textFill="#fff83b">
          <font>
-            <Font name="Arial Rounded MT Bold" size="24.0" />
+            <Font name="Arial Rounded MT Bold" size="20.0" />
          </font>
       </Label>
       <VBox fx:id="mandatoryList" layoutX="28.0" layoutY="57.0" prefHeight="329.0" prefWidth="357.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">

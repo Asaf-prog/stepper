@@ -1,4 +1,4 @@
-package app.body.FlowExecutions;
+package app.body.flowExecutions;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;

@@ -1,12 +1,10 @@
-package app.body.ExecutionsHistory;
+package app.body.executionsHistory;
 import java.io.IOException;
 import java.util.*;
 
-import app.body.ExecutionsHistory.DataViewer.DataViewerController;
+import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -32,10 +30,11 @@ import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
+import modules.mappings.Continuation;
 import modules.stepper.Stepper;
 
 import static modules.DataManeger.DataManager.stepperData;
-
+import app.body.executionsHistory.continuation.ContinuationPopUp;
 public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private VBox stepTree;
@@ -63,10 +62,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private ImageView bisli;
     private String styleOfChoiceBox;
-
     @FXML
     private TableColumn<FlowExecutionTableItem, String> nameCol;
-
     @FXML
     private Pane logScrollPane;
     @FXML
@@ -87,6 +84,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
+
+    @FXML
+    private Button continuation;
 
     @FXML
     private ChoiceBox<String> filterChoiceBox;
@@ -130,18 +130,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 }
             }
         });
-
-        setChoiceBoxColors();
-    }
-
-    private void setChoiceBoxColors() {
-
     }
 
     private void applyFilter(String value) {
         ObservableList<FlowExecutionTableItem> items = allExecutions;
         ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
-        //tableData.getItems().clear();
         ToggleGroup group = new ToggleGroup();
 
         for (FlowExecutionTableItem item : items) {
@@ -151,6 +144,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 tableItemEvents(stepperData, group, item);
             }
         }
+
         tableData.setItems(data);
         setResultColumn();
         for (TableColumn<?, ?> column : tableData.getColumns()) {
@@ -160,8 +154,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             }
         }
     }
-
-
     private void setBisli() {
         bisli.setOnMouseEntered(e -> {
             // Adjust the position if it is too close to the cursor
@@ -200,27 +192,64 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert executionCounterLabel != null : "fx:id=\"executionCounterLabel\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert timeCol != null : "fx:id=\"timeCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
-
-
     }
     @FXML
     void executeFlow(ActionEvent event) {
         if (pickedExecution != null) {
             FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
-           // body.getMVC_controller().executeFlow(flowDefinition);
-            //todo need to use the body in order to execute FLOW from here
-
+            //todo fill with asaf
         }
     }
-    private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {//todo add scroll pane to logs
+
+    @FXML
+    void onActionContinuation(ActionEvent event) {
+        if (pickedExecution != null) {
+            FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
+            if (flowDefinition.getContinuations()==null)
+                return;
+           //build list from target flows in continuations
+
+            List<Continuation> continuations = flowDefinition.getContinuations();
+            List<String> targetFlows = new ArrayList<>();
+            for (Continuation continuation : continuations) {
+                targetFlows.add(continuation.getTargetFlow());
+            }
+            //popup scene with list of target flows to choose one from
+            Stage stage = new Stage();
+            stage.setTitle("Choose target flow");
+            ContinuationPopUp controller = new ContinuationPopUp(targetFlows,stage);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
+            loader.setController(controller);
+            Parent root = null;
+            try {
+                root = loader.load();
+
+                Scene scene = new Scene(root, 500, 300);
+                stage.setScene(scene);
+                stage.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private FlowDefinitionImpl getFlowFromName(String targetFlow) {
+        for (FlowDefinitionImpl flowDefinition : stepperData.getFlows()) {
+            if (flowDefinition.getName().equals(targetFlow))
+                return flowDefinition;
+        }
+        return null;
+    }
+
+    private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
-        logsLabel.setText("logs for flow with id : "+flowExecution.getUniqueId());
+        logsLabel.setText("   logs for flow with id : "+flowExecution.getUniqueId());
         logsLabel.setStyle("-fx-font-size: 14;"+LOG_LINE_STYLE);
         logsVbox.getChildren().add(logsLabel);
         logsVbox.getChildren().add(stepTree);
-
-
     }
     private void addLog(Pair<String, String> log) {
         Label newlog = new Label(log.getValue() + " : " + log.getKey());
@@ -230,7 +259,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             newlog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
         logsVbox.getChildren().add(newlog);
     }
-
     private void setupTable(Stepper stepperData) {
         initTable();
         executionCounterLabel.setText("There are " + stepperData.getFlowExecutions().size() + " Flow Executions");
@@ -278,16 +306,16 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 UUID uuid= UUID.fromString(selectedFlowRadioButton.getText());
                 FlowExecution selectedFlow = stepperData.getFlowExecutionById(uuid);
                 pickedExecution=selectedFlow;
-                execute.setDisable(false);
                 updateLogs(selectedFlow, stepperData);
                 updateInputs(selectedFlow);
                 updateOutputs(selectedFlow);
                 updateTime(selectedFlow);
                 updateLogsTree(selectedFlow);
+                continuation.setDisable(false);
+                execute.setDisable(false);
             }
         });
     }
-
     private void setResultColumn() {
         resCol.setCellValueFactory(new PropertyValueFactory<>("result"));
         resCol.setCellFactory(column -> new TableCell<FlowExecutionTableItem, String>() {
@@ -498,7 +526,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         }
 
     }
-
 
     @Override
     public void show() {

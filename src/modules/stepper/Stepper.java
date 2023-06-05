@@ -271,4 +271,12 @@ public class Stepper implements Serializable {
     public ExecutionManager getExecutionManager() {
         return executionManager;
     }
+
+    public FlowDefinitionImpl getFlowFromName(String flowName) {
+        for (FlowDefinitionImpl flow : flows) {
+            if (flow.getName().equals(flowName))
+                return flow;
+        }
+        return null;
+    }
 }

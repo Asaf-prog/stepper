@@ -420,6 +420,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         FXMLLoader loader = new FXMLLoader(getClass().getResource("executionDetails/ExecutionsDetails.fxml"));
         ExecutionsDetails executionsDetails = new ExecutionsDetails();
         try {
+            //todo aviad- check with thread try doing together
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Flow Details");

@@ -3,6 +3,7 @@ package app.MVC_controller;
 import app.body.bodyController;
 import app.header.headerController;
 import app.management.mainController;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.util.Pair;
@@ -53,6 +54,16 @@ public class MVC_controller {
         int nextIndex = header.getNextFreeProgress();
         ProgressBar progressBar = header.getNextProgressBar(nextIndex);
         progressBar.progressProperty().bind(task.getProgress());
+        task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {//todo check if work !
+            if (newValue) {
+                progressBar.setStyle("-fx-accent: #ff2929;");
+            }
+        });
+        task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {//todo check if work !
+            if (newValue) {
+                progressBar.setStyle("-fx-accent: #00ff00;");
+            }
+        });
         Label label = header.getNextLabel(nextIndex);
         label.setText(task.get4DigId());
        // header.addProgress(progressBar,label,nextIndex);

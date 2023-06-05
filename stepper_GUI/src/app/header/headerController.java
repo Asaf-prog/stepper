@@ -29,7 +29,6 @@ public class headerController {
     private Button FlowsDefinition;
     @FXML
     private Label flow1ProgressLabel;
-    boolean subscription = false;
     @FXML
     private Label flow2ProgressLabel;
     @FXML
@@ -50,25 +49,25 @@ public class headerController {
     private ProgressBar flow4ProgressBar;
     @FXML
     private GridPane progressGrid;
-
     @FXML
     private ToggleButton themeToggle;
-    private RotateTransition rotateTransition;
     @FXML
     private Button Statistics;
     private MVC_controller controller;
-
     @FXML
     private Button ExecutionsHistory;
     private mainController main;
     @FXML
     private Label loaded;
-
     @FXML
     private Button buypremiumBtn;
     String buttonStyle;
+    boolean subscription = false;
     int nextFreeProgressor = 1;
+    private RotateTransition rotateTransition;
 
+
+    ////////////////////////////  functions  ////////////////////////////
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
         main.showFlowDefinition();
@@ -90,8 +89,6 @@ public class headerController {
     void ExecutionsHistoryFunc(ActionEvent event) {
         main.showHistoryExe();
     }
-
-
     public void addProgress(ProgressBar progressBar, Label label,int free) {
         String style4Bar, style4Label;
         switch (free) {
@@ -99,7 +96,6 @@ public class headerController {
                 style4Bar = flow1ProgressBar.getStyle();
                 style4Label = flow1ProgressLabel.getStyle();
                 flow1ProgressBar.setProgress(progressBar.getProgress());
-                //flow1ProgressBar=progressBar;
                 flow1ProgressLabel = label;
                 flow1ProgressBar.setStyle(style4Bar);
                 flow1ProgressLabel.setStyle(style4Label);
@@ -129,10 +125,7 @@ public class headerController {
                 flow4ProgressLabel.setStyle(style4Label);
                 break;
         }
-
-
     }
-
     public int getNextFreeProgress() {
         if (nextFreeProgressor == 4) {
             nextFreeProgressor = 1;
@@ -140,23 +133,16 @@ public class headerController {
         }
         return nextFreeProgressor++;
     }
-
     @FXML
     void initialize() {
         asserts();
         Events();
-        screensToggleGrouping();
         setCssScreenButtons();
         setVGrow();
-
     }
-
     private void setVGrow() {
         GridPane.setVgrow(loaded, Priority.ALWAYS);
         GridPane.setVgrow(progressGrid, Priority.ALWAYS);
-
-
-
     }
 
     private void asserts() {
@@ -298,12 +284,6 @@ public class headerController {
 
     }
 
-    private void screensToggleGrouping() {
-        //todo change screens to be in toggle group and maybe change components to be in toggle group
-        //update progress grid
-
-    }
-
     @FXML
     void BuyPremium(ActionEvent event) {
         buypremiumBtn.setOnMouseEntered(event1 -> {
@@ -441,7 +421,6 @@ public class headerController {
             saveData.setStyle(buttonStyle);
         });
     }
-
     @FXML
     void StatisticsFunc(ActionEvent event) {
         main.showStats();
@@ -489,7 +468,6 @@ public class headerController {
 
     }
 
-
     public void setDisableOnExecutionsHistory() {
         ExecutionsHistory.setDisable(false);
     }
@@ -528,6 +506,7 @@ public class headerController {
         }
         return null;
     }
+
 }
 
 

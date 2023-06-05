@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.ExecutionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.ExecutionsHistory">
    <children>
       <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="35.0" prefHeight="175.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@table-style.css">
          <columns>
@@ -17,7 +17,7 @@
             <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Status" />
          </columns>
       </TableView>
-      <Label fx:id="executionCounterLabel" layoutX="14.0" layoutY="-4.0" prefHeight="37.0" prefWidth="251.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
+      <Label fx:id="executionCounterLabel" layoutX="415.0" layoutY="-4.0" prefHeight="37.0" prefWidth="251.0" styleClass="titles" text="there are X flow Executions" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font></Label>
@@ -36,14 +36,14 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" alignment="TOP_RIGHT" layoutY="31.0" prefHeight="233.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
+            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="233.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
                <children>
                   <Label fx:id="logsLabel" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="433.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="205.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="207.0" prefWidth="427.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@table-style.css" />
                </children>
             </VBox>
          </children>
@@ -58,9 +58,9 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <HBox layoutX="314.0" layoutY="230.0" prefHeight="265.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="314.0" layoutY="230.0" prefHeight="298.0" prefWidth="286.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
-            <VBox fx:id="inputsVbox" prefHeight="263.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox" prefHeight="296.0" prefWidth="135.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="144.0" style="-fx-border-color: white;" text="Input" textFill="#9c40ff">
                      <font>
@@ -71,7 +71,7 @@
             </VBox>
             <VBox fx:id="inputsVbox4Value" prefHeight="263.0" prefWidth="153.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="157.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -80,7 +80,7 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="231.0" prefHeight="265.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
+      <HBox layoutX="10.0" layoutY="231.0" prefHeight="298.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@table-style.css">
          <children>
             <VBox fx:id="outputsVbox" prefHeight="263.0" prefWidth="152.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
@@ -102,12 +102,12 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="execute" alignment="CENTER" disable="true" layoutX="954.0" layoutY="496.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="17.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" text="Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+      <Button fx:id="execute" disable="true" layoutX="842.0" layoutY="496.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" text=" Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
          <font>
             <Font name="Arial Narrow" size="18.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="15.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@content/flash.png" />
                </image>
@@ -128,10 +128,22 @@
          </font>
       </Label>
       <ChoiceBox fx:id="filterChoiceBox" layoutX="947.0" layoutY="1.0" prefHeight="10.0" prefWidth="115.0" style="-fx-background-color: transparent; -fx-border-color: yellow; -fx-border-radius: 5;" />
-      <Label layoutX="887.0" layoutY="2.0" prefHeight="25.0" prefWidth="53.0" text="Filter" textFill="#fff600">
+      <Label layoutX="906.0" layoutY="2.0" prefHeight="25.0" prefWidth="41.0" text="Filter" textFill="#fff600">
          <font>
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="continuation" alignment="CENTER" disable="true" layoutX="607.0" layoutY="496.0" mnemonicParsing="false" onAction="#onActionContinuation" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" text=" Continuation" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Narrow" size="18.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="22.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@content/right-arrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

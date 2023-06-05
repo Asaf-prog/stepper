@@ -1,7 +1,7 @@
 package app.management;
 
 import app.MVC_controller.MVC_controller;
-import app.body.StatsScreen.StatsScreen;
+import app.body.statsScreen.StatsScreen;
 import app.body.bodyController;
 import app.header.headerController;
 import javafx.fxml.FXML;

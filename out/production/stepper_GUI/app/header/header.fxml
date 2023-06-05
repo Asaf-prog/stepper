@@ -85,9 +85,9 @@
                         </Label>
                      </children>
                   </GridPane>
-                  <Label layoutX="20.0" layoutY="19.0" prefHeight="40.0" prefWidth="46.0" text="Runing Flows" textAlignment="CENTER" textFill="#18ff00" wrapText="true">
+                  <Label layoutX="5.0" layoutY="19.0" prefHeight="40.0" prefWidth="55.0" text="Runing Flows" textAlignment="CENTER" textFill="#18ff00" wrapText="true">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                   </Label>
                </children>

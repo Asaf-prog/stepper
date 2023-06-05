@@ -1,4 +1,4 @@
-package app.body.StatsScreen;
+package app.body.statsScreen;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -29,6 +30,9 @@ public class StatsScreen implements bodyControllerDefinition {
     private ResourceBundle resources;
     @FXML
     private HBox chartsPane;
+
+    @FXML
+    private HBox chart2;
     @FXML
     private URL location;
 
@@ -57,10 +61,24 @@ public class StatsScreen implements bodyControllerDefinition {
     private Pane stepperPane;
 
     private Stepper stepperData;
+    private String listStyle;
 
 
     @FXML
     void initialize() {
+        listStyle=flowsList.getStyle();
+        asserts();
+        setListsToVisible();
+        stepperData= DataManager.getData();
+        //setListsView();
+        Binds();
+        updateLists(); //set Labels and check if needed to put on tables
+        //set listeners
+        setListeners();
+        setListsView();
+    }
+
+    private void asserts() {
         assert flowPane != null : "fx:id=\"flowPane\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         assert flowsList != null : "fx:id=\"flowsList\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         assert stepsList != null : "fx:id=\"stepsList\" was not injected: check your FXML file 'StatsScreen.fxml'.";
@@ -70,13 +88,7 @@ public class StatsScreen implements bodyControllerDefinition {
         assert flowExecutionsSize != null : "fx:id=\"flowExecutionsSize\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         assert stepperPane != null : "fx:id=\"stepperPane\" was not injected: check your FXML file 'StatsScreen.fxml'.";
         assert chartsPane != null : "fx:id=\"chartsPane\" was not injected: check your FXML file 'StatsScreen.fxml'.";
-        setListsToVisible();
-        stepperData= DataManager.getData();
-        setListsView();
-        Binds();
-        updateLists(); //set Labels and check if needed to put on tables
-        //set listeners
-        setListeners();
+        assert chart2 != null : "fx:id=\"chart2\" was not injected: check your FXML file 'StatsScreen.fxml'.";
     }
 
     private void setCharts(FlowDefinitionImpl selectedFlow) {
@@ -84,10 +96,10 @@ public class StatsScreen implements bodyControllerDefinition {
 
         BarChart<String, Number> barChart = getBarChart(selectedFlow);
         PieChart pie= getPieChart(selectedFlow);
-
-
         chartsPane.getChildren().clear();
-        chartsPane.getChildren().add(barChart);
+        chart2.getChildren().clear();
+        chart2.getChildren().add(barChart);
+        chartsPane.setAlignment(Pos.BOTTOM_CENTER);
         chartsPane.getChildren().add(pie);
 
 
@@ -101,14 +113,18 @@ public class StatsScreen implements bodyControllerDefinition {
         yAxis.setLabel("Time (in ms)");
 
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-        barChart.getStylesheets().add("charts.css");
-        barChart.setTitle("Step Stats");
-        barChart.setMinHeight(300); // Adjust the desired height of the chart
+        //barChart.getStylesheets().add("charts.css");
+        barChart.setTitle("Per Step Time Taken");
+        barChart.setStyle(" -fx-font-size: 16");
+        barChart.setMinHeight(380);
+        //barChart.setMaxWidth(350);// Adjust the desired height of the chart
 
         // Set styling for title and axes labels
-        barChart.lookup(".chart-title").setStyle("-fx-text-fill: #d000ff;");
-        barChart.getXAxis().setStyle("-fx-text-fill: #ffffff; -fx-font-size: 30"); // Set X-axis label color to white
-        barChart.getYAxis().setStyle("-fx-text-fill: #ffffff;-fx-font-size: 30"); // Set Y-axis label color to white
+        barChart.lookup(".chart-title").setStyle("-fx-text-fill: #d000ff;-fx-font-size: 16");
+        barChart.lookup(".axis-label").setStyle("-fx-text-fill: #d100ff; -fx-font-size: 16");
+
+        // Set X-axis label color to white
+        barChart.getYAxis().setStyle("-fx-text-fill: #ffffff;-fx-font-size: 16"); // Set Y-axis label color to white
 
         // Create data series
         XYChart.Series<String, Number> series = new XYChart.Series<>();
@@ -132,7 +148,7 @@ public class StatsScreen implements bodyControllerDefinition {
         xAxis.setTickLabelFont(labelFont);
         xAxis.setStyle(labelStyle);
         String css = "-fx-stroke: transparent; -fx-text-fill: #ffffff;"; // Adjust the desired label color
-        barChart.getStylesheets().add(getClass().getResource("charts.css").toExternalForm());
+        //barChart.getStylesheets().add(getClass().getResource("charts.css").toExternalForm());
         xAxis.setStyle(css);
         // Add series to the chart
         barChart.getData().add(series);
@@ -144,7 +160,7 @@ public class StatsScreen implements bodyControllerDefinition {
         PieChart pieChart = new PieChart();
         pieChart.getStyleClass().add("pie-chart");
         pieChart.setTitle("Flow Time Division");
-        pieChart.setPrefHeight(300);
+        pieChart.setMaxHeight(270);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         double totalFlowTime = 0.0;
         for (StepUsageDeclaration step : selectedFlow.getSteps()) {
@@ -158,17 +174,20 @@ public class StatsScreen implements bodyControllerDefinition {
         pieChart.setData(pieChartData);
         pieChart.lookup(".chart-title")
                 .setStyle("-fx-text-fill: #ba00ff;");
-        pieChart.getStylesheets().add("charts.css");
+        pieChart.lookup(".chart-pie-label-line").setStyle("-fx-stroke: #33a1ff; -fx-text-fill: #ffef00;");
+       // pieChart.getStylesheets().add("charts.css");
         pieChart.lookup(".chart-legend").setStyle("-fx-text-fill: #4cffa4;");
+        pieChart.lookup(".chart-pie-label").setStyle("-fx-fill: #fff90c;");
         return pieChart;
 
     }
 
     private void setListsView() {
-        flowsList.setStyle("-fx-control-inner-background:#36393e ;");
-        flowStatsList.setStyle("-fx-control-inner-background: #36393e;");
-        stepsList.setStyle("-fx-control-inner-background: #36393e;");
-        stepStatsList.setStyle("-fx-control-inner-background: #36393e;");
+
+        flowsList.setStyle(listStyle+";-fx-font-size: 14;-fx-alignment: center;-fx-font-weight: bold;-fx-control-inner-background: #36393e;");
+        flowStatsList.setStyle(listStyle+";-fx-font-size: 12;-fx-alignment: center;-fx-control-inner-background: #36393e;");
+        stepsList.setStyle(listStyle+";-fx-font-size: 14;-fx-alignment: center;-fx-font-weight: bold;-fx-control-inner-background: #36393e;");
+        stepStatsList.setStyle(listStyle+";-fx-font-size: 12;-fx-alignment: center;-fx-control-inner-background: #36393e;");
 
     }
 

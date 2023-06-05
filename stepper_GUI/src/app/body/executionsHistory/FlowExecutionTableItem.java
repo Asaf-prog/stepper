@@ -1,4 +1,4 @@
-package app.body.ExecutionsHistory;
+package app.body.executionsHistory;
 
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;

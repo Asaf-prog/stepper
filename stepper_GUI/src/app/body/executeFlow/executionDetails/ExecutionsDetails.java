@@ -1,7 +1,7 @@
 package app.body.executeFlow.executionDetails;
 
 import app.body.bodyController;
-import app.body.executeFlow.executionDetails.DataViewer.DataViewerController;
+import app.body.executionsHistory.DataViewer.DataViewerController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -251,7 +251,7 @@ public class ExecutionsDetails {
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/DataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/DataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -294,14 +294,14 @@ public class ExecutionsDetails {
                     inputValue.setStyle(currStyle);
                 });
                 inputValue.setOnMouseClicked(event -> {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/DataViewer/DataViewer.fxml"));
                             try {
                                 Parent root = loader.load();
                                 DataViewerController controller = loader.getController();
                                 controller.setData(entry.getValue(), entry.getKey());
                                 Stage stage = new Stage();
                                 stage.setTitle("Data Viewer");
-                                stage.setScene(new Scene(root, 500, 300));
+                                stage.setScene(new Scene(root, 600, 400));
                                 stage.showAndWait();
                             } catch (IOException e) {
                                 //giveup
