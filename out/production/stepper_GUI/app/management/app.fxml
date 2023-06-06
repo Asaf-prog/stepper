@@ -5,9 +5,9 @@
 
 <HBox fx:id="appbox" alignment="CENTER" maxHeight="960.0" maxWidth="1440.0" prefHeight="720.0" prefWidth="1080.0" scaleShape="false" style="-fx-alignment: CENTER; -fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
    <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="720.0" prefWidth="1080.0" style="-fx-hbar-policy: AS_NEEDED; -fx-vbar-policy: AS_NEEDED; -fx-background-color: #36394e;" HBox.hgrow="ALWAYS">
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="720.0" prefWidth="1080.0" style="-fx-hbar-policy: AS_NEEDED; -fx-vbar-policy: AS_NEEDED; -fx-background-color: #24292e;" HBox.hgrow="ALWAYS">
          <content>
-            <AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #36393e;">
+            <AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #24292e;">
                <children>
                   <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1080.0" style="-fx-alignment: CENTER;" VBox.vgrow="ALWAYS">
                      <children>

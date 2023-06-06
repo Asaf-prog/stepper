@@ -255,7 +255,6 @@ public class headerController {
         });
 
     }
-
     @FXML
     void changeTheme(ActionEvent event) {
         if (themeToggle.isSelected()) {
