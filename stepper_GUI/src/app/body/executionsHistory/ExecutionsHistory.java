@@ -1,12 +1,10 @@
 
 package app.body.executionsHistory;
-import java.io.IOException;
-import java.util.*;
 
-
-import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import app.body.executionsHistory.DataViewer.DataViewerController;
+import app.body.executionsHistory.continuation.ContinuationPopUp;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,15 +31,16 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.mappings.Continuation;
+import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
 
-import static modules.DataManeger.DataManager.stepperData;
-import app.body.executionsHistory.continuation.ContinuationPopUp;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static modules.DataManeger.DataManager.stepperData;
 
 public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
@@ -58,7 +57,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private VBox outputsVbox4Value;
     @FXML
     private Label flowOutputsLabel;
-    private FlowExecution pickedExecution;
     @FXML
     private Button execute;
     @FXML
@@ -79,24 +77,24 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
     @FXML
     private AnchorPane mainPane;
-    private bodyController body;
     @FXML
     private Label executionCounterLabel;
-
     @FXML
     private Label exeTime;
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> timeCol;
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
-    private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
-    private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
-
     @FXML
     private Button continuation;
-
     @FXML
     private ChoiceBox<String> filterChoiceBox;
+    private List<Pair<String, String>> freeInputsMandatory ;
+    private List<Pair<String, String>> freeInputsOptional;
+    private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
+    private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
+    private bodyController body;
+    private FlowExecution pickedExecution;
 
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
     @FXML
@@ -199,16 +197,35 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert executionCounterLabel != null : "fx:id=\"executionCounterLabel\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert timeCol != null : "fx:id=\"timeCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
-
     }
     @FXML
     void executeFlow(ActionEvent event) {
         if (pickedExecution != null) {
             FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
+            addValueOfFreeInputsByTypes(flowDefinition);
+
+            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition);
+
             //todo fill with asaf
         }
     }
+    private void addValueOfFreeInputsByTypes(FlowDefinitionImpl flowDefinition){
+        freeInputsMandatory = new ArrayList<>();
+        freeInputsOptional = new ArrayList<>();
+        for (Pair<String, String> pair: pickedExecution.getUserInputs()){
+            if (existInMandatoryList(flowDefinition,pair.getKey()))
+                freeInputsMandatory.add(pair);
 
+            else freeInputsOptional.add(pair);
+        }
+    }
+    private boolean existInMandatoryList(FlowDefinitionImpl flowDefinition,String nameToSearch){
+        for (Pair<String, DataDefinitionDeclaration> pair: flowDefinition.getFlowFreeInputs()){
+            if (pair.getKey().equals(nameToSearch))
+                return pair.getValue().isMandatory();
+        }
+        return true;
+    }
     @FXML
     void onActionContinuation(ActionEvent event) {
         if (pickedExecution != null) {
@@ -225,7 +242,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             //popup scene with list of target flows to choose one from
             Stage stage = new Stage();
             stage.setTitle("Choose target flow");
-            ContinuationPopUp controller = new ContinuationPopUp(pickedExecution,targetFlows,stage);
+            ContinuationPopUp controller = new ContinuationPopUp(pickedExecution,targetFlows,stage,body);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
             loader.setController(controller);
             Parent root = null;
@@ -369,7 +386,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     }
                 }
             }
-
             stepTreeView.getRoot().getChildren().add(stepRoot);
             stepTreeView.setCellFactory(treeView -> {
                 TreeCell<String> cell = new TreeCell<String>() {
@@ -385,7 +401,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         }
                     }
                 };
-
                 cell.setOnMouseClicked(event -> {
                     if (!cell.isEmpty()) {
                         TreeItem<String> treeItem = cell.getTreeItem();
@@ -398,7 +413,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         }
                     }
                 });
-
                 return cell;
             });
             stepTreeView.setShowRoot(false);
@@ -408,14 +422,10 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         stepTree.getChildren().add(stepTreeView);
         //logScrollPane.setStyle("-fx-background-color: transparent;");
 
-
     }
-
     private void addLogToTree(TreeView<String> stepItem, Pair<String, String> log) {
         TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
         stepItem.getRoot().getChildren().add(logItem);
-
-
     }
 
     private void updateTime(FlowExecution selectedFlow) {
@@ -487,7 +497,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         );
         return result;
     }
-
     private void updateInputs(FlowExecution selectedFlow) {
         Label title= (Label) this.inputsVbox.getChildren().get(0);
         Label title2= (Label) this.inputsVbox4Value.getChildren().get(0);
@@ -517,11 +526,10 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                                 stage.setScene(new Scene(root, 600, 400));
                                 stage.showAndWait();
                             } catch (IOException e) {
-                                //giveup
+                                //give up
                             }
                         }
                 );
-
                 newInput.getStyleClass().add("DDLabel");
                 inputValue.getStyleClass().add("DDLabel");
                 newInput.setPrefWidth(inputsVbox.getPrefWidth());
@@ -533,15 +541,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 //todo set them as pressable and get extra info
             }
         }
-
     }
-
     @Override
     public void show() {
     }
     @Override
     public void setBodyController(bodyController body) {
-
+        this.body=body;
     }
     @Override
     public void setFlowsDetails(List<FlowDefinitionImpl> list) {
