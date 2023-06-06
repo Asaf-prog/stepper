@@ -146,4 +146,42 @@ public class bodyController {
             e.printStackTrace();
         }
     }
+    public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
+            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition){
+
+        executeExistFlowScreenFromHistoryScreen(freeInputMandatory,freeInputOptional,flowDefinition);
+    }
+    private void executeExistFlowScreenFromHistoryScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
+            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition){
+        setCurrentFlow(flowDefinition);
+
+        try {//first create a new body with the relevant free inputs and then update in context
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
+            fxmlLoader.setLocation(url);
+
+            loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
+                                       List<Pair<String, String>> freeInputOptional){
+
+        try {
+            Parent screen = fxmlLoader.load(url.openStream());
+            bodyControllerExecuteFromHistory bodyController = fxmlLoader.getController();
+            bodyController.setBodyControllerFromHistory(this);
+            bodyController.SetCurrentFlowFromHistory(flow);
+            bodyController.setFreeInputsMandatoryAndOptional(freeInputMandatory,freeInputOptional);
+            bodyController.showFromHistory();
+
+            bodyPane.getChildren().setAll(screen);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -2,6 +2,7 @@ package app.body.executeFlow;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import app.body.bodyControllerExecuteFromHistory;
 import app.body.bodyControllerForContinuation;
 import app.body.executeFlow.executionDetails.ExecutionsDetails;
 import javafx.application.Platform;
@@ -29,7 +30,6 @@ import modules.mappings.ContinuationMapping;
 import modules.mappings.InitialInputValues;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,9 +38,11 @@ import java.util.Map;
 
 import static modules.DataManeger.DataManager.stepperData;
 
-public class executeFlowController implements bodyControllerDefinition,bodyControllerForContinuation {
+public class executeFlowController implements bodyControllerDefinition,bodyControllerForContinuation, bodyControllerExecuteFromHistory {
     @FXML
     private Button showDetails;
+    @FXML
+    private Button continuation;
     private FlowDefinitionImpl currentFlow;
     private FlowDefinitionImpl lastFlow;
     @FXML
@@ -62,10 +64,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, String>>  freeInputsTempForContinuation = new ArrayList<>();
     private List<Pair<String, String>> freeInputsMandatory ;
     private List<Pair<String, String>> freeInputsOptional;
-    @FXML
-    private Button continuation;
     private List<Pair<String, DataDefinitionDeclaration>> currentMandatoryFreeInput;
     private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
+    private List<Pair<String, String>> freeInputsMandatoryFromHistory;
+    private List<Pair<String, String>> freeInputsOptionalFromHistory;
+    private boolean isComeFromHistoy =false;
     @FXML
     void initialize() {
         asserts();
@@ -82,7 +85,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         assert continuationLabel != null : "fx:id=\"continuationLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert showDetails != null : "fx:id=\"showDetails\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert continuationExe != null : "fx:id=\"continuationExe\" was not injected: check your FXML file 'executeFlowController.fxml'.";
-
     }
     @Override
     public void show() {
@@ -158,16 +160,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         mandatory.getKey(), mandatory.getValue().dataDefinition().getType(), nameAndAddOrEdit,false));
                 nameAndAddOrEdit.getChildren().add(textField);
                 nameAndAddOrEdit.getChildren().add(addButton);
-
-//                nameAndAddOrEdit.setSpacing(10);
-//                nameAndAddOrEdit.setPrefWidth(mandatoryList.getPrefWidth());
-//
-//                textField.setPromptText(data.getValue().getUserString());
-//                //mandatoryList.getChildren().add(label);
-//                mandatoryList.getChildren().add(nameAndAddOrEdit);
-//                mandatoryList.setSpacing(10);
-//            }
-//            else{//is optional
             }
             nameAndAddOrEdit.setSpacing(5);
             mandatoryList.getChildren().add(nameAndAddOrEdit);
@@ -486,7 +478,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
-        setTheNewInputsThatTheUserSupply();
+        if (!isComeFromHistoy)
+            setTheNewInputsThatTheUserSupply();
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
         showDetails.setDisable(true);
         continuation.setVisible(true);
@@ -494,7 +487,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
-
+        isComeFromHistoy = false;
         //pops out flows Details...
         // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
         FlowExecution lastFlowExecution = getLastFlowExecution();
@@ -570,9 +563,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     if (pair.getKey().equals(nameOfDD)) {
                         freeInputsTemp.remove(pair);
                         break;
-//                        if (freeInputsTemp.isEmpty()) {
-//                            break;
-//                        }
                     }
                 }
                 textField.clear();
@@ -651,5 +641,58 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @Override
     public void setBodyControllerContinuation(bodyController body){
         this.body = body;
+    }
+    @Override
+    public void showFromHistory(){
+        freeInputsTemp = new ArrayList<>();
+        createComponentForMandatoryFromHistory();
+        createComponentForOptionalFromHistory();
+        startExecute.setDisable(false);
+        isComeFromHistoy = true;
+    }
+    private void createComponentForOptionalFromHistory() {
+        for (Pair<String,String> optinal: freeInputsOptionalFromHistory) {
+            Label label = new Label(optinal.getKey());
+            label.setStyle("-fx-text-fill: white");
+            HBox nameAndAddOrEdit = new HBox();
+            Label data = new Label(optinal.getValue());
+            data.setStyle("-fx-text-fill: white");
+            nameAndAddOrEdit.getChildren().add(label);
+            nameAndAddOrEdit.getChildren().add(data);
+            nameAndAddOrEdit.setSpacing(5);
+            optionalList.getChildren().add(nameAndAddOrEdit);
+            optionalList.setSpacing(10);
+            freeInputsTemp.add(optinal);
+        }
+    }
+
+    private void createComponentForMandatoryFromHistory() {
+        for (Pair<String,String> mandatory: freeInputsMandatoryFromHistory) {
+            Label label = new Label(mandatory.getKey());
+            label.setStyle("-fx-text-fill: white");
+            HBox nameAndAddOrEdit = new HBox();
+            Label data = new Label(mandatory.getValue());
+            data.setStyle("-fx-text-fill: white");
+            nameAndAddOrEdit.getChildren().add(label);
+            nameAndAddOrEdit.getChildren().add(data);
+            nameAndAddOrEdit.setSpacing(5);
+            mandatoryList.getChildren().add(nameAndAddOrEdit);
+            mandatoryList.setSpacing(10);
+            freeInputsTemp.add(mandatory);
+        }
+    }
+    @Override
+    public void setBodyControllerFromHistory(bodyController body){
+        this.body = body;
+    }
+    @Override
+    public void SetCurrentFlowFromHistory(FlowDefinitionImpl flow){
+        this.currentFlow = flow;
+    }
+    @Override
+    public void setFreeInputsMandatoryAndOptional(List<Pair<String, String>> freeInputMandatory,
+                                                  List<Pair<String, String>> freeInputOptional){
+        this.freeInputsMandatoryFromHistory = freeInputMandatory;
+        this.freeInputsOptionalFromHistory = freeInputOptional;
     }
 }
