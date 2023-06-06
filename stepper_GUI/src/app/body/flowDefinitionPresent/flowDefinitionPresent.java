@@ -135,7 +135,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         //todo => add the number of continuation
         DrawFlow(flow);
     }
-
     private void handleButtonActionForGraph(FlowDefinitionImpl flow) {
         scatchPane.setVisible(true);
         graphPNG.setVisible(true);
@@ -146,8 +145,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     private void DrawFlow(FlowDefinitionImpl flow) {
         FlowGraphBuilder.buildFlowGraph(flow);
-        //String imagePath = getClass().getResource("flow.png").toExternalForm();
-        Image image = new Image("flow.png");//TODO => change the path to put  png inside graph package
+        Image image = new Image("file:appContent/flow.png");//TODO => change the path to put  png inside graph package
         graphPNG.setImage(image);
         graphPNG.setOnMouseClicked( event -> {
                     //open the image in big in new window

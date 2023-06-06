@@ -52,7 +52,7 @@ public class FlowGraphBuilder {
 
 
 
-        String folderPath = "";
+        String folderPath = "appContent/";
         String dotFilePath = folderPath + "flow.dot";
         String pngFilePath = folderPath + "flow.png";
         try (PrintWriter writer = new PrintWriter(dotFilePath)) {

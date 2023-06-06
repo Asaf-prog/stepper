@@ -4,11 +4,14 @@ import app.MVC_controller.MVC_controller;
 import app.management.mainController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
@@ -62,6 +65,22 @@ public class headerController {
     @FXML
     private Button buypremiumBtn;
     String buttonStyle;
+    @FXML
+    private ImageView close;
+    @FXML
+    private HBox topBar;
+
+    @FXML
+    private ImageView barLogo;
+    double x, y;
+
+    @FXML
+    void closeApp(ActionEvent event) {
+        Platform.exit();
+    }
+
+
+
     boolean subscription = false;
     int nextFreeProgressor = 1;
     private RotateTransition rotateTransition;
@@ -135,11 +154,27 @@ public class headerController {
     }
     @FXML
     void initialize() {
+        setTopBar();
         asserts();
         Events();
         setCssScreenButtons();
         setVGrow();
     }
+    private void setTopBar() {
+        Tooltip tooltip = new Tooltip("Saar Ha Gever \nAsaf Ha Homo");
+        tooltip.setStyle("-fx-font-size: 22px; -fx-font-family: 'Arial'; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 1);");
+        Tooltip.install(barLogo, tooltip);
+        topBar.setOnMousePressed(event -> {
+            x = event.getSceneX();
+            y = event.getSceneY();
+        });
+        topBar.setOnMouseDragged(event -> {
+            Stage stage = (Stage) ((HBox) event.getSource()).getScene().getWindow();
+            stage.setX(event.getScreenX() - x);
+            stage.setY(event.getScreenY() - y);
+        });
+    }
+
     private void setVGrow() {
         GridPane.setVgrow(loaded, Priority.ALWAYS);
         GridPane.setVgrow(progressGrid, Priority.ALWAYS);

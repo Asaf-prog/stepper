@@ -4,8 +4,10 @@ import app.MVC_controller.MVC_controller;
 import app.body.statsScreen.StatsScreen;
 import app.body.bodyController;
 import app.header.headerController;
+import app.management.resizeHelper.ResizeHelper;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -21,13 +23,18 @@ public class mainController {
    @FXML private headerController headerComponentController;
 
    @FXML private HBox appBox;
+   String appBoxStyle;
 
    @FXML private ScrollPane scrollPane;
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
    private MVC_controller mvcController;
+   private double xOffset;
+   private double yOffset;
    @FXML
    public void initialize() {
+      //appBoxStyle = appBox.getStyle();
+      //appBox.setStyle(appBoxStyle + "-fx-background-radius: 20;");
 
 
       if (headerComponentController != null && bodyComponentController != null) {
@@ -41,6 +48,7 @@ public class mainController {
          headerComponentController.setMVCController(mvcController);
 
       }
+
    }
 
    public void setFlows(List<FlowDefinitionImpl> f){

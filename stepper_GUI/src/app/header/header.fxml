@@ -7,13 +7,35 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
       <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #36393e;">
          <children>
+            <HBox fx:id="topBar" prefHeight="41.0" prefWidth="1070.0" style="-fx-background-color: #2d2e2e; -fx-background-radius: 20;">
+               <children>
+                  <ImageView fx:id="barLogo" fitHeight="32.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../management/content/stepperIcon.png" />
+                     </image>
+                     <effect>
+                        <Glow level="1.0" />
+                     </effect>
+                  </ImageView>
+                  <ImageView fitHeight="18.0" fitWidth="995.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button mnemonicParsing="false" onAction="#closeApp" prefHeight="33.0" prefWidth="38.0" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fx:id="close" fitHeight="23.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../management/content/switch.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
             <Pane prefHeight="90.0" prefWidth="1070.0">
                <children>
-                  <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="66.0" fitWidth="672.0" layoutX="371.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="371.0" AnchorPane.rightAnchor="370.9285583496094" AnchorPane.topAnchor="7.0">
+                  <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="66.0" fitWidth="672.0" layoutX="366.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="366.0" AnchorPane.rightAnchor="366.9285583496094" AnchorPane.topAnchor="6.0">
                      <image>
                         <Image url="@content/toplogoWhite.png" />
                      </image>
@@ -34,7 +56,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </ToggleButton>
-                  <GridPane fx:id="progressGrid" gridLinesVisible="true" layoutX="68.0" layoutY="6.0" prefHeight="66.0" prefWidth="322.0">
+                  <GridPane fx:id="progressGrid" layoutX="68.0" layoutY="6.0" prefHeight="66.0" prefWidth="322.0" style="-fx-border-radius: 25; -fx-border-width: 2; -fx-border-color: white;">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="179.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="186.0" />
@@ -92,7 +114,7 @@
                   </Label>
                </children>
             </Pane>
-            <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>
@@ -121,7 +143,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="menuHbox" alignment="CENTER" prefHeight="48.0" prefWidth="1065.0" spacing="30.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="menuHbox" alignment="CENTER" prefHeight="37.0" prefWidth="1065.0" spacing="30.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@header.css" text="Flows Definition" textFill="WHITE">
                      <font>
@@ -130,10 +152,7 @@
                      <graphic>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
                            <children>
-                              <ImageView fitHeight="23.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@content/menu%20icons/dash.png" />
-                                 </image></ImageView>
+
                               <Label prefHeight="25.0" prefWidth="102.0" style="-fx-text-fill: white;" text="DashBoard">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="18.0" />

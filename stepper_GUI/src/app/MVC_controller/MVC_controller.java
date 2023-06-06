@@ -38,9 +38,8 @@ public class MVC_controller {
         try {
             ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName(),
                     flowTestExecution.getUniqueId() , flowTestExecution, fLowExecutor);
-            setProgressor(task);
+            setProgressBar(task);
             ExeManager.executeTask(task);
-            //todo do some logic and update gui accordingly\
             //todo check if gui updated correctly
             header.setDisableOnExecutionsHistory();
         } catch (Exception e) {
@@ -49,18 +48,19 @@ public class MVC_controller {
         stepperData.addFlowExecution(flowTestExecution);
     }
 
-    private void setProgressor(ExecutionTask task) {
+    private void setProgressBar(ExecutionTask task) {
         int nextIndex = header.getNextFreeProgress();
         ProgressBar progressBar = header.getNextProgressBar(nextIndex);
+        progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
         progressBar.progressProperty().bind(task.getProgress());
         task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {//todo check if work !
             if (newValue) {
-                progressBar.setStyle("-fx-accent: #ff2929;");
+                progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
             }
         });
         task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {//todo check if work !
             if (newValue) {
-                progressBar.setStyle("-fx-accent: #00ff00;");
+                progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
             }
         });
         Label label = header.getNextLabel(nextIndex);

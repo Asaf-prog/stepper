@@ -1,5 +1,6 @@
 package app;
 
+import app.management.resizeHelper.ResizeHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -9,24 +10,27 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-//import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
-
 public class StepperApplication extends Application {
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
         Scene scene = new Scene(load,1100,720);
-        primaryStage.initStyle(StageStyle.UNIFIED);
+
+       // primaryStage.initStyle(StageStyle.UNIFIED);
         scene.setOnMouseEntered(e -> showWindow(primaryStage));
         scene.setOnMouseExited(e -> hideWindow(primaryStage));
         primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
         primaryStage.setScene(scene);
         setPrimaryStage(primaryStage);
         centerWindowOnScreen(primaryStage);
+        setBounds(primaryStage);
         primaryStage.show();
+    }
+
+    private static void setBounds(Stage primaryStage) {
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        ResizeHelper.addResizeListener(primaryStage);
     }
 
     private void showWindow(Stage primaryStage) {
