@@ -67,7 +67,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private Label numberOfSteps;
     @FXML
     private TreeView<String> treeList;
-
     @FXML
     private ImageView graphPNG;
     @FXML
@@ -93,7 +92,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         assert graphPNG != null : "fx:id=\"graphPNG\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
         assert graph != null : "fx:id=\"graph\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
         scatchPane.setVisible(false);
-
         seocendVbox.setVisible(false);
         thiredVbox.setVisible(false);
     }
@@ -135,7 +133,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         graph.setOnAction(event -> handleButtonActionForGraph(flow));
 
         //todo => add the number of continuation
-        scatchFlow(flow);
+        DrawFlow(flow);
     }
 
     private void handleButtonActionForGraph(FlowDefinitionImpl flow) {
@@ -146,9 +144,10 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         thiredVbox.setVisible(false);
 
     }
-    private void scatchFlow(FlowDefinitionImpl flow) {
+    private void DrawFlow(FlowDefinitionImpl flow) {
         FlowGraphBuilder.buildFlowGraph(flow);
-        Image image = new Image("file:/C:/Users/Saar%20Cohen/Documents/GitHub/stepper/stepper_GUI/src/app/body/flowDefinitionPresent/flow.png");//TODO => change the path
+        //String imagePath = getClass().getResource("flow.png").toExternalForm();
+        Image image = new Image("flow.png");//TODO => change the path to put  png inside graph package
         graphPNG.setImage(image);
         graphPNG.setOnMouseClicked( event -> {
                     //open the image in big in new window
@@ -156,10 +155,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     stage.setTitle("Flow Graph");
                     ImageView imageView = new ImageView();
                     imageView.setImage(image);
-                    imageView.setFitWidth(1080);
-                    imageView.setFitHeight(720);
-
-                    imageView.setPreserveRatio(false);
+                    imageView.setPreserveRatio(true);
                     imageView.setSmooth(true);
                     imageView.setCache(true);
                     ScrollPane scrollPane = new ScrollPane();

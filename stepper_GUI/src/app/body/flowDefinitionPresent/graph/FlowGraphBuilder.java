@@ -52,7 +52,7 @@ public class FlowGraphBuilder {
 
 
 
-        String folderPath = "C:\\Users\\Saar Cohen\\Documents\\GitHub\\stepper\\stepper_GUI\\src\\app\\body\\flowDefinitionPresent\\";
+        String folderPath = "";
         String dotFilePath = folderPath + "flow.dot";
         String pngFilePath = folderPath + "flow.png";
         try (PrintWriter writer = new PrintWriter(dotFilePath)) {
