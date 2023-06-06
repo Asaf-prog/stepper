@@ -5,16 +5,15 @@ import app.management.mainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.step.api.DataDefinitionDeclaration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class bodyController {
     private mainController main;
@@ -31,8 +30,7 @@ public class bodyController {
     }
     public void showFlowDefinition() {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        //URL url = getClass().getResource("flowDefinitionPresent/flowDefinitionPresent.fxml");
-        URL url = getClass().getResource("flowDefinitionPresent/test.fxml");
+        URL url = getClass().getResource("flowDefinitionPresent/flowDefinitionPresent.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
@@ -81,7 +79,6 @@ public class bodyController {
             bController.SetCurrentFlow(flow);
             bController.show();
 
-
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
@@ -108,5 +105,82 @@ public class bodyController {
     }
     public MVC_controller getMVC_controller(){
         return controller;
+    }
+    public void handlerContinuation(FlowDefinitionImpl flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
+                                    List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,List<Pair<String, String>>optionalIn,
+                                    Map<String,Object> outputs,FlowDefinitionImpl currentFlow){
+        executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn,outputs,currentFlow);
+    }
+    public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
+                                                     List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
+                                                     List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
+        setCurrentFlow(flow);
+
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
+            fxmlLoader.setLocation(url);
+
+            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
+                                                          List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
+                                                          List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
+        try {
+            Parent screen = fxmlLoader.load(url.openStream());
+            bodyControllerForContinuation bodyController = fxmlLoader.getController();
+            bodyController.setCurrentFlowForContinuation(flow);
+            bodyController.setBodyControllerContinuation(this);
+            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
+            bodyController.showForContinuation();
+
+            bodyPane.getChildren().setAll(screen);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
+            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition){
+
+        executeExistFlowScreenFromHistoryScreen(freeInputMandatory,freeInputOptional,flowDefinition);
+    }
+    private void executeExistFlowScreenFromHistoryScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
+            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition){
+        setCurrentFlow(flowDefinition);
+
+        try {//first create a new body with the relevant free inputs and then update in context
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
+            fxmlLoader.setLocation(url);
+
+            loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
+                                       List<Pair<String, String>> freeInputOptional){
+
+        try {
+            Parent screen = fxmlLoader.load(url.openStream());
+            bodyControllerExecuteFromHistory bodyController = fxmlLoader.getController();
+            bodyController.setBodyControllerFromHistory(this);
+            bodyController.SetCurrentFlowFromHistory(flow);
+            bodyController.setFreeInputsMandatoryAndOptional(freeInputMandatory,freeInputOptional);
+            bodyController.showFromHistory();
+
+            bodyPane.getChildren().setAll(screen);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

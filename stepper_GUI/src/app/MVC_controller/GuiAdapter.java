@@ -4,7 +4,8 @@ import javafx.application.Platform;
 
 import java.util.function.Consumer;
 
-public class GuiAdapter {//binds the gui to the engine according to the MVC pattern
+public class GuiAdapter {
+    //binds the gui to the engine according to the MVC pattern
 
     private Consumer<Double> progressUpdater;
     private Consumer<String> statusUpdater;
@@ -22,8 +23,5 @@ public class GuiAdapter {//binds the gui to the engine according to the MVC patt
     public void updateStatus(String status) {
         Platform.runLater(() -> statusUpdater.accept(status));
     }
-
-
-
 
 }

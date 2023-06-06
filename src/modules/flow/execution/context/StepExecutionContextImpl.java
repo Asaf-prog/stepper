@@ -2,6 +2,7 @@ package modules.flow.execution.context;
 import Menu.MenuException;
 import Menu.MenuExceptionItems;
 import javafx.util.Pair;
+import modules.dataDefinition.impl.enumerator.Enumerator;
 import modules.mappings.CustomMapping;
 import modules.mappings.FlowLevelAlias;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -94,6 +95,9 @@ StepExecutionContextImpl implements StepExecutionContext {
             return (Integer.parseInt(value));
         if (dataType == Double.class)
             return (Double.parseDouble(value));
+        if (dataType == Enumerator.class) {
+            return(new Enumerator(value));
+        }
 
 
         return 0;

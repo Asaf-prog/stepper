@@ -30,6 +30,7 @@ public class CommandLine extends AbstractStepDefinition {
         }
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
+            command="cmd /c "+command;
             processBuilder.command(command.split(" "));
 
             if (arguments != null && !arguments.isEmpty()) {

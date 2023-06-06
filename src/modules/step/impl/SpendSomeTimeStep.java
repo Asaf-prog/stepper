@@ -17,7 +17,7 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
         int seconds = context.getDataValue("TIME_TO_SPEND", Integer.class);
         try{
             if (seconds <= 0) {
-                System.out.println("Invalid input");
+                System.out.println("Invalid input");//todo move to gui
                 context.setLogsForStep("Time_To_Spend","Get un-positive number");
                 context.addSummaryLine("Time_To_Spend","The step fail because the input is un-positive number");
                 return StepResult.FAILURE;

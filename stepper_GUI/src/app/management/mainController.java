@@ -1,12 +1,15 @@
 package app.management;
 
 import app.MVC_controller.MVC_controller;
-import app.body.StatsScreen.StatsScreen;
+import app.body.statsScreen.StatsScreen;
 import app.body.bodyController;
 import app.header.headerController;
+import app.management.resizeHelper.ResizeHelper;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
 import java.awt.*;
@@ -19,17 +22,21 @@ public class mainController {
    @FXML private AnchorPane generalPane;
    @FXML private headerController headerComponentController;
 
+   @FXML private HBox appBox;
+   String appBoxStyle;
+
    @FXML private ScrollPane scrollPane;
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
    private MVC_controller mvcController;
-
-
-   public void PresentTpBodyFlowDefinition(){
-
-   }
+   private double xOffset;
+   private double yOffset;
    @FXML
    public void initialize() {
+      //appBoxStyle = appBox.getStyle();
+      //appBox.setStyle(appBoxStyle + "-fx-background-radius: 20;");
+
+
       if (headerComponentController != null && bodyComponentController != null) {
          headerComponentController.setMainController(this);
          bodyComponentController.setMainController(this);
@@ -39,11 +46,11 @@ public class mainController {
          mvcController = new MVC_controller(this,headerComponentController,bodyComponentController);
          bodyComponentController.setMVCController(mvcController);
          headerComponentController.setMVCController(mvcController);
-         if (scrollPane != null) {
-            scrollPane.setLayout(new BorderLayout());
-         }
+
       }
+
    }
+
    public void setFlows(List<FlowDefinitionImpl> f){
        this.flows = f;
    }
@@ -71,8 +78,5 @@ public class mainController {
             bodyComponent.getStylesheets().add("app/body/theme/bodyLight.css");
             headerComponent.getStylesheets().add("app/header/theme/headerLight.css");
       }
-
-
    }
-
 }

@@ -1,54 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1050.0" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executeFlowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executeFlowController">
    <children>
-      <Button fx:id="startExecute" disable="true" layoutX="805.0" layoutY="410.0" mnemonicParsing="false" onAction="#startExecuteAfterGetFreeInputs" prefHeight="41.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Start !" textFill="#eeff00">
+      <Button fx:id="startExecute" disable="true" layoutX="907.0" layoutY="433.0" mnemonicParsing="false" onAction="#startExecuteAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Run" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="27.0" layoutY="14.0" prefHeight="25.0" prefWidth="416.0" styleClass="titles" text="Collect Flow Inputs" textFill="#fff83b">
+      <Label alignment="CENTER" layoutX="16.0" layoutY="6.0" prefHeight="21.0" prefWidth="1049.0" styleClass="titles" text="Collect Flow Inputs" textFill="#fff83b">
          <font>
-            <Font name="Arial Rounded MT Bold" size="24.0" />
+            <Font name="Arial Rounded MT Bold" size="20.0" />
          </font>
       </Label>
-      <VBox fx:id="mandatoryList" layoutX="27.0" layoutY="88.0" prefHeight="316.0" prefWidth="266.0" style="-fx-border-color: white;">
+
+      <VBox fx:id="mandatoryList" layoutX="28.0" layoutY="57.0" prefHeight="329.0" prefWidth="357.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
          <children>
-            <Label prefHeight="40.0" prefWidth="120.0" styleClass="titles" text="MANDATORY" textFill="#f5eb38">
+            <Label alignment="CENTER" prefHeight="40.0" prefWidth="350.0" styleClass="titles" text="MANDATORY INPUTS" textFill="#f5eb38" underline="true">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </Label>
          </children>
       </VBox>
-      <VBox fx:id="optionalList" layoutX="296.0" layoutY="88.0" prefHeight="316.0" prefWidth="260.0" style="-fx-border-color: white;">
+      <VBox fx:id="optionalList" layoutX="397.0" layoutY="57.0" prefHeight="329.0" prefWidth="298.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
          <children>
-            <Label prefHeight="41.0" prefWidth="120.0" styleClass="titles" text="OPTIONAL" textFill="#f5eb38">
+            <Label alignment="CENTER" prefHeight="41.0" prefWidth="289.0" styleClass="titles" text="OPTIONAL INPUTS" textFill="#f5eb38" underline="true">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </Label>
          </children>
       </VBox>
-      <Button fx:id="continuation" disable="true" layoutX="630.0" layoutY="410.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="continuation" textFill="#eeff00">
+      <Button fx:id="continuation" disable="true" layoutX="553.0" layoutY="433.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Continuation" textFill="#eeff00">
+
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
-      <VBox fx:id="continuationVbox" layoutX="601.0" layoutY="88.0" prefHeight="316.0" prefWidth="260.0" style="-fx-border-color: white;">
+
+      <VBox fx:id="continuationVbox" layoutX="28.0" layoutY="398.0" prefHeight="111.0" prefWidth="505.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
          <children>
-            <Label fx:id="continuationLabel" prefHeight="36.0" prefWidth="162.0" text="CONTINUATION" textFill="#f5eb38">
+            <Label fx:id="continuationLabel" alignment="CENTER" prefHeight="36.0" prefWidth="559.0" text="CONTINUATION OPTIONS" textFill="#f5eb38" underline="true">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </Label>
          </children>
       </VBox>
+      <Button fx:id="showDetails" disable="true" layoutX="726.0" layoutY="433.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Details" textFill="#eeff00">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="continuationExe" layoutX="883.0" layoutY="378.0" mnemonicParsing="false" onAction="#ContinuationExecution" prefHeight="41.0" prefWidth="191.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" text="Run Continuation" textFill="#eeff00">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
