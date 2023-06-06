@@ -225,7 +225,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             //popup scene with list of target flows to choose one from
             Stage stage = new Stage();
             stage.setTitle("Choose target flow");
-            ContinuationPopUp controller = new ContinuationPopUp(targetFlows,stage);
+            ContinuationPopUp controller = new ContinuationPopUp(pickedExecution,targetFlows,stage);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
             loader.setController(controller);
             Parent root = null;

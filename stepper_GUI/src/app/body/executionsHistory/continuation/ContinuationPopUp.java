@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +12,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.flow.execution.FlowExecution;
+
 import static modules.DataManeger.DataManager.stepperData;
 public class ContinuationPopUp {
 
@@ -32,12 +32,14 @@ public class ContinuationPopUp {
     private List<String>  targetFlows;
     private Stage   stage;
     private FlowDefinitionImpl targetFlow = null;
+    private FlowExecution pickedExecution;
 
 
     private String buttonStyle;
 
 
-    public ContinuationPopUp(List<String> targetFlows, Stage stage) {
+    public ContinuationPopUp(FlowExecution pickedExecution, List<String> targetFlows, Stage stage) {
+        this.pickedExecution = pickedExecution;
         this.targetFlows = targetFlows;
         this.stage = stage;
     }
@@ -45,6 +47,10 @@ public class ContinuationPopUp {
 
     @FXML
     void runContinuation(ActionEvent event) {
+        //target flow is the flow that we need to continue to
+        //pickedExecution is the execution that we need to continue from (that we picked in  the history screen
+       // pickedExecution.continueExecution(targetFlow);
+        
         //TODO: run the selected flow
         //todo fill with asaf
         //targetFlow.run();
@@ -74,6 +80,5 @@ public class ContinuationPopUp {
             flowsVbox.getChildren().add(flowButton);
 
         }
-
     }
 }
