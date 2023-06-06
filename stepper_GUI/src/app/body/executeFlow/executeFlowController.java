@@ -496,7 +496,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-
                 Platform.runLater(() -> {
                     popupDetails();
                 });

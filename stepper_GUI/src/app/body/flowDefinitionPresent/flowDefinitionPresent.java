@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -166,8 +167,11 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     scrollPane.setHmax(image.getWidth());
                     scrollPane.setVmax(image.getHeight());
                     scrollPane.setPrefSize(1080, 720);
+                    scrollPane.setStyle("-fx-background-color:#36393e;");
+
 
                     Scene scene = new Scene(scrollPane, 1080, 720);
+                    scene.setFill(Color.valueOf("#36393e"));
                     stage.setScene(scene);
                     stage.show();
 

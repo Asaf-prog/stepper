@@ -69,7 +69,7 @@ public class ExecutionsDetails {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
         if (stepperData.getFlowExecutions().size()!=0)
-            theFlow = getLastFlowExecution(stepperData);
+            theFlow = getLastFlowExecution(stepperData);//todo maybe problem here
         if (theFlow != null) {
         updateLogs(theFlow, stepperData);
         updateLogsTree(theFlow);
@@ -141,15 +141,17 @@ public class ExecutionsDetails {
         for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
             //todo here collaps check if null or empty
-            List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
-            if (logsPerStep != null) {
-                for (Pair<String, String> log : logsPerStep) {
+            if (selectedFlow.getLogs().get(step.getFinalStepName()) != null) {
+                for (Pair<String, String> log : selectedFlow.getLogs().get(step.getFinalStepName())) {
                     if (log != null) {
                         TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
                         stepRoot.getChildren().add(logItem);
                     }
                 }
+
             }
+            else
+                stepRoot.getChildren().add(new TreeItem<>("No logs for this step"));
 
             stepTreeView.getRoot().getChildren().add(stepRoot);
             stepTreeView.setCellFactory(treeView -> {

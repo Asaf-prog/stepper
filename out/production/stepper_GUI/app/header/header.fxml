@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" stylesheets="@header.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
       <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #36393e;">
          <children>
@@ -152,6 +153,10 @@
                      <graphic>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
                            <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@content/menu%20icons/dash.png" />
+                                 </image></ImageView>
 
                               <Label prefHeight="25.0" prefWidth="102.0" style="-fx-text-fill: white;" text="DashBoard">
                                  <font>
@@ -167,7 +172,7 @@
                      <graphic>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="133.0" spacing="10.0">
                            <children>
-                              <ImageView fitHeight="21.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@content/menu%20icons/stats.png" />
                                  </image></ImageView>
@@ -186,7 +191,7 @@
                      <graphic>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
                            <children>
-                              <ImageView fitHeight="21.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@content/menu%20icons/history.png" />
                                  </image></ImageView>
