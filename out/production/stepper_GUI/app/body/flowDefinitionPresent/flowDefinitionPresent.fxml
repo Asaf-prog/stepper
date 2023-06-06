@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
    <children>
-      <AnchorPane fx:id="ExecuteButton" prefHeight="292.0" prefWidth="600.0" style="-fx-background-color: #36393e;" styleClass="bodyPane">
+      <AnchorPane fx:id="ExecuteButton" prefHeight="292.0" prefWidth="600.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css">
          <children>
             <VBox fx:id="firstVbox" layoutX="14.0" layoutY="14.0" prefHeight="414.0" prefWidth="262.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;">
                <children>
-                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="239.0" text="Flow Pool" textFill="#fff608">
+                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="239.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Flow Pool" textFill="#fff608">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="15.0" />
                      </font>
@@ -24,14 +24,14 @@
             </VBox>
             <VBox fx:id="seocendVbox" layoutX="275.0" layoutY="14.0" prefHeight="414.0" prefWidth="332.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;">
                <children>
-                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="336.0" text="Selected Flow Details" textFill="#fff608">
+                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="336.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Selected Flow Details" textFill="#fff608">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="15.0" />
                      </font>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin></Label>
-                  <Label fx:id="nameOfFlowSelected" prefHeight="27.0" prefWidth="337.0" text="NAME:" textFill="#fff608">
+                  <Label fx:id="nameOfFlowSelected" prefHeight="27.0" prefWidth="337.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="NAME:" textFill="#fff608">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="descriptionP" alignment="TOP_LEFT" prefHeight="77.0" prefWidth="341.0" text="Description: " textFill="#fff608" textOverrun="CLIP" wrapText="true">
+                  <Label fx:id="descriptionP" alignment="TOP_LEFT" prefHeight="77.0" prefWidth="341.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Description: " textFill="#fff608" textOverrun="CLIP" wrapText="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
@@ -47,7 +47,7 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="FormalOutputs" alignment="TOP_LEFT" prefHeight="86.0" prefWidth="318.0" text="Steps Formal Outputs:" textFill="#fff608" wrapText="true">
+                  <Label fx:id="FormalOutputs" alignment="TOP_LEFT" prefHeight="86.0" prefWidth="318.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Steps Formal Outputs:" textFill="#fff608" wrapText="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
@@ -55,7 +55,7 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="isReadOnly" prefHeight="41.0" prefWidth="313.0" text="ReadOnly:" textFill="#fff608" wrapText="true">
+                  <Label fx:id="isReadOnly" prefHeight="41.0" prefWidth="313.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="ReadOnly:" textFill="#fff608" wrapText="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
@@ -63,7 +63,7 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label prefHeight="38.0" prefWidth="313.0" text="Get More Information about the Flow:" textFill="#fff608">
+                  <Label prefHeight="38.0" prefWidth="313.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Get More Information about the Flow:" textFill="#fff608">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
@@ -75,28 +75,28 @@
                      <children>
                         <VBox fx:id="innerVbox" prefHeight="120.0" prefWidth="323.0" spacing="10.0">
                            <children>
-                              <RadioButton fx:id="stepsP" mnemonicParsing="false" text="Steps" textFill="#fff608">
+                              <RadioButton fx:id="stepsP" mnemonicParsing="false" styleClass="radioButton" stylesheets="@../../management/style/darkTheme.css" text="Steps" textFill="#fff608">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="14.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets left="10.0" />
                                  </VBox.margin></RadioButton>
-                              <RadioButton fx:id="FreeInput" mnemonicParsing="false" text="Free Inputs" textFill="#fff608">
+                              <RadioButton fx:id="FreeInput" mnemonicParsing="false" styleClass="radioButton" stylesheets="@../../management/style/darkTheme.css" text="Free Inputs" textFill="#fff608">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="14.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets left="10.0" />
                                  </VBox.margin></RadioButton>
-                              <RadioButton fx:id="Outputs" mnemonicParsing="false" text="Outputs" textFill="#fff608">
+                              <RadioButton fx:id="Outputs" mnemonicParsing="false" styleClass="radioButton" stylesheets="@../../management/style/darkTheme.css" text="Outputs" textFill="#fff608">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="14.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets left="10.0" />
                                  </VBox.margin></RadioButton>
-                              <RadioButton fx:id="graph" mnemonicParsing="false" prefHeight="20.0" prefWidth="103.0" text="Graph" textFill="#fff608">
+                              <RadioButton fx:id="graph" mnemonicParsing="false" prefHeight="20.0" prefWidth="103.0" styleClass="radioButton" stylesheets="@../../management/style/darkTheme.css" text="Graph" textFill="#fff608">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="14.0" />
                                  </font>
@@ -112,7 +112,7 @@
             </VBox>
             <VBox fx:id="thiredVbox" layoutX="606.0" layoutY="14.0" prefHeight="414.0" prefWidth="408.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;">
                <children>
-                  <Label fx:id="firstLabelOnScreen" alignment="CENTER" prefHeight="25.0" prefWidth="402.0" text="text" textFill="#fffb00">
+                  <Label fx:id="firstLabelOnScreen" alignment="CENTER" prefHeight="25.0" prefWidth="402.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="text" textFill="#fffb00">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="15.0" />
                      </font>
@@ -122,7 +122,7 @@
                   </Label>
                   <TreeView fx:id="treeList" prefHeight="332.0" prefWidth="320.0" visible="false" />
                </children></VBox>
-            <Button fx:id="executeButton" alignment="CENTER" disable="true" layoutX="864.0" layoutY="468.0" mnemonicParsing="false" onAction="#executeButtonForFlow" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-radius: 20; -fx-border-width: 3; -fx-border-color: white;" text="Execute !">
+            <Button fx:id="executeButton" alignment="CENTER" disable="true" layoutX="864.0" layoutY="468.0" mnemonicParsing="false" onAction="#executeButtonForFlow" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-radius: 20; -fx-border-width: 3; -fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css" text="Execute !">
                <font>
                   <Font name="Arial Rounded MT Bold" size="20.0" />
                </font></Button>

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080.0" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowExecutions.FlowExecutions">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1080.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowExecutions.FlowExecutions">
    <children>
       <Label alignment="CENTER" layoutX="21.0" prefHeight="44.0" prefWidth="1048.0" styleClass="titles" text="Flow Executions" textFill="#fffe00">
          <font>

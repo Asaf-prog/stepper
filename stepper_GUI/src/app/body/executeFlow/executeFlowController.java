@@ -5,6 +5,7 @@ import app.body.bodyControllerDefinition;
 import app.body.bodyControllerExecuteFromHistory;
 import app.body.bodyControllerForContinuation;
 import app.body.executeFlow.executionDetails.ExecutionsDetails;
+import app.management.style.StyleManager;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -57,7 +58,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @FXML
     private Label continuationLabel;
     @FXML
-    private VBox optionalList;
+    private  VBox optionalList;
     @FXML
     private VBox continuationVbox;
     private List<Pair<String, String>> freeInputsTemp;
@@ -69,8 +70,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, String>> freeInputsMandatoryFromHistory;
     private List<Pair<String, String>> freeInputsOptionalFromHistory;
     private boolean isComeFromHistoy =false;
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     @FXML
     void initialize() {
+        setTheme();
         asserts();
         continuation.setVisible(false);
         continuationVbox.setVisible(false);

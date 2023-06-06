@@ -1,6 +1,7 @@
 package app;
 
 import app.management.resizeHelper.ResizeHelper;
+import app.management.style.StyleManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -13,6 +14,7 @@ import javafx.stage.StageStyle;
 public class StepperApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+        StyleManager onlyOne = new StyleManager();
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
         Scene scene = new Scene(load,1090,734);

@@ -2,6 +2,7 @@ package app.header;
 
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
+import app.management.style.StyleManager;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -10,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -73,6 +76,11 @@ public class headerController {
     @FXML
     private ImageView barLogo;
     double x, y;
+
+    @FXML
+    private Button closeButton;
+
+
 
     @FXML
     void closeApp(ActionEvent event) {
@@ -154,14 +162,27 @@ public class headerController {
     }
     @FXML
     void initialize() {
+        setTheme();
+        String buttonStyle=closeButton.getStyle();
+        closeButton.setOnMouseEntered(event -> {
+            closeButton.setStyle("-fx-background-color: #ff0000; -fx-background-radius: 15px;");
+        });
+        closeButton.setOnMouseExited(event -> {
+            closeButton.setStyle(buttonStyle);
+        });
+
         setTopBar();
         asserts();
         Events();
         setCssScreenButtons();
         setVGrow();
     }
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     private void setTopBar() {
-        Tooltip tooltip = new Tooltip("Saar Ha Gever \nAsaf Ha Homo");
+
+        Tooltip tooltip = new Tooltip("Saar Gever \nAsaf Homo");
         tooltip.setStyle("-fx-font-size: 22px; -fx-font-family: 'Arial'; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 1);");
         Tooltip.install(barLogo, tooltip);
         topBar.setOnMousePressed(event -> {
@@ -260,11 +281,16 @@ public class headerController {
         if (themeToggle.isSelected()) {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
-                scene.getStylesheets().add("app/body/theme/bodyLight.css");
+                StyleManager.setTheme("light");
+                scene.getStylesheets().clear();
+                scene.getStylesheets().add("app/management/style/lightTheme.css");
             }
         } else {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
+                StyleManager.setTheme("dark");
+                scene.getStylesheets().clear();
+                scene.getStylesheets().add("app/management/style/darkTheme.css");
             }
         }
     }
@@ -420,7 +446,7 @@ public class headerController {
         buypremiumBtn.setStyle("fx-border-color: #ffffff");
         buypremiumBtn.setStyle("-fx-border-width: 2px");
         buypremiumBtn.setStyle("-fx-text-fill: #ffff00");
-        buypremiumBtn.setStyle("-fx-background-color:  #36393e");
+        buypremiumBtn.setStyle("-fx-background-color:  #24292e");
 
         loadData.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);

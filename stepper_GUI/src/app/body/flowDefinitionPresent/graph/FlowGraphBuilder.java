@@ -14,8 +14,8 @@ public class FlowGraphBuilder {
         dotCode.append("  rankdir=LR;\n");
         dotCode.append("  size=\"400,400\";\n");
       //  dotCode.append("  node [style=filled, color=light blue];\n");
-        String color = "#36393e";
-        dotCode.append("   bgcolor=\"#36393e\";\n");
+        String color = "#24292e";
+        dotCode.append("   bgcolor=\"#24292e\";\n");
         dotCode.append("  user_inputs [label=\"User-Inputs\", shape=circle, color=blue, penwidth=5 ];\n");
         dotCode.append("  user_outputs [label=\"User-Outputs\", shape=circle, color=red, penwidth=5 ];\n");
         dotCode.append("  node [fontcolor=white];\n" +

@@ -1,4 +1,5 @@
 package app.body.executionsHistory.DataViewer;
+import app.management.style.StyleManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,9 +48,12 @@ public class DataViewerController {
         close.getScene().getWindow().hide();
 
     }
-
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     @FXML
     void initialize() {
+        setTheme();
         assert tablePane != null : "fx:id=\"tablePane\" was not injected: check your FXML file 'DataViewer.fxml'.";
         assert listPane != null : "fx:id=\"listPane\" was not injected: check your FXML file 'DataViewer.fxml'.";
         assert name != null : "fx:id=\"name\" was not injected: check your FXML file 'DataViewer.fxml'.";

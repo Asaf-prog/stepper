@@ -1,4 +1,4 @@
-package app.body.executionsHistory;
+package app.body.executionsHistory.tableStuff;
 
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -8,10 +8,10 @@ import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class FlowExecutionTableItem {
-    RadioButton id;
-    String name;
-    String time;
-    String result;
+    private RadioButton id;
+    private String name;
+    private String time;
+    private String result;
 
     public FlowExecutionTableItem(RadioButton id, String name, String time, String result) {
         this.id = id;

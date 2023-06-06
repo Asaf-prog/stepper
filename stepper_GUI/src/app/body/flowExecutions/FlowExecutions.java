@@ -2,6 +2,7 @@ package app.body.flowExecutions;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import app.management.style.StyleManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -11,11 +12,15 @@ import java.util.List;
 
 public class FlowExecutions implements bodyControllerDefinition {
     @FXML
-    private VBox boxWithList;
+    private  VBox boxWithList;
     private bodyController body;
     private List<FlowDefinitionImpl> flows;
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     @Override
     public void show() {
+        setTheme();
         for (FlowDefinitionImpl flow : flows){
             Button button = new Button(flow.getName());
             button.setOnAction(e -> handleButtonAction(flow));

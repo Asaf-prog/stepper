@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" style="-fx-background-color: #24292e;" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@header.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
-      <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #24292e;">
+      <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css">
          <children>
             <HBox fx:id="topBar" prefHeight="41.0" prefWidth="1070.0" style="-fx-background-color: #16191c; -fx-background-radius: 20;">
                <children>
@@ -22,11 +22,11 @@
                      </effect>
                   </ImageView>
                   <ImageView fitHeight="18.0" fitWidth="995.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button mnemonicParsing="false" onAction="#closeApp" prefHeight="33.0" prefWidth="38.0" style="-fx-background-color: transparent;">
+                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeApp" prefHeight="33.0" prefWidth="38.0" style="-fx-background-color: transparent;">
                      <graphic>
                         <ImageView fx:id="close" fitHeight="23.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../management/content/switch.png" />
+                              <Image url="@../management/content/close-window-48.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -116,7 +116,7 @@
             </Pane>
             <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: #24292e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font></Button>
@@ -125,12 +125,12 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Save Data" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #24292e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Save Data" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font>
                   </Button>
-                  <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #36393e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load Data" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #24292e; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="dataButton" text="Load Data" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font>

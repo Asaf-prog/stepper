@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.DataViewer.DataViewerController">
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #24292e;" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.DataViewer.DataViewerController">
    <children>
       <Label fx:id="name" layoutX="14.0" layoutY="6.0" prefHeight="34.0" prefWidth="568.0" text="Data Name:" textFill="#fffb09">
          <font>
@@ -28,12 +28,12 @@
             </Pane>
             <Pane fx:id="listPane" disable="true" prefHeight="301.0" prefWidth="576.0">
                <children>
-                  <ListView maxHeight="301.0" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e; -fx-max-height: 300;" />
+                  <ListView maxHeight="301.0" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292e; -fx-max-height: 300;" />
                </children>
             </Pane>
             <Pane fx:id="tablePane" disable="true" prefHeight="192.0" prefWidth="468.0">
                <children>
-                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e;" />
+                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292e;" />
                </children>
             </Pane>
          </children>

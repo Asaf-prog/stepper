@@ -1,6 +1,7 @@
 package app.body.executionsHistory.continuation;
 
 import app.body.bodyController;
+import app.management.style.StyleManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -41,7 +42,7 @@ public class ContinuationPopUp {
     private bodyController body;
 
     private List<String>  targetFlows;
-    private Stage   stage;
+    private  Stage  stage;
     private FlowDefinitionImpl targetFlow = null;
     private FlowExecution pickedExecution;
     private String buttonStyle;
@@ -99,8 +100,12 @@ public class ContinuationPopUp {
         }
         return null;
     }
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     @FXML
     void initialize() {
+        setTheme();
         assert runButton != null : "fx:id=\"runButton\" was not injected: check your FXML file 'ContinuationPopUp.fxml'.";
         assert flowsVbox != null : "fx:id=\"flowsVbox\" was not injected: check your FXML file 'ContinuationPopUp.fxml'.";
         String style=flowsVbox.getStyle();

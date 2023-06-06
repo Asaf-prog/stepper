@@ -1,0 +1,12 @@
+.bodyPane.bodyPane {
+    -fx-background-color: #a0ffe0;
+
+}
+
+.titles {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+

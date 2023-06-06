@@ -5,6 +5,8 @@ import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.executionsHistory.continuation.ContinuationPopUp;
+import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
+import app.management.style.StyleManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -86,7 +88,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     @FXML
-    private Button continuation;
+    private  Button continuation;
     @FXML
     private ChoiceBox<String> filterChoiceBox;
     private List<Pair<String, String>> freeInputsMandatory ;
@@ -97,8 +99,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private FlowExecution pickedExecution;
 
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     @FXML
     void initialize() {
+        setTheme();
         Stepper stepperData = DataManager.getData();
         asserts();
         setBisli();
@@ -326,7 +332,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
 
     private void tableItemEvents(Stepper stepperData, ToggleGroup group, FlowExecutionTableItem item) {
-        item.id.setOnAction(event -> {
+        item.getId().setOnAction(event -> {
             RadioButton selectedFlowRadioButton = (RadioButton) group.getSelectedToggle();
             if (selectedFlowRadioButton != null) {
                 UUID uuid= UUID.fromString(selectedFlowRadioButton.getText());

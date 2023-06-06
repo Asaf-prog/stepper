@@ -3,6 +3,7 @@ package app.body.flowDefinitionPresent;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.body.flowDefinitionPresent.graph.FlowGraphBuilder;
+import app.management.style.StyleManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -61,7 +62,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @FXML
     private RadioButton Outputs;
     @FXML
-    private VBox thiredVbox;
+    private  VBox thiredVbox;
     @FXML
     private Button executeButton;
     @FXML
@@ -98,15 +99,19 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     @Override
     public void show(){
+        setTheme();
         ToggleGroup group = new ToggleGroup();
         for (FlowDefinitionImpl flow :flows){
             RadioButton button = new RadioButton(flow.getName());
-            button.setStyle("-fx-text-fill: white");
+            button.setStyle("-fx-text-fill: #ffd54a");
             button.setOnAction(event -> handleButtonAction(flow));
             button.setToggleGroup(group);
             firstVbox.getChildren().add(button);
         }
         firstVbox.setSpacing(10);
+    }
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     private void handleButtonAction(FlowDefinitionImpl flow) {
         ToggleGroup group = new ToggleGroup();
@@ -167,7 +172,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     scrollPane.setHmax(image.getWidth());
                     scrollPane.setVmax(image.getHeight());
                     scrollPane.setPrefSize(1080, 720);
-                    scrollPane.setStyle("-fx-background-color:#36393e;");
+                    scrollPane.setStyle("-fx-background-color:#24292e;");
 
 
                     Scene scene = new Scene(scrollPane, 1080, 720);

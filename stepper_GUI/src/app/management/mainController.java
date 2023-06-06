@@ -5,6 +5,7 @@ import app.body.statsScreen.StatsScreen;
 import app.body.bodyController;
 import app.header.headerController;
 import app.management.resizeHelper.ResizeHelper;
+import app.management.style.StyleManager;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
@@ -35,7 +36,7 @@ public class mainController {
    public void initialize() {
       //appBoxStyle = appBox.getStyle();
       //appBox.setStyle(appBoxStyle + "-fx-background-radius: 20;");
-
+      StyleManager.setTheme(StyleManager.getCurrentTheme());
 
       if (headerComponentController != null && bodyComponentController != null) {
          headerComponentController.setMainController(this);

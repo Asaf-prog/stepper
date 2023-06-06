@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="1060.0" style="-fx-background-color: #36393e;" styleClass="bodyPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executionDetails.ExecutionsDetails">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="1060.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executionDetails.ExecutionsDetails">
    <children>
-      <Label fx:id="executionCounterLabel" alignment="CENTER" layoutX="228.0" prefHeight="41.0" prefWidth="565.0" styleClass="titles" text="Flow X Details" textFill="#fffb05">
+      <Label fx:id="executionCounterLabel" alignment="CENTER" layoutX="228.0" prefHeight="41.0" prefWidth="565.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Flow X Details" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
          </font></Label>
-      <Label fx:id="flowOutputsLabel" layoutX="11.0" layoutY="60.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Flow Outputs:" textFill="#fffb05">
+      <Label fx:id="flowOutputsLabel" layoutX="11.0" layoutY="60.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Flow Outputs:" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
@@ -40,12 +39,12 @@
             </VBox>
          </children>
       </Pane>
-      <Label fx:id="logslabel" layoutX="608.0" layoutY="60.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Logs:" textFill="#fffb05">
+      <Label fx:id="logslabel" layoutX="608.0" layoutY="60.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Logs:" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="logslabel1" layoutX="315.0" layoutY="60.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" text="Flow Inputs:" textFill="#fffb05">
+      <Label fx:id="logslabel1" layoutX="315.0" layoutY="60.0" prefHeight="17.0" prefWidth="231.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Flow Inputs:" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
@@ -54,7 +53,7 @@
          <children>
             <VBox fx:id="inputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Input" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../../management/style/darkTheme.css" text="Input" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -63,7 +62,7 @@
             </VBox>
             <VBox fx:id="inputsVbox4Value" prefHeight="216.0" prefWidth="158.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../../management/style/darkTheme.css" text="Value" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -76,7 +75,7 @@
          <children>
             <VBox fx:id="outputsVbox" prefHeight="216.0" prefWidth="145.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" text="Output" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="137.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../../management/style/darkTheme.css" text="Output" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -85,7 +84,7 @@
             </VBox>
             <VBox fx:id="outputsVbox4Value" prefHeight="245.0" prefWidth="159.0" spacing="2.0" style="-fx-border-color: white;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" text="Value" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../../management/style/darkTheme.css" text="Value" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -94,17 +93,17 @@
             </VBox>
          </children>
       </HBox>
-      <Label fx:id="exeTime" layoutX="839.0" layoutY="6.0" prefHeight="30.0" prefWidth="212.0" styleClass="titles" text="Took X MS" textFill="#fffb05">
+      <Label fx:id="exeTime" layoutX="839.0" layoutY="6.0" prefHeight="30.0" prefWidth="212.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Took X MS" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="logslabel11" alignment="CENTER" layoutX="431.0" layoutY="341.0" prefHeight="20.0" prefWidth="231.0" styleClass="titles" text="Click items to get more information" textFill="#fffb05">
+      <Label fx:id="logslabel11" alignment="CENTER" layoutX="431.0" layoutY="341.0" prefHeight="20.0" prefWidth="231.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Click items to get more information" textFill="#fffb05">
          <font>
             <Font name="Arial Rounded MT Bold" size="13.0" />
          </font>
       </Label>
-      <Label fx:id="statusLabel" layoutX="14.0" prefHeight="41.0" prefWidth="179.0" styleClass="titles" text="Status:" textFill="#12ff05">
+      <Label fx:id="statusLabel" layoutX="14.0" prefHeight="41.0" prefWidth="179.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Status:" textFill="#12ff05">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>

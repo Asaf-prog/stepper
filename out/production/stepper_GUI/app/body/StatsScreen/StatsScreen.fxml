@@ -4,28 +4,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #36393e; " styleClass="bodyPane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.statsScreen.StatsScreen">
+<AnchorPane prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #24292e; " styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.statsScreen.StatsScreen">
          <children>
-            <Label fx:id="flowDefinitionsSize" layoutX="14.0" prefHeight="30.0" prefWidth="306.0" style="-fx-text-fill: yellow;" styleClass="titles" text="there are X Flows Choose one ">
+            <Label fx:id="flowDefinitionsSize" layoutX="14.0" prefHeight="30.0" prefWidth="306.0" style="-fx-text-fill: yellow;" styleClass="titles" stylesheets="@../../management/style/lightTheme.css" text="there are X Flows Choose one ">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Label>
-            <Label fx:id="flowExecutionsSize" layoutX="512.0" prefHeight="30.0" prefWidth="348.0" style="-fx-text-fill: yellow;" styleClass="titles" text="there are X Steps Choose One" textAlignment="CENTER">
+            <Label fx:id="flowExecutionsSize" layoutX="512.0" prefHeight="30.0" prefWidth="348.0" style="-fx-text-fill: yellow;" styleClass="titles" stylesheets="@../../management/style/lightTheme.css" text="there are X Steps Choose One" textAlignment="CENTER">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Label>
             <Pane fx:id="flowPane" layoutX="512.0" layoutY="25.0" prefHeight="278.0" prefWidth="538.0">
          <children>
-                  <ListView fx:id="stepsList" prefHeight="285.0" prefWidth="220.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #36393e;" />
-                  <ListView fx:id="stepStatsList" layoutX="236.0" prefHeight="285.0" prefWidth="264.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #36393e;" />
+                  <ListView fx:id="stepsList" prefHeight="285.0" prefWidth="220.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #24292e;" />
+                  <ListView fx:id="stepStatsList" layoutX="236.0" prefHeight="285.0" prefWidth="264.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #24292e;" />
          </children>
             </Pane>
             <Pane fx:id="stepperPane" layoutY="22.0" prefHeight="296.0" prefWidth="508.0">
                <children>
-                  <ListView fx:id="flowsList" layoutX="14.0" layoutY="4.0" prefHeight="285.0" prefWidth="220.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #36393e;" />
-                  <ListView fx:id="flowStatsList" layoutX="247.0" layoutY="4.0" prefHeight="285.0" prefWidth="254.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #36393e;" />
+                  <ListView fx:id="flowsList" layoutX="14.0" layoutY="4.0" prefHeight="285.0" prefWidth="220.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #24292e;" />
+                  <ListView fx:id="flowStatsList" layoutX="247.0" layoutY="4.0" prefHeight="285.0" prefWidth="254.0" style="-fx-border-color: black; -fx-border-radius: 15; -fx-border-width: 3; -fx-background-radius: 17; -fx-background-color: #24292e;" />
                </children>
             </Pane>
       <Pane layoutX="14.0" layoutY="169.0" prefHeight="367.0" prefWidth="1048.0">

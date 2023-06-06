@@ -1,7 +1,7 @@
 digraph FlowDiagram {
   rankdir=LR;
   size="400,400";
-   bgcolor="#36393e";
+   bgcolor="#24292e";
   user_inputs [label="User-Inputs", shape=circle, color=blue, penwidth=5 ];
   user_outputs [label="User-Outputs", shape=circle, color=red, penwidth=5 ];
   node [fontcolor=white];

@@ -2,6 +2,7 @@ package app.body.executeFlow.executionDetails;
 
 import app.body.bodyController;
 import app.body.executionsHistory.DataViewer.DataViewerController;
+import app.management.style.StyleManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,7 @@ import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
-
+import static modules.DataManeger.DataManager.stepperData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +62,13 @@ public class ExecutionsDetails {
     @FXML
     private Label statusLabel;
     //ctor
+
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
+    }
     @FXML
     void initialize() {
-        Stepper stepperData = DataManager.getData();
+        setTheme();
         asserts();
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
@@ -99,8 +104,10 @@ public class ExecutionsDetails {
         executionCounterLabel.setText("Execution number: "+theFlow.getUniqueId());
     }
 
-    private static FlowExecution getLastFlowExecution(Stepper stepperData) {
-        return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
+        private FlowExecution getLastFlowExecution(Stepper stepperData){
+
+                return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
+
     }
 
     private void asserts() {

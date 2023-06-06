@@ -4,15 +4,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="296.0" prefWidth="506.0" style="-fx-background-color: #36393e;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="296.0" prefWidth="506.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="runButton" layoutX="33.0" layoutY="250.0" mnemonicParsing="false" onAction="#runContinuation" prefHeight="38.0" prefWidth="440.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 3;" text="Run Continuation" textFill="#f2ff01">
+      <Button fx:id="runButton" layoutX="33.0" layoutY="250.0" mnemonicParsing="false" onAction="#runContinuation" prefHeight="38.0" prefWidth="440.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 3;" stylesheets="@../../../management/style/darkTheme.css" text="Run Continuation" textFill="#f2ff01">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font></Button>
       <HBox layoutX="9.0" layoutY="8.0" prefHeight="38.0" prefWidth="488.0" style="-fx-background-color: yellow; -fx-background-radius: 10;">
          <children>
-            <Label alignment="CENTER" prefHeight="59.0" prefWidth="503.0" style="=: ;" text="Choose Flow for Continuation">
+            <Label id="DataViewerTitle" alignment="CENTER" prefHeight="59.0" prefWidth="503.0" stylesheets="@../../../management/style/darkTheme.css" text="Choose Flow for Continuation">
                <font>
                   <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>

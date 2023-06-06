@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
+import app.management.style.StyleManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -49,7 +50,7 @@ public class StatsScreen implements bodyControllerDefinition {
     private Label flowDefinitionsSize;
 
     @FXML
-    private ListView<String> stepsList;
+    private  ListView<String> stepsList;
 
     @FXML
     private ListView<String> stepStatsList;
@@ -66,6 +67,7 @@ public class StatsScreen implements bodyControllerDefinition {
 
     @FXML
     void initialize() {
+        setTheme();
         listStyle=flowsList.getStyle();
         asserts();
         setListsToVisible();
@@ -76,6 +78,9 @@ public class StatsScreen implements bodyControllerDefinition {
         //set listeners
         setListeners();
         setListsView();
+    }
+    private static void setTheme() {
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
 
     private void asserts() {
@@ -136,7 +141,7 @@ public class StatsScreen implements bodyControllerDefinition {
         }
 
         // Set styling for the chart plot and legend
-        barChart.lookup(".chart-plot-background").setStyle("-fx-background-color: #36393e;");
+        barChart.lookup(".chart-plot-background").setStyle("-fx-background-color: #24292e;");
         barChart.lookup(".chart-legend").setStyle("-fx-text-fill: #ffffff;");
 
         // Set styling for the bars
@@ -184,10 +189,10 @@ public class StatsScreen implements bodyControllerDefinition {
 
     private void setListsView() {
 
-        flowsList.setStyle(listStyle+";-fx-font-size: 14;-fx-alignment: center;-fx-font-weight: bold;-fx-control-inner-background: #36393e;");
-        flowStatsList.setStyle(listStyle+";-fx-font-size: 12;-fx-alignment: center;-fx-control-inner-background: #36393e;");
-        stepsList.setStyle(listStyle+";-fx-font-size: 14;-fx-alignment: center;-fx-font-weight: bold;-fx-control-inner-background: #36393e;");
-        stepStatsList.setStyle(listStyle+";-fx-font-size: 12;-fx-alignment: center;-fx-control-inner-background: #36393e;");
+        flowsList.setStyle(listStyle+";-fx-font-size: 14;-fx-alignment: center;-fx-font-weight: bold;-fx-control-inner-background: #24292e;");
+        flowStatsList.setStyle(listStyle+";-fx-font-size: 12;-fx-alignment: center;-fx-control-inner-background: #24292e;");
+        stepsList.setStyle(listStyle+";-fx-font-size: 14;-fx-alignment: center;-fx-font-weight: bold;-fx-control-inner-background: #24292e;");
+        stepStatsList.setStyle(listStyle+";-fx-font-size: 12;-fx-alignment: center;-fx-control-inner-background: #24292e;");
 
     }
 
