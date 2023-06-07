@@ -6,15 +6,22 @@ import app.body.bodyController;
 import app.header.headerController;
 import app.management.resizeHelper.ResizeHelper;
 import app.management.style.StyleManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.flow.execution.FlowExecution;
+import modules.flow.execution.FlowExecutionResult;
 
 import java.awt.*;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import static modules.DataManeger.DataManager.stepperData;
 
 public class mainController {
    private List<FlowDefinitionImpl> flows;
@@ -30,12 +37,13 @@ public class mainController {
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
    private MVC_controller mvcController;
+   private FlowExecution lastFlowExecution;
    private double xOffset;
    private double yOffset;
    @FXML
    public void initialize() {
-      //appBoxStyle = appBox.getStyle();
-      //appBox.setStyle(appBoxStyle + "-fx-background-radius: 20;");
+
+
       StyleManager.setTheme(StyleManager.getCurrentTheme());
 
       if (headerComponentController != null && bodyComponentController != null) {
@@ -48,9 +56,41 @@ public class mainController {
          bodyComponentController.setMVCController(mvcController);
          headerComponentController.setMVCController(mvcController);
 
+
+
+         //set thread to update the UI
+
+         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+         // Schedule the task to run every 200 ms
+         executorService.scheduleAtFixedRate(() -> {
+            Platform.runLater(() -> updateUI()); // Update UI
+         }, 0, 200, TimeUnit.MILLISECONDS);
+
       }
 
    }
+
+   private void updateUI() {
+      lastFlowExecution = stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
+      if (lastFlowExecution != null) {
+         boolean isDone = lastFlowExecution.isDone.get(); // Assuming you have an instance of ExecutionTask named executionTask
+         if (isDone) {
+            // Flow execution is done
+            if (lastFlowExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE)) {
+               //refresh executionHistory table
+               bodyComponentController.showHistoryExe();
+
+            }
+            if (lastFlowExecution.getFlowExecutionResult().equals(FlowExecutionResult.SUCCESS)) {
+               bodyComponentController.showHistoryExe();
+            } else {//warning
+               // ...
+            }
+         }
+      }
+   }
+
 
    public void setFlows(List<FlowDefinitionImpl> f){
        this.flows = f;

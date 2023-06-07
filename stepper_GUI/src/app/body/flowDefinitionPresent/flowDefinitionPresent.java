@@ -260,7 +260,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @FXML
     void executeButtonForFlow(ActionEvent event) {
         body.executeExistFlowScreen(body.getCurrentFlow());
-        
+
     }
    @FXML
     void executeFlowFunc(ActionEvent event) {
