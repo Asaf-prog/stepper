@@ -251,7 +251,7 @@ public class headerController {
     }
     private void setTopBar() {
 
-        Tooltip tooltip = new Tooltip("Saar Gever \nAsaf Homo");
+        Tooltip tooltip = new Tooltip("Saar=Gever\nAsaf=Efes");
         tooltip.setStyle("-fx-font-size: 22px; -fx-font-family: 'Arial'; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 1);");
         Tooltip.install(barLogo, tooltip);
         topBar.setOnMousePressed(event -> {
