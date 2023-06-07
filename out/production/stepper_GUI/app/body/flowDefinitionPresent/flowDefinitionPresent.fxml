@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.flowDefinitionPresent.flowDefinitionPresent">
    <children>
-      <AnchorPane fx:id="ExecuteButton" prefHeight="292.0" prefWidth="600.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css">
+      <AnchorPane fx:id="ExecuteButton" prefHeight="292.0" prefWidth="600.0" style="-fx-background-color: transparent;" styleClass="flowDefPresent" stylesheets="@../../management/style/darkTheme.css">
          <children>
-            <VBox fx:id="firstVbox" layoutX="14.0" layoutY="14.0" prefHeight="414.0" prefWidth="262.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;">
+            <VBox fx:id="firstVbox" layoutX="14.0" layoutY="14.0" prefHeight="414.0" prefWidth="262.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: transparent;" stylesheets="@../../management/style/darkTheme.css">
                <children>
                   <Label alignment="CENTER" prefHeight="23.0" prefWidth="239.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Flow Pool" textFill="#fff608">
                      <font>
@@ -22,7 +22,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="seocendVbox" layoutX="275.0" layoutY="14.0" prefHeight="414.0" prefWidth="332.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;">
+            <VBox fx:id="seocendVbox" layoutX="275.0" layoutY="14.0" prefHeight="414.0" prefWidth="332.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: transparent;">
                <children>
                   <Label alignment="CENTER" prefHeight="23.0" prefWidth="336.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Selected Flow Details" textFill="#fff608">
                      <font>
@@ -110,7 +110,7 @@
                   </VBox>
                </children>
             </VBox>
-            <VBox fx:id="thiredVbox" layoutX="606.0" layoutY="14.0" prefHeight="414.0" prefWidth="408.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;">
+            <VBox fx:id="thiredVbox" layoutX="606.0" layoutY="14.0" prefHeight="414.0" prefWidth="408.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: transparent;">
                <children>
                   <Label fx:id="firstLabelOnScreen" alignment="CENTER" prefHeight="25.0" prefWidth="402.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="text" textFill="#fffb00">
                      <font>
@@ -126,9 +126,9 @@
                <font>
                   <Font name="Arial Rounded MT Bold" size="20.0" />
                </font></Button>
-            <Pane fx:id="scatchPane" layoutX="608.0" layoutY="14.0" prefHeight="414.0" prefWidth="466.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3;" visible="false">
+            <Pane fx:id="scatchPane" layoutX="608.0" layoutY="14.0" prefHeight="414.0" prefWidth="459.0" style="-fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: transparent;" visible="false">
                <children>
-                  <ImageView fx:id="graphPNG" fitHeight="377.0" fitWidth="473.0" layoutX="2.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="graphPNG" fitHeight="377.0" fitWidth="448.0" layoutX="2.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
                   <Label layoutX="185.0" layoutY="1.0" prefHeight="26.0" prefWidth="110.0" text="Flow Graph" textFill="#fffb00">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="15.0" />

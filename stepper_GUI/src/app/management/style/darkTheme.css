@@ -1,2 +1,95 @@
 
+.screenButton {
+    background-color: mediumpurple;
+    border: black;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
 
+.screenButton:hover {
+    background-color: #001e80;
+    color: white;
+}
+.bodyPane {
+    -fx-background: #24292e;
+}
+.PathLabel{
+    -fx-border-color:  rgb(179,0,220);
+    -fx-border-width: 2px;
+    -fx-background-radius:20;
+    -fx-border-radius:20;
+
+}
+
+.titles {
+    -fx-text-fill: #ffec06;
+}
+
+
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-selection-bar;
+}
+.table-view .column-header.titleOfColumn .label {
+    -fx-text-fill: yellow;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+}
+.table-view .column-header.radio-button-for-table .label {
+
+    -fx-alignment: top-left;
+}
+.DDLabel {
+    -fx-alignment: top-center;
+    -fx-border-color: yellow;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-border-width: 1px;
+}
+.radio-button-in-table {
+    -fx-alignment: top-left;
+    -fx-pref-width: 351px;
+}
+.VBox {
+    -fx-alignment: transparent;
+}
+.logsTree{
+    -fx-background-color: transparent;
+    -fx-text-fill: #07ff0f;
+    -fx-spacing: 7px;
+}
+.logsTree.tree-cell{
+    -fx-background-color: transparent;
+    -fx-text-fill: #0eff0e;
+    -fx-spacing: 7px;
+}
+
+.tableColumn{
+    -fx-background-color:  #36393e;
+}
+
+.flowDefPresent {
+    -fx-background-color: #00ff00;
+}
+
+.dataButton {
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}

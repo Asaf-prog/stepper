@@ -56,3 +56,6 @@
     -fx-background-radius: 5;
     -fx-padding: 5;
 }
+.tableColumn{
+    -fx-background-color:  #36393e;
+}

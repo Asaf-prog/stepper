@@ -103,7 +103,11 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         ToggleGroup group = new ToggleGroup();
         for (FlowDefinitionImpl flow :flows){
             RadioButton button = new RadioButton(flow.getName());
-            button.setStyle("-fx-text-fill: #ffd54a");
+            //button.setStyle("-fx-text-fill: #ffd54a");
+            button.getStylesheets().add("app/management/style/darkTheme.css");
+            button.getStyleClass().add("radioButton");
+
+           // button.getStylesheets().add("app/management/style/darkTheme.css");
             button.setOnAction(event -> handleButtonAction(flow));
             button.setToggleGroup(group);
             firstVbox.getChildren().add(button);
@@ -153,6 +157,13 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         FlowGraphBuilder.buildFlowGraph(flow);
         Image image = new Image("file:appContent/flow.png");//TODO => change the path to put  png inside graph package
         graphPNG.setImage(image);
+        graphPNG.setOnMouseEntered(event -> {
+            graphPNG.setImage(new Image("file:appContent/clickMe.png"));
+        });
+        graphPNG.setOnMouseExited(event -> {
+            graphPNG.setImage(image);
+        });
+        graphPNG.setPreserveRatio(true);
         graphPNG.setOnMouseClicked( event -> {
                     //open the image in big in new window
                     Stage stage = new Stage();

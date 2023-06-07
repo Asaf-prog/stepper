@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="35.0" prefHeight="175.0" prefWidth="1057.0" style="-fx-background-color: transparent;" stylesheets="@tableStuff/table-style.css">
+      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="35.0" prefHeight="175.0" prefWidth="1057.0" style="-fx-background-color: transparent;" styleClass="Table" stylesheets="@../../management/style/darkTheme.css">
          <columns>
-            <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" text="Flow ID" />
+            <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" styleClass="tableColumn" text="Flow ID" />
 
-            <TableColumn fx:id="nameCol" editable="false" prefWidth="323.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14; -fx-background-color: #36393e; -fx-alignment: center;" text="Flow Name" />
-            <TableColumn fx:id="timeCol" editable="false" prefWidth="212.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Time" />
-            <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" text="Status" />
+            <TableColumn fx:id="nameCol" editable="false" prefWidth="323.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14; -fx-background-color: #36393e; -fx-alignment: center;" styleClass="tableColumn" text="Flow Name" />
+            <TableColumn fx:id="timeCol" editable="false" prefWidth="212.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" styleClass="tableColumn" text="Time" />
+            <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="169.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" styleClass="tableColumn" text="Status" />
          </columns>
       </TableView>
       <Label fx:id="executionCounterLabel" layoutX="415.0" layoutY="-4.0" prefHeight="37.0" prefWidth="251.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="there are X flow Executions" textFill="#fffb05">
@@ -58,9 +58,9 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <HBox layoutX="314.0" layoutY="230.0" prefHeight="298.0" prefWidth="286.0" style="-fx-border-color: white;" stylesheets="@tableStuff/table-style.css">
+      <HBox layoutX="314.0" layoutY="230.0" prefHeight="298.0" prefWidth="286.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
          <children>
-            <VBox fx:id="inputsVbox" prefHeight="296.0" prefWidth="135.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox" prefHeight="296.0" prefWidth="135.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="144.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Input" textFill="#9c40ff">
                      <font>
@@ -69,7 +69,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="inputsVbox4Value" prefHeight="263.0" prefWidth="153.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="inputsVbox4Value" prefHeight="263.0" prefWidth="153.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="157.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Value" textFill="#9c40ff">
                      <font>
@@ -80,9 +80,9 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="231.0" prefHeight="298.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@tableStuff/table-style.css">
+      <HBox layoutX="10.0" layoutY="231.0" prefHeight="298.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
          <children>
-            <VBox fx:id="outputsVbox" prefHeight="263.0" prefWidth="152.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="outputsVbox" prefHeight="263.0" prefWidth="152.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="147.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Output" textFill="#9c40ff">
                      <font>
@@ -91,7 +91,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="outputsVbox4Value" prefHeight="263.0" prefWidth="159.0" spacing="2.0" style="-fx-border-color: white;">
+            <VBox fx:id="outputsVbox4Value" prefHeight="263.0" prefWidth="159.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="152.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Value" textFill="#9c40ff">
                      <font>

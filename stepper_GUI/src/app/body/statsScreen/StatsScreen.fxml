@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #24292e; " styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.statsScreen.StatsScreen">
+<AnchorPane prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.statsScreen.StatsScreen">
          <children>
             <Label fx:id="flowDefinitionsSize" layoutX="14.0" prefHeight="30.0" prefWidth="306.0" style="-fx-text-fill: yellow;" styleClass="titles" stylesheets="@../../management/style/lightTheme.css" text="there are X Flows Choose one ">
                <font>

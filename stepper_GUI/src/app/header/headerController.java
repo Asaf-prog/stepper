@@ -23,6 +23,7 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
+import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
 
 import java.io.File;
@@ -41,6 +42,8 @@ public class headerController {
     private Label flow3ProgressLabel;
     @FXML
     private Label flow4ProgressLabel;
+    @FXML
+    private Button flowExecution;
     @FXML
     private Button saveData;
     @FXML
@@ -79,7 +82,31 @@ public class headerController {
 
     @FXML
     private Button closeButton;
+    @FXML
+    private HBox menuHbox;
 
+    public String lastPressed = "none";
+
+    public void setLastPressed(String lastPressed) {
+    	if (lastPressed.equals("none")) {
+    		return;
+    	} else if(lastPressed.equals("flowExecution")) {
+    		setAsPressed(flowExecution);
+    	} else if (lastPressed.equals("flowDefinition")) {
+            setAsPressed(FlowsDefinition);
+        }else if (lastPressed.equals("statistics")) {
+            setAsPressed(Statistics);
+        }else if (lastPressed.equals("executionsHistory")) {
+            setAsPressed(ExecutionsHistory);
+        }
+    }
+
+    private void setAsPressed(Button pressed) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(100), pressed);
+        scaleTransition.setToX(1.1);
+        scaleTransition.setToY(1.1);
+        scaleTransition.play();
+    }
 
 
     @FXML
@@ -97,10 +124,14 @@ public class headerController {
     ////////////////////////////  functions  ////////////////////////////
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
+        removeLastPressed();
+        setLastPressed("flowDefinition");
         main.showFlowDefinition();
     }
 
     void StatsScreenPresent() {
+        removeLastPressed();
+        setLastPressed("statistics");
         main.showStats();
     }
 
@@ -114,8 +145,36 @@ public class headerController {
 
     @FXML
     void ExecutionsHistoryFunc(ActionEvent event) {
+        removeLastPressed();
+        setLastPressed("executionsHistory");
         main.showHistoryExe();
     }
+
+    private void removeLastPressed() {
+        switch(lastPressed) {
+            case "flowExecution":
+                removePressed(flowExecution);
+                break;
+            case "flowDefinition":
+                removePressed(FlowsDefinition);
+                break;
+            case "statistics":
+                removePressed(Statistics);
+                break;
+            case "executionsHistory":
+                removePressed(ExecutionsHistory);
+                break;
+        }
+    }
+
+    private void removePressed(Button flowExecution) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(100), flowExecution);
+        scaleTransition.setToX(1);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
+
+    }
+
     public void addProgress(ProgressBar progressBar, Label label,int free) {
         String style4Bar, style4Label;
         switch (free) {
@@ -163,6 +222,8 @@ public class headerController {
     @FXML
     void initialize() {
         setTheme();
+        setMenuButtonGroup();
+        makeExecutionButtonInvisible();
         String buttonStyle=closeButton.getStyle();
         closeButton.setOnMouseEntered(event -> {
             closeButton.setStyle("-fx-background-color: #ff0000; -fx-background-radius: 15px;");
@@ -172,11 +233,19 @@ public class headerController {
         });
 
         setTopBar();
+
         asserts();
         Events();
         setCssScreenButtons();
         setVGrow();
     }
+
+    private void setMenuButtonGroup() {
+        ToggleGroup group = new ToggleGroup();
+
+
+    }
+
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
@@ -197,8 +266,8 @@ public class headerController {
     }
 
     private void setVGrow() {
-        GridPane.setVgrow(loaded, Priority.ALWAYS);
-        GridPane.setVgrow(progressGrid, Priority.ALWAYS);
+        //GridPane.setVgrow(loaded, Priority.ALWAYS);
+        //GridPane.setVgrow(progressGrid, Priority.ALWAYS);
     }
 
     private void asserts() {
@@ -226,15 +295,47 @@ public class headerController {
         FlowsDefinition.getStyleClass().add("screenButton");
         ExecutionsHistory.getStyleClass().add("screenButton");
         Statistics.getStyleClass().add("screenButton");
+        flowExecution.getStyleClass().add("screenButton");
+
+        flowExecution.setOnMouseEntered(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), flowExecution);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+            if (StyleManager.getCurrentTheme().equals("light")){
+                buttonStyle = flowExecution.getStyle();
+                flowExecution.setStyle("-fx-border-color: black;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(0,33,255);");
+            } else {
+                buttonStyle = flowExecution.getStyle();
+                flowExecution.setStyle("-fx-border-color: white;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(139,0,201);");
+            }
+        });
+
+        FlowsDefinition.setOnMouseExited(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+
+            FlowsDefinition.setStyle(buttonStyle);
+        });
+
+
 
         FlowsDefinition.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            buttonStyle = FlowsDefinition.getStyle();
-            FlowsDefinition.setStyle("-fx-border-color: white;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(139,0,201);");
+            if (StyleManager.getCurrentTheme().equals("light")){
+                buttonStyle = FlowsDefinition.getStyle();
+                FlowsDefinition.setStyle("-fx-border-color: black;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(0,33,255);");
+            } else {
+                buttonStyle = FlowsDefinition.getStyle();
+                FlowsDefinition.setStyle("-fx-border-color: white;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(139,0,201);");
+            }
         });
+
         FlowsDefinition.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
             scaleTransition.setToX(1);
@@ -248,9 +349,16 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            buttonStyle = ExecutionsHistory.getStyle();
-            ExecutionsHistory.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            if (StyleManager.getCurrentTheme().equals("light")){
+                buttonStyle = ExecutionsHistory.getStyle();
+                ExecutionsHistory.setStyle("-fx-background-color: rgb(32,33,255);-fx-background-radius: 20;-fx-border-color: #020101; -fx-border-radius: 20;");
+            } else{
+                buttonStyle = ExecutionsHistory.getStyle();
+                ExecutionsHistory.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            }
+
         });
+
         ExecutionsHistory.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), ExecutionsHistory);
             scaleTransition.setToX(1);
@@ -264,8 +372,14 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            buttonStyle = Statistics.getStyle();
-            Statistics.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            if (StyleManager.getCurrentTheme().equals("light")){
+                buttonStyle = Statistics.getStyle();
+                Statistics.setStyle("-fx-background-color: rgb(62,31,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
+
+            }else {
+                buttonStyle = Statistics.getStyle();
+                Statistics.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            }
         });
         Statistics.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), Statistics);
@@ -282,6 +396,7 @@ public class headerController {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
                 StyleManager.setTheme("light");
+                themeToggle.setText("Light Theme");
                 scene.getStylesheets().clear();
                 scene.getStylesheets().add("app/management/style/lightTheme.css");
             }
@@ -289,15 +404,14 @@ public class headerController {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
                 StyleManager.setTheme("dark");
+                themeToggle.setText("Dark Theme");
                 scene.getStylesheets().clear();
                 scene.getStylesheets().add("app/management/style/darkTheme.css");
             }
         }
     }
-
     @FXML
     void SaveData(ActionEvent event) {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Data");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -314,8 +428,6 @@ public class headerController {
                 alert.showAndWait();
             }
         }
-
-
     }
 
     @FXML
@@ -382,34 +494,44 @@ public class headerController {
         } else {
             Stage stage = (Stage) buypremiumBtn.getScene().getWindow();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
             alert.setTitle("I LOVE YOU <3");
             alert.setHeaderText(null);
-            alert.setContentText("                                                                             \n" +
-                    "                      *          ,&&&&&,    ./                                  \n" +
-                    "                            %#/*//((###%%%%##%%/                                \n" +
-                    "                         #/**/(#%%%%%%%%%%%%%%%%###                             \n" +
-                    "                   .  %/*,,*(##%%%%%%%%%%%%%%%%%%%#%*                           \n" +
-                    "                     #,,,,/(###%%%%%%%%%%%%%%%%%%%%%##*                         \n" +
-                    "                    #*,,,*/###((/////(#%%%%%%%%%%%%%%(#*                        \n" +
-                    "                 #/*,,,,,*((/,,,,,,,,*/(###(/**/(#%%%(*(*      .,               \n" +
-                    "             ,.#*,,,....,//**/**,,,,***,*****,,,,,*##/*,/%        /             \n" +
-                    "             %/,.,,,,..,/(#########(***/%#/*,,,,**,*(*,,,/&                     \n" +
-                    "            (*,..,,.,.,(##%%%%%%%%%%%%%%%%%%####(((/*,.,,,*%                    \n" +
-                    "            (,...,....,((((####%%%%%##%%%%%%%%%%%%%%#*,..,*#.                   \n" +
-                    "        ,   %*........,/((((######((##(#####%%%%%%%%%/,...,*#                   \n" +
-                    "            %*,...,,.,**/((####((/**,,,*/*/((##%%###(*,,,,*/%                   \n" +
-                    "             /,..,......,/((((//*,,.,,,,,,,,*/#####/,,..,*%                     \n" +
-                    "             %/,,,**,...,,/((*,..,**//(((/**,,*##(*,.,,.,*(.                    \n" +
-                    "               %##&#*.....,,*,.*/(((((((#(/*,,,/*,,..,,,*(       .              \n" +
-                    "                  (*,,,....,..,*(((*,,,*/##(/,,,,....,/##(//%                   \n" +
-                    "                 ## **/#((/*,,.,,,,....,,//*,,,,...,/#          (               \n" +
-                    "                           %//,,...........,**,,.,*%                            \n" +
-                    "                         #&%%&&&%%%%%%%%%%%&  .%%%&            ,           ");
-            Window window = buypremiumBtn.getScene().getWindow();
-            double width = 900;
-            double height = 20;
+            alert.getDialogPane().setPrefSize(1000, 600);
+            alert.getDialogPane().setStyle("-fx-background-color: blue;");
+
+            alert.setContentText("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#BBGGGGPGGBB#&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#BGPYJ?77!~~~~~!!7J5B&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#GGPY7!~~~~~~~~~^^^^^~!?P#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BGGG5?!!~~~~~~~~~~~~^^~~~~~?P&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#GPGG5J!!!!~~~~~~~~~~~~~~~~~~~!Y#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#GGGGPJ7!!!!!!!!!!~~~~~^^^~~~~~~!5B@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#BGGGGGP?7?Y5PPGGGG5?!!~~!!!!~~~~~!YPB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BGPGGBBBBY?J5PPPPPGGGPYJ?77JPGP5Y7!~!YPPB@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#BGBGGBBBBGYY5YYY5PPGPPPGPYY5PPPGGGG5775GPPB@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BBBBGGGBBBGJ?77!777777?Y55?~!5PPGGP5PGY?GGGPG#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPGBBGGBBBGJ7!~~~~~~~~~~~!!~^^!!7??JJ?JYPBBGGPG#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GGBBBGBBBBG?7777!!!~~~~~!!~~^^~~~~~~~~!7JGBBGGPB@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@BGBBBBBBBBGY????77!!!!7?7!!!~~~~~~~~~~~~!YBBBGGG&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@BBBBBBBBBBPY???777777?JYJYYJ??77!!~~~~!~75GGBBGPB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#BBBBBBBBBGGP?77777?J5GBBBGPPGPY?7!~!!!75BBGGGPB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BGBBBBBBBB#BY?7??5PGGGGGPPPPGGGPY7!!!?5BGBBGGB@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@BGGGBPGBBBBBPJ7J5BBBG55YYJ?JJ5PGGY77YPBBGBBGPG#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BGGGGBBBBBBGPPBBPYJ??????7?JPBBP?5GBBBGBGPG#&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BBBGBBBBBBBBGY77?5P55Y?!!?PBGPGBBBBGPPPPPG#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&BGGBBBBBBBBBBBGP5PBBBBB577JPBGGBBBBGPG&#BGPB@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#&&#GG&&&##BPBBBBBBBBBBBGGBGGGBBBGG#&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&#&&&##GJ5GBBBBBBBBBBBPJ?5GBBGB@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&&&&&&&@@@@@@@@&###&&&&&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" +
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            alert.getDialogPane().setStyle("-fx-font-family: monospace");
+            Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            dialogStage.setWidth(1080);
+            dialogStage.setHeight(720);
 
             // Set the alert window siz
             //alert.initOwner(window instanceof Stage ? (Stage) window : null);
@@ -424,8 +546,14 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            buttonStyle = loadXMLbutton.getStyle();
-            loadXMLbutton.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            if (StyleManager.getCurrentTheme().equals("light")) {
+                buttonStyle = loadXMLbutton.getStyle();
+                loadXMLbutton.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
+            }
+            else {
+                buttonStyle = loadXMLbutton.getStyle();
+                loadXMLbutton.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            }
 
         });
         loadXMLbutton.setOnMouseExited(event -> {
@@ -443,18 +571,24 @@ public class headerController {
             rotateTransition.setAutoReverse(false); // Disable auto-reverse
             rotateTransition.play(); // Start the rotation animation
         });
-        buypremiumBtn.setStyle("fx-border-color: #ffffff");
-        buypremiumBtn.setStyle("-fx-border-width: 2px");
-        buypremiumBtn.setStyle("-fx-text-fill: #ffff00");
-        buypremiumBtn.setStyle("-fx-background-color:  #24292e");
+//        buypremiumBtn.setStyle("fx-border-color: #ffffff");
+//        buypremiumBtn.setStyle("-fx-border-width: 2px");
+//        buypremiumBtn.setStyle("-fx-text-fill: #ffff00");
+//        buypremiumBtn.setStyle("-fx-background-color:  #24292e");
 
         loadData.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            buttonStyle = loadData.getStyle();
-            loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            if (StyleManager.getCurrentTheme().equals("light")){
+                buttonStyle = loadData.getStyle();
+                loadData.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
+            } else{
+                buttonStyle = loadData.getStyle();
+                loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            }
+
         });
         loadData.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
@@ -469,9 +603,13 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            buttonStyle = saveData.getStyle();
-            saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
-
+            if (StyleManager.getCurrentTheme().equals("light")) {
+                buttonStyle = saveData.getStyle();
+                saveData.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
+            }else {
+                buttonStyle = saveData.getStyle();
+                saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
+            }
         });
         saveData.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), saveData);
@@ -480,6 +618,14 @@ public class headerController {
             scaleTransition.play();
             saveData.setStyle(buttonStyle);
         });
+    }
+
+    @FXML
+    void flowExecutionPresents(ActionEvent event) {
+        removeLastPressed();
+        setLastPressed("flowExecution");
+        main.showExecution();
+
     }
     @FXML
     void StatisticsFunc(ActionEvent event) {
@@ -528,6 +674,15 @@ public class headerController {
 
     }
 
+
+    public void makeExecutionButtonVisible() {
+        menuHbox.getChildren().add(flowExecution);
+        flowExecution.setVisible(true);
+    }
+    public void makeExecutionButtonInvisible() {
+        menuHbox.getChildren().remove(flowExecution);
+        flowExecution.setVisible(false);
+    }
     public void setDisableOnExecutionsHistory() {
         ExecutionsHistory.setDisable(false);
     }
@@ -566,7 +721,6 @@ public class headerController {
         }
         return null;
     }
-
 }
 
 

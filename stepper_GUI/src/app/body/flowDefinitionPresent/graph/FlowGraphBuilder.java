@@ -1,5 +1,6 @@
 package app.body.flowDefinitionPresent.graph;
 
+import app.management.style.StyleManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.DataDefinitionDeclaration;
@@ -12,10 +13,17 @@ public class FlowGraphBuilder {
         StringBuilder dotCode = new StringBuilder();
         dotCode.append("digraph FlowDiagram {\n");
         dotCode.append("  rankdir=LR;\n");
-        dotCode.append("  size=\"400,400\";\n");
+        dotCode.append("  size=\"400,600\";\n");
       //  dotCode.append("  node [style=filled, color=light blue];\n");
-        String color = "#24292e";
-        dotCode.append("   bgcolor=\"#24292e\";\n");
+        String color;
+        if (StyleManager.getCurrentTheme().equals("dark")) {
+            color = "#24292e";
+        }else{
+
+            color = "#40ffb4";
+        }
+
+        dotCode.append("  bgcolor=\"#24292e\"\n");
         dotCode.append("  user_inputs [label=\"User-Inputs\", shape=circle, color=blue, penwidth=5 ];\n");
         dotCode.append("  user_outputs [label=\"User-Outputs\", shape=circle, color=red, penwidth=5 ];\n");
         dotCode.append("  node [fontcolor=white];\n" +

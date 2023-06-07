@@ -1,11 +1,11 @@
 package app.body.executeFlow;
-
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.body.bodyControllerExecuteFromHistory;
 import app.body.bodyControllerForContinuation;
 import app.body.executeFlow.executionDetails.ExecutionsDetails;
 import app.management.style.StyleManager;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -22,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -69,17 +70,20 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
     private List<Pair<String, String>> freeInputsMandatoryFromHistory;
     private List<Pair<String, String>> freeInputsOptionalFromHistory;
-    private boolean isComeFromHistoy =false;
+    @FXML
+    private Label flowNameLabel;
+    private boolean isComeFromHistory =false;
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     @FXML
     void initialize() {
-        setTheme();
         asserts();
+        setTheme();
         continuation.setVisible(false);
         continuationVbox.setVisible(false);
         continuationExe.setVisible(false);
+
     }
     private void asserts() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
@@ -90,6 +94,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         assert continuationLabel != null : "fx:id=\"continuationLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert showDetails != null : "fx:id=\"showDetails\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert continuationExe != null : "fx:id=\"continuationExe\" was not injected: check your FXML file 'executeFlowController.fxml'.";
+        assert flowNameLabel != null : "fx:id=\"flowNameLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
     }
     @Override
     public void show() {
@@ -111,6 +116,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         mandatoryHandler(mandatoryInputs);
         optionalHandler(optionalInputs);
         setSizeOfMandatoryList(mandatoryInputs.size());
+        flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
+
     }
     @Override
     public void showForContinuation() {
@@ -483,7 +490,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
-        if (!isComeFromHistoy)
+        if (!isComeFromHistory)
             setTheNewInputsThatTheUserSupply();
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
         showDetails.setDisable(true);
@@ -492,11 +499,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
-        isComeFromHistoy = false;
+        isComeFromHistory = false;
         //pops out flows Details...
         // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
+        enableOptionOfExecutionScreen(lastFlowExecution);
 
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
             @Override
@@ -507,6 +515,20 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         });
     }
+
+    private void enableOptionOfExecutionScreen(FlowExecution lastFlowExecution) {
+        if (lastFlowExecution != null) {
+            if (lastFlowExecution.isDone.get()) {
+                showDetails.setDisable(false);
+                showDetails.setVisible(true);
+            }
+
+        }
+        //todo add button to execution screen with inputs of the last execution
+
+
+    }
+
     private void setTheNewInputsThatTheUserSupply(){
         freeInputsMandatory = new ArrayList<>();
         freeInputsOptional = new ArrayList<>();
@@ -577,8 +599,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         } else {
             if (!data.isEmpty() && !nameOfDD.equals("FOLDER_NAME")) {
-                freeInputsTemp.add(new Pair<>(nameOfDD, data));
-                addButton.setText("Edit");
+                Boolean valid=validateInput(data, type,textField,addButton);
+                if (valid) {
+                    freeInputsTemp.add(new Pair<>(nameOfDD, data));
+                    addButton.setText("Edit");
+                }else {
+                    addButton.setText("Save");
+                }
+
             } else if (nameOfDD.equals("FOLDER_NAME")) {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
                 directoryChooser.setTitle("Choose Directory");
@@ -600,6 +628,50 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
+    private boolean validateInput(String data, Class<?> type, TextField textField,Button btn) {//todo check if works
+        if (type.equals(Integer.class)) {
+            try {
+                Integer.parseInt(data);
+            } catch (NumberFormatException e) {
+                String msg = "Please enter a number";
+                setApropTooltip(textField, msg);
+                return false;
+            }
+        } else if (type.equals(Double.class)) {
+            try {
+                Double.parseDouble(data);
+            } catch (NumberFormatException e) {
+                String msg = "Please enter a double";
+                setApropTooltip(textField, msg);
+                return false;
+            }
+        }else if (type.equals(String.class)) {
+                if (data.isEmpty()) {
+                    String msg = "Please enter a String";
+                    setApropTooltip(textField, msg);
+                    return false;
+                }if (data.contains("?")) {
+                    String msg = "Please enter a String without '?'";
+                    setApropTooltip(textField, msg);
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    private static void setApropTooltip(TextField textField, String msg) {
+        Tooltip tooltip = new Tooltip(msg);
+        tooltip.setStyle("-fx-background-color: #ff0000; -fx-text-fill: #000000;");
+        double tooltipX = textField.localToScreen(textField.getBoundsInLocal()).getMinX() + textField.getWidth() / 2;
+        double tooltipY = textField.localToScreen(textField.getBoundsInLocal()).getMinY() - 30; // Adjust the offset as needed
+        tooltip.show(textField, tooltipX, tooltipY);
+        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+        delay.setOnFinished(event -> tooltip.hide());
+        delay.play();
+        textField.clear();
+    }
+
     private int checkHowMandatoryInputsINFreeInputsTemp(){
         int counter = 0;
         for (Pair<String, String> data: freeInputsTemp){
@@ -652,7 +724,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         createComponentForMandatoryFromHistory();
         createComponentForOptionalFromHistory();
         startExecute.setDisable(false);
-        isComeFromHistoy = true;
+        isComeFromHistory = true;
     }
     private void createComponentForOptionalFromHistory() {
         for (Pair<String,String> optinal: freeInputsOptionalFromHistory) {

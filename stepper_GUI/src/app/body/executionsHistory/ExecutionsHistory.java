@@ -437,12 +437,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private void updateTime(FlowExecution selectedFlow) {
         exeTime.setDisable(false);
         exeTime.setVisible(true);
-        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" MS ");
+        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" ms ");
     }
 
     private void updateOutputs(FlowExecution selectedFlow) {
-        Label title= (Label) this.outputsVbox.getChildren().get(0);//todo 333
-        Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);//todo 333
+        Label title= (Label) this.outputsVbox.getChildren().get(0);
+        Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
         this.outputsVbox4Value.getChildren().clear();
         this.outputsVbox.getChildren().clear();
         this.outputsVbox.getChildren().add(title);

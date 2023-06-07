@@ -80,4 +80,8 @@ public class mainController {
             headerComponent.getStylesheets().add("app/header/theme/headerLight.css");
       }
    }
+
+    public void showExecution() {
+      bodyComponentController.showAllFlowAndExe();
+    }
 }

@@ -171,7 +171,7 @@ public class ExecutionsDetails {
                             setGraphic(null);
                         } else {
                             setText(item);
-                            setStyle("-fx-background-color: transparent; -fx-text-fill: green;"); // Set the style of each tree component
+                            setStyle("-fx-background-color: transparent; -fx-text-fill: #00ff00;"); // Set the style of each tree component
                         }
                     }
                 };
