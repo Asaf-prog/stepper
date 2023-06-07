@@ -79,12 +79,10 @@ public class headerController {
     @FXML
     private ImageView barLogo;
     double x, y;
-
     @FXML
     private Button closeButton;
     @FXML
     private HBox menuHbox;
-
     public String lastPressed = "none";
 
     public void setLastPressed(String lastPressed) {
@@ -100,7 +98,6 @@ public class headerController {
             setAsPressed(ExecutionsHistory);
         }
     }
-
     private void setAsPressed(Button pressed) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(100), pressed);
         scaleTransition.setToX(1.1);
@@ -113,8 +110,6 @@ public class headerController {
     void closeApp(ActionEvent event) {
         Platform.exit();
     }
-
-
 
     boolean subscription = false;
     int nextFreeProgressor = 1;

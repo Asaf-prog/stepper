@@ -184,15 +184,10 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     scrollPane.setVmax(image.getHeight());
                     scrollPane.setPrefSize(1080, 720);
                     scrollPane.setStyle("-fx-background-color:#24292e;");
-
-
                     Scene scene = new Scene(scrollPane, 1080, 720);
                     scene.setFill(Color.valueOf("#36393e"));
                     stage.setScene(scene);
                     stage.show();
-
-
-
 
                 }
 
@@ -265,6 +260,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @FXML
     void executeButtonForFlow(ActionEvent event) {
         body.executeExistFlowScreen(body.getCurrentFlow());
+        
     }
    @FXML
     void executeFlowFunc(ActionEvent event) {
