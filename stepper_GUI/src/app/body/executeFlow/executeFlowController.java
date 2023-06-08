@@ -83,7 +83,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         continuation.setVisible(false);
         continuationVbox.setVisible(false);
         continuationExe.setVisible(false);
-
     }
     private void asserts() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
@@ -209,6 +208,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         return false;
     }
     private String getDataThatSupplyAndUpdateTheListOfFreeInputs(Continuation continuation,String nameToSearch){
+
         if (existInInitialValue(nameToSearch)) {
             return getExistInInitialValue(nameToSearch);
         }
@@ -220,6 +220,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
             }
         } else if (thisDataSupplyByFreeInputsOfLastFlow(nameToSearch)) {
+
             for (Pair<String, String> lastMandatory:freeInputsMandatory) {
                 if (lastMandatory.getKey().equals(nameToSearch)) {
                     freeInputsTemp.add(new Pair<>(nameToSearch,lastMandatory.getValue()));//add data to list of data
@@ -229,6 +230,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
             return null;
     }
+
     private boolean thisDataSupplyByRecentFlow(String nameToSearch,Continuation continuation){
         if(outputsOfLastFlow.containsKey(nameToSearch) || thisDataSupplyByFreeInputsOfLastFlow(nameToSearch)||
                 customMappingWithContinuation(nameToSearch,continuation)||existInInitialValue(nameToSearch))
@@ -258,7 +260,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
        return false;
     }
     private boolean thisDataSupplyByFreeInputsOfLastFlow(String nameToSearch){
-        for (Pair<String, String> lastMandatory:freeInputsMandatory){
+        for (Pair<String, DataDefinitionDeclaration> lastMandatory: currentMandatoryFreeInput){
             if (lastMandatory.getKey().equals(nameToSearch))
                 return true;
         }
@@ -428,6 +430,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
         ToggleGroup group = new ToggleGroup();
@@ -455,6 +458,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             FlowExecution flowThatCurrentFinish = getFlowExecutionByName(currentFlow.getName());
             if (flowThatCurrentFinish != null){
                 Map<String,Object> outputs = flowThatCurrentFinish.getAllExecutionOutputs();
+                if (currentMandatoryFreeInput == null){
+                    System.out.println("null");
+                }
+                if (currentOptionalFreeInput == null){
+
+                }
             body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,currentFlow);
         }
             else
@@ -504,7 +513,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
-        enableOptionOfExecutionScreen(lastFlowExecution);
+        enablesDetails(lastFlowExecution);
 
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
             @Override
@@ -515,8 +524,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         });
     }
-
-    private void enableOptionOfExecutionScreen(FlowExecution lastFlowExecution) {
+    private void enablesDetails(FlowExecution lastFlowExecution) {
         if (lastFlowExecution != null) {
             if (lastFlowExecution.isDone.get()) {
                 showDetails.setDisable(false);
@@ -526,9 +534,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         //todo add button to execution screen with inputs of the last execution
 
-
     }
-
     private void setTheNewInputsThatTheUserSupply(){
         freeInputsMandatory = new ArrayList<>();
         freeInputsOptional = new ArrayList<>();
@@ -551,7 +557,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void handleButtonActionForShowDetails() {
         showExecutionDetails();
     }
-
     private void showExecutionDetails() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("executionDetails/ExecutionsDetails.fxml"));
         ExecutionsDetails executionsDetails = new ExecutionsDetails();
@@ -573,16 +578,18 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, Class<?> type, HBox Hbox,boolean isOptional) {
         if (addButton.getText().equals("Edit")) {
+            //if
             if (nameOfDD.equals("FOLDER_NAME")) {
-                DirectoryChooser directoryChooser = new DirectoryChooser();
-                directoryChooser.setTitle("Choose Directory");
-                File selectedDirectory = directoryChooser.showDialog(null);
-                if (selectedDirectory != null) {
-                    int index = getIndexOfLabel(Hbox);
-                    Label label = (Label) Hbox.getChildren().get(index);
-                    label.setText(selectedDirectory.getAbsolutePath());
-                    data = selectedDirectory.getAbsolutePath();
-                }
+                    DirectoryChooser directoryChooser = new DirectoryChooser();
+                    directoryChooser.setTitle("Choose Directory");
+                    File selectedDirectory = directoryChooser.showDialog(null);
+                    if (selectedDirectory != null) {
+                        int index = getIndexOfLabel(Hbox);
+                        Label label = (Label) Hbox.getChildren().get(index);
+                        label.setText(selectedDirectory.getAbsolutePath());
+                        data = selectedDirectory.getAbsolutePath();
+                    }
+
             } else {
                 addButton.setText("Save");
                 for (Pair<String, String> pair : freeInputsTemp) {
@@ -597,7 +604,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     startExecute.setDisable(true);
                 }
             }
-        } else {
+        }
+        else {
             if (!data.isEmpty() && !nameOfDD.equals("FOLDER_NAME")) {
                 Boolean valid=validateInput(data, type,textField,addButton);
                 if (valid) {
@@ -611,13 +619,15 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 DirectoryChooser directoryChooser = new DirectoryChooser();
                 directoryChooser.setTitle("Choose Directory");
                 File selectedFile = directoryChooser.showDialog(null);
-                freeInputsTemp.add(new Pair<>(nameOfDD, selectedFile.toString()));
-                addButton.setText("Edit");
-                int index = Hbox.getChildren().indexOf(textField);
-                Label label = new Label(selectedFile.toString());
-                label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
-                Hbox.getChildren().set(index, label);
-                textField.setText(selectedFile.toString());
+                if (selectedFile != null) {
+                    freeInputsTemp.add(new Pair<>(nameOfDD, selectedFile.toString()));
+                    addButton.setText("Edit");
+                    int index = Hbox.getChildren().indexOf(textField);
+                    Label label = new Label(selectedFile.toString());
+                    label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
+                    Hbox.getChildren().set(index, label);
+                    textField.setText(selectedFile.toString());
+                }
             }
             if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional) {
                 startExecute.setDisable(false);
@@ -628,7 +638,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
-
     private boolean validateInput(String data, Class<?> type, TextField textField,Button btn) {//todo check if works
         if (type.equals(Integer.class)) {
             try {
@@ -710,9 +719,18 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
-        showDetails.setDisable(true);
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
+        enablesDetails(lastFlowExecution);
+
+        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                Platform.runLater(() -> {
+                    popupDetails();
+                });
+            }
+        });
     }
     @Override
     public void setBodyControllerContinuation(bodyController body){
@@ -767,8 +785,16 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @Override
     public void setFreeInputsMandatoryAndOptional(List<Pair<String, String>> freeInputMandatory,
-                                                  List<Pair<String, String>> freeInputOptional){
+                                                  List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
+
         this.freeInputsMandatoryFromHistory = freeInputMandatory;
         this.freeInputsOptionalFromHistory = freeInputOptional;
+        this.freeInputsMandatory = freeInputMandatory;
+        this.freeInputsOptional = freeInputOptional;
+
+        this.currentMandatoryFreeInput = freeInputsMandatoryWithDD;
+        this.currentOptionalFreeInput = freeInputsOptionalWithDD;
+
     }
 }

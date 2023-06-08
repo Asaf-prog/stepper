@@ -1,6 +1,5 @@
 package app.body;
 
-import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
 import java.util.List;

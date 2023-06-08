@@ -92,7 +92,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private ChoiceBox<String> filterChoiceBox;
     private List<Pair<String, String>> freeInputsMandatory ;
+    private List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD ;
     private List<Pair<String, String>> freeInputsOptional;
+    private List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private bodyController body;
@@ -209,10 +211,20 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         if (pickedExecution != null) {
             FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
             addValueOfFreeInputsByTypes(flowDefinition);
+            setFreeInputsByTypesToMandatoryAndOptionalWithDD(flowDefinition);
+            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition,freeInputsMandatoryWithDD
+            ,freeInputsOptionalWithDD);
 
-            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition);
-
-            //todo fill with asaf
+        }
+    }
+    private void setFreeInputsByTypesToMandatoryAndOptionalWithDD(FlowDefinitionImpl flowDefinition){
+        freeInputsMandatoryWithDD = new ArrayList<>();
+        freeInputsOptionalWithDD = new ArrayList<>();
+        for (Pair<String,DataDefinitionDeclaration>pair: flowDefinition.getFlowFreeInputs()){
+            if (pair.getValue().isMandatory())
+                freeInputsMandatoryWithDD.add(pair);
+            else
+                freeInputsOptionalWithDD.add(pair);
         }
     }
     private void addValueOfFreeInputsByTypes(FlowDefinitionImpl flowDefinition){

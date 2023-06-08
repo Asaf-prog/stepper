@@ -46,6 +46,7 @@ public class bodyController {
             bodyControllerDefinition bController = fxmlLoader.getController();
             bController.setFlowsDetails(main.getFlows());
             bController.setBodyController(this);
+            bController.SetCurrentFlow(currentFlow);
 
             bController.show();
 
@@ -93,7 +94,7 @@ public class bodyController {
     }
     public void showAllFlowAndExe(){
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("FlowExecutions/FlowExecutions.fxml");
+        URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
@@ -146,12 +147,14 @@ public class bodyController {
         }
     }
     public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
-            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition){
+            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
 
-        executeExistFlowScreenFromHistoryScreen(freeInputMandatory,freeInputOptional,flowDefinition);
+        executeExistFlowScreenFromHistoryScreen(freeInputMandatory,freeInputOptional,flowDefinition,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
     }
     private void executeExistFlowScreenFromHistoryScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
-            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition){
+            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
         setCurrentFlow(flowDefinition);
 
         try {//first create a new body with the relevant free inputs and then update in context
@@ -160,21 +163,22 @@ public class bodyController {
             URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
             fxmlLoader.setLocation(url);
 
-            loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional);
+            loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
     private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
-                                       List<Pair<String, String>> freeInputOptional){
+                                       List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
 
         try {
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerExecuteFromHistory bodyController = fxmlLoader.getController();
             bodyController.setBodyControllerFromHistory(this);
             bodyController.SetCurrentFlowFromHistory(flow);
-            bodyController.setFreeInputsMandatoryAndOptional(freeInputMandatory,freeInputOptional);
+            bodyController.setFreeInputsMandatoryAndOptional(freeInputMandatory,freeInputOptional,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
             bodyController.showFromHistory();
 
             bodyPane.getChildren().setAll(screen);
@@ -182,5 +186,9 @@ public class bodyController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){
+        main.getHeaderComponentController().SetExecutionButtonVisible(flowDefinition);
+
     }
 }

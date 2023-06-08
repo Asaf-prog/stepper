@@ -113,11 +113,13 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             firstVbox.getChildren().add(button);
         }
         firstVbox.setSpacing(10);
+
     }
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     private void handleButtonAction(FlowDefinitionImpl flow) {
+        this.body.setButtonExecutionFromHeader(flow);
         ToggleGroup group = new ToggleGroup();
         executeButton.setDisable(false);
         body.setCurrentFlow(flow);
@@ -188,16 +190,9 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     scene.setFill(Color.valueOf("#36393e"));
                     stage.setScene(scene);
                     stage.show();
-
                 }
-
-
-
                 );
-
-
     }
-
     private void handleButtonActionForFreeInputs(FlowDefinitionImpl flow){
         scatchPane.setVisible(false);
         thiredVbox.setVisible(true);

@@ -11,19 +11,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
-import modules.flow.execution.FlowExecution;
+import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 
 import java.io.File;
@@ -62,7 +58,6 @@ public class headerController {
     private ToggleButton themeToggle;
     @FXML
     private Button Statistics;
-    private MVC_controller controller;
     @FXML
     private Button ExecutionsHistory;
     private mainController main;
@@ -84,6 +79,8 @@ public class headerController {
     @FXML
     private HBox menuHbox;
     public String lastPressed = "none";
+    private FlowDefinitionImpl currentFlow;
+    private MVC_controller controller;
 
     public void setLastPressed(String lastPressed) {
     	if (lastPressed.equals("none")) {
@@ -306,16 +303,14 @@ public class headerController {
             }
         });
 
-        FlowsDefinition.setOnMouseExited(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
+        flowExecution.setOnMouseExited(event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), flowExecution);
             scaleTransition.setToX(1);
             scaleTransition.setToY(1);
             scaleTransition.play();
 
-            FlowsDefinition.setStyle(buttonStyle);
+            flowExecution.setStyle(buttonStyle);
         });
-
-
 
         FlowsDefinition.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), FlowsDefinition);
@@ -619,6 +614,7 @@ public class headerController {
     void flowExecutionPresents(ActionEvent event) {
         removeLastPressed();
         setLastPressed("flowExecution");
+        main.setCurrentFlow(currentFlow);
         main.showExecution();
 
     }
@@ -669,7 +665,6 @@ public class headerController {
 
     }
 
-
     public void makeExecutionButtonVisible() {
         menuHbox.getChildren().add(flowExecution);
         flowExecution.setVisible(true);
@@ -701,7 +696,6 @@ public class headerController {
         }
         return null;
     }
-
     public Label getNextLabel(int free) {
         switch (free) {
             case 1:
@@ -715,6 +709,16 @@ public class headerController {
 
         }
         return null;
+    }
+    public void SetExecutionButtonVisible(FlowDefinitionImpl flowDefinition){
+
+        if (!menuHbox.getChildren().contains(flowExecution)) {
+            flowExecution.setVisible(true);
+            flowExecution.setDisable(false);
+            menuHbox.getChildren().add(flowExecution);
+
+        }
+        this.currentFlow = flowDefinition;
     }
 }
 

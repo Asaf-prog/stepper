@@ -1,14 +1,12 @@
 package app.management;
 
 import app.MVC_controller.MVC_controller;
-import app.body.statsScreen.StatsScreen;
 import app.body.bodyController;
+import app.body.statsScreen.StatsScreen;
 import app.header.headerController;
-import app.management.resizeHelper.ResizeHelper;
 import app.management.style.StyleManager;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -32,6 +30,7 @@ public class mainController {
    private MVC_controller mvcController;
    private double xOffset;
    private double yOffset;
+   private FlowDefinitionImpl currentFlow;
    @FXML
    public void initialize() {
       //appBoxStyle = appBox.getStyle();
@@ -50,6 +49,10 @@ public class mainController {
 
       }
 
+   }
+
+   public void setCurrentFlow(FlowDefinitionImpl flow) {
+      this.currentFlow = flow;
    }
 
    public void setFlows(List<FlowDefinitionImpl> f){
@@ -82,6 +85,10 @@ public class mainController {
    }
 
     public void showExecution() {
+      bodyComponentController.setCurrentFlow(currentFlow);
       bodyComponentController.showAllFlowAndExe();
+    }
+    public headerController getHeaderComponentController(){
+      return headerComponentController;
     }
 }
