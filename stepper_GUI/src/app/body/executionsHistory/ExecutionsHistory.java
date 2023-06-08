@@ -272,7 +272,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 stage.showAndWait();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("BASA");
             }
         }
 
@@ -509,7 +509,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         }
                     } catch (IOException e) {
                         System.out.println("failed to load data viewer");
-                        e.printStackTrace();
                     }
                 }
         );

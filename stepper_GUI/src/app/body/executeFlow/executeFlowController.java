@@ -509,8 +509,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             continuation.setDisable(false);
         }
         isComeFromHistory = false;
-        //pops out flows Details...
-        // todo here import stepper and get last execution then add listener to isDone prop and when it's true then show details button
+        //todo details here
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
         enablesDetails(lastFlowExecution);
@@ -570,7 +569,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             stage.setScene(new Scene(root, 1060, 365));
             stage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
     }
     private FlowExecution getLastFlowExecution() {

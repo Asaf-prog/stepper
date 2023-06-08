@@ -53,7 +53,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
     }
     public void executeExistFlowScreen(FlowDefinitionImpl flow) {
@@ -83,7 +83,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
     }
     public void showHistoryExe(){
@@ -143,7 +143,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
     }
     public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
@@ -166,7 +166,7 @@ public class bodyController {
             loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("BASA");
         }
     }
     private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
@@ -184,7 +184,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
     }
     public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){
