@@ -66,7 +66,7 @@ public class FlowGraphBuilder {
         try (PrintWriter writer = new PrintWriter(dotFilePath)) {
             writer.print(dotCode.toString());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
         // Generate the graph using the Graphviz command-line tool
         try {
@@ -74,7 +74,7 @@ public class FlowGraphBuilder {
             Process process = processBuilder.start();
             process.waitFor();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("BASA");
         }
     }
 }

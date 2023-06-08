@@ -34,7 +34,7 @@ public class CommandLine extends AbstractStepDefinition {
             processBuilder.command(command.split(" "));
 
             if (arguments != null && !arguments.isEmpty()) {
-                processBuilder.command().addAll(Arrays.asList(arguments.split(" ")));
+                //processBuilder.command().addAll(Arrays.asList(arguments.split(" ")));
             }
 
             Process process = processBuilder.start();
@@ -42,10 +42,10 @@ public class CommandLine extends AbstractStepDefinition {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder output = new StringBuilder();
 
-            String line;
-            while ((line = reader.readLine()) != null) {
+            String line= "";
+            do{
                 output.append(line).append("\n");
-            }
+            }  while ((line = reader.readLine()) != null);
 
             int exitCode = process.waitFor();
 
