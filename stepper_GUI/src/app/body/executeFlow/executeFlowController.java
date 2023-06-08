@@ -417,14 +417,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
     }
     private String getExistInInitialValue(String nameToSearchInKey){
-        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValues()){
+        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
             if (initialInputValues.getInputName().equals(nameToSearchInKey))
                 return initialInputValues.getInitialValue();
         }
         return null;
     }
     private boolean existInInitialValue(String nameToSearchInKey){
-        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValues()){
+        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
             if (initialInputValues.getInputName().equals(nameToSearchInKey))
                 return true;
         }

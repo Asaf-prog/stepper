@@ -8,13 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -24,6 +20,7 @@ import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.DataDefinitionDeclaration;
+
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,10 +28,6 @@ import java.util.ResourceBundle;
 public class flowDefinitionPresent implements bodyControllerDefinition {
     @FXML
     private Pane scatchPane;
-
-    private List<FlowDefinitionImpl> flows;
-    private bodyController body;
-    private FlowDefinitionImpl currentFlow;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -75,6 +68,10 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private ImageView graphPNG;
     @FXML
     private RadioButton graph;
+    private List<FlowDefinitionImpl> flows;
+    private bodyController body;
+    private FlowDefinitionImpl currentFlow;
+
     @FXML
     void initialize() {
         assert ExecuteButton != null : "fx:id=\"ExecuteButton\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";

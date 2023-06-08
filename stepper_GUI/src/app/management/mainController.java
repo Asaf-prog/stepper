@@ -15,21 +15,19 @@ import java.awt.*;
 import java.util.List;
 
 public class mainController {
-   private List<FlowDefinitionImpl> flows;
    @FXML private Parent headerComponent;
    @FXML private Parent bodyComponent;
    @FXML private AnchorPane generalPane;
    @FXML private headerController headerComponentController;
-
    @FXML private HBox appBox;
-   String appBoxStyle;
-
    @FXML private ScrollPane scrollPane;
    @FXML private bodyController bodyComponentController;
    private StatsScreen statsScreen;
+   String appBoxStyle;
    private MVC_controller mvcController;
    private double xOffset;
    private double yOffset;
+   private List<FlowDefinitionImpl> flows;
    private FlowDefinitionImpl currentFlow;
    @FXML
    public void initialize() {
@@ -54,7 +52,6 @@ public class mainController {
    public void setCurrentFlow(FlowDefinitionImpl flow) {
       this.currentFlow = flow;
    }
-
    public void setFlows(List<FlowDefinitionImpl> f){
        this.flows = f;
    }
@@ -83,7 +80,6 @@ public class mainController {
             headerComponent.getStylesheets().add("app/header/theme/headerLight.css");
       }
    }
-
     public void showExecution() {
       bodyComponentController.setCurrentFlow(currentFlow);
       bodyComponentController.showAllFlowAndExe();

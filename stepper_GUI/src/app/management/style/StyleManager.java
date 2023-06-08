@@ -13,7 +13,6 @@ public class StyleManager {
         scene.getStylesheets().clear();
         scene.getStylesheets().add(currentTheme);
     }
-
     public static void setTheme(String lightOrDark) {
         if (lightOrDark.equals("light"))
             currentTheme = LIGHT_THEME;

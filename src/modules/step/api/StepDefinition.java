@@ -3,7 +3,6 @@ package modules.step.api;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.execution.context.StepExecutionContext;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,5 +16,6 @@ public interface StepDefinition {
     String getName();
 
     DataDefinition getDataDefinitionByName(String DDName);
+    DataDefinitionDeclaration getDataDefinitionDeclarationByName(String DDName);
     DataDefinition getDataDefinitionByNameTarget(String DDName);
 }

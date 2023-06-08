@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 public class GuiAdapter {
     //binds the gui to the engine according to the MVC pattern
-
     private Consumer<Double> progressUpdater;
     private Consumer<String> statusUpdater;
 
@@ -19,7 +18,6 @@ public class GuiAdapter {
         Platform.runLater(() -> progressUpdater.accept(progress));
         //todo change to actual progress
     }
-
     public void updateStatus(String status) {
         Platform.runLater(() -> statusUpdater.accept(status));
     }

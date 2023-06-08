@@ -47,7 +47,6 @@ public interface StepUsageDeclaration extends Serializable {
     Instant stopStepTimer();
     void setStepDuration(Duration duration);
     Duration getTotalTime();
-
     void setStepResult(StepResult stepResult);
     StepResult getStepResult();
 

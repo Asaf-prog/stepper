@@ -1,18 +1,15 @@
 package modules.flow.definition.api;
-import modules.mappings.Continuation;
-import modules.mappings.CustomMapping;
-import modules.mappings.FlowLevelAlias;
-import modules.mappings.InitialInputValues;
+
+import javafx.util.Pair;
+import modules.mappings.*;
 import modules.step.api.DataDefinitionDeclaration;
+import modules.stepper.FlowDefinitionException;
+import modules.stepper.FlowDefinitionExceptionItems;
 
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.*;
-
-import javafx.util.Pair;
-import modules.stepper.FlowDefinitionException;
-import modules.stepper.FlowDefinitionExceptionItems;
-import schemeTest2.generatepackage.STInitialInputValues;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
@@ -33,8 +30,9 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
     //EX2
     protected List<Continuation> continuations;
+    private List<FlowDefinitionImpl> flows;
 
-    protected List<InitialInputValues> InitialInputValues;
+    protected List<InitialInputValues> InitialInputValuesData;
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
         this.description = description;
@@ -49,7 +47,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         timesUsed=0;
         avgTime=0;
         continuations=new ArrayList<>();
-        InitialInputValues=new ArrayList<>();
+        InitialInputValuesData =new ArrayList<>();
 
     }
     public void setFlowOutputs(List<String> flowOutputs) {
@@ -84,12 +82,12 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         this.continuations = continuations;
     }
 
-    public List<modules.mappings.InitialInputValues> getInitialInputValues() {
-        return InitialInputValues;
+    public List<modules.mappings.InitialInputValues> getInitialInputValuesData() {
+        return InitialInputValuesData;
     }
 
-    public void setInitialInputValues(List<modules.mappings.InitialInputValues> initialInputValues) {
-        InitialInputValues = initialInputValues;
+    public void setInitialInputValuesData(List<modules.mappings.InitialInputValues> initialInputValuesData) {
+        InitialInputValuesData = initialInputValuesData;
     }
     @Override
     public List<String> getFlowOfAllStepsOutputs() {
@@ -163,7 +161,104 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             checkIfExistAliasForFlowStepOrDataThatNotExist();//4.4
             checkIfTheFormalOutputsExist();//4.5
             checkIfAllConnectionsAreValid();
+            //new validation for task two
+            checkIfCarriedOutContinuationToFlowThatNotExist();
+            checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition();
+            checkIfTheInitialValueExistInFlow();// check if the input-name exist in the list of the inputs of this flows
 
+    }
+    private void checkIfCarriedOutContinuationToFlowThatNotExist() throws FlowDefinitionException {
+        if (!checkContinuationCorrect()){
+            String name = getNameOFTheFlowThatNotExist();
+            String message = "The Flow "+ name +" is not exist";
+            throw new FlowDefinitionException(FlowDefinitionExceptionItems.THIS_FLOW_FOR_CONTINUATION_DOES_NOT_EXIST,message);
+        }
+    }
+    private boolean checkContinuationCorrect(){
+        int counter = 0;
+
+        for (Continuation continuation:continuations) {
+            for (FlowDefinitionImpl flowDefinition : this.flows) {
+                if (continuation.getTargetFlow().equals(flowDefinition.getName()))
+                    counter++;
+            }
+        }
+
+        if (counter == continuations.size())
+            return true;
+        else
+            return false;
+    }
+    private String getNameOFTheFlowThatNotExist(){
+        List<String> tempName = new ArrayList<>();
+        List<String> tempContinuation = new ArrayList<>();
+        for (Continuation continuation:continuations) {
+            tempContinuation.add(continuation.getTargetFlow());
+            for (FlowDefinitionImpl flowDefinition : this.flows) {
+                if (continuation.getTargetFlow().equals(flowDefinition.getName()))
+                    tempName.add(continuation.getTargetFlow());
+            }
+        }
+        for (String temp: tempName){
+            if (!tempContinuation.contains(temp))
+                return temp;
+        }
+        return null;
+    }
+    private void checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition() throws FlowDefinitionException {
+        for (Continuation continuation:continuations) {
+            for (ContinuationMapping mapping: continuation.getMappingList()){
+                if (!sameType(mapping.getSourceData(),mapping.getTargetData(),continuation.getTargetFlow())){
+                    String message = "The Data Definition "+ mapping.getSourceData() + " and "+ mapping.getTargetData()+ " are not in the same type";
+                    throw new FlowDefinitionException(FlowDefinitionExceptionItems.THE_TARGET_AND_THE_SOURCE_ARE_NOT_IN_THE_SAME_TYPE,message);
+                }
+            }
+        }
+    }
+    private boolean sameType(String sourceDD, String targetDD,String targetFlow){
+       FlowDefinitionImpl targetFlowImp = getFlowByName(targetFlow);
+        DataDefinitionDeclaration source =returnTheDDByNameOfOutputsDD(sourceDD);
+        DataDefinitionDeclaration target= returnTheDDByNameOfInputsDD(targetDD,targetFlowImp);
+       if (source.dataDefinition().getType().isAssignableFrom(target.dataDefinition().getType()))
+           return true;
+       else
+           return false;
+    }
+    private DataDefinitionDeclaration returnTheDDByNameOfOutputsDD(String nameOfOutput){
+        for (StepUsageDeclaration step: steps){
+            DataDefinitionDeclaration temp= step.getStepDefinition().getDataDefinitionDeclarationByName(nameOfOutput);
+             if (temp != null)
+                 return temp;
+        }
+        return null;
+    }
+    private DataDefinitionDeclaration returnTheDDByNameOfInputsDD (String nameToSearch,FlowDefinitionImpl flowDefinition){
+        for (Pair<String,DataDefinitionDeclaration> pair : flowDefinition.getFlowFreeInputs()){
+            String temp = pair.getKey().toString();
+            if(temp.equals(nameToSearch))
+                return pair.getValue();
+        }
+        return null;
+    }
+    private FlowDefinitionImpl getFlowByName (String name){
+        for (FlowDefinitionImpl flowDefinition: flows){
+            if (flowDefinition.getName().equals(name))
+                return flowDefinition;
+        }
+        return null;
+    }
+    private void checkIfTheInitialValueExistInFlow() throws FlowDefinitionException {
+        List <String> nameOfInitialValue = new ArrayList<>();
+        for (Pair<String,DataDefinitionDeclaration> pair: freeInputs){
+            nameOfInitialValue.add(pair.getKey());
+        }
+
+        for (InitialInputValues data: InitialInputValuesData){
+            if (!nameOfInitialValue.contains(data.getInputName())){
+                String message = "The Data definition "+ data +" is not exist";
+                throw new FlowDefinitionException(FlowDefinitionExceptionItems.THE_INIT_VALUE_ARE_NOT_EXIST,message);
+            }
+        }
     }
     private void checkIfAllConnectionsAreValid() throws FlowDefinitionException {
         for (int i = 0; i < flowLevelAliases.size(); i++) {
@@ -542,5 +637,8 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
     public void setOutputs(List<String> asList) {
         flowOutputs = asList;
+    }
+    public void SetAllFlows(List<FlowDefinitionImpl> flows){
+        this.flows = flows;
     }
 }

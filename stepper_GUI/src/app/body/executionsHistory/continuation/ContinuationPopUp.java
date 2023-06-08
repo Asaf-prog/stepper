@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static modules.DataManeger.DataManager.stepperData;
+
 public class ContinuationPopUp {
 
     @FXML
@@ -46,6 +47,32 @@ public class ContinuationPopUp {
     private FlowDefinitionImpl targetFlow = null;
     private FlowExecution pickedExecution;
     private String buttonStyle;
+    @FXML
+    void initialize() {
+        setTheme();
+        assert runButton != null : "fx:id=\"runButton\" was not injected: check your FXML file 'ContinuationPopUp.fxml'.";
+        assert flowsVbox != null : "fx:id=\"flowsVbox\" was not injected: check your FXML file 'ContinuationPopUp.fxml'.";
+        String style=flowsVbox.getStyle();
+        flowsVbox.setStyle(style+"-fx-spacing: 10;-fx-alignment: center; -fx-padding: 10;");
+        runButton.setDisable(true);
+        ToggleGroup group = new ToggleGroup();
+        for (String flowName : targetFlows) {
+            RadioButton flowButton = new RadioButton(flowName);
+            flowButton.setToggleGroup(group);
+            flowButton.setStyle("-fx-font-size: 18px; -fx-text-fill: white;-fx-pref-width: 600;-fx-alignment: center;-fx-border-color: white;");
+            flowButton.setOnAction(e -> {
+                FlowDefinitionImpl flow =  stepperData.getFlowFromName(flowName);
+                if (flow == null) {
+                    System.out.println("flow is null");
+                    return;
+                }
+                targetFlow = flow;
+                runButton.setDisable(false);
+            });
+            flowsVbox.getChildren().add(flowButton);
+
+        }
+    }
     public ContinuationPopUp(FlowExecution pickedExecution, List<String> targetFlows, Stage stage,bodyController body) {
         this.pickedExecution = pickedExecution;
         this.targetFlows = targetFlows;
@@ -103,30 +130,5 @@ public class ContinuationPopUp {
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
-    @FXML
-    void initialize() {
-        setTheme();
-        assert runButton != null : "fx:id=\"runButton\" was not injected: check your FXML file 'ContinuationPopUp.fxml'.";
-        assert flowsVbox != null : "fx:id=\"flowsVbox\" was not injected: check your FXML file 'ContinuationPopUp.fxml'.";
-        String style=flowsVbox.getStyle();
-        flowsVbox.setStyle(style+"-fx-spacing: 10;-fx-alignment: center; -fx-padding: 10;");
-        runButton.setDisable(true);
-        ToggleGroup group = new ToggleGroup();
-        for (String flowName : targetFlows) {
-            RadioButton flowButton = new RadioButton(flowName);
-            flowButton.setToggleGroup(group);
-            flowButton.setStyle("-fx-font-size: 18px; -fx-text-fill: white;-fx-pref-width: 600;-fx-alignment: center;-fx-border-color: white;");
-            flowButton.setOnAction(e -> {
-                FlowDefinitionImpl flow =  stepperData.getFlowFromName(flowName);
-                if (flow == null) {
-                    System.out.println("flow is null");
-                    return;
-                }
-                targetFlow = flow;
-                runButton.setDisable(false);
-            });
-            flowsVbox.getChildren().add(flowButton);
 
-        }
-    }
 }

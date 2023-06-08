@@ -17,13 +17,10 @@ import java.util.List;
 public class DataViewerController {
     @FXML
     private  Label otherLabel;
-
     @FXML
     private Pane tablePane;
-
     @FXML
     private Pane listPane;
-
     @FXML
     private Label name;
     @FXML
@@ -32,16 +29,15 @@ public class DataViewerController {
     private Label type;
     @FXML
     private Pane otherPane;
-    private static Object data;
-    private String dataName;
     @FXML
     private Button close;
     @FXML
     private ListView<String> list;
-
-
     @FXML
     private TableView<RelationData.SingleRow> tableView;
+    private static Object data;
+    private String dataName;
+
     @FXML
     void closePopup(ActionEvent event) {
         //close Screen and back to the previous screen

@@ -62,6 +62,19 @@ public abstract class AbstractStepDefinition implements StepDefinition , Seriali
         return null;
     }
     @Override
+    public DataDefinitionDeclaration getDataDefinitionDeclarationByName(String DDName){
+        for (DataDefinitionDeclaration dataDefinitionDeclaration : outputs) {
+            if (dataDefinitionDeclaration.getName().equals(DDName)) {
+                return dataDefinitionDeclaration;
+            }
+            else if(dataDefinitionDeclaration.getFinalName()!=null){
+                if (dataDefinitionDeclaration.getFinalName().equals(DDName))
+                    return dataDefinitionDeclaration;
+            }
+        }
+        return null;
+    }
+    @Override
     public DataDefinition getDataDefinitionByNameTarget(String DDName) {
         for (DataDefinitionDeclaration dataDefinitionDeclaration : inputs) {
             if (dataDefinitionDeclaration.getName().equals(DDName)) {

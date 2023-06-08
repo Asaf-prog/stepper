@@ -13,16 +13,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import modules.DataManeger.DataManager;
 import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
-import static modules.DataManeger.DataManager.stepperData;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static modules.DataManeger.DataManager.stepperData;
 
 public class ExecutionsDetails {
     @FXML
@@ -53,15 +54,14 @@ public class ExecutionsDetails {
     private Label executionCounterLabel;
     @FXML
     private Label exeTime;
+    @FXML
+    private Label statusLabel;
+
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private FlowExecution theFlow=null;
 
     public String currStyle="";
-
-    @FXML
-    private Label statusLabel;
-    //ctor
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -175,7 +175,6 @@ public class ExecutionsDetails {
                         }
                     }
                 };
-
                 cell.setOnMouseClicked(event -> {
                     if (!cell.isEmpty()) {
                         TreeItem<String> treeItem = cell.getTreeItem();
@@ -238,7 +237,6 @@ public class ExecutionsDetails {
         }
 
     }
-
     private Label setLabelForOutput(Object value, String name) {
         Label result = new Label();
         if (value instanceof RelationData) {
