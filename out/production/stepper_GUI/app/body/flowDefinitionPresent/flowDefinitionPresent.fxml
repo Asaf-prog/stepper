@@ -120,7 +120,7 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TreeView fx:id="treeList" prefHeight="332.0" prefWidth="320.0" visible="false" />
+                  <TreeView fx:id="treeList" prefHeight="332.0" prefWidth="320.0" style="-fx-background-color: transparent;" styleClass="tree" stylesheets="@../../management/style/darkTheme.css" visible="false" />
                </children></VBox>
             <Button fx:id="executeButton" alignment="CENTER" disable="true" layoutX="864.0" layoutY="468.0" mnemonicParsing="false" onAction="#executeButtonForFlow" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-radius: 20; -fx-border-width: 3; -fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css" text="Execute !">
                <font>

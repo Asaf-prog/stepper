@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.effect.Bloom?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.effect.Glow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
    <children>
       <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css">
          <children>
@@ -65,7 +51,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Button>
-                  <ToggleButton fx:id="themeToggle" layoutX="946.0" layoutY="39.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="30.0" prefWidth="134.0" style="-fx-background-color: transparent;" stylesheets="@../management/style/darkTheme.css" text="Dark Theme" textAlignment="CENTER" textFill="#fff200">
+                  <ToggleButton fx:id="themeToggle" layoutX="960.0" layoutY="39.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="30.0" prefWidth="104.0" style="-fx-background-color: transparent;" stylesheets="@../management/style/darkTheme.css" text="Dark Theme" textAlignment="CENTER" textFill="#fff200">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -103,21 +89,33 @@
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
                         </Label>
                         <Label fx:id="flow2ProgressLabel" prefHeight="17.0" prefWidth="72.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 2 ID" textFill="#fff200" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
                         </Label>
                         <Label fx:id="flow3ProgressLabel" prefHeight="17.0" prefWidth="67.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 3 ID" textFill="#fff200" GridPane.columnIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
                         </Label>
                         <Label fx:id="flow4ProgressLabel" prefHeight="17.0" prefWidth="66.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 4 ID" textFill="#fff200" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
                         </Label>
                      </children>
                   </GridPane>
@@ -128,7 +126,7 @@
                   </Label>
                </children>
             </Pane>
-            <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: transparent; -fx-border-radius: 20; -fx-border-color: white; -fx-border-width: 2;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Load XML" textAlignment="CENTER" textFill="WHITE">
                      <font>

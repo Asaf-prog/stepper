@@ -389,9 +389,16 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
 
     private void updateLogsTree(FlowExecution selectedFlow) {
+
         stepTree.getChildren().clear();
+
         TreeView<String> stepTreeView = new TreeView<>();
         TreeItem<String> root = new TreeItem<>("Steps");
+
+        stepTreeView.setStyle("-fx-background-color: transparent; -fx-blend-mode: MULTIPLY;");
+        stepTreeView.getStylesheets().add("app/management/style/darkTheme.css");
+        stepTreeView.getStyleClass().add("tree");
+
         stepTreeView.setRoot(root);
         for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());

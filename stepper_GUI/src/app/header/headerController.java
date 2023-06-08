@@ -218,10 +218,10 @@ public class headerController {
         makeExecutionButtonInvisible();
         String buttonStyle=closeButton.getStyle();
         closeButton.setOnMouseEntered(event -> {
-            closeButton.setStyle("-fx-background-color: #ff0000; -fx-background-radius: 15px;");
+            closeButton.setStyle("-fx-background-color: #ff0000; -fx-background-radius: 40px;-fx-border-radius: 26");
         });
         closeButton.setOnMouseExited(event -> {
-            closeButton.setStyle(buttonStyle);
+            closeButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 40px;-fx-border-radius: 26");
         });
 
         setTopBar();
@@ -386,17 +386,20 @@ public class headerController {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
                 StyleManager.setTheme("light");
-                themeToggle.setText("Light Theme");
+                themeToggle.setText("Dark Theme");
                 scene.getStylesheets().clear();
                 scene.getStylesheets().add("app/management/style/lightTheme.css");
+                themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: black;-fx-border-color: black;-fx-border-width: 1;-fx-border-radius: 6");
+
             }
         } else {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
                 StyleManager.setTheme("dark");
-                themeToggle.setText("Dark Theme");
+                themeToggle.setText("Light Theme");
                 scene.getStylesheets().clear();
                 scene.getStylesheets().add("app/management/style/darkTheme.css");
+                themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: yellow;");
             }
         }
     }

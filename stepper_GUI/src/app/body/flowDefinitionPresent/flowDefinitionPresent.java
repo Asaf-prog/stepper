@@ -14,10 +14,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -197,6 +199,27 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         scatchPane.setVisible(false);
         thiredVbox.setVisible(true);
         treeList.setVisible(false);
+
+        treeList.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>() {
+            @Override
+            public TreeCell<String> call(TreeView<String> param) {
+                return new TreeCell<String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                            setTextFill(Color.BLACK); // Set the default text color
+                        } else {
+                            setText(item);
+                            setTextFill(Color.BLUEVIOLET); // Set the text color to red
+                        }
+                    }
+                };
+            }
+        });
+
+
         firstLabelOnScreen.setText("The Number of Free Inputs is: "+flow.getFlowFreeInputs().size());
         TreeItem<String> rootItem = new TreeItem<>("choose Free Input to display its information");
         for(Pair<String, DataDefinitionDeclaration> data :flow.getFlowFreeInputs()){
@@ -208,9 +231,13 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             rootItem.getChildren().addAll(branch);
         }
         rootItem.setExpanded(true);
+
+
         treeList.setRoot(rootItem);
         treeList.setShowRoot(false);
         treeList.setVisible(true);
+
+
     }
     private void handleButtonActionForOutputs(FlowDefinitionImpl flow){
         scatchPane.setVisible(false);
@@ -218,6 +245,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         treeList.setVisible(false);
         firstLabelOnScreen.setText("The Number of the Outputs is: "+flow.getFlowFormalOutputs().size());
         TreeItem<String> rootItem = new TreeItem<>("Outputs");
+
         for(String out: flow.getFlowOutputs()){
             TreeItem <String> branch = new TreeItem<>(out);
             rootItem.getChildren().addAll(branch);
