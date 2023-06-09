@@ -215,7 +215,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             }
         }
     }
-    private boolean sameType(String sourceDD, String targetDD,String targetFlow){
+    private boolean sameType(String sourceDD, String targetDD,String targetFlow) throws FlowDefinitionException {
 
         FlowDefinitionImpl targetFlowImp = getFlowByName(targetFlow);
         DataDefinitionDeclaration source =returnTheDDByNameOfOutputsDD(sourceDD);
@@ -228,8 +228,12 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             DataDefinitionDeclaration realSource =returnTheDDByNameOfOutputsDD(realSourceData);
 
             StepUsageDeclaration tempStep = getStepDataOfAliasFromFlowAndInput(targetFlowImp,targetDD);// if this step we search the source input
+            if (tempStep == null)
+                return false;
             String realTargetData = getDataOfAliasFromFlowAndInput(targetFlowImp,targetDD);
             DataDefinitionDeclaration realTarget =returnTheDDByNameOfInputsDDFromMap(realTargetData,tempStep);
+            if (realTarget == null || realSource == null)
+                return false;
 
             if (realSource.dataDefinition().getType().isAssignableFrom(realTarget.dataDefinition().getType()))
                 return true;
@@ -299,11 +303,20 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         for (Pair<String,DataDefinitionDeclaration> pair: freeInputs){
             nameOfInitialValue.add(pair.getKey());
         }
-
         for (InitialInputValues data: InitialInputValuesData){
             if (!nameOfInitialValue.contains(data.getInputName())){
                 String message = "The Data definition "+ data +" is not exist.";
                 throw new FlowDefinitionException(FlowDefinitionExceptionItems.THE_INIT_VALUE_ARE_NOT_EXIST,message);
+            }
+        }
+        if (nameOfInitialValue.contains("OPERATION")){
+            for (InitialInputValues data: InitialInputValuesData){
+                if (data.getInputName().equals("OPERATION")){
+                    if (!(data.getInitialValue().equals("ZIP")||data.getInitialValue().equals("UNZIP"))){
+                        String message = "In OPERATION you must fill only ZIP or UNZIP";
+                        throw new FlowDefinitionException(FlowDefinitionExceptionItems.TO_OPERATION_DATA_DEFINITION_YOU_MUST_FILL_ZIP_OR_UNZIP,message);
+                    }
+                }
             }
         }
     }

@@ -408,7 +408,7 @@ public class headerController {
         if (file != null) {
             try {
                 DataManager.saveDataGui(file.getPath());
-            } catch (Exception e) {//todo need to include all the exceptions from ex1
+            } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Error");
@@ -432,7 +432,7 @@ public class headerController {
                 loadXMLbutton.setText("Loaded:");
                 loaded.setText(DataManager.getData().getXmlPath());
                 initializedData();
-            } catch (Exception e) {//todo need to include all the exceptions from ex1
+            } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Error");
@@ -440,7 +440,6 @@ public class headerController {
                 alert.showAndWait();
             }
         }
-
     }
     @FXML
     void BuyPremium(ActionEvent event) {
@@ -644,15 +643,8 @@ public class headerController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("An exception occurred");
-                DialogPane dialogPane = alert.getDialogPane();
 
                 alert.setContentText(e.getMessage());
-
-             //   Scene scene = alert.getDialogPane().getScene();
-                // scene.getStylesheets().add(getClass().getResource("/error-styles.css").toExternalForm());
-
-                //DialogPane dialogPane1 = alert.getDialogPane();
-                //dialogPane1.getStyleClass().add("error-alert");
                 alert.showAndWait();
             }
         }

@@ -470,7 +470,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         if(outputs!=null) {
             for (Map.Entry<String, Object> entry : outputs.entrySet()) {
                 Label newOutput = new Label(entry.getKey());
-                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());//todo implement
+                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());
                 newOutput.getStyleClass().add("DDLabel");
                 outputValue.getStyleClass().add("DDLabel");
                 newOutput.setPrefWidth(outputsVbox.getPrefWidth());

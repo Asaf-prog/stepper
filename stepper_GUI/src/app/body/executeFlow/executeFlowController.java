@@ -273,7 +273,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             HBox nameAndAddOrEdit = new HBox();
             nameAndAddOrEdit.getChildren().add(label);
             if (thisDataSupplyByRecentFlowInOptional(optional.getKey(),continuation)){//this data exist
-                //todo => need to check if it's correct!
+
                 String dataLabel = getDataThatSupplyAndUpdateTheListOfFreeInputsForOptional(continuation,optional.getKey());
                 if (dataLabel !=null) {
                     Label data = new Label(dataLabel);
@@ -511,7 +511,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             continuation.setDisable(false);
         }
         isComeFromHistory = false;
-        //todo details here
+
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
         enablesDetails(lastFlowExecution);
@@ -533,7 +533,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
 
         }
-        //todo add button to execution screen with inputs of the last execution
+
 
     }
     private void setTheNewInputsThatTheUserSupply(){
@@ -562,7 +562,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         FXMLLoader loader = new FXMLLoader(getClass().getResource("executionDetails/ExecutionsDetails.fxml"));
         ExecutionsDetails executionsDetails = new ExecutionsDetails();
         try {
-            //todo aviad- check with thread try doing together
+
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Flow Details");
@@ -639,7 +639,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
-    private boolean validateInput(String data, Class<?> type, TextField textField,Button btn) {//todo check if works
+    private boolean validateInput(String data, Class<?> type, TextField textField,Button btn) {
         if (type.equals(Integer.class)) {
             try {
                 Integer.parseInt(data);

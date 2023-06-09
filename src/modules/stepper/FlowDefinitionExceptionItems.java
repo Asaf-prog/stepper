@@ -17,8 +17,10 @@ public enum FlowDefinitionExceptionItems {
     CANNOT_CONNECT_TWO_INPUTS_WITH_DIF_TYPES("Cannot connect two inputs with different types."),
     THIS_FLOW_FOR_CONTINUATION_DOES_NOT_EXIST("this flow for continuation does not exist."),
     THE_INIT_VALUE_ARE_NOT_EXIST("the init value are not exist."),
-    THE_TARGET_AND_THE_SOURCE_ARE_NOT_IN_THE_SAME_TYPE("the target and the source are not in the same type.");
+    THE_TARGET_AND_THE_SOURCE_ARE_NOT_IN_THE_SAME_TYPE("the target and the source are not in the same type."),
+    TO_OPERATION_DATA_DEFINITION_YOU_MUST_FILL_ZIP_OR_UNZIP("to operation data definition you must fill zip or unzip")
     ;
+
 
 
 

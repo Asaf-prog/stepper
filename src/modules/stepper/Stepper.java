@@ -17,7 +17,6 @@ public class Stepper implements Serializable {
     private List<FlowExecution> flowExecutions;//all flow executions
     private List<FlowDefinitionImpl> flows;//all flows
     private Integer TPSize;//Thread pool size
-    private STStepper stStepper;
     private  String XmlPath="";
 
     private ExecutionManager executionManager;//handle doing execution according to the thread pool size
@@ -290,10 +289,5 @@ public class Stepper implements Serializable {
         }
         return null;
     }
-    public void setStStepper(STStepper stStepper){
-        this.stStepper = stStepper;
-    }
-    public STStepper getStStepper(){
-        return stStepper;
-    }
+
 }

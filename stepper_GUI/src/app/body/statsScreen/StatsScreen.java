@@ -1,10 +1,5 @@
 package app.body.statsScreen;
 
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.management.style.StyleManager;
@@ -23,6 +18,11 @@ import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.stepper.Stepper;
+
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class StatsScreen implements bodyControllerDefinition {
     FlowDefinitionImpl currSelectedFlow = null;//event on choosen flow
@@ -318,7 +318,7 @@ public class StatsScreen implements bodyControllerDefinition {
             flowDefinitionsSize.setText("There are no Flow Definitions");
         }
         //set stats table here
-        //todo
+
         //sync all menu buttons
         if (stepperData.getFlows().size() == 0) {//both are empty
             popAlert();//show appropriate message
