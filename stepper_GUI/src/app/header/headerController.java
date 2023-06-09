@@ -641,7 +641,6 @@ public class headerController {
                 loadXMLbutton.setRotate(0);
                 main.getBodyController().setBodyScreen();
             } catch (Exception e) {
-                //throw new RuntimeException(e);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("An exception occurred");
@@ -649,8 +648,8 @@ public class headerController {
 
                 alert.setContentText(e.getMessage());
 
-                //Scene scene = alert.getDialogPane().getScene();
-                //scene.getStylesheets().add(getClass().getResource("/error-styles.css").toExternalForm());
+             //   Scene scene = alert.getDialogPane().getScene();
+                // scene.getStylesheets().add(getClass().getResource("/error-styles.css").toExternalForm());
 
                 //DialogPane dialogPane1 = alert.getDialogPane();
                 //dialogPane1.getStyleClass().add("error-alert");

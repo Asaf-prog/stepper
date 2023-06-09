@@ -415,6 +415,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 freeInputsTemp.add(new Pair<>(mandatory.getKey(),initData));
             }
         }
+        if (mandatoryInputs.size() == checkHowMandatoryInputsINFreeInputsTemp())
+            startExecute.setDisable(false);
     }
     private String getExistInInitialValue(String nameToSearchInKey){
         for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){

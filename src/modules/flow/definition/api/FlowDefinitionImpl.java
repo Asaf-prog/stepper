@@ -170,7 +170,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     private void checkIfCarriedOutContinuationToFlowThatNotExist() throws FlowDefinitionException {
         if (!checkContinuationCorrect()){
             String name = getNameOFTheFlowThatNotExist();
-            String message = "The Flow "+ name +" is not exist";
+            String message = "The Flow "+ name +" is not exist.";
             throw new FlowDefinitionException(FlowDefinitionExceptionItems.THIS_FLOW_FOR_CONTINUATION_DOES_NOT_EXIST,message);
         }
     }
@@ -302,7 +302,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
         for (InitialInputValues data: InitialInputValuesData){
             if (!nameOfInitialValue.contains(data.getInputName())){
-                String message = "The Data definition "+ data +" is not exist";
+                String message = "The Data definition "+ data +" is not exist.";
                 throw new FlowDefinitionException(FlowDefinitionExceptionItems.THE_INIT_VALUE_ARE_NOT_EXIST,message);
             }
         }
