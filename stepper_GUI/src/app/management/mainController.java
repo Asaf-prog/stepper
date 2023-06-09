@@ -87,4 +87,7 @@ public class mainController {
     public headerController getHeaderComponentController(){
       return headerComponentController;
     }
+    public bodyController getBodyController(){
+      return bodyComponentController;
+    }
 }

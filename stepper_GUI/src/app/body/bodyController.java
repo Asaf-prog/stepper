@@ -191,4 +191,11 @@ public class bodyController {
         main.getHeaderComponentController().SetExecutionButtonVisible(flowDefinition);
 
     }
+    public void setBodyScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        URL url = getClass().getResource("body.fxml");
+        fxmlLoader.setLocation(url);
+        Parent screen = fxmlLoader.load(url.openStream());
+        bodyPane.getChildren().setAll(screen);
+    }
 }

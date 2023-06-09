@@ -639,6 +639,7 @@ public class headerController {
                 initializedData();
                 stopRotate();
                 loadXMLbutton.setRotate(0);
+                main.getBodyController().setBodyScreen();
             } catch (Exception e) {
                 //throw new RuntimeException(e);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
