@@ -94,8 +94,8 @@ public class ContinuationPopUp {
     private void MandatoryAndOptionalFreeInputWithDD(FlowDefinitionImpl flow){
 
         List<Pair<String, DataDefinitionDeclaration>> freeInputs = flow.getFlowFreeInputs();
-        List<Pair<String, DataDefinitionDeclaration>> currentMandatoryFreeInput = new ArrayList<>();
-        List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput = new ArrayList<>();
+         currentMandatoryFreeInput = new ArrayList<>();
+         currentOptionalFreeInput = new ArrayList<>();
         freeInputsMandatory = new ArrayList<>();
         freeInputsOptional = new ArrayList<>();
         for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
