@@ -151,6 +151,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void mandatoryHandlerForContinuation(Continuation continuation,List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs){
         for (Pair<String, DataDefinitionDeclaration> mandatory:mandatoryInputs){
             Label label = new Label(mandatory.getKey());
+            label.getStylesheets().add("app/management/style/darkTheme.css");
+            label.getStyleClass().add("inputLabel");
             label.setStyle("-fx-text-fill: white");
             HBox nameAndAddOrEdit = new HBox();
             nameAndAddOrEdit.getChildren().add(label);
@@ -158,6 +160,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 String dataLabel = getDataThatSupplyAndUpdateTheListOfFreeInputs(continuation,mandatory.getKey());
                 if (dataLabel !=null) {
                     Label data = new Label(dataLabel);
+                    data.getStylesheets().add("app/management/style/darkTheme.css");
+                    data.getStyleClass().add("inputLabel");
                     data.setStyle("-fx-text-fill: white");
                     nameAndAddOrEdit.getChildren().add(data);
                 }
@@ -166,7 +170,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
             else {//the user need to give us this data
                 TextField textField = new TextField();
+                textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
+                textField.setPromptText("Enter here");
                 Button addButton = new Button("Save");
+                addButton.getStylesheets().add("app/management/style/darkTheme.css");
+                addButton.getStyleClass().add("inputButton");
+                setButtonStyle(addButton);
                 addButton.setOnAction(event -> handleButtonAction(addButton, textField, textField.getText(),
                         mandatory.getKey(), mandatory.getValue().dataDefinition().getType(), nameAndAddOrEdit,false));
                 nameAndAddOrEdit.getChildren().add(textField);
@@ -269,7 +278,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void optionalHandlerForContinuation(Continuation continuation,List<Pair<String, DataDefinitionDeclaration>>optionalInputs ){
         for (Pair<String, DataDefinitionDeclaration> optional:optionalInputs){
             Label label = new Label(optional.getKey());
-            label.setStyle("-fx-text-fill: white");
+            label.getStylesheets().add("app/management/style/darkTheme.css");
+            label.getStyleClass().add("inputLabel");
+            setLabelStyle(label);
             HBox nameAndAddOrEdit = new HBox();
             nameAndAddOrEdit.getChildren().add(label);
             if (thisDataSupplyByRecentFlowInOptional(optional.getKey(),continuation)){//this data exist
@@ -277,7 +288,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 String dataLabel = getDataThatSupplyAndUpdateTheListOfFreeInputsForOptional(continuation,optional.getKey());
                 if (dataLabel !=null) {
                     Label data = new Label(dataLabel);
-                    data.setStyle("-fx-text-fill: white");
+                    setLabelStyle(data);
+
+                    data.getStylesheets().add("app/management/style/darkTheme.css");
+                    data.getStyleClass().add("inputLabel");
                     nameAndAddOrEdit.getChildren().add(data);
                 }
                 else
@@ -285,7 +299,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
             else {//the user need to give us this data
                 TextField textField = new TextField();
+                textField.setStyle("-fx-alignment: center;-fx-border-radius: 10; -fx-font-size: 16");
+                textField.setPromptText("Enter here");
                 Button addButton = new Button("Save");
+                addButton.getStylesheets().add("app/management/style/darkTheme.css");
+                addButton.getStyleClass().add("inputButton");
+                setButtonStyle(addButton);
                 addButton.setOnAction(event -> handleButtonAction(addButton, textField, textField.getText(),
                         optional.getKey(), optional.getValue().dataDefinition().getType(), nameAndAddOrEdit,true));
                 nameAndAddOrEdit.getChildren().add(textField);
@@ -297,6 +316,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         optionalList.setSpacing(10);
     }
+
+    private void setLabelStyle(Label data) {
+        if (StyleManager.getCurrentTheme().equals("dark"))
+            data.setStyle("-fx-text-fill: #ffff00; -fx-font-size: 16px;-fx-alignment: center;-fx-font-family: 'Arial Rounded MT Bold';");
+        else
+            data.setStyle("-fx-text-fill: black;-fx-font-size: 16px;-fx-alignment: center;-fx-font-family: 'Arial Rounded MT Bold';");
+    }
+
     private Map<String,Object> getOutputsOfLastFlow(){
         return outputsOfLastFlow;
     }
@@ -345,10 +372,18 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void optionalHandler(List<Pair<String, DataDefinitionDeclaration>> optionalInputs) {
         for (Pair<String, DataDefinitionDeclaration> optional : optionalInputs) {
             Label label = new Label(optional.getKey());
-            label.setStyle("-fx-text-fill: white");
+            label.getStylesheets().add("app/management/style/darkTheme.css");
+            label.getStyleClass().add("inputLabel");
+            setLabelStyle(label);
             TextField textField = new TextField();
 
+            textField.setStyle("-fx-alignment: center;-fx-border-radius: 10; -fx-font-size: 16");
+            textField.setPromptText("Enter here");
+
             Button addButton = new Button("Save");
+            addButton.getStylesheets().add("app/management/style/darkTheme.css");
+            addButton.getStyleClass().add("inputButton");
+            setButtonStyle(addButton);
             HBox nameAndAddOrEdit = new HBox();
 
             textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
@@ -378,9 +413,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void mandatoryHandler(List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs) {
         for (Pair<String, DataDefinitionDeclaration> mandatory : mandatoryInputs) {
             Label label = new Label(mandatory.getKey());
-            label.setStyle("-fx-text-fill: #ffffff");
+            label.getStylesheets().add("app/management/style/darkTheme.css");
+            label.getStyleClass().add("inputLabel");
+
+            setLabelStyle(label);
             TextField textField = new TextField();
+            textField.setStyle("-fx-alignment: center;-fx-border-radius: 10; -fx-font-size: 16");
+            textField.setPromptText("Enter here");
             Button addButton = new Button("Save");
+            addButton.getStylesheets().add("app/management/style/darkTheme.css");
+            addButton.getStyleClass().add("inputButton");
+            setButtonStyle(addButton);
 
             HBox nameAndAddOrEdit = new HBox();
             textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
@@ -393,7 +436,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     textField.setEditable(false);
                     addButton.setText("Browse");
                     textField.setText("FOLDER_PATH");
-                    textField.setStyle("-fx-text-fill: #ffffff; -fx-background-color: transparent");
+                    textField.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
                     nameAndAddOrEdit.getChildren().add(textField);
                     nameAndAddOrEdit.getChildren().add(addButton);
                     nameAndAddOrEdit.setSpacing(10);
@@ -418,6 +461,15 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (mandatoryInputs.size() == checkHowMandatoryInputsINFreeInputsTemp())
             startExecute.setDisable(false);
     }
+
+    private void setButtonStyle(Button addButton) {
+        if (StyleManager.getCurrentTheme().equals("dark")) {
+            addButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ffff00; -fx-font-size: 15; -fx-border-radius: 9; -fx-border-width: 2; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
+        } else {
+            addButton.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;-fx-border-width: 2;-fx-border-radius: 9; -fx-font-size: 15; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
+        }
+    }
+
     private String getExistInInitialValue(String nameToSearchInKey){
         for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
             if (initialInputValues.getInputName().equals(nameToSearchInKey))
@@ -625,7 +677,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     addButton.setText("Edit");
                     int index = Hbox.getChildren().indexOf(textField);
                     Label label = new Label(selectedFile.toString());
+                    label.getStylesheets().add("app/management/style/darkTheme.css");
+                    label.getStyleClass().add("inputLabel");
                     label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
+                    setLabelStyle(label);
                     Hbox.getChildren().set(index, label);
                     textField.setText(selectedFile.toString());
                 }
@@ -758,6 +813,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             optionalList.getChildren().add(nameAndAddOrEdit);
             optionalList.setSpacing(10);
             freeInputsTemp.add(optinal);
+            setLabelStyle(data);
         }
     }
 

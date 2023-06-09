@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executeFlowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executeFlowController">
    <children>
-      <Button fx:id="startExecute" disable="true" layoutX="884.0" layoutY="460.0" mnemonicParsing="false" onAction="#startExecuteAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Run" textFill="#eeff00">
+      <Button fx:id="startExecute" disable="true" layoutX="885.0" layoutY="481.0" mnemonicParsing="false" onAction="#startExecuteAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Run" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
@@ -20,9 +18,9 @@
          </font>
       </Label>
 
-      <VBox fx:id="mandatoryList" layoutX="28.0" layoutY="29.0" prefHeight="345.0" prefWidth="413.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
+      <VBox fx:id="mandatoryList" layoutX="28.0" layoutY="29.0" prefHeight="345.0" prefWidth="617.0" spacing="4.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;" styleClass="inputsPane" stylesheets="@../../management/style/darkTheme.css">
          <children>
-            <Label alignment="CENTER" prefHeight="40.0" prefWidth="404.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="MANDATORY INPUTS" textFill="#f5eb38" underline="true">
+            <Label alignment="CENTER" prefHeight="40.0" prefWidth="603.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="MANDATORY INPUTS" textFill="#f5eb38" underline="true">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
@@ -34,10 +32,13 @@
                </padding>
             </Label>
          </children>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
       </VBox>
-      <VBox fx:id="optionalList" layoutX="450.0" layoutY="29.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="345.0" prefWidth="357.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
+      <VBox fx:id="optionalList" layoutX="655.0" layoutY="29.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="345.0" prefWidth="413.0" spacing="4.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;" styleClass="inputsPane" stylesheets="@../../management/style/darkTheme.css">
          <children>
-            <Label alignment="CENTER" prefHeight="41.0" prefWidth="411.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="OPTIONAL INPUTS" textFill="#f5eb38" underline="true">
+            <Label alignment="CENTER" prefHeight="41.0" prefWidth="535.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="OPTIONAL INPUTS" textFill="#f5eb38" underline="true">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
@@ -49,15 +50,18 @@
                </padding>
             </Label>
          </children>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
       </VBox>
-      <Button fx:id="continuation" disable="true" layoutX="654.0" layoutY="388.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Continuation" textFill="#eeff00">
+      <Button fx:id="continuation" disable="true" layoutX="677.0" layoutY="388.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Continuation" textFill="#eeff00">
 
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
 
-      <VBox fx:id="continuationVbox" layoutX="28.0" layoutY="381.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="128.0" prefWidth="617.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;">
+      <VBox fx:id="continuationVbox" layoutX="28.0" layoutY="381.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="617.0" spacing="4.0" style="-fx-border-color: white; -fx-border-radius: 9; -fx-border-width: 4;" styleClass="inputsPane" stylesheets="@../../management/style/darkTheme.css">
          <children>
             <Label fx:id="continuationLabel" alignment="CENTER" prefHeight="36.0" prefWidth="601.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="CONTINUATION OPTIONS" textFill="#f5eb38" underline="true">
                <font>
@@ -71,13 +75,16 @@
                </padding>
             </Label>
          </children>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
       </VBox>
-      <Button fx:id="showDetails" disable="true" layoutX="654.0" layoutY="460.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Details" textFill="#eeff00">
+      <Button fx:id="showDetails" disable="true" layoutX="677.0" layoutY="481.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Details" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="continuationExe" layoutX="859.0" layoutY="388.0" mnemonicParsing="false" onAction="#ContinuationExecution" prefHeight="41.0" prefWidth="191.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Run Continuation" textFill="#eeff00">
+      <Button fx:id="continuationExe" layoutX="860.0" layoutY="388.0" mnemonicParsing="false" onAction="#ContinuationExecution" prefHeight="41.0" prefWidth="191.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Run Continuation" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>

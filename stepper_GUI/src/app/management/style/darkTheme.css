@@ -96,3 +96,10 @@
 .tree.tree-cell {
     -fx-background-color: #ff3232;
 }
+
+.inputButton {
+    -fx-border-color: #001e80;
+}
+.inputLabel {
+    -fx-text-fill: #4cffa4;
+}

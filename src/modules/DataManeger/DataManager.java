@@ -99,9 +99,12 @@ public class DataManager {
         }
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
             stepperData = (Stepper) in.readObject();
+
             return true;
         } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error reading data from file: " + e.getMessage());
             System.out.println("BASA");
+            e.printStackTrace();
         }
         return false;
     }

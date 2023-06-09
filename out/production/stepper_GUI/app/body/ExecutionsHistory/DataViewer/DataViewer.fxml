@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #24292e;" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.DataViewer.DataViewerController">
+<AnchorPane fx:id="mainPane" prefHeight="406.0" prefWidth="600.0" style="-fx-background-color: #24292e;" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.DataViewer.DataViewerController">
    <children>
       <Label fx:id="name" layoutX="14.0" layoutY="6.0" prefHeight="34.0" prefWidth="568.0" text="Data Name:" textFill="#fffb09">
          <font>
@@ -28,17 +28,17 @@
             </Pane>
             <Pane fx:id="listPane" disable="true" prefHeight="301.0" prefWidth="576.0">
                <children>
-                  <ListView maxHeight="301.0" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292e; -fx-max-height: 300;" />
+                  <ListView maxHeight="301.0" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292; -fx-max-height: 300;" />
                </children>
             </Pane>
             <Pane fx:id="tablePane" disable="true" prefHeight="192.0" prefWidth="468.0">
                <children>
-                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292e;" />
+                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292;" stylesheets="@../../../management/style/darkTheme.css" />
                </children>
             </Pane>
          </children>
       </StackPane>
-      <Button fx:id="close" cancelButton="true" defaultButton="true" layoutX="258.0" layoutY="352.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: yellow;" text="Close" textFill="#36393e">
+      <Button fx:id="close" cancelButton="true" defaultButton="true" layoutX="259.0" layoutY="358.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 9; -fx-border-radius: 15; -fx-border-width: 2;" text="Close" textFill="#36393e">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
