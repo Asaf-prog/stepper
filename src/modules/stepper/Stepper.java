@@ -27,8 +27,12 @@ public class Stepper implements Serializable {
         return TPSize;
     }
 
-    public void setTPSize(Integer TPSize) {
-        this.TPSize = TPSize;
+    public void setTPSize(Integer TPSize) throws StepperDefinitionException {
+       if (TPSize<=0) {
+           String message = "you enter "+ TPSize + " ,as you know it is not a positive number...";
+           throw new StepperDefinitionException(StepperDefinitionExceptionItems.THE_NUMBER_OF_THREADS_IS_NOT_POSITIVE,message );
+       }
+           this.TPSize = TPSize;
         this.executionManager.setNumberOfThreads(TPSize);
     }
 
@@ -212,9 +216,12 @@ public class Stepper implements Serializable {
                 if (step.getFinalStepName().equals(alias.getSource())){
                     if (checkIfNameFoundInInput(step,alias.getSourceData())){
                         step.addToMapOfInput(alias.getSourceData(), alias.getAlias());
+                        step.addToMapOfInputFromAliasToName(alias.getSourceData(), alias.getAlias());
                     }
-                    else //is belonging to output map
+                    else {//is belonging to output map
                         step.addToMapOfOutput(alias.getSourceData(), alias.getAlias());
+                        step.addToMapOfOutputFromAliasToName(alias.getSourceData(), alias.getAlias());
+                    }
                 }
             }
         }
@@ -223,12 +230,14 @@ public class Stepper implements Serializable {
             for (DataDefinitionDeclaration input:inputs){
                 if (!thisInputExistInTheMapOfInput(step,input.getName())){
                     step.addToMapOfInput(input.getName(), input.getName());
+                    step.addToMapOfInputFromAliasToName(input.getName(), input.getName());
                 }
             }
             List<DataDefinitionDeclaration> outputs = step.getStepDefinition().outputs();
             for(DataDefinitionDeclaration output: outputs){
                 if (!thisOutputExistInTheMapOfOutputs(step ,output.getName())){
                     step.addToMapOfOutput(output.getName(), output.getName());
+                    step.addToMapOfOutputFromAliasToName(output.getName(), output.getName());
                 }
             }
         }

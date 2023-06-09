@@ -49,5 +49,11 @@ public interface StepUsageDeclaration extends Serializable {
     Duration getTotalTime();
     void setStepResult(StepResult stepResult);
     StepResult getStepResult();
+    void addToMapOfInputFromAliasToName(String name,String alias);
+    void addToMapOfOutputFromAliasToName(String name,String alias);
+    boolean isExistInMapInputFromAliasToName (String key);
+    boolean isExistOutputFromAliasToName(String key);
+    String getValueOfSourceNameByNameOfAliasFromOutputs(String key);
+    String getValueOfSourceNameByNameOfAliasFromInputs(String key);
 
 }

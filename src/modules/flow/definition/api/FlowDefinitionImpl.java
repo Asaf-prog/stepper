@@ -216,13 +216,60 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         }
     }
     private boolean sameType(String sourceDD, String targetDD,String targetFlow){
-       FlowDefinitionImpl targetFlowImp = getFlowByName(targetFlow);
+
+        FlowDefinitionImpl targetFlowImp = getFlowByName(targetFlow);
         DataDefinitionDeclaration source =returnTheDDByNameOfOutputsDD(sourceDD);
         DataDefinitionDeclaration target= returnTheDDByNameOfInputsDD(targetDD,targetFlowImp);
-       if (source.dataDefinition().getType().isAssignableFrom(target.dataDefinition().getType()))
-           return true;
-       else
-           return false;
+        // need to check if one of them is null
+        //if one of them is null check if exist in custom mapping
+        if (source == null || target == null){//maybe we need to do custom mapping
+
+            String realSourceData = getDataOfAliasFromOutputs(sourceDD);
+            DataDefinitionDeclaration realSource =returnTheDDByNameOfOutputsDD(realSourceData);
+
+            StepUsageDeclaration tempStep = getStepDataOfAliasFromFlowAndInput(targetFlowImp,targetDD);// if this step we search the source input
+            String realTargetData = getDataOfAliasFromFlowAndInput(targetFlowImp,targetDD);
+            DataDefinitionDeclaration realTarget =returnTheDDByNameOfInputsDDFromMap(realTargetData,tempStep);
+
+            if (realSource.dataDefinition().getType().isAssignableFrom(realTarget.dataDefinition().getType()))
+                return true;
+            else
+                return false;
+        }
+        else {
+            if (source.dataDefinition().getType().isAssignableFrom(target.dataDefinition().getType()))
+                return true;
+            else {
+                return false;
+            }
+        }
+    }
+    private StepUsageDeclaration getStepDataOfAliasFromFlowAndInput(FlowDefinitionImpl flowDefinition,String AliasName){
+        for (StepUsageDeclaration step: flowDefinition.getSteps()){
+            if (step.isExistInMapInputFromAliasToName(AliasName))
+                return step;
+
+        }
+        return null;
+    }
+    private DataDefinitionDeclaration returnTheDDByNameOfInputsDDFromMap( String realTargetData,StepUsageDeclaration tempStep){
+       return tempStep.getStepDefinition().getDataDefinitionDeclarationByNameInputList(realTargetData);
+    }
+    private String getDataOfAliasFromOutputs(String AliasName){
+        for (StepUsageDeclaration step :steps){
+            if (step.isExistOutputFromAliasToName(AliasName)){
+                return step.getValueOfSourceNameByNameOfAliasFromOutputs(AliasName);
+            }
+        }
+        return null;
+    }
+    private String getDataOfAliasFromFlowAndInput(FlowDefinitionImpl flowDefinition,String AliasName){
+        for (StepUsageDeclaration step: flowDefinition.getSteps()){
+            if (step.isExistInMapInputFromAliasToName(AliasName))
+                return step.getValueOfSourceNameByNameOfAliasFromInputs(AliasName);
+
+        }
+        return null;
     }
     private DataDefinitionDeclaration returnTheDDByNameOfOutputsDD(String nameOfOutput){
         for (StepUsageDeclaration step: steps){

@@ -22,6 +22,9 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
     Map<String,String> inputFromNameToAlias; //<name,alias>
     Map<String,String> outputFromNameToAlias; //<name,alias>
     private StepResult stepResult;
+    //Ex2
+    Map<String,String> inputFromAliasToName; //<alias,name>
+    Map<String,String> outputFromAliasToName; //<alias,name>
 
 
     public void setStepResult(StepResult stepResult){
@@ -66,6 +69,18 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
         timesUsed = 0;
         avgTime = 0;
         stepResult = null;
+
+        inputFromAliasToName = new HashMap<>();
+        outputFromAliasToName = new HashMap<>();
+
+    }
+    @Override
+    public void addToMapOfInputFromAliasToName(String name,String alias){
+        inputFromAliasToName.put(alias,name);
+    }
+    @Override
+    public void addToMapOfOutputFromAliasToName(String name,String alias){
+        outputFromAliasToName.put(alias,name);
     }
     @Override
     public Map<String,String> getInputFromNameToAlias(){return inputFromNameToAlias;}
@@ -136,21 +151,51 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
     public String getStepNameAlias() {
         return stepNameAlias;
     }
-    public void setSkipIfFail(boolean skipIfFail) {this.skipIfFail = skipIfFail;}
+    public void setSkipIfFail(boolean skipIfFail) {
+        this.skipIfFail = skipIfFail;
+    }
 
     public void setStepNameAlias(String stepNameAlias) {
         this.stepNameAlias = stepNameAlias;
         stepName = stepNameAlias;
     }
     @Override
-    public String getFinalStepName() {return stepName;}
+    public String getFinalStepName() {
+        return stepName;
+    }
 
     @Override
-    public StepDefinition getStepDefinition() {return stepDefinition;}
+    public StepDefinition getStepDefinition() {
+        return stepDefinition;
+    }
     @Override
     public boolean skipIfFail() {
         return skipIfFail;
     }
     @Override
-    public void setFinalName(String name){this.stepName = name;}
+    public void setFinalName(String name){
+        this.stepName = name;
+    }
+    @Override
+    public boolean isExistInMapInputFromAliasToName (String key){
+        String check = inputFromAliasToName.get(key);
+        if (check != null)
+            return true;
+        else
+            return false;
+    }
+    @Override
+    public boolean isExistOutputFromAliasToName(String key){
+        String check = outputFromAliasToName.get(key);
+        if (check != null)
+            return true;
+        else
+            return false;
+    }
+    public String getValueOfSourceNameByNameOfAliasFromOutputs(String key){
+        return outputFromAliasToName.get(key);
+    }
+    public String getValueOfSourceNameByNameOfAliasFromInputs(String key){
+        return inputFromAliasToName.get(key);
+    }
 }

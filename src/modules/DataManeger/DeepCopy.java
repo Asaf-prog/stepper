@@ -2,6 +2,7 @@ package modules.DataManeger;
 
 import modules.stepper.FlowDefinitionException;
 import modules.stepper.Stepper;
+import modules.stepper.StepperDefinitionException;
 import schemeTest2.generatepackage.STFlow;
 import schemeTest2.generatepackage.STStepper;
 
@@ -23,7 +24,7 @@ private List <STFlow> Flows;
     public STStepper getStStepper() {return stStepper;}
     public Stepper getStepper() {return stepper;}
 
-    public Stepper copyAllDataInFields() throws FlowDefinitionException {
+    public Stepper copyAllDataInFields() throws FlowDefinitionException, StepperDefinitionException {
 
         stepper.setTPSize(stStepper.getSTThreadPool());
         for (STFlow flow : Flows){
