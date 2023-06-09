@@ -123,6 +123,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         continuationExe.setVisible(true);
         continuationExe.setDisable(true);
         startExecute.setVisible(false);
+        flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
         //first, create a list of mandatory and optional that the user need to supply
         //secondly, create the component
         Continuation continuation1 = null;//=> fulfil the data of the mapping to the flow
