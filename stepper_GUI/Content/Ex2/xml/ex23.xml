@@ -57,6 +57,9 @@
 			<ST-StepsInFlow>
 				<ST-StepInFlow name="Zipper"/>
 			</ST-StepsInFlow>
+			<ST-InitialInputValues>
+				<ST-InitialInputValue input-name="OPERATION" initial-value="UNZIP"/>
+			</ST-InitialInputValues>
 		</ST-Flow>
 	</ST-Flows>
 </ST-Stepper>

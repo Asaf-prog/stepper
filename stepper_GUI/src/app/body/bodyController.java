@@ -20,6 +20,8 @@ public class bodyController {
     private MVC_controller controller;
     private FlowDefinitionImpl currentFlow;
 
+    private bodyControllerDefinition lastBodyController=null;
+
     @FXML
     private AnchorPane bodyPane;
     public void setMainController(mainController main) {
@@ -42,6 +44,9 @@ public class bodyController {
     }
     private void loadScreen(FXMLLoader fxmlLoader,URL url) {
         try {
+            if (lastBodyController!=null) {
+                lastBodyController.onLeave();
+            }
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerDefinition bController = fxmlLoader.getController();
             bController.setFlowsDetails(main.getFlows());
@@ -51,6 +56,7 @@ public class bodyController {
             bController.show();
 
             bodyPane.getChildren().setAll(screen);
+            lastBodyController=bController;
         }
         catch (IOException e) {
             System.out.println("BASA");
@@ -189,6 +195,7 @@ public class bodyController {
     }
     public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){
         main.getHeaderComponentController().SetExecutionButtonVisible(flowDefinition);
+
 
     }
     public void setBodyScreen() throws IOException {

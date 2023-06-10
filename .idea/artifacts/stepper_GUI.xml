@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="stepper_GUI">
+    <output-path>$PROJECT_DIR$/out/artifacts/stepper_GUI</output-path>
+    <root id="root">
+      <element id="archive" name="stepper_GUI.jar">
+        <element id="module-output" name="stepper_GUI" />
+      </element>
+    </root>
+  </artifact>
+</component>

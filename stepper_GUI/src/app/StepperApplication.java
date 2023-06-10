@@ -13,8 +13,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.application.Platform;
+import javafx.stage.Window;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,11 +26,15 @@ public class StepperApplication extends Application {
 
         //setLoadingScreen(primaryStage);
 
+        primaryStage.setOnCloseRequest(event -> {
+            // Close all open stages
+            closeAllOpenStages();
+        });
         StyleManager onlyOne = new StyleManager();
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
-        Scene scene = new Scene(load,1090,734);
-       // primaryStage.initStyle(StageStyle.UNIFIED);
+        Scene scene = new Scene(load, 1090, 734);
+        // primaryStage.initStyle(StageStyle.UNIFIED);
         scene.setOnMouseEntered(e -> showWindow(primaryStage));
         scene.setOnMouseExited(e -> hideWindow(primaryStage));
         primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
@@ -37,6 +43,10 @@ public class StepperApplication extends Application {
         centerWindowOnScreen(primaryStage);
         setBounds(primaryStage);
         primaryStage.show();
+    }
+
+    private void closeAllOpenStages() {
+
     }
 
     private void setLoadingScreen(Stage primaryStage) throws InterruptedException, IOException {

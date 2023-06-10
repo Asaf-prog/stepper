@@ -8,7 +8,6 @@ import app.body.executionsHistory.continuation.ContinuationPopUp;
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
 import app.management.style.StyleManager;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,7 +34,6 @@ import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
-import modules.flow.execution.FlowExecutionResult;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
@@ -104,6 +102,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
     private String style;
 
+    private List<Stage> stages = new ArrayList<>();
+
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
@@ -122,6 +122,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         setFilter2Table();
         setBodyButtonStyle(execute);
         setBodyButtonStyle(continuation);
+    }
+    @Override
+    public void onLeave() {
+    for (Stage stage : stages) {
+        stage.close();
+    }
     }
 
     private void setFilter2Table() {
@@ -266,6 +272,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             if (targetFlows.size() != 0) {
                 //popup scene with list of target flows to choose one from
                 Stage stage = new Stage();
+                stages.add(stage);
                 stage.setTitle("Choose target flow");
                 ContinuationPopUp controller = new ContinuationPopUp(pickedExecution, targetFlows, stage, body);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
@@ -278,8 +285,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     stage.setScene(scene);
                     stage.showAndWait();
 
-                } catch (IOException e) {
-                    System.out.println("BASA");
+                }  catch (IllegalStateException | IOException ex) {
+                    // Handle the exception gracefully
                 }
             } else{
                 Tooltip tooltip = new Tooltip("No continuations for this flow");
@@ -545,12 +552,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         if (controller!=null ) {
                             controller.setData(value, name);
                             Stage stage = new Stage();
+                            stages.add(stage);
                             stage.setTitle("Data Viewer");
                             stage.setScene(new Scene(root, 600, 400));
                             stage.showAndWait();
                         }
-                    } catch (IOException e) {
-                        System.out.println("failed to load data viewer");
+                    }  catch (IllegalStateException | IOException ex) {
+                        // Handle the exception gracefully
                     }
                 }
         );
@@ -581,11 +589,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                                 DataViewerController controller = loader.getController();
                                 controller.setData(entry.getValue(), entry.getKey());
                                 Stage stage = new Stage();
+                                stages.add(stage);
                                 stage.setTitle("Data Viewer");
                                 stage.setScene(new Scene(root, 600, 400));
                                 stage.showAndWait();
-                            } catch (IOException e) {
-                                //give up
+                            } catch (IllegalStateException | IOException ex) {
+                                // Handle the exception gracefully
                             }
                         }
                 );

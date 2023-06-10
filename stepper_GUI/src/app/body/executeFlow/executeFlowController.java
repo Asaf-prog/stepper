@@ -74,6 +74,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private Label flowNameLabel;
     private boolean isComeFromHistory =false;
     private String style;
+    List<Stage> stages = new ArrayList<>();
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -103,6 +104,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         assert continuationExe != null : "fx:id=\"continuationExe\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert flowNameLabel != null : "fx:id=\"flowNameLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
     }
+
+    @Override
+    public void onLeave() {
+        for (Stage stage : stages) {
+            stage.close();
+        }
+    }
+
     @Override
     public void show() {
         //first of all, create a two list : mandatoryInputs and optionalInputs:
@@ -584,15 +593,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
         enablesDetails(lastFlowExecution);
+        showDetails.setDisable(false);
 
-//        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-//            @Override
-//            public void invalidated(Observable observable) {
-//                Platform.runLater(() -> {
-//                    //popupDetails();
-//                });
-//            }
-//        });
+        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                Platform.runLater(() -> {
+                    popupDetails();
+                });
+            }
+        });
+
     }
     private void enablesDetails(FlowExecution lastFlowExecution) {
         if (lastFlowExecution != null) {
@@ -634,15 +645,22 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
             Parent root = loader.load();
             Stage stage = new Stage();
+            stages.add(stage);
             stage.setTitle("Flow Details");
             //set icon as previous stage
             stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
             stage.setScene(new Scene(root, 1060, 365));
-            stage.showAndWait();
-        } catch (IOException e) {
-            System.out.println("BASA");
+            stage.show();
+            //disable app until the user close the window
+        }catch (IllegalStateException | IOException ex) {
+            VerySecretCode();
         }
     }
+
+    private void VerySecretCode() {
+        // :)
+    }
+
     private FlowExecution getLastFlowExecution() {
         return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
     }
@@ -801,15 +819,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
         enablesDetails(lastFlowExecution);
+        showDetails.setDisable(false);
 
-        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                Platform.runLater(() -> {
-                    popupDetails();
-                });
-            }
-        });
+//        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
+//            @Override
+//            public void invalidated(Observable observable) {
+//                Platform.runLater(() -> {
+//                    popupDetails();
+//                });
+//            }
+//        });
+
     }
     @Override
     public void setBodyControllerContinuation(bodyController body){

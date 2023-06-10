@@ -29,6 +29,10 @@ public class Zipper extends AbstractStepDefinition {
         //the get data enumeration from the context tell us if we need to do zip or unzip
 
         String path = context.getDataValue("SOURCE", String.class);
+        //check if path round with " or not
+        if(path.charAt(0)=='\"'){
+            path=path.substring(1,path.length()-1);
+        }
         Enumerator zipOrUnzip = context.getDataValue("OPERATION", Enumerator.class);
         //String action = zipOrUnzip.isFirstContainVal("ZIP") ? "Zip" : "Unzip";
        // Enumerator zipOrUnzip=new Enumerator(action);
@@ -52,7 +56,7 @@ public class Zipper extends AbstractStepDefinition {
                 context.storeDataValue("RESULT", result);
                 return StepResult.FAILURE;
             }
-            unzipFile(path, path);
+            unzip(path);
             context.setLogsForStep("Zipper", "End with Success ,Unzip operation was done");
             context.addSummaryLine("Zipper", "End with Success ,Unzip operation was done");
             String result = "Success";
@@ -97,39 +101,44 @@ public class Zipper extends AbstractStepDefinition {
         }
 
     }
+    private static void unzip(String source) throws IOException {
 
-    private  void unzipFile(String zipFilePath, String destDirectory) throws IOException {
-        File destDir = new File(destDirectory);
-        if (!destDir.exists()) {
-            destDir.mkdir();
-        }
+        File zipFile = new File(source);
+        String destinationFolder = getDestinationFolder(source);
 
-        try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath))) {
-            ZipEntry entry = zipIn.getNextEntry();
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            String entryName = zipEntry.getName();
+            File newFile = new File(destinationFolder, entryName);
 
-            while (entry != null) {
-                String filePath = destDirectory + File.separator + entry.getName();
-
-                if (!entry.isDirectory()) {
-                    extractFile(zipIn, filePath);
-                } else {
-                    File dir = new File(filePath);
-                    dir.mkdir();
+            if (zipEntry.isDirectory()) {
+                newFile.mkdirs();
+            } else {
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int length;
+                while ((length = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, length);
                 }
-
-                zipIn.closeEntry();
-                entry = zipIn.getNextEntry();
+                fos.close();
             }
+
+            zis.closeEntry();
+            zipEntry = zis.getNextEntry();
         }
+        zis.close();
     }
-
-    private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
-            byte[] bytesIn = new byte[1024];
-            int read;
-            while ((read = zipIn.read(bytesIn)) != -1) {
-                bos.write(bytesIn, 0, read);
-            }
+    private static String getDestinationFolder(String source) {
+        File zipFile = new File(source);
+        String parentFolder = zipFile.getParent();
+        return parentFolder != null ? parentFolder : "";
+    }
+    private static String getBaseName(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex != -1) {
+            return fileName.substring(0, lastDotIndex);
         }
+        return fileName;
     }
 }

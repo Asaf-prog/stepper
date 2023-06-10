@@ -48,4 +48,8 @@ public class ExecutionManager implements Serializable {
         this.numberOfThreads = numberOfThreads1;
         threadExecutor=Executors.newFixedThreadPool(numberOfThreads);
     }
+
+    public void shutDown() {
+        threadExecutor.shutdown();
+    }
 }

@@ -345,6 +345,11 @@ public class StatsScreen implements bodyControllerDefinition {
     }
 
     @Override
+    public void onLeave() {
+
+    }
+
+    @Override
     public void show() {
 
     }

@@ -1,5 +1,6 @@
 package app.body.flowDefinitionPresent;
 
+import app.MVC_controller.MVC_controller;
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.body.flowDefinitionPresent.graph.FlowGraphBuilder;
@@ -22,7 +23,9 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.DataDefinitionDeclaration;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -76,6 +79,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
     private ToggleGroup flowsToggleGroup;
 
+    private List<Stage> stages=new ArrayList<>();
+
     @FXML
     void initialize() {
         assert ExecuteButton != null : "fx:id=\"ExecuteButton\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
@@ -108,6 +113,14 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         });
 
     }
+
+    @Override
+    public void onLeave() {
+        for (Stage stage:stages){
+            stage.close();
+        }
+    }
+
     @Override
     public void show(){
         setTheme();
@@ -133,6 +146,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     private void handleButtonAction(FlowDefinitionImpl flow) {
+
         this.body.setButtonExecutionFromHeader(flow);
         ToggleGroup group = new ToggleGroup();
         executeButton.setDisable(false);
@@ -211,6 +225,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         graphPNG.setOnMouseClicked( event -> {
                     //open the image in big in new window
                     Stage stage = new Stage();
+                    stages.add(stage);
                     stage.setTitle("Flow Graph");
                     ImageView imageView = new ImageView();
                     imageView.setImage(image);
@@ -231,9 +246,13 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     Scene scene = new Scene(scrollPane, 1080, 720);
                     scene.setFill(Color.valueOf("#36393e"));
                     stage.setScene(scene);
-                    stage.show();
+                    try {
+                        stage.show();
+                    } catch (IllegalStateException e) {
+                        // Handle the exception gracefully
+                    }
                 }
-                );
+        );
     }
     private void handleButtonActionForFreeInputs(FlowDefinitionImpl flow){
         scatchPane.setVisible(false);
@@ -323,7 +342,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @FXML
     void executeButtonForFlow(ActionEvent event) {
         body.executeExistFlowScreen(body.getCurrentFlow());
-        
     }
    @FXML
     void executeFlowFunc(ActionEvent event) {

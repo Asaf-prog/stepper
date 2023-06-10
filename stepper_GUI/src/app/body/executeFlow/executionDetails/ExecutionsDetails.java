@@ -268,8 +268,8 @@ public class ExecutionsDetails {
                             stage.setScene(new Scene(root, 600, 400));
                             stage.showAndWait();
                         }
-                    } catch (IOException e) {
-                        System.out.println("failed to load data viewer");
+                    } catch (IllegalStateException | IOException ex) {
+                        // Handle the exception gracefully
                     }
                 }
         );
@@ -309,8 +309,8 @@ public class ExecutionsDetails {
                                 stage.setTitle("Data Viewer");
                                 stage.setScene(new Scene(root, 600, 400));
                                 stage.showAndWait();
-                            } catch (IOException e) {
-                                //giveup
+                            }  catch (IllegalStateException | IOException ex) {
+                                // Handle the exception gracefully
                             }
                         }
                 );

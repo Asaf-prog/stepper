@@ -6,6 +6,7 @@ import app.management.mainController;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
@@ -13,6 +14,7 @@ import modules.flow.execution.executionManager.ExecutionManager;
 import modules.flow.execution.executionManager.tasks.ExecutionTask;
 import modules.flow.execution.runner.FLowExecutor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static modules.DataManeger.DataManager.stepperData;

@@ -128,6 +128,11 @@ public class headerController {
 
     @FXML
     void closeApp(ActionEvent event) {
+        Stage currentStage = (Stage) closeButton.getScene().getWindow();
+        currentStage.close();
+        Thread.currentThread().interrupt();
+        if (DataManager.getData() != null)
+            DataManager.getData().getExecutionManager().shutDown();
         Platform.exit();
     }
 
@@ -420,6 +425,7 @@ public class headerController {
     }
     @FXML
     void loadData(ActionEvent event) {
+        flowExecution.setDisable(true);
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Data");
@@ -434,6 +440,7 @@ public class headerController {
                 loaded.setText(DataManager.getData().getXmlPath());
                 initializedData();
                 main.getBodyController().setBodyScreen();
+                menuHbox.getChildren().remove(flowExecution);
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -641,6 +648,8 @@ public class headerController {
                 stopRotate();
                 loadXMLbutton.setRotate(0);
                 main.getBodyController().setBodyScreen();
+                menuHbox.getChildren().remove(flowExecution);
+
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -721,6 +730,7 @@ public class headerController {
             menuHbox.getChildren().add(flowExecution);
 
         }
+        flowExecution.setDisable(false);
         this.currentFlow = flowDefinition;
     }
 }
