@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="stepper_GUI.jnlp">
+  <information>
+    <title>StepperX</title>
+    <vendor>Unknown</vendor>
+    <description>stepper_GUI</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="stepper_GUI.jar" size="1716245" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="1080" height="720" main-class="app.StepperApplication"  name="stepper_GUI" />
+  <update check="background"/>
+</jnlp>
