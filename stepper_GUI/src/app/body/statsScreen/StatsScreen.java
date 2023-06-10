@@ -6,11 +6,13 @@ import app.management.style.StyleManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -174,17 +176,16 @@ public class StatsScreen implements bodyControllerDefinition {
         for (StepUsageDeclaration step : selectedFlow.getSteps()) {
             double percentage = (step.getAvgTime() / totalFlowTime) * 100;
             PieChart.Data data = new PieChart.Data(step.getFinalStepName(), percentage);
+
             pieChartData.add(data);
         }
         pieChart.setData(pieChartData);
-        pieChart.lookup(".chart-title")
-                .setStyle("-fx-text-fill: #ba00ff;");
+        pieChart.lookup(".chart-title").setStyle("-fx-text-fill: #ba00ff;");
         pieChart.lookup(".chart-pie-label-line").setStyle("-fx-stroke: #33a1ff; -fx-text-fill: #ffef00;");
-       // pieChart.getStylesheets().add("charts.css");
+        // pieChart.getStylesheets().add("charts.css");
         pieChart.lookup(".chart-legend").setStyle("-fx-text-fill: #4cffa4;");
         pieChart.lookup(".chart-pie-label").setStyle("-fx-fill: #fff90c;");
         return pieChart;
-
     }
 
     private void setListsView() {

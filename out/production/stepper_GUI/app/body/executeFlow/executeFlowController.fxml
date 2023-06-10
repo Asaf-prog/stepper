@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executeFlow.executeFlowController">
    <children>
-      <Button fx:id="startExecute" disable="true" layoutX="885.0" layoutY="481.0" mnemonicParsing="false" onAction="#startExecuteAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Run" textFill="#eeff00">
+      <Button fx:id="startExecute" alignment="CENTER" disable="true" layoutX="912.0" layoutY="481.0" mnemonicParsing="false" onAction="#startExecuteAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text="Run" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
@@ -54,7 +54,7 @@
             <Insets left="5.0" top="5.0" />
          </padding>
       </VBox>
-      <Button fx:id="continuation" disable="true" layoutX="677.0" layoutY="388.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Continuation" textFill="#eeff00">
+      <Button fx:id="continuation" alignment="CENTER" disable="true" layoutX="662.0" layoutY="388.0" mnemonicParsing="false" onAction="#startContinuationAfterGetFreeInputs" prefHeight="41.0" prefWidth="219.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text="Continuation Options" textFill="#eeff00">
 
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
@@ -79,12 +79,12 @@
             <Insets left="5.0" top="5.0" />
          </padding>
       </VBox>
-      <Button fx:id="showDetails" disable="true" layoutX="677.0" layoutY="481.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Details" textFill="#eeff00">
+      <Button fx:id="showDetails" alignment="CENTER" disable="true" layoutX="912.0" layoutY="388.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="41.0" prefWidth="142.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text="Details" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="continuationExe" layoutX="860.0" layoutY="388.0" mnemonicParsing="false" onAction="#ContinuationExecution" prefHeight="41.0" prefWidth="191.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" stylesheets="@../../management/style/darkTheme.css" text="Run Continuation" textFill="#eeff00">
+      <Button fx:id="continuationExe" alignment="CENTER" layoutX="676.0" layoutY="481.0" mnemonicParsing="false" onAction="#ContinuationExecution" prefHeight="41.0" prefWidth="191.0" style="-fx-border-color: white; -fx-background-color: transparent; -fx-border-radius: 23; -fx-border-width: 3;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text="Run Continuation" textFill="#eeff00">
          <font>
             <Font name="Arial Rounded MT Bold" size="18.0" />
          </font>

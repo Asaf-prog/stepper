@@ -73,16 +73,24 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @FXML
     private Label flowNameLabel;
     private boolean isComeFromHistory =false;
+    private String style;
+
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     @FXML
     void initialize() {
+        style=startExecute.getStyle();
         asserts();
         setTheme();
         continuation.setVisible(false);
         continuationVbox.setVisible(false);
         continuationExe.setVisible(false);
+        setBodyButtonStyle(continuation);
+        setBodyButtonStyle(continuationExe);
+        setBodyButtonStyle(showDetails);
+        setBodyButtonStyle(startExecute);
+
     }
     private void asserts() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
@@ -469,6 +477,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         } else {
             addButton.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;-fx-border-width: 2;-fx-border-radius: 9; -fx-font-size: 15; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
         }
+        String style1 = addButton.getStyle();
+        addButton.setOnMouseEntered(e -> {
+            addButton.setStyle(style1+"-fx-background-color: #e600ff; -fx-text-fill: #000000; -fx-background-radius: 10; -fx-border-width: 2;");
+
+        });
+        addButton.setOnMouseExited(e -> {
+            addButton.setStyle(style1);
+        });
     }
 
     private String getExistInInitialValue(String nameToSearchInKey){
@@ -688,13 +704,19 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
             if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional) {
                 startExecute.setDisable(false);
-                startExecute.setOnMouseEntered(event ->
-                        startExecute.setStyle("-fx-background-color: #36e6f3;"));
-                startExecute.setOnMouseExited(event ->
-                        startExecute.setStyle("-fx-background-color: rgba(255,255,255,0);"));
             }
         }
     }
+
+    private void setBodyButtonStyle(Button button) {
+        button.setOnMouseEntered(event ->
+                button.setStyle(style+ "-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff"));
+        button.setOnMouseExited(event ->
+                button.setStyle(style));
+
+
+    }
+
     private boolean validateInput(String data, Class<?> type, TextField textField,Button btn) {
         if (type.equals(Integer.class)) {
             try {

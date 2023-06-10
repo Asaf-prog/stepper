@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.ExecutionsHistory">
    <children>
-      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="35.0" prefHeight="175.0" prefWidth="1057.0" style="-fx-background-color: transparent;" styleClass="Table" stylesheets="@../../management/style/darkTheme.css">
+      <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="30.0" prefHeight="172.0" prefWidth="1057.0" style="-fx-background-color: transparent;" styleClass="Table" stylesheets="@../../management/style/darkTheme.css">
          <columns>
             <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="351.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" styleClass="tableColumn" text="Flow ID" />
 
@@ -26,9 +26,9 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="logsPane" layoutX="616.0" layoutY="221.0" prefHeight="265.0" prefWidth="437.0" style="-fx-background-color: transparent;">
+      <Pane fx:id="logsPane" layoutX="616.0" layoutY="221.0" prefHeight="263.0" prefWidth="458.0" style="-fx-background-color: transparent;">
          <children>
-            <ImageView fitHeight="263.0" fitWidth="447.0" layoutX="-6.0" layoutY="7.0">
+            <ImageView fitHeight="252.0" fitWidth="462.0" layoutX="-6.0" layoutY="7.0">
                <image>
                   <Image url="@content/commandScreen.png" />
                </image>
@@ -36,14 +36,14 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="233.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
+            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="226.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
                <children>
                   <Label fx:id="logsLabel" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="433.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="207.0" prefWidth="427.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@tableStuff/table-style.css" />
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="203.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@tableStuff/table-style.css" />
                </children>
             </VBox>
          </children>
@@ -58,18 +58,18 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <HBox layoutX="314.0" layoutY="230.0" prefHeight="298.0" prefWidth="286.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
+      <HBox layoutX="314.0" layoutY="230.0" prefHeight="295.0" prefWidth="286.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
          <children>
-            <VBox fx:id="inputsVbox" prefHeight="296.0" prefWidth="135.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
+            <VBox fx:id="inputsVbox" prefHeight="294.0" prefWidth="148.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="144.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Input" textFill="#9c40ff">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="145.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Input" textFill="#9c40ff">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
-            <VBox fx:id="inputsVbox4Value" prefHeight="263.0" prefWidth="153.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
+            <VBox fx:id="inputsVbox4Value" prefHeight="294.0" prefWidth="143.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="157.0" style="-fx-border-color: white;" styleClass="tableTitle" stylesheets="@../../management/style/darkTheme.css" text="Value" textFill="#9c40ff">
                      <font>
@@ -80,7 +80,7 @@
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="231.0" prefHeight="298.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
+      <HBox layoutX="10.0" layoutY="231.0" prefHeight="293.0" prefWidth="293.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
          <children>
             <VBox fx:id="outputsVbox" prefHeight="263.0" prefWidth="152.0" spacing="2.0" style="-fx-border-color: white;" stylesheets="@../../management/style/darkTheme.css">
                <children>
@@ -102,7 +102,7 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="execute" disable="true" layoutX="842.0" layoutY="496.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" stylesheets="@../../management/style/darkTheme.css" text=" Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+      <Button fx:id="execute" disable="true" layoutX="845.0" layoutY="489.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text=" Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
          <font>
             <Font name="Arial Narrow" size="18.0" />
          </font>
@@ -133,7 +133,7 @@
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="continuation" alignment="CENTER" disable="true" layoutX="607.0" layoutY="496.0" mnemonicParsing="false" onAction="#onActionContinuation" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" stylesheets="@../../management/style/darkTheme.css" text=" Continuation" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
+      <Button fx:id="continuation" alignment="CENTER" disable="true" layoutX="613.0" layoutY="489.0" mnemonicParsing="false" onAction="#onActionContinuation" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text=" Continuation" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
          <font>
             <Font name="Arial Narrow" size="18.0" />
          </font>

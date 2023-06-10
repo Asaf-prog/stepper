@@ -414,6 +414,7 @@ public class headerController {
                 alert.setHeaderText("Error");
                 alert.setContentText("Error saving data");
                 alert.showAndWait();
+
             }
         }
     }
@@ -432,6 +433,7 @@ public class headerController {
                 loadXMLbutton.setText("Loaded:");
                 loaded.setText(DataManager.getData().getXmlPath());
                 initializedData();
+                main.getBodyController().setBodyScreen();
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");

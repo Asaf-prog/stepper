@@ -7,8 +7,13 @@
     -fx-text-fill: #050503;
 }
 .tableTitle {
-    -fx-text-fill: #00ff9d;
+    -fx-text-fill: #01007c;
 }
+.tableTitle :hover {
+    -fx-background-color: #ff00df;
+    -fx-text-fill: #fafaff;
+}
+
 .headerTitle {
 
     -fx-font-weight: bold;

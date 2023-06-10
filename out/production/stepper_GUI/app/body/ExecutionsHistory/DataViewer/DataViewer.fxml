@@ -33,7 +33,7 @@
             </Pane>
             <Pane fx:id="tablePane" disable="true" prefHeight="192.0" prefWidth="468.0">
                <children>
-                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #324292;" stylesheets="@../../../management/style/darkTheme.css" />
+                  <TableView fx:id="tableView" prefHeight="301.0" prefWidth="576.0" style="-fx-background-color: #36393e;" stylesheets="@../../../management/style/darkTheme.css" />
                </children>
             </Pane>
          </children>

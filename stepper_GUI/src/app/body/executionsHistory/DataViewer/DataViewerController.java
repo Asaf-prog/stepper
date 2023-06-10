@@ -114,11 +114,11 @@ public class DataViewerController {
         list.prefHeightProperty().bind(listPane.heightProperty());
         list.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;"
                 + "-fx-font-family: \"Segoe UI Semibold\";"
-                + "-fx-alignment: top-center; -fx-background-color: blue; -fx-text-fill: purple;" +
+                + "-fx-alignment: top-center; -fx-background-color: #36393e; -fx-text-fill: purple;" +
                 "-fx-border-color: white; -fx-border-width: 1px;");
         listPane.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;"
                 + "-fx-font-family: \"Segoe UI Semibold\";"
-                + "-fx-alignment: top-center; -fx-background-color: blue; -fx-text-fill: purple;" +
+                + "-fx-alignment: top-center; -fx-background-color: #36393e; -fx-text-fill: purple;" +
                 "-fx-border-color: white; -fx-border-width: 1px;");
     }
 

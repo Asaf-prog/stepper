@@ -7,6 +7,7 @@ import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.executionsHistory.continuation.ContinuationPopUp;
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
 import app.management.style.StyleManager;
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -26,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 import modules.DataManeger.DataManager;
 import modules.dataDefinition.impl.relation.RelationData;
@@ -101,11 +103,14 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private FlowExecution pickedExecution;
 
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
+    private String style;
+
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     @FXML
     void initialize() {
+        style=execute.getStyle();
         setTheme();
         Stepper stepperData = DataManager.getData();
         asserts();
@@ -116,6 +121,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
         setFilter2Table();
+        setBodyButtonStyle(execute);
+        setBodyButtonStyle(continuation);
     }
 
     private void setFilter2Table() {
@@ -247,34 +254,55 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     void onActionContinuation(ActionEvent event) {
         if (pickedExecution != null) {
-            FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
-            if (flowDefinition.getContinuations()==null)
+            FlowDefinitionImpl flowDefinition = (FlowDefinitionImpl) pickedExecution.getFlowDefinition();
+            if (flowDefinition.getContinuations() == null)
                 return;
-           //build list from target flows in continuations
+            //build list from target flows in continuations
 
             List<Continuation> continuations = flowDefinition.getContinuations();
             List<String> targetFlows = new ArrayList<>();
             for (Continuation continuation : continuations) {
                 targetFlows.add(continuation.getTargetFlow());
             }
-            //popup scene with list of target flows to choose one from
-            Stage stage = new Stage();
-            stage.setTitle("Choose target flow");
-            ContinuationPopUp controller = new ContinuationPopUp(pickedExecution,targetFlows,stage,body);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
-            loader.setController(controller);
-            Parent root = null;
-            try {
-                root = loader.load();
+            if (targetFlows.size() != 0) {
+                //popup scene with list of target flows to choose one from
+                Stage stage = new Stage();
+                stage.setTitle("Choose target flow");
+                ContinuationPopUp controller = new ContinuationPopUp(pickedExecution, targetFlows, stage, body);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
+                loader.setController(controller);
+                Parent root = null;
+                try {
+                    root = loader.load();
 
-                Scene scene = new Scene(root, 500, 300);
-                stage.setScene(scene);
-                stage.showAndWait();
+                    Scene scene = new Scene(root, 500, 300);
+                    stage.setScene(scene);
+                    stage.showAndWait();
 
-            } catch (IOException e) {
-                System.out.println("BASA");
+                } catch (IOException e) {
+                    System.out.println("BASA");
+                }
+            } else{
+                Tooltip tooltip = new Tooltip("No continuations for this flow");
+                double tooltipX = continuation.localToScreen(continuation.getBoundsInLocal()).getMinX() + continuation.getWidth() / 2;
+                double tooltipY = continuation.localToScreen(continuation.getBoundsInLocal()).getMinY() - 30; // Adjust the offset as needed
+                tooltip.show(continuation, tooltipX, tooltipY);
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(e -> tooltip.hide());
+                delay.play();
+                tooltip.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: red; -fx-background-color: white;");
+                continuation.setTooltip(tooltip);
             }
         }
+
+    }
+
+    private void setBodyButtonStyle(Button button) {
+        button.setOnMouseEntered(event ->
+                button.setStyle(style+ "-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff"));
+        button.setOnMouseExited(event ->
+                button.setStyle(style));
+
 
     }
 

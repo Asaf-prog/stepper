@@ -103,3 +103,11 @@
 .inputLabel {
     -fx-text-fill: #4cffa4;
 }
+
+
+.BodyButton {
+    -fx-border-color: white;
+    -fx-background-color: transparent;
+    -fx-border-width: 3;
+    -fx-background-radius: 23;
+}

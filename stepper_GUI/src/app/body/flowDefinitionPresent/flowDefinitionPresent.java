@@ -71,6 +71,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private List<FlowDefinitionImpl> flows;
     private bodyController body;
     private FlowDefinitionImpl currentFlow;
+    String style="";
 
     @FXML
     void initialize() {
@@ -92,9 +93,17 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         assert numberOfSteps != null : "fx:id=\"numberOfSteps\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
         assert graphPNG != null : "fx:id=\"graphPNG\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
         assert graph != null : "fx:id=\"graph\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
+        style=executeButton.getStyle();
         scatchPane.setVisible(false);
         seocendVbox.setVisible(false);
         thiredVbox.setVisible(false);
+        executeButton.setOnMouseEntered(event -> {
+            executeButton.setStyle(style+"-fx-background-color: #ffd54a; -fx-background-radius: 20;-fx-border-color: #566dff;");
+        });
+        executeButton.setOnMouseExited(event -> {
+            executeButton.setStyle(style);
+        });
+
     }
     @Override
     public void show(){
