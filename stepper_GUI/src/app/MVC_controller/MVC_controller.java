@@ -22,7 +22,6 @@ public class MVC_controller {
     private  headerController header;
     private bodyController body;
     List<Pair<String,String>> freeInputs;
-    private GuiAdapter guiAdapter;
 
     public MVC_controller(mainController main, headerController header, bodyController body){
         this.main = main;
@@ -40,7 +39,6 @@ public class MVC_controller {
                     flowTestExecution.getUniqueId() , flowTestExecution, fLowExecutor);
             setProgressBar(task);
             ExeManager.executeTask(task);
-            //todo check if gui updated correctly
             header.setDisableOnExecutionsHistory();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -53,12 +51,12 @@ public class MVC_controller {
         ProgressBar progressBar = header.getNextProgressBar(nextIndex);
         progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
         progressBar.progressProperty().bind(task.getProgress());
-        task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {//todo check if work !
+        task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
                 progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
             }
         });
-        task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {//todo check if work !
+        task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
                 progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
             }
@@ -68,9 +66,6 @@ public class MVC_controller {
        // header.addProgress(progressBar,label,nextIndex);
     }
 
-    private GuiAdapter createGuiAdapter() {
-        return new GuiAdapter(null,null);
-    }
 
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;

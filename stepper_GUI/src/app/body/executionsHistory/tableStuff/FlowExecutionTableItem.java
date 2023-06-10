@@ -80,4 +80,24 @@ public class FlowExecutionTableItem {
             return result.equals(filterText);
         }
     }
+
+    public void setExecutionResult(FlowExecutionResult result) {
+        if(result==FlowExecutionResult.SUCCESS)
+            this.result = "Success";
+        else if(result==FlowExecutionResult.WARNING)
+            this.result = "Warning";
+        else
+            this.result = "Failure";
+
+
+    }
+
+    public void setResultFromExecutionResult(FlowExecutionResult flowExecutionResult) {
+        if(flowExecutionResult==FlowExecutionResult.SUCCESS)
+            this.result = "Success";
+        else if(flowExecutionResult==FlowExecutionResult.WARNING)
+            this.result = "Warning";
+        else
+            this.result = "Failure";
+    }
 }

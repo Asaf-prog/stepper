@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="250.0" maxWidth="300.0" prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.Loader.PreLoader">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" layoutX="-7.0" layoutY="-8.0">
+         <image>
+            <Image url="@../content/loader.jpg" />
+         </image>
+      </ImageView>
+      <ProgressBar fx:id="progressBar" blendMode="ADD" cache="true" layoutX="21.0" layoutY="349.0" prefHeight="32.0" prefWidth="560.0" progress="0.0" />
+      <Label alignment="CENTER" layoutX="90.0" layoutY="76.0" prefHeight="250.0" prefWidth="400.0" text="Welcome 2 Stepper" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri" size="41.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.15238095238095237" startY="1.0">
+               <stops>
+                  <Stop color="#69eedc" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>

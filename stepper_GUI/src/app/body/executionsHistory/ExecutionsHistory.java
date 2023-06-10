@@ -8,6 +8,7 @@ import app.body.executionsHistory.continuation.ContinuationPopUp;
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
 import app.management.style.StyleManager;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,15 +35,13 @@ import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
+import modules.flow.execution.FlowExecutionResult;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static modules.DataManeger.DataManager.stepperData;
 
@@ -132,7 +131,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         filterChoiceBox.setValue("All");
         filterChoiceBox.setOnAction(event -> applyFilter(filterChoiceBox.getValue()));
         filterChoiceBox.setStyle(filterChoiceBox.getStyle()+ " -fx-border-color: black; " +
-                "-fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 10px; -fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
+                "-fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 10px; -fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
         styleOfChoiceBox= filterChoiceBox.getStyle();
         filterChoiceBox.setStyle(styleOfChoiceBox + "-fx-background-color: #ffffff;");
         filterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -333,6 +332,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         logsVbox.getChildren().add(newlog);
     }
     private void setupTable(Stepper stepperData) {
+        tableData.setStyle("-fx-control-inner-background: transparent;");
         initTable();
         executionCounterLabel.setText("There are " + stepperData.getFlowExecutions().size() + " Flow Executions");
 
@@ -342,6 +342,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         for (FlowExecution flowExecution : stepperData.getFlowExecutions()) {
             FlowExecutionTableItem item =new FlowExecutionTableItem(flowExecution.getUniqueId(), flowExecution.getFlowDefinition().getName(),
                     flowExecution.getStartDateTime(), flowExecution.getFlowExecutionResult());
+            flowExecution.isDone.addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    item.setResultFromExecutionResult(flowExecution.getFlowExecutionResult());
+                    setResultColumn();
+                }
+            });
+
             item.addToToggleGroup(group);
             data.add(item);
             tableItemEvents(stepperData, group, item);
@@ -590,7 +597,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 inputValue.setPrefHeight(28);
                 this.inputsVbox4Value.getChildren().add(inputValue);
                 this.inputsVbox.getChildren().add(newInput);
-                //todo set them as pressable and get extra info
+
             }
         }
     }

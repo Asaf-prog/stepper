@@ -4,6 +4,7 @@ import app.body.bodyController;
 import app.body.bodyControllerDefinition;
 import app.body.flowDefinitionPresent.graph.FlowGraphBuilder;
 import app.management.style.StyleManager;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -73,6 +74,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private FlowDefinitionImpl currentFlow;
     String style="";
 
+    private ToggleGroup flowsToggleGroup;
+
     @FXML
     void initialize() {
         assert ExecuteButton != null : "fx:id=\"ExecuteButton\" was not injected: check your FXML file 'flowDefinitionPresent.fxml'.";
@@ -108,7 +111,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @Override
     public void show(){
         setTheme();
-        ToggleGroup group = new ToggleGroup();
+        flowsToggleGroup = new ToggleGroup();
         for (FlowDefinitionImpl flow :flows){
             RadioButton button = new RadioButton(flow.getName());
             button.getStylesheets().add("app/management/style/darkTheme.css");
@@ -120,7 +123,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
            // button.getStylesheets().add("app/management/style/darkTheme.css");
             button.setOnAction(event -> handleButtonAction(flow));
-            button.setToggleGroup(group);
+            button.setToggleGroup(flowsToggleGroup);
             firstVbox.getChildren().add(button);
         }
         firstVbox.setSpacing(10);
@@ -154,9 +157,37 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
         graph.setToggleGroup(group);
         graph.setOnAction(event -> handleButtonActionForGraph(flow));
-
-        //todo => add the number of continuation
         DrawFlow(flow);
+
+
+        flowsToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                executeButton.setDisable(true);
+            }else{
+                executeButton.setDisable(false);
+                //get selected item that was selected from the group and do the onAction that  was selected with the new value(flow)
+                RadioButton selectedFlowButton = (RadioButton) newValue;
+                String selectedFlow = selectedFlowButton.getText();
+                for (FlowDefinitionImpl flow1 : flows) {
+                    if (flow1.getName().equals(selectedFlow)) {
+                        Toggle selectedToggle = group.getSelectedToggle();
+                        if (selectedToggle != null) {
+                            RadioButton selectedRadioButton = (RadioButton) selectedToggle;
+                            String selectedText = selectedRadioButton.getText();
+                            if (selectedText.equals("Steps")) {
+                                handleButtonActionForSteps(flow1);
+                            } else if (selectedText.equals("Outputs")) {
+                                handleButtonActionForOutputs(flow1);
+                            } else if (selectedText.equals("Free Inputs")) {
+                                handleButtonActionForFreeInputs(flow1);
+                            } else if (selectedText.equals("Graph")) {
+                                handleButtonActionForGraph(flow1);
+                            }
+                        }
+                    }
+                 }
+            }
+        });
     }
     private void handleButtonActionForGraph(FlowDefinitionImpl flow) {
         scatchPane.setVisible(true);
@@ -168,7 +199,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     private void DrawFlow(FlowDefinitionImpl flow) {
         FlowGraphBuilder.buildFlowGraph(flow);
-        Image image = new Image("file:appContent/flow.png");//TODO => change the path to put  png inside graph package
+        Image image = new Image("file:appContent/flow.png");
         graphPNG.setImage(image);
         graphPNG.setOnMouseEntered(event -> {
             graphPNG.setImage(new Image("file:appContent/clickMe.png"));

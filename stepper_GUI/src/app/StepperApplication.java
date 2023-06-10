@@ -1,5 +1,6 @@
 package app;
 
+
 import app.management.resizeHelper.ResizeHelper;
 import app.management.style.StyleManager;
 import javafx.application.Application;
@@ -11,14 +12,22 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.application.Platform;
+
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class StepperApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        //setLoadingScreen(primaryStage);
+
         StyleManager onlyOne = new StyleManager();
         primaryStage.setTitle("Stepper Application");
         Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
         Scene scene = new Scene(load,1090,734);
-
        // primaryStage.initStyle(StageStyle.UNIFIED);
         scene.setOnMouseEntered(e -> showWindow(primaryStage));
         scene.setOnMouseExited(e -> hideWindow(primaryStage));
@@ -29,6 +38,36 @@ public class StepperApplication extends Application {
         setBounds(primaryStage);
         primaryStage.show();
     }
+
+    private void setLoadingScreen(Stage primaryStage) throws InterruptedException, IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("management/Loader/PreLoader.fxml"));
+        Scene preloadScene = new Scene(root, 350, 200);
+        primaryStage.setScene(preloadScene);
+        primaryStage.show();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                // Load the actual application scene
+                // Replace "MainScene.fxml" with the actual name of your main application FXML file
+                Platform.runLater(() -> {
+                    try {
+                        Parent mainRoot = FXMLLoader.load(getClass().getResource("MainScene.fxml"));
+                        Scene mainScene = new Scene(mainRoot);
+
+                        // Set the main application scene after the preload screen delay
+                        primaryStage.setScene(mainScene);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(task, 1500);
+
+        primaryStage.close();
+    }
+
 
     private static void setBounds(Stage primaryStage) {
         primaryStage.initStyle(StageStyle.UNDECORATED);

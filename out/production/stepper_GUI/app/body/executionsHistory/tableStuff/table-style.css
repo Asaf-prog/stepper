@@ -59,3 +59,7 @@
 .tableColumn{
     -fx-background-color:  #36393e;
 }
+.table-view.scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+}

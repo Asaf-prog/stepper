@@ -74,7 +74,7 @@ public class ExecutionsDetails {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
         if (stepperData.getFlowExecutions().size()!=0)
-            theFlow = getLastFlowExecution(stepperData);//todo maybe problem here
+            theFlow = getLastFlowExecution(stepperData);
         if (theFlow != null) {
         updateLogs(theFlow, stepperData);
         updateLogsTree(theFlow);
@@ -147,7 +147,6 @@ public class ExecutionsDetails {
         stepTreeView.setRoot(root);
         for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
-            //todo here collaps check if null or empty
             if (selectedFlow.getLogs().get(step.getFinalStepName()) != null) {
                 for (Pair<String, String> log : selectedFlow.getLogs().get(step.getFinalStepName())) {
                     if (log != null) {
@@ -321,7 +320,6 @@ public class ExecutionsDetails {
                 inputValue.setPrefHeight(28);
                 this.inputsVbox4Value.getChildren().add(inputValue);
                 this.inputsVbox.getChildren().add(newInput);
-                //todo set them as pressable and get extra info
             }
         }
     }

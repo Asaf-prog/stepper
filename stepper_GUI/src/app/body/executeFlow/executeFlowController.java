@@ -585,14 +585,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         showDetails.setVisible(true);
         enablesDetails(lastFlowExecution);
 
-        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                Platform.runLater(() -> {
-                    popupDetails();
-                });
-            }
-        });
+//        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
+//            @Override
+//            public void invalidated(Observable observable) {
+//                Platform.runLater(() -> {
+//                    //popupDetails();
+//                });
+//            }
+//        });
     }
     private void enablesDetails(FlowExecution lastFlowExecution) {
         if (lastFlowExecution != null) {
