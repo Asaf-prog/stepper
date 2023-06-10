@@ -111,3 +111,8 @@
     -fx-border-width: 3;
     -fx-background-radius: 23;
 }
+.title.text {
+    -fx-text-fill:#ffd54a;
+    -fx-font-size: 144px;
+    -fx-font-weight: bold;
+}

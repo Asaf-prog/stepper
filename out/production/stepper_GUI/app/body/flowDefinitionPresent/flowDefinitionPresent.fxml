@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -31,45 +32,65 @@
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin></Label>
-                  <Label fx:id="nameOfFlowSelected" prefHeight="27.0" prefWidth="337.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="NAME:" textFill="#fff608">
+                  <Label fx:id="nameOfFlowSelected" prefHeight="27.0" prefWidth="337.0" stylesheets="@../../management/style/darkTheme.css" text="NAME:" textFill="#fff608">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin>
+                     <styleClass>
+                        <String fx:value="titles" />
+                        <String fx:value="text" />
+                     </styleClass>
                   </Label>
-                  <Label fx:id="descriptionP" alignment="TOP_LEFT" prefHeight="77.0" prefWidth="341.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Description: " textFill="#fff608" textOverrun="CLIP" wrapText="true">
+                  <Label fx:id="descriptionP" alignment="TOP_LEFT" prefHeight="77.0" prefWidth="341.0" stylesheets="@../../management/style/darkTheme.css" text="Description: " textFill="#fff608" textOverrun="CLIP" wrapText="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin>
+                     <styleClass>
+                        <String fx:value="titles" />
+                        <String fx:value="text" />
+                     </styleClass>
                   </Label>
-                  <Label fx:id="FormalOutputs" alignment="TOP_LEFT" prefHeight="86.0" prefWidth="318.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Steps Formal Outputs:" textFill="#fff608" wrapText="true">
+                  <Label fx:id="FormalOutputs" alignment="TOP_LEFT" prefHeight="86.0" prefWidth="318.0" stylesheets="@../../management/style/darkTheme.css" text="Steps Formal Outputs:" textFill="#fff608" wrapText="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin>
+                     <styleClass>
+                        <String fx:value="titles" />
+                        <String fx:value="text" />
+                     </styleClass>
                   </Label>
-                  <Label fx:id="isReadOnly" prefHeight="41.0" prefWidth="313.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="ReadOnly:" textFill="#fff608" wrapText="true">
+                  <Label fx:id="isReadOnly" prefHeight="41.0" prefWidth="313.0" stylesheets="@../../management/style/darkTheme.css" text="ReadOnly:" textFill="#fff608" wrapText="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin>
+                     <styleClass>
+                        <String fx:value="titles" />
+                        <String fx:value="text" />
+                     </styleClass>
                   </Label>
-                  <Label prefHeight="38.0" prefWidth="313.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="Get More Information about the Flow:" textFill="#fff608">
+                  <Label prefHeight="38.0" prefWidth="313.0" stylesheets="@../../management/style/darkTheme.css" text="Get More Information about the Flow:" textFill="#fff608">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin>
+                     <styleClass>
+                        <String fx:value="titles" />
+                        <String fx:value="text" />
+                     </styleClass>
                   </Label>
                   <VBox prefHeight="109.0" prefWidth="291.0" spacing="10.0">
                      <children>

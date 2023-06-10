@@ -6,16 +6,17 @@ digraph FlowDiagram {
   user_outputs [label="User-Outputs", shape=circle, color=red, penwidth=5 ];
   node [fontcolor=white];
   edge [fontcolor=white];
-  Collect Files In Folder [label="Collect Files In Folder\n(1)", shape=circle, color=green, penwidth=2 ];
-  Spend Some Time [label="Spend Some Time\n(2)", shape=circle, color=green, penwidth=2 ];
-  Files Deleter [label="Files Deleter\n(3)", shape=circle, color=green, penwidth=2 ];
-  user_inputs -> Collect Files In Folder [label="FOLDER_NAME", color=orange, penwidth=2 ];
-  user_inputs -> Collect Files In Folder [label="FILTER", color=orange, penwidth=2 ];
-  Collect Files In Folder -> user_outputs [label="FILES_LIST", color=red, penwidth=2 ];
-  Collect Files In Folder -> user_outputs [label="TOTAL_FOUND", color=red, penwidth=2 ];
-  user_inputs -> Spend Some Time [label="TIME_TO_SPEND", color=orange, penwidth=2 ];
-  user_inputs -> Files Deleter [label="FILES_LIST", color=orange, penwidth=2 ];
-  Files Deleter -> user_outputs [label="DELETION_STATS", color=red, penwidth=2 ];
-  Files Deleter -> user_outputs [label="DELETED_LIST", color=red, penwidth=2 ];
+  Command Line [label="Command Line\n(1)", shape=circle, color=green, penwidth=2 ];
+  File Dumper [label="File Dumper\n(2)", shape=circle, color=green, penwidth=2 ];
+  Zipper [label="Zipper\n(3)", shape=circle, color=green, penwidth=2 ];
+  user_inputs -> Command Line [label="COMMAND", color=orange, penwidth=2 ];
+  user_inputs -> Command Line [label="ARGUMENTS", color=orange, penwidth=2 ];
+  Command Line -> user_outputs [label="RESULT", color=red, penwidth=2 ];
+  user_inputs -> File Dumper [label="CONTENT", color=orange, penwidth=2 ];
+  user_inputs -> File Dumper [label="FILE_NAME", color=orange, penwidth=2 ];
+  File Dumper -> user_outputs [label="RESULT", color=red, penwidth=2 ];
+  user_inputs -> Zipper [label="SOURCE", color=orange, penwidth=2 ];
+  user_inputs -> Zipper [label="OPERATION", color=orange, penwidth=2 ];
+  Zipper -> user_outputs [label="RESULT", color=red, penwidth=2 ];
   user_outputs [label="UserOutputs", shape=circle, color=red , penwidth=2 ];
 }

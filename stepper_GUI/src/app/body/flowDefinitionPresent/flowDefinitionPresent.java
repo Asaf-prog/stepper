@@ -98,7 +98,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         seocendVbox.setVisible(false);
         thiredVbox.setVisible(false);
         executeButton.setOnMouseEntered(event -> {
-            executeButton.setStyle(style+"-fx-background-color: #ffd54a; -fx-background-radius: 20;-fx-border-color: #566dff;");
+            executeButton.setStyle(style+"-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff;");
         });
         executeButton.setOnMouseExited(event -> {
             executeButton.setStyle(style);
@@ -111,6 +111,9 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         ToggleGroup group = new ToggleGroup();
         for (FlowDefinitionImpl flow :flows){
             RadioButton button = new RadioButton(flow.getName());
+            button.getStylesheets().add("app/management/style/darkTheme.css");
+            button.getStyleClass().add("flowRadioButton");
+            button.setStyle("-fx-text-fill: #ffd54a; -fx-font-size: 16; -fx-font-family: 'Arial Rounded MT Bold'");
             //button.setStyle("-fx-text-fill: #ffd54a");
             button.getStylesheets().add("app/management/style/darkTheme.css");
             button.getStyleClass().add("radioButton");
