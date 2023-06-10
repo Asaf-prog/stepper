@@ -199,8 +199,9 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
                     tempName.add(continuation.getTargetFlow());
             }
         }
-        for (String temp: tempName){
-            if (!tempContinuation.contains(temp))
+
+        for (String temp: tempContinuation){
+            if (!tempName.contains(temp))
                 return temp;
         }
         return null;

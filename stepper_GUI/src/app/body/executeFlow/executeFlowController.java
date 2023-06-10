@@ -583,6 +583,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
+        showDetails.setDisable(false);
         enablesDetails(lastFlowExecution);
 
 //        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
