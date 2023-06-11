@@ -202,7 +202,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             nameAndAddOrEdit.setSpacing(5);
             mandatoryList.getChildren().add(nameAndAddOrEdit);
         }
-        if (freeInputsTemp.size() == mandatoryInputs.size())
+
+        if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size())
             continuationExe.setDisable(false);
         mandatoryList.setSpacing(10);
     }
@@ -237,6 +238,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private String getDataThatSupplyAndUpdateTheListOfFreeInputs(Continuation continuation,String nameToSearch){
 
         if (existInInitialValue(nameToSearch)) {
+            String data = getData(nameToSearch);
+            freeInputsTemp.add(new Pair<>(nameToSearch,data));
             return getExistInInitialValue(nameToSearch);
         }
         else if (customMappingWithContinuation(nameToSearch,continuation)){//let search this data in the outputs of last flow
@@ -246,7 +249,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     return outputsOfLastFlow.get(mapping.getSourceData()).toString();
                 }
             }
-        } else if (thisDataSupplyByFreeInputsOfLastFlow(nameToSearch)) {
+        } else if (thisDataSupplyByFreeInputsOfLastFlow(nameToSearch,continuation)) {
 
             for (Pair<String, String> lastMandatory:freeInputsMandatory) {
                 if (lastMandatory.getKey().equals(nameToSearch)) {
@@ -257,9 +260,16 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
             return null;
     }
+    private String getData(String nameToSearch){
+        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
+            if (initialInputValues.getInputName().equals(nameToSearch))
+                return initialInputValues.getInitialValue();
+        }
+        return null;
+    }
 
     private boolean thisDataSupplyByRecentFlow(String nameToSearch,Continuation continuation){
-        if(outputsOfLastFlow.containsKey(nameToSearch) || thisDataSupplyByFreeInputsOfLastFlow(nameToSearch)||
+        if(outputsOfLastFlow.containsKey(nameToSearch) || thisDataSupplyByFreeInputsOfLastFlow(nameToSearch,continuation)||
                 customMappingWithContinuation(nameToSearch,continuation)||existInInitialValue(nameToSearch))
             return true;
         else
@@ -280,16 +290,19 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         return false;
     }
     private boolean customMappingWithContinuation(String nameToSearch,Continuation continuation){
+
        for(ContinuationMapping mapping: continuation.getMappingList()){
            if (mapping.getTargetData().equals(nameToSearch))
                return true;
        }
        return false;
     }
-    private boolean thisDataSupplyByFreeInputsOfLastFlow(String nameToSearch){
+    private boolean thisDataSupplyByFreeInputsOfLastFlow(String nameToSearch,Continuation continuation){
         for (Pair<String, DataDefinitionDeclaration> lastMandatory: currentMandatoryFreeInput){
-            if (lastMandatory.getKey().equals(nameToSearch))
+            if (lastMandatory.getKey().equals(nameToSearch) ) {
                 return true;
+            }
+
         }
         return false;
     }
