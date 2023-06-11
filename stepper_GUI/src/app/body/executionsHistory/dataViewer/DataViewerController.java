@@ -1,4 +1,4 @@
-package app.body.executionsHistory.DataViewer;
+package app.body.executionsHistory.dataViewer;
 import app.management.style.StyleManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -87,7 +87,7 @@ public class DataViewerController {
             case 3:
                 presentListData();
                 break;
-            default://Enum ? todo
+            default://Enum ?
                 presentOtherData();
         }
     }

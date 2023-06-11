@@ -60,13 +60,13 @@ public class FlowGraphBuilder {
 
 
 
-        String folderPath = "appContent/";
+        String folderPath = "stepper_GUI/Content/";
         String dotFilePath = folderPath + "flow.dot";
         String pngFilePath = folderPath + "flow.png";
         try (PrintWriter writer = new PrintWriter(dotFilePath)) {
             writer.print(dotCode.toString());
         } catch (FileNotFoundException e) {
-            System.out.println("BASA");
+            System.out.println("BASA7");
         }
         // Generate the graph using the Graphviz command-line tool
         try {
@@ -74,7 +74,7 @@ public class FlowGraphBuilder {
             Process process = processBuilder.start();
             process.waitFor();
         } catch (Exception e) {
-            System.out.println("BASA");
+            System.out.println("BASA8");
         }
     }
 }

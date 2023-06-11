@@ -1,7 +1,7 @@
 package app.body.executeFlow.executionDetails;
 
 import app.body.bodyController;
-import app.body.executionsHistory.DataViewer.DataViewerController;
+import app.body.executionsHistory.dataViewer.DataViewerController;
 import app.management.style.StyleManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -257,7 +257,7 @@ public class ExecutionsDetails {
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/DataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/dataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -300,7 +300,7 @@ public class ExecutionsDetails {
                     inputValue.setStyle(currStyle);
                 });
                 inputValue.setOnMouseClicked(event -> {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/DataViewer/DataViewer.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/dataViewer/DataViewer.fxml"));
                             try {
                                 Parent root = loader.load();
                                 DataViewerController controller = loader.getController();

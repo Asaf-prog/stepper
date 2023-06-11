@@ -38,7 +38,7 @@ public class bodyController {
     }
     public void showStatsScreen(){
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("StatsScreen/StatsScreen.fxml");
+        URL url = getClass().getResource("statsScreen/StatsScreen.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
@@ -59,7 +59,7 @@ public class bodyController {
             lastBodyController=bController;
         }
         catch (IOException e) {
-            System.out.println("BASA");
+            System.out.println("BASA1");
         }
     }
     public void executeExistFlowScreen(FlowDefinitionImpl flow) {
@@ -69,12 +69,14 @@ public class bodyController {
 
             FXMLLoader fxmlLoader = new FXMLLoader();
             URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
-            fxmlLoader.setLocation(url);
+            if (url == null)
+                System.out.print("FXML file not found");
+            else {
+                fxmlLoader.setLocation(url);
 
-            loadScreenWithCurrentFlow(fxmlLoader, url,flow);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+                loadScreenWithCurrentFlow(fxmlLoader, url, flow);
+            }} catch (Exception e) {
+            System.out.println("");
         }
     }
     private void loadScreenWithCurrentFlow(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow) {
@@ -89,12 +91,12 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("BASA");
+            System.out.println("BASA2");
         }
     }
     public void showHistoryExe(){
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("ExecutionsHistory/ExecutionsHistory.fxml");
+        URL url = getClass().getResource("executionsHistory/ExecutionsHistory.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
@@ -149,7 +151,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("BASA");
+            System.out.println("BASA3");
         }
     }
     public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
@@ -172,7 +174,7 @@ public class bodyController {
             loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
 
         } catch (Exception e) {
-            System.out.println("BASA");
+            System.out.println("BASA4");
         }
     }
     private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
@@ -190,7 +192,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("BASA");
+            System.out.println("BASA5");
         }
     }
     public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" prefHeight="406.0" prefWidth="600.0" style="-fx-background-color: #24292e;" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.DataViewer.DataViewerController">
+<AnchorPane fx:id="mainPane" prefHeight="406.0" prefWidth="600.0" style="-fx-background-color: #24292e;" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.dataViewer.DataViewerController">
    <children>
       <Label fx:id="name" layoutX="14.0" layoutY="6.0" prefHeight="34.0" prefWidth="568.0" text="Data Name:" textFill="#fffb09">
          <font>

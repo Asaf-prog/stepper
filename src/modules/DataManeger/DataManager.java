@@ -88,7 +88,7 @@ public class DataManager {
             stepperData = (Stepper) in.readObject();
             return true;
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("BASA");
+            System.out.println("BASA9");
         }
         return false;
     }
@@ -103,7 +103,7 @@ public class DataManager {
             return true;
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error reading data from file: " + e.getMessage());
-            System.out.println("BASA");
+            System.out.println("BASA6");
            // e.printStackTrace();
         }
         return false;

@@ -3,13 +3,11 @@ package app.body.executionsHistory;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
-import app.body.executionsHistory.DataViewer.DataViewerController;
+import app.body.executionsHistory.dataViewer.DataViewerController;
 import app.body.executionsHistory.continuation.ContinuationPopUp;
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
 import app.management.style.StyleManager;
 import javafx.animation.PauseTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,8 +70,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private TableColumn<FlowExecutionTableItem, String> nameCol;
     @FXML
-    private Pane logScrollPane;
-    @FXML
     private TableView<FlowExecutionTableItem> tableData;
 
     @FXML
@@ -102,7 +98,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
     private String style;
 
-    private List<Stage> stages = new ArrayList<>();
+    private final List<Stage> stages = new ArrayList<>();
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -140,19 +136,16 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 "-fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 10px; -fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
         styleOfChoiceBox= filterChoiceBox.getStyle();
         filterChoiceBox.setStyle(styleOfChoiceBox + "-fx-background-color: #ffffff;");
-        filterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.equals("All")) {
-                    filterChoiceBox.setStyle(styleOfChoiceBox + "-fx-background-color: #ffffff;");
-                } else if (newValue.equals("Success")) {
-                    filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #00ff00;");
-                } else if (newValue.equals("Warning")) {
-                    filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #fff400;");
-                }
-                else{// if (newValue.equals("Failure")) {
-                    filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #ff0000;");
-                }
+        filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals("All")) {
+                filterChoiceBox.setStyle(styleOfChoiceBox + "-fx-background-color: #ffffff;");
+            } else if (newValue.equals("Success")) {
+                filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #00ff00;");
+            } else if (newValue.equals("Warning")) {
+                filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #fff400;");
+            }
+            else{// if (newValue.equals("Failure")) {
+                filterChoiceBox.setStyle(styleOfChoiceBox+"-fx-background-color: #ff0000;");
             }
         });
     }
@@ -277,7 +270,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 ContinuationPopUp controller = new ContinuationPopUp(pickedExecution, targetFlows, stage, body);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
                 loader.setController(controller);
-                Parent root = null;
+                Parent root;
                 try {
                     root = loader.load();
 
@@ -331,12 +324,12 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
     }
     private void addLog(Pair<String, String> log) {
-        Label newlog = new Label(log.getValue() + " : " + log.getKey());
+        Label newLog = new Label(log.getValue() + " : " + log.getKey());
         if(log.getValue().contains("ERROR"))
-            newlog.setStyle(ERROR_LINE_STYLE+";-fx-font-size: 12;");
+            newLog.setStyle(ERROR_LINE_STYLE+";-fx-font-size: 12;");
         else
-            newlog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
-        logsVbox.getChildren().add(newlog);
+            newLog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
+        logsVbox.getChildren().add(newLog);
     }
     private void setupTable(Stepper stepperData) {
         tableData.setStyle("-fx-control-inner-background: transparent;");
@@ -545,7 +538,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("dataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -583,7 +576,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     inputValue.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
                 });
                 inputValue.setOnMouseClicked(event -> {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("dataViewer/DataViewer.fxml"));
                             try {
                                 Parent root = loader.load();
                                 DataViewerController controller = loader.getController();
@@ -592,7 +585,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                                 stages.add(stage);
                                 stage.setTitle("Data Viewer");
                                 stage.setScene(new Scene(root, 600, 400));
-                                stage.showAndWait();
+                                stage.show();
                             } catch (IllegalStateException | IOException ex) {
                                 // Handle the exception gracefully
                             }
