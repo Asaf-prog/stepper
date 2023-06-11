@@ -123,7 +123,7 @@ public class bodyController {
     public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                      List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
                                                      List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
-        setCurrentFlow(flow);
+        //setCurrentFlow(flow);
 
         try {
 
@@ -145,7 +145,8 @@ public class bodyController {
             bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(flow);
             bodyController.setBodyControllerContinuation(this);
-            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
+            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,this.currentFlow);
+            setCurrentFlow(flow);
             bodyController.showForContinuation();
 
             bodyPane.getChildren().setAll(screen);
@@ -197,6 +198,7 @@ public class bodyController {
     }
     public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){
         main.getHeaderComponentController().SetExecutionButtonVisible(flowDefinition);
+        this.currentFlow = flowDefinition;
 
 
     }
