@@ -213,7 +213,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     private void DrawFlow(FlowDefinitionImpl flow) {
         FlowGraphBuilder.buildFlowGraph(flow);
-        Image image = new Image("file:stepper_GUI/Content/flow.png");
+        Image image = new Image("file:images/flow.png");
         graphPNG.setImage(image);
         graphPNG.setOnMouseEntered(event -> {
             graphPNG.setImage(new Image("file:stepper_GUI/Content/clickMe.png"));
