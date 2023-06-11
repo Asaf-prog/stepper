@@ -513,6 +513,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
+        continuationVbox.getChildren().clear();
         ToggleGroup group = new ToggleGroup();
         for (Continuation continuation : currentFlow.getContinuations()) {
             RadioButton button = new RadioButton(continuation.getTargetFlow());
@@ -521,7 +522,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 try {
                     handleButtonActionForContinuation(continuation.getTargetFlow());
                 } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                    System.out.println("Basa10");
                 }
             });
             button.setToggleGroup(group);
@@ -822,14 +823,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         enablesDetails(lastFlowExecution);
         showDetails.setDisable(false);
 
-//        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-//            @Override
-//            public void invalidated(Observable observable) {
-//                Platform.runLater(() -> {
-//                    popupDetails();
-//                });
-//            }
-//        });
+        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                Platform.runLater(() -> {
+                    popupDetails();
+                });
+            }
+        });
 
     }
     @Override

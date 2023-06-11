@@ -257,7 +257,7 @@ public class ExecutionsDetails {
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../executionsHistory/dataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../executionsHistory/dataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -269,6 +269,7 @@ public class ExecutionsDetails {
                             stage.showAndWait();
                         }
                     } catch (IllegalStateException | IOException ex) {
+                        return;
                         // Handle the exception gracefully
                     }
                 }

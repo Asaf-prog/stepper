@@ -102,8 +102,7 @@ public class DataManager {
 
             return true;
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error reading data from file: " + e.getMessage());
-            System.out.println("BASA6");
+            System.err.println("Error reading data from file: " + filePath);
            // e.printStackTrace();
         }
         return false;
