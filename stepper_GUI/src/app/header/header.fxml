@@ -35,7 +35,7 @@
             </HBox>
             <Pane prefHeight="90.0" prefWidth="1070.0">
                <children>
-                  <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="66.0" fitWidth="672.0" layoutX="366.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="366.0" AnchorPane.rightAnchor="366.9285583496094" AnchorPane.topAnchor="6.0">
+                  <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="66.0" fitWidth="672.0" layoutX="366.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="366.0" AnchorPane.rightAnchor="366.9285583496094" AnchorPane.topAnchor="6.0">
                      <image>
                         <Image url="@content/toplogoWhite.png" />
                      </image>
@@ -46,14 +46,14 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
-                  <Button fx:id="buypremiumBtn" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="961.0" layoutY="5.0" mnemonicParsing="false" onAction="#BuyPremium" prefHeight="25.0" prefWidth="104.0" style="-fx-background-color: transparent;" stylesheets="@../management/style/darkTheme.css" text="Buy Premuim" textAlignment="CENTER" textFill="#fff200">
+                  <Button fx:id="buypremiumBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="837.0" layoutY="5.0" mnemonicParsing="false" onAction="#BuyPremium" prefHeight="32.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 1; -fx-border-radius: 40;" styleClass="toggle-switch" stylesheets="@../management/style/darkTheme.css" text="Buy Premuim" textAlignment="CENTER" textFill="#fff200">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Button>
-                  <ToggleButton fx:id="themeToggle" layoutX="960.0" layoutY="39.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="30.0" prefWidth="104.0" style="-fx-background-color: transparent;" stylesheets="@../management/style/darkTheme.css" text="Dark Theme" textAlignment="CENTER" textFill="#fff200">
+                  <ToggleButton fx:id="themeToggle" layoutX="955.0" layoutY="5.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="32.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 1; -fx-border-radius: 40;" styleClass="toggle-switch" stylesheets="@../management/style/darkTheme.css" text="Dark Theme" textAlignment="CENTER" textFill="#fff200">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="13.0" />
                      </font>
                   </ToggleButton>
                   <GridPane fx:id="progressGrid" layoutX="68.0" layoutY="6.0" prefHeight="66.0" prefWidth="322.0" style="-fx-border-radius: 25; -fx-border-width: 2; -fx-border-color: white;">

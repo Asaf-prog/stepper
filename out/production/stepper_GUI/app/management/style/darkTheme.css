@@ -116,3 +116,35 @@
     -fx-font-size: 144px;
     -fx-font-weight: bold;
 }
+
+
+
+.toggle-switch {
+    -fx-background-color: #d6d6d6;
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-cursor: hand;
+}
+
+.toggle-switch .thumb {
+    -fx-background-color: white;
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-padding: 2;
+    -fx-effect: dropshadow(gaussian, rgba(87, 82, 82, 0.3), 0, 1, 1, 1);
+    -fx-translate-x: 0;
+    -fx-translate-y: 0;
+    -fx-translate-x: 0;
+    -fx-translate-y: 0;
+    -fx-transition: translateX 0.3s;
+}
+
+.toggle-switch:selected .thumb {
+    -fx-translate-x: 34;
+}
+
+.toggle-switch .thumb:pressed {
+    -fx-effect: none;
+}

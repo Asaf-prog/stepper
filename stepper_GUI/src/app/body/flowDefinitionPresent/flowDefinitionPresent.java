@@ -129,7 +129,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             RadioButton button = new RadioButton(flow.getName());
             button.getStylesheets().add("app/management/style/darkTheme.css");
             button.getStyleClass().add("flowRadioButton");
-            button.setStyle("-fx-text-fill: #ffd54a; -fx-font-size: 16; -fx-font-family: 'Arial Rounded MT Bold'");
+            button.setStyle("-fx-text-fill: #fff608; -fx-font-size: 16; -fx-font-family: 'Arial Rounded MT Bold'");
             //button.setStyle("-fx-text-fill: #ffd54a");
             button.getStylesheets().add("app/management/style/darkTheme.css");
             button.getStyleClass().add("radioButton");
@@ -213,10 +213,10 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     private void DrawFlow(FlowDefinitionImpl flow) {
         FlowGraphBuilder.buildFlowGraph(flow);
-        Image image = new Image("file:stepper_GUI/Content/flow.png");
+        Image image = new Image("file:images/flow.png");
         graphPNG.setImage(image);
         graphPNG.setOnMouseEntered(event -> {
-            graphPNG.setImage(new Image("file:stepper_GUI/Content/clickMe.png"));
+            graphPNG.setImage(new Image("file:graph/clickMe.png"));
         });
         graphPNG.setOnMouseExited(event -> {
             graphPNG.setImage(image);

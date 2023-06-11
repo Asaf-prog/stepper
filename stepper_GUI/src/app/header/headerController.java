@@ -22,7 +22,8 @@ import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 
-import java.io.File;
+import java.io.*;
+import java.util.Properties;
 
 public class headerController {
 
@@ -83,6 +84,8 @@ public class headerController {
     int nextFreeProgressor = 1;
     String buttonStyle;
     private RotateTransition rotateTransition;
+    @FXML
+    private ToggleButton loaderScreen;
 
 
     ////////////////////////////  functions  ////////////////////////////
@@ -105,6 +108,13 @@ public class headerController {
         assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
         assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
         assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
+        assert flowExecution != null : "fx:id=\"flowExecution\" was not injected: check your FXML file 'header.fxml'.";
+        assert close != null : "fx:id=\"close\" was not injected: check your FXML file 'header.fxml'.";
+        assert topBar != null : "fx:id=\"topBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert barLogo != null : "fx:id=\"barLogo\" was not injected: check your FXML file 'header.fxml'.";
+        assert closeButton != null : "fx:id=\"closeButton\" was not injected: check your FXML file 'header.fxml'.";
+        assert menuHbox != null : "fx:id=\"menuHbox\" was not injected: check your FXML file 'header.fxml'.";
+        assert loaderScreen != null : "fx:id=\"loaderScreen\" was not injected: check your FXML file 'header.fxml'.";
     }
     public void setLastPressed(String lastPressed) {
     	if (lastPressed.equals("none")) {
@@ -380,6 +390,7 @@ public class headerController {
         });
 
     }
+
     @FXML
     void changeTheme(ActionEvent event) {
         if (themeToggle.isSelected()) {
@@ -389,7 +400,9 @@ public class headerController {
                 themeToggle.setText("Dark Theme");
                 scene.getStylesheets().clear();
                 scene.getStylesheets().add("app/management/style/lightTheme.css");
-                themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: black;-fx-border-color: black;-fx-border-width: 1;-fx-border-radius: 6");
+                themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: black;-fx-border-color: white;-fx-border-width: 1;-fx-border-radius: 20");
+                themeToggle.getStyleClass().remove("toggle-switch-dark");
+                themeToggle.getStyleClass().add("toggle-switch-light");
 
             }
         } else {
@@ -400,6 +413,8 @@ public class headerController {
                 scene.getStylesheets().clear();
                 scene.getStylesheets().add("app/management/style/darkTheme.css");
                 themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: yellow;");
+                themeToggle.getStyleClass().remove("toggle-switch-light");
+                themeToggle.getStyleClass().add("toggle-switch-dark");
             }
         }
     }

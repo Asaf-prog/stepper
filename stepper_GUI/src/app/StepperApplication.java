@@ -4,80 +4,62 @@ package app;
 import app.management.resizeHelper.ResizeHelper;
 import app.management.style.StyleManager;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.application.Platform;
-import javafx.stage.Window;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class StepperApplication extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        //setLoadingScreen(primaryStage);
-
-        primaryStage.setOnCloseRequest(event -> {
-            // Close all open stages
-            closeAllOpenStages();
-        });
         StyleManager onlyOne = new StyleManager();
         primaryStage.setTitle("Stepper Application");
-        Parent load = FXMLLoader.load(getClass().getResource("management/app.fxml"));
-        Scene scene = new Scene(load, 1090, 734);
-        // primaryStage.initStyle(StageStyle.UNIFIED);
-        scene.setOnMouseEntered(e -> showWindow(primaryStage));
-        scene.setOnMouseExited(e -> hideWindow(primaryStage));
-        primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
-        primaryStage.setScene(scene);
-        setPrimaryStage(primaryStage);
-        centerWindowOnScreen(primaryStage);
+        setLoading(primaryStage);
+
+    }
+
+    private void setLoading(Stage primaryStage) {
+        Image icon = new Image("app/management/content/loader.png");
+        ImageView imageView = new ImageView(icon);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(600);
+        imageView.setFitHeight(250);
+        StackPane preloadLayout = new StackPane( imageView);
+        preloadLayout.setPrefWidth(600);
+        preloadLayout.setPrefHeight(300);
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setPrefWidth(450);
+        preloadLayout.getChildren().add(progressBar);
+        StackPane.setAlignment(progressBar, Pos.BOTTOM_CENTER);
+
+        Scene preloadScene = new Scene(preloadLayout, 485, 245);
+        primaryStage.setScene(preloadScene);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        // Set stage bounds and show the stage
+        //setPrimaryStage(primaryStage);
+        //centerWindowOnScreen(primaryStage);
         setBounds(primaryStage);
         primaryStage.show();
+
+        // Simulate loading time
+        simulatePreloadTime(primaryStage, progressBar);
     }
-
-    private void closeAllOpenStages() {
-
-    }
-
-    private void setLoadingScreen(Stage primaryStage) throws InterruptedException, IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("management/Loader/PreLoader.fxml"));
-        Scene preloadScene = new Scene(root, 350, 200);
-        primaryStage.setScene(preloadScene);
-        primaryStage.show();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                // Load the actual application scene
-                // Replace "MainScene.fxml" with the actual name of your main application FXML file
-                Platform.runLater(() -> {
-                    try {
-                        Parent mainRoot = FXMLLoader.load(getClass().getResource("MainScene.fxml"));
-                        Scene mainScene = new Scene(mainRoot);
-
-                        // Set the main application scene after the preload screen delay
-                        primaryStage.setScene(mainScene);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(task, 1500);
-
-        primaryStage.close();
-    }
-
 
     private static void setBounds(Stage primaryStage) {
         primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -119,5 +101,43 @@ public class StepperApplication extends Application {
     }
     public static void main(String[] args) {
         launch(args);
+    }
+
+
+    private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
+        //Properties config = loadConfigProperties();
+        int preloadTime = 1500;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    try {
+                        // Load the main app UI
+                        Parent root = FXMLLoader.load(getClass().getResource("management/app.fxml"));
+                        Scene scene = new Scene(root, 1090, 734);
+
+                        primaryStage.setScene(scene);
+                        ResizeHelper.addResizeListener(primaryStage);
+                        primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
+                        primaryStage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }, preloadTime);//problems with scrifts
+    }
+
+    private Properties loadConfigProperties() {
+        Properties config = new Properties();
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            //config.load(inputStream);
+        } catch (IOException e) {
+           Properties  p = new Properties();
+           p.setProperty("preload.time", "2000");
+           return p ;
+        }
+        return config;
     }
 }
