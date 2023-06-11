@@ -203,7 +203,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             mandatoryList.getChildren().add(nameAndAddOrEdit);
         }
 
-        if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size())
+        if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size() || mandatoryInputs.size() == freeInputsTemp.size())
             continuationExe.setDisable(false);
         mandatoryList.setSpacing(10);
     }
