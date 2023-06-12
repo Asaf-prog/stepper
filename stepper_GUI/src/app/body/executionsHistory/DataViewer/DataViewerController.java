@@ -1,4 +1,4 @@
-package app.body.executionsHistory.dataViewer;
+package app.body.executionsHistory.DataViewer;
 import app.management.style.StyleManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

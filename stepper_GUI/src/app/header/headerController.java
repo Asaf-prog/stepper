@@ -433,7 +433,7 @@ public class headerController {
                 alert.setTitle("Error");
                 alert.setHeaderText("Error");
                 alert.setContentText("Error saving data");
-                alert.showAndWait();
+                alert.show();
 
             }
         }

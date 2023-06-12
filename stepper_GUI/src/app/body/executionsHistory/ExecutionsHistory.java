@@ -3,7 +3,7 @@ package app.body.executionsHistory;
 
 import app.body.bodyController;
 import app.body.bodyControllerDefinition;
-import app.body.executionsHistory.dataViewer.DataViewerController;
+import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.executionsHistory.continuation.ContinuationPopUp;
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
 import app.management.style.StyleManager;
@@ -276,7 +276,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
                     Scene scene = new Scene(root, 500, 300);
                     stage.setScene(scene);
-                    stage.showAndWait();
+                    stage.show();
 
                 }  catch (IllegalStateException | IOException ex) {
                     // Handle the exception gracefully
@@ -538,7 +538,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("dataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -548,7 +548,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                             stages.add(stage);
                             stage.setTitle("Data Viewer");
                             stage.setScene(new Scene(root, 600, 400));
-                            stage.showAndWait();
+                            stage.show();
                         }
                     }  catch (IllegalStateException | IOException ex) {
                         // Handle the exception gracefully
@@ -576,7 +576,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                     inputValue.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
                 });
                 inputValue.setOnMouseClicked(event -> {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("dataViewer/DataViewer.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
                             try {
                                 Parent root = loader.load();
                                 DataViewerController controller = loader.getController();
