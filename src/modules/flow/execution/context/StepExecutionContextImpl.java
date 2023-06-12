@@ -67,10 +67,10 @@ StepExecutionContextImpl implements StepExecutionContext {
                 if (val != null && val.getClass().equals(dataType)) {
                     dataValues.put(userInput.getKey(), val);//add to context by final name and input value
                 }
-                else{
-                    if (!userInput.getKey().equals("OPERATION"))//todo remove  this after handling operation
-                        throw new MenuException(MenuExceptionItems.EMPTY," User input is not valid for input for " + userInput.getKey() + " with value " + userInput.getValue());
-                }
+//                else{
+//                    if (!userInput.getKey().equals("OPERATION"))//todo remove  this after handling operation
+//                        throw new MenuException(MenuExceptionItems.EMPTY," User input is not valid for input for " + userInput.getKey() + " with value " + userInput.getValue());
+//                }
             }
         }
     }

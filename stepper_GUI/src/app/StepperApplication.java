@@ -106,7 +106,7 @@ public class StepperApplication extends Application {
 
     private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
         //Properties config = loadConfigProperties();
-        int preloadTime = 1500;
+        int preloadTime = 1800;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override

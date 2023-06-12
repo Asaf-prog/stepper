@@ -549,7 +549,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void checkIfMandatoryInputsAreNotUserFriendly() throws FlowDefinitionException {
         if (this.continuations.size() == 0)
             return;
-        //todo remove above and check if continuation is update flow free inputs
         for (Pair<String, DataDefinitionDeclaration> inputUser : freeInputs) {
             if (!inputUser.getValue().dataDefinition().isUserFriendly()) {
                 String theUnUserFriendlyMandatoryInput = inputUser.getKey();
@@ -604,7 +603,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         return false;
     }
     public void createFlowFreeInputs() {
-        //todo ex2 sync with initial inputs that removing the user option to change the input
         List<String> listInputs = new ArrayList<>();
         for (StepUsageDeclaration step: steps) {
 
