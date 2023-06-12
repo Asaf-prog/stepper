@@ -558,7 +558,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 if (currentOptionalFreeInput == null){
 
                 }
-            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,currentFlow);
+                setTheNewInputsThatTheUserSupply();
+            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
         }
             else
                 throw new RuntimeException();
@@ -577,9 +578,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private FlowExecution getFlowExecutionByName(String nameOfCurrentFlow){
         Stepper stepperData = DataManager.getData();
         List<FlowExecution> flowExecutions = stepperData.getFlowExecutions();
-        for (FlowExecution flowExecution: flowExecutions){
-            if (flowExecution.getFlowDefinition().getName().equals(nameOfCurrentFlow))
+        for (int i = flowExecutions.size() - 1; i >= 0; i--) {
+            FlowExecution flowExecution = flowExecutions.get(i);
+            if (flowExecution.getFlowDefinition().getName().equals(nameOfCurrentFlow)) {
                 return flowExecution;
+            }
         }
         return null;
     }
