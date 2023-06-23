@@ -22,8 +22,7 @@ import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 
-import java.io.*;
-import java.util.Properties;
+import java.io.File;
 
 public class headerController {
 
@@ -274,7 +273,7 @@ public class headerController {
     }
     private void setTopBar() {
 
-        Tooltip tooltip = new Tooltip("Saar=Gever\nAsaf=Efes");
+        Tooltip tooltip = new Tooltip("Asaf=Gever\nsaar=Efes");
         tooltip.setStyle("-fx-font-size: 22px; -fx-font-family: 'Arial'; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 1);");
         Tooltip.install(barLogo, tooltip);
         topBar.setOnMousePressed(event -> {
