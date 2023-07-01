@@ -187,10 +187,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private void setAviadCursor() {
         Image cursorImage = new Image(getClass().getResourceAsStream("cursor3.png"));
         ImageView cursorImageView = new ImageView(cursorImage);
-        double scaleFactor = 1.5; // Change this value to adjust the size
-        mainPane.setCursor(new ImageCursor(cursorImageView.getImage(),
-                cursorImageView.getImage().getWidth() *55 ,
-                cursorImageView.getImage().getHeight() * 55));
+        cursorImageView.setFitHeight(30);
+        cursorImageView.setFitWidth(30);
+        mainPane.setCursor(new ImageCursor(cursorImageView.getImage(), 30 , 30));
     }
     private void asserts() {
         assert stepTree != null : "fx:id=\"stepTree\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
