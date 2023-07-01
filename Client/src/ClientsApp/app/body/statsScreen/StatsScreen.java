@@ -1,7 +1,7 @@
 package ClientsApp.app.body.statsScreen;
 
 import ClientsApp.app.body.bodyController;
-import ClientsApp.app.body.bodyControllerDefinition;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.management.style.StyleManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;

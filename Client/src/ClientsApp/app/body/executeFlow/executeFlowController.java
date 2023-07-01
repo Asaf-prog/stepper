@@ -1,9 +1,9 @@
 package ClientsApp.app.body.executeFlow;
 
-import ClientsApp.app.body.bodyControllerDefinition;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.bodyController;
-import ClientsApp.app.body.bodyControllerExecuteFromHistory;
-import ClientsApp.app.body.bodyControllerForContinuation;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerForContinuation;
 import ClientsApp.app.body.executeFlow.executionDetails.ExecutionsDetails;
 import ClientsApp.app.management.style.StyleManager;
 import javafx.animation.PauseTransition;

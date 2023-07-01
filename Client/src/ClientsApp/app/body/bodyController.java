@@ -1,6 +1,11 @@
 package ClientsApp.app.body;
 
 import ClientsApp.app.MVC_controller.MVC_controller;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerForContinuation;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerForLogin;
+import ClientsApp.app.body.mainControllerClient.mainControllerClient;
 import ClientsApp.app.management.mainController;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -32,6 +37,7 @@ public class bodyController {
     private mainController main;
     private MVC_controller controller;
     private FlowDefinitionImpl currentFlow;
+    private mainControllerClient controllerClient;
 
     private bodyControllerDefinition lastBodyController=null;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
@@ -44,6 +50,9 @@ public class bodyController {
     private AnchorPane bodyPane;
     public void setMainController(mainController main) {
         this.main = main;
+    }
+    public void setMainControllerClient(mainControllerClient main) {
+        this.controllerClient = main;
     }
     public void setMVCController(MVC_controller controller){
         this.controller = controller;
@@ -67,7 +76,7 @@ public class bodyController {
             }
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerForLogin bController = fxmlLoader.getController();
-
+            bController.setBodyController(this);
             bController.show();
             bodyPane.getChildren().setAll(screen);
         }
@@ -296,6 +305,9 @@ public class bodyController {
         }
         private void updateHttpStatusLine(String data) {
            // this.mainControllerClient.updateHttpLine(data);
+        }
+        public  mainController getMain(){
+        return   main;
         }
     }
 

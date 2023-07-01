@@ -1,6 +1,7 @@
 package ClientsApp.app.body.login;
 
-import ClientsApp.app.body.bodyControllerForLogin;
+import ClientsApp.app.body.bodyController;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerForLogin;
 import ClientsApp.app.body.mainControllerClient.mainControllerClient;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -35,6 +36,7 @@ public class LoginController implements bodyControllerForLogin {
     private Button loginButton;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     private mainControllerClient mainControllerClient;
+    bodyController body;
 
     @FXML
     void initialize() {
@@ -58,7 +60,7 @@ public class LoginController implements bodyControllerForLogin {
                 .addQueryParameter("username", userName)
                 .build()
                 .toString();
-      //  updateHttpStatusLine("New request is launched for: " + finalUrl);
+       updateHttpStatusLine("New request is launched for: " + finalUrl);
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
@@ -70,32 +72,32 @@ public class LoginController implements bodyControllerForLogin {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.code() != 200) {
-//                    String responseBody = response.body().string();
-//                    Platform.runLater(() ->
-//                            errorMessageProperty.set("Something went wrong: " + responseBody)
-//                    );
-//                } else {
-//                    Platform.runLater(() -> {
-//                        mainControllerClient.updateUserName(userName);
-//                        mainControllerClient.switchTheLoginPage();
-//                    });
-//                }
-
-                System.out.println(response.body().string());
+                if (response.code() != 200) {
+                    String responseBody = response.body().string();
+                    Platform.runLater(() ->
+                            errorMessageProperty.set("Something went wrong: " + responseBody)
+                    );
+                } else {
+                    Platform.runLater(() -> {
+                        mainControllerClient.updateUserName(userName);
+                        mainControllerClient.switchTheLoginPage();
+                        body.getMain().getHeaderComponentController().setVisibleInformation();
+                    });
+                }
+                //System.out.println(response.body().string());
             }
         });
-
     }
     private void updateHttpStatusLine(String data) {
         this.mainControllerClient.updateHttpLine(data);
     }
 
-
     @Override
     public void show() {
         initialize();
     }
-
-
+    @Override
+    public void setBodyController(bodyController body){
+        this.body = body;
+    }
 }

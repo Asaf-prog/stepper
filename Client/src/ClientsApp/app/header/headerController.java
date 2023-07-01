@@ -172,7 +172,14 @@ public class headerController {
         setLastPressed("executionsHistory");
         main.showHistoryExe();
     }
-
+    public void hideInformation() {
+        loaded.setVisible(false);
+        loadXMLbutton.setVisible(false);
+    }
+    public void setVisibleInformation(){
+        loaded.setVisible(true);
+        loadXMLbutton.setVisible(true);
+    }
     private void removeLastPressed() {
         switch(lastPressed) {
             case "flowExecution":

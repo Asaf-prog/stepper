@@ -18,13 +18,13 @@ public class mainControllerClient implements Closeable, HttpStatusUpdate {
 
     @Override
     public void updateHttpLine(String line) {
-
+       // httpStatusComponentController.addHttpStatusLine(line);
     }
     private final StringProperty currentUserName;
     public void updateUserName(String userName) {
         currentUserName.set(userName);
     }
     public void switchTheLoginPage(){
-
+        //dashboard
     }
 }

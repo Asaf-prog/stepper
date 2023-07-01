@@ -2,7 +2,7 @@
 package ClientsApp.app.body.executionsHistory;
 
 import ClientsApp.app.body.bodyController;
-import ClientsApp.app.body.bodyControllerDefinition;
+import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.executionsHistory.DataViewer.DataViewerController;
 import ClientsApp.app.body.executionsHistory.continuation.ContinuationPopUp;
 import ClientsApp.app.body.executionsHistory.tableStuff.FlowExecutionTableItem;

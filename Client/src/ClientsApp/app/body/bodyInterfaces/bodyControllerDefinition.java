@@ -1,5 +1,6 @@
-package ClientsApp.app.body;
+package ClientsApp.app.body.bodyInterfaces;
 
+import ClientsApp.app.body.bodyController;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
 import java.util.List;
