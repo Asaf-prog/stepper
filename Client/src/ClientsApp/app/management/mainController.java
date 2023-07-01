@@ -44,6 +44,8 @@ public class mainController {
          mvcController = new ClientsApp.app.MVC_controller.MVC_controller(this,headerComponentController,bodyComponentController);
          bodyComponentController.setMVCController(mvcController);
          headerComponentController.setMVCController(mvcController);
+          System.out.println("hiijgovnidfv");
+         bodyComponentController.showLogin();
 
       }
 

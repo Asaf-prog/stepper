@@ -94,6 +94,12 @@ public class bodyController {
             System.out.println("BASA2");
         }
     }
+    public void showLogin() {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        URL url = getClass().getResource("login/loginPage.fxml");
+        fxmlLoader.setLocation(url);
+        loadScreen(fxmlLoader, url);
+    }
     public void showHistoryExe(){
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("executionsHistory/ExecutionsHistory.fxml");
@@ -209,4 +215,6 @@ public class bodyController {
         Parent screen = fxmlLoader.load(url.openStream());
         bodyPane.getChildren().setAll(screen);
     }
+
+
 }
