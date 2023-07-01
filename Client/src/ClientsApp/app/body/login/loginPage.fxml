@@ -22,7 +22,7 @@
                   <TextField fx:id="textFiled" prefHeight="41.0" prefWidth="321.0" />
                </children>
             </HBox>
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginToSApplication" prefHeight="42.0" prefWidth="78.0" text="LOGIN" />
+            <Button fx:id="loginButton" mnemonicParsing="false"  prefHeight="42.0" prefWidth="78.0" text="LOGIN" />
          </children>
       </VBox>
    </children>

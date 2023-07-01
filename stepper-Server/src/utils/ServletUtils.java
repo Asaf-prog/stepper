@@ -1,8 +1,9 @@
 package utils;
 
+import Servlets.userManager.UserManager;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
-import UserManager.UserManager;
+
 public class ServletUtils {
 
 	private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";

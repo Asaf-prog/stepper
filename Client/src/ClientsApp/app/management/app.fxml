@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="appbox" alignment="CENTER" maxHeight="960.0" maxWidth="1440.0" prefHeight="726.0" prefWidth="1091.0" scaleShape="false" style="-fx-alignment: CENTER; -fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.management.mainController">
+<HBox fx:id="appbox" alignment="CENTER" maxHeight="960.0" maxWidth="1440.0" prefHeight="726.0" prefWidth="1091.0" scaleShape="false" style="-fx-alignment: CENTER; -fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientsApp.app.management.mainController">
    <children>
       <ScrollPane id="appScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="720.0" prefWidth="1080.0" style="-fx-hbar-policy: AS_NEEDED; -fx-vbar-policy: AS_NEEDED;" styleClass="bodyPane" stylesheets="@style/darkTheme.css" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
          <content>

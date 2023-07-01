@@ -1,7 +1,6 @@
 package ClientsApp.app.body.login;
 
-import ClientsApp.app.body.bodyController;
-import ClientsApp.app.body.bodyControllerDefinition;
+import ClientsApp.app.body.bodyControllerForLogin;
 import ClientsApp.app.body.mainControllerClient.mainControllerClient;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import modules.flow.definition.api.FlowDefinitionImpl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -21,10 +19,9 @@ import util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
-public class LoginController implements bodyControllerDefinition {
+public class LoginController implements bodyControllerForLogin {
 
     @FXML
     private ResourceBundle resources;
@@ -42,6 +39,7 @@ public class LoginController implements bodyControllerDefinition {
     @FXML
     void initialize() {
         assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'loginPage.fxml'.";
+        loginButton.setOnAction(this::loginToStepperApplication);
 
     }
     @FXML
@@ -60,7 +58,7 @@ public class LoginController implements bodyControllerDefinition {
                 .addQueryParameter("username", userName)
                 .build()
                 .toString();
-        updateHttpStatusLine("New request is launched for: " + finalUrl);
+      //  updateHttpStatusLine("New request is launched for: " + finalUrl);
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
@@ -93,31 +91,11 @@ public class LoginController implements bodyControllerDefinition {
         this.mainControllerClient.updateHttpLine(data);
     }
 
-    @Override
-    public void onLeave() {
-
-    }
 
     @Override
     public void show() {
         initialize();
-        System.out.println("hi");
-
-
     }
 
-    @Override
-    public void setBodyController(bodyController body) {
 
-    }
-
-    @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
-
-    }
-
-    @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
-
-    }
 }

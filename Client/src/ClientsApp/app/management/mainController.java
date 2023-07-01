@@ -45,6 +45,7 @@ public class mainController {
          bodyComponentController.setMVCController(mvcController);
          headerComponentController.setMVCController(mvcController);
           System.out.println("hiijgovnidfv");
+
          bodyComponentController.showLogin();
 
       }
