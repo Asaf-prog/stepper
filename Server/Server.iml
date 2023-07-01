@@ -21,5 +21,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.11" level="application_server_libraries" />
+    <orderEntry type="library" name="okHttp" level="project" />
+    <orderEntry type="module" module-name="Client" />
   </component>
 </module>
