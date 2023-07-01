@@ -22,5 +22,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat 10.0.11" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="okHttp" level="project" />
+    <orderEntry type="library" exported="" name="google-gson-2" level="project" />
   </component>
 </module>
