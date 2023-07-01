@@ -17,9 +17,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+   <children>
+      <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css">
+         <children>
+            <HBox fx:id="topBar" prefHeight="41.0" prefWidth="1070.0" style="-fx-background-color: #16191c; -fx-background-radius: 20;">
+               <children>
+                  <ImageView fx:id="barLogo" fitHeight="32.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../management/content/stepperIcon.png" />
+                     </image>
+                     <effect>
+                        <Glow level="1.0" />
+                     </effect>
+                  </ImageView>
+                  <ImageView fitHeight="18.0" fitWidth="995.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeApp" prefHeight="33.0" prefWidth="38.0" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fx:id="close" fitHeight="23.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../management/content/close-window-48.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Pane prefHeight="90.0" prefWidth="1070.0">
+               <children>
+                  <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="66.0" fitWidth="672.0" layoutX="366.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="366.0" AnchorPane.rightAnchor="366.9285583496094" AnchorPane.topAnchor="6.0">
+                     <image>
+                        <Image url="@content/toplogoWhite.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+                  <Button fx:id="buypremiumBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="837.0" layoutY="5.0" mnemonicParsing="false" onAction="#BuyPremium" prefHeight="32.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 1; -fx-border-radius: 40;" styleClass="toggle-switch" stylesheets="@../management/style/darkTheme.css" text="Buy Premuim" textAlignment="CENTER" textFill="#fff200">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <ToggleButton fx:id="themeToggle" layoutX="955.0" layoutY="5.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="32.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 1; -fx-border-radius: 40;" styleClass="toggle-switch" stylesheets="@../management/style/darkTheme.css" text="Dark Theme" textAlignment="CENTER" textFill="#fff200">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </ToggleButton>
+                  <GridPane fx:id="progressGrid" layoutX="68.0" layoutY="6.0" prefHeight="66.0" prefWidth="322.0" style="-fx-border-radius: 25; -fx-border-width: 2; -fx-border-color: white;">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="179.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="186.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ProgressBar fx:id="flow1ProgressBar" prefHeight="18.0" prefWidth="76.0" progress="0.0" GridPane.halignment="RIGHT">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></ProgressBar>
+                        <ProgressBar fx:id="flow3ProgressBar" prefHeight="18.0" prefWidth="80.0" progress="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </ProgressBar>
+                        <ProgressBar fx:id="flow2ProgressBar" prefHeight="18.0" prefWidth="76.0" progress="0.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </ProgressBar>
+                        <ProgressBar fx:id="flow4ProgressBar" prefHeight="18.0" prefWidth="80.0" progress="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </ProgressBar>
+                        <Label fx:id="flow1ProgressLabel" prefHeight="17.0" prefWidth="55.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 1 ID" textFill="#fff200">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="flow2ProgressLabel" prefHeight="17.0" prefWidth="72.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 2 ID" textFill="#fff200" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="flow3ProgressLabel" prefHeight="17.0" prefWidth="67.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 3 ID" textFill="#fff200" GridPane.columnIndex="1">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="flow4ProgressLabel" prefHeight="17.0" prefWidth="66.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Flow 4 ID" textFill="#fff200" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <Label layoutX="5.0" layoutY="19.0" prefHeight="40.0" prefWidth="55.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Runing Flows" textAlignment="CENTER" textFill="#18ff00" wrapText="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: transparent; -fx-border-radius: 20; -fx-border-color: white; -fx-border-width: 2;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font></Button>
+                  <Label fx:id="loaded" alignment="CENTER" prefHeight="34.0" prefWidth="630.0" style="-fx-border-color: rgb(179,0,220); -fx-border-width: 2; -fx-background-radius: 20; -fx-border-radius: 20;" styleClass="PathLabel" stylesheets="@../management/style/darkTheme.css" text="---Path To Your XML---" textFill="#fffafa">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Save Data" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Load Data" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="14.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="menuHbox" alignment="CENTER" prefHeight="32.0" prefWidth="1065.0" spacing="30.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="FlowsDefinition" disable="true" mnemonicParsing="false" onAction="#FlowsDefinitionPresent" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" text="Flows Definition" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/dash.png" />
+                                 </image></ImageView>
+
+                              <Label prefHeight="25.0" prefWidth="102.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="DashBoard">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font></Label>
+                           </children>
+                        </HBox>
+                     </graphic></Button>
+                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" text="Statistics" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="133.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/stats.png" />
+                                 </image></ImageView>
+                              <Label prefHeight="22.0" prefWidth="86.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="Statistics" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </graphic></Button>
+                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" prefHeight="36.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" text="History" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/history.png" />
+                                 </image></ImageView>
+                              <Label prefHeight="24.0" prefWidth="70.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="History" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font></Label>
+                           </children>
+                        </HBox>
+                     </graphic></Button>
+                  <Button fx:id="flowExecution" disable="true" mnemonicParsing="false" onAction="#flowExecutionPresents" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" text="execution" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/exe.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="25.0" prefWidth="102.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="Execution">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <StackPane.margin>
+            <Insets left="5.0" right="5.0" />
+         </StackPane.margin>
+         <effect>
+            <Bloom threshold="1.0" />
+         </effect>
+      </VBox>
+   </children>
+</StackPane>

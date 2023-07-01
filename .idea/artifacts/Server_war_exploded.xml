@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="Server" />
+          <element id="module-output" name="stepper-Server" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Server/web/Web" />
