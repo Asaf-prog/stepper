@@ -1,0 +1,194 @@
+package app;
+
+
+import app.management.resizeHelper.ResizeHelper;
+import app.management.style.StyleManager;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class AdminStepperApplication extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        StyleManager onlyOne = new StyleManager();
+        primaryStage.setTitle("Admin Application");
+        setLoading(primaryStage);
+
+    }
+
+    private void setLoading(Stage primaryStage) {
+        Image icon = new Image("app/management/content/loader.png");
+        ImageView imageView = new ImageView(icon);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(600);
+        imageView.setFitHeight(250);
+        StackPane preloadLayout = new StackPane( imageView);
+        preloadLayout.setPrefWidth(600);
+        preloadLayout.setPrefHeight(300);
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setPrefWidth(450);
+        preloadLayout.getChildren().add(progressBar);
+        StackPane.setAlignment(progressBar, Pos.BOTTOM_CENTER);
+        //check if another instance of the app is running
+        boolean alreadyRunning = isAppActive();
+        if (!alreadyRunning) {
+
+
+            Scene preloadScene = new Scene(preloadLayout, 485, 245);
+            primaryStage.setScene(preloadScene);
+            primaryStage.initStyle(StageStyle.UNDECORATED);
+            // Set stage bounds and show the stage
+            //setPrimaryStage(primaryStage);
+            //centerWindowOnScreen(primaryStage);
+            setBounds(primaryStage);
+            primaryStage.show();
+
+            // Simulate loading time
+            simulatePreloadTime(primaryStage, progressBar);
+        }else
+        {
+            // Display the appropriate message in an alert dialog
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("---Admin app in Use!!---");
+                alert.setContentText("Only one instance of the Admin App is allowed.");
+                alert.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+                alert.showAndWait();
+
+                Platform.exit();
+            });
+            return;
+        }
+    }
+
+    private boolean isAppActive() {
+        //check if instance of the app is already running
+//        try {
+//            // Get the list of process info
+//            ProcessBuilder processBuilder = new ProcessBuilder("tasklist.exe");
+//            Process process = processBuilder.start();
+//            InputStream inputStream = process.getInputStream();
+//            byte[] buffer = new byte[1024];
+//            inputStream.read(buffer);
+//            inputStream.close();
+//
+//            // Convert the buffer into a string
+//            String taskList = new String(buffer);
+//            // Check whether the app is running
+//            return taskList.contains("AdminStepperApplication");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+        int loto=(int)(Math.random()*100);
+        if (loto<90)
+            return false;
+        else
+            return true;
+
+
+    }
+
+    private static void setBounds(Stage primaryStage) {
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        ResizeHelper.addResizeListener(primaryStage);
+    }
+
+    private void showWindow(Stage primaryStage) {
+        primaryStage.setOpacity(1.0); // Make the window fully opaque
+    }
+
+    private void hideWindow(Stage primaryStage) {
+        primaryStage.setOpacity(0.99); // Make the window fully transparent
+    }
+
+
+    private static void setPrimaryStage(Stage primaryStage) {
+        primaryStage.setResizable(true);
+        primaryStage.setMaxWidth(1440);
+        primaryStage.setMaxHeight(960);
+
+    }
+    private void centerWindowOnScreen(Stage stage) {
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        double screenWidth = bounds.getWidth();
+        double screenHeight = bounds.getHeight();
+        double windowWidth = stage.getWidth();
+        double windowHeight = stage.getHeight();
+
+        double windowX = (screenWidth - windowWidth) / 2;
+        double windowY = (screenHeight - windowHeight) / 2;
+
+        stage.setX(windowX);
+        stage.setY(windowY);
+
+
+
+    }
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+
+    private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
+        //Properties config = loadConfigProperties();
+        int preloadTime = 1800;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    try {
+                        // Load the main app UI
+                        Parent root = FXMLLoader.load(getClass().getResource("management/app.fxml"));
+                        Scene scene = new Scene(root, 1090, 734);
+
+                        primaryStage.setScene(scene);
+                        ResizeHelper.addResizeListener(primaryStage);
+                        primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
+                        primaryStage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }, preloadTime);//problems with scrifts
+    }
+
+    private Properties loadConfigProperties() {
+        Properties config = new Properties();
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            //config.load(inputStream);
+        } catch (IOException e) {
+           Properties  p = new Properties();
+           p.setProperty("preload.time", "2000");
+           return p ;
+        }
+        return config;
+    }
+}

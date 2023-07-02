@@ -1,0 +1,65 @@
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-selection-bar;
+}
+.table-view .column-header.titleOfColumn .label {
+    -fx-text-fill: yellow;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+}
+.table-view .column-header.radio-button-for-table .label {
+
+    -fx-alignment: top-left;
+}
+.DDLabel {
+    -fx-alignment: top-center;
+    -fx-border-color: yellow;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-border-width: 1px;
+}
+.radio-button-in-table {
+    -fx-alignment: top-left;
+    -fx-pref-width: 351px;
+}
+.VBox {
+    -fx-alignment: transparent;
+}
+.logsTree{
+    -fx-background-color: transparent;
+    -fx-text-fill: #07ff0f;
+    -fx-spacing: 7px;
+}
+.logsTree.tree-cell{
+    -fx-background-color: transparent;
+    -fx-text-fill: #0eff0e;
+    -fx-spacing: 7px;
+}
+.choice-box {
+    -fx-text-fill: yellow;
+    -fx-font-size: 12;
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-border-color: #ffff00;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
+.tableColumn{
+    -fx-background-color:  #36393e;
+}
+.table-view.scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+}
