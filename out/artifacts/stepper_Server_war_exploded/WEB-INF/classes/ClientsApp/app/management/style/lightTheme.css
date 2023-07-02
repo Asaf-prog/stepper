@@ -1,0 +1,79 @@
+.bodyPane {
+    -fx-background-color: rgb(145, 0, 169);
+
+}
+
+.titles {
+    -fx-text-fill: #050503;
+}
+.tableTitle {
+    -fx-text-fill: #01007c;
+}
+.tableTitle :hover {
+    -fx-background-color: #ff00df;
+    -fx-text-fill: #fafaff;
+}
+
+.headerTitle {
+
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+
+}
+.button {
+    -fx-background-color: #5f67ff;
+
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+    -fx-border-color: #000000;
+}
+.screenButton {
+    -fx-background-color: #5f67ff;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+}
+.buttonImage{
+    -fx-background-color: #000000;
+}
+.buttonLabel{
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+.PathLabel{
+    -fx-border-color: #000000;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-border-width: 2px;
+    -fx-background-radius:20;
+    -fx-border-radius:20;
+
+}
+.DDLabel {
+    -fx-alignment: top-center;
+    -fx-border-color: #000000;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-border-width: 1px;
+}
+
+.flowDefPresent {
+    -fx-background-color: #00ff9d;
+}
+.radioButton {
+    -fx-background-color: #5f67ff;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+}
+.flowRadioButton {
+    -fx-text-fill: black;
+    -fx-font-size: 16;
+}
+
+

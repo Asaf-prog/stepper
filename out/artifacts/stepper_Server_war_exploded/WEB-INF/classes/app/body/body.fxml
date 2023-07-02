@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane fx:id="bodyPane" prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.bodyController">
+    <!-- Add your content inside the AnchorPane -->
+</AnchorPane>
