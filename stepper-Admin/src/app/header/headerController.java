@@ -6,6 +6,8 @@ import app.management.style.StyleManager;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -21,8 +23,16 @@ import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import util.Constants;
+import util.http.HttpClientUtil;
+
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 
 public class headerController {
 
@@ -85,6 +95,7 @@ public class headerController {
     private RotateTransition rotateTransition;
     @FXML
     private ToggleButton loaderScreen;
+    public static OkHttpClient HTTP_CLIENT = new OkHttpClient();
 
 
     ////////////////////////////  functions  ////////////////////////////
@@ -115,19 +126,21 @@ public class headerController {
         assert menuHbox != null : "fx:id=\"menuHbox\" was not injected: check your FXML file 'header.fxml'.";
         assert loaderScreen != null : "fx:id=\"loaderScreen\" was not injected: check your FXML file 'header.fxml'.";
     }
+
     public void setLastPressed(String lastPressed) {
-    	if (lastPressed.equals("none")) {
-    		return;
-    	} else if(lastPressed.equals("flowExecution")) {
-    		setAsPressed(roleManagement);
-    	} else if (lastPressed.equals("flowDefinition")) {
+        if (lastPressed.equals("none")) {
+            return;
+        } else if (lastPressed.equals("flowExecution")) {
+            setAsPressed(roleManagement);
+        } else if (lastPressed.equals("flowDefinition")) {
             setAsPressed(userManagement);
-        }else if (lastPressed.equals("statistics")) {
+        } else if (lastPressed.equals("statistics")) {
             setAsPressed(Statistics);
-        }else if (lastPressed.equals("executionsHistory")) {
+        } else if (lastPressed.equals("executionsHistory")) {
             setAsPressed(ExecutionsHistory);
         }
     }
+
     private void setAsPressed(Button pressed) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(100), pressed);
         scaleTransition.setToX(1.1);
@@ -172,16 +185,19 @@ public class headerController {
         setLastPressed("executionsHistory");
         main.showHistoryExe();
     }
+
     public void hideInformation() {
         loaded.setVisible(false);
         loadXMLbutton.setVisible(false);
     }
-    public void setVisibleInformation(){
+
+    public void setVisibleInformation() {
         loaded.setVisible(true);
         loadXMLbutton.setVisible(true);
     }
+
     private void removeLastPressed() {
-        switch(lastPressed) {
+        switch (lastPressed) {
             case "flowExecution":
                 removePressed(roleManagement);
                 break;
@@ -204,7 +220,8 @@ public class headerController {
         scaleTransition.play();
 
     }
-    public void addProgress(ProgressBar progressBar, Label label,int free) {
+
+    public void addProgress(ProgressBar progressBar, Label label, int free) {
         String style4Bar, style4Label;
         switch (free) {
             case 1:
@@ -241,6 +258,7 @@ public class headerController {
                 break;
         }
     }
+
     public int getNextFreeProgress() {
         if (nextFreeProgressor == 4) {
             nextFreeProgressor = 1;
@@ -248,11 +266,12 @@ public class headerController {
         }
         return nextFreeProgressor++;
     }
+
     @FXML
     void initialize() {
         setTheme();
         setMenuButtonGroup();
-        String buttonStyle=closeButton.getStyle();
+        String buttonStyle = closeButton.getStyle();
         closeButton.setOnMouseEntered(event -> {
             closeButton.setStyle("-fx-background-color: #ff0000; -fx-background-radius: 40px;-fx-border-radius: 26");
         });
@@ -275,6 +294,7 @@ public class headerController {
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
+
     private void setTopBar() {
 
         Tooltip tooltip = new Tooltip("Asaf=Efes\nSaar=Gever");
@@ -307,7 +327,7 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")){
+            if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = userManagement.getStyle();
                 userManagement.setStyle("-fx-border-color: black;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(0,33,255);");
             } else {
@@ -330,7 +350,7 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")){
+            if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = roleManagement.getStyle();
                 roleManagement.setStyle("-fx-border-color: black;-fx-background-radius: 20; -fx-border-radius: 20;-fx-background-color: rgb(0,33,255);");
             } else {
@@ -352,10 +372,10 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")){
+            if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = ExecutionsHistory.getStyle();
                 ExecutionsHistory.setStyle("-fx-background-color: rgb(32,33,255);-fx-background-radius: 20;-fx-border-color: #020101; -fx-border-radius: 20;");
-            } else{
+            } else {
                 buttonStyle = ExecutionsHistory.getStyle();
                 ExecutionsHistory.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
             }
@@ -375,11 +395,11 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")){
+            if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = Statistics.getStyle();
                 Statistics.setStyle("-fx-background-color: rgb(62,31,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
 
-            }else {
+            } else {
                 buttonStyle = Statistics.getStyle();
                 Statistics.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
             }
@@ -421,6 +441,7 @@ public class headerController {
             }
         }
     }
+
     @FXML
     void SaveData(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -441,6 +462,7 @@ public class headerController {
             }
         }
     }
+
     @FXML
     void loadData(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -449,13 +471,27 @@ public class headerController {
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             try {
-                DataManager.loadDataGui(file.getPath());
-                DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
-                ActivateMenuButtons();
-                loadXMLbutton.setText("Loaded:");
-                loaded.setText(DataManager.getData().getXmlPath());
-                initializedData();
-                main.getBodyController().setBodyScreen();
+                //build http request(okhttp) and send it to the server servlet
+                String res = doRequest(file);
+                if (res.equals("true")) {
+                    DataManager.loadDataGui(file.getPath());
+                    DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
+                    ActivateMenuButtons();
+                    loadXMLbutton.setText("Loaded:");
+                    loaded.setText(DataManager.getData().getXmlPath());
+                    initializedData();
+                    main.getBodyController().setBodyScreen();
+                }//else ->->-> to exception
+
+
+//
+//                DataManager.loadDataGui(file.getPath());
+//                DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
+//                ActivateMenuButtons();
+//                loadXMLbutton.setText("Loaded:");
+//                loaded.setText(DataManager.getData().getXmlPath());
+//                initializedData();
+//                main.getBodyController().setBodyScreen();
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -465,6 +501,7 @@ public class headerController {
             }
         }
     }
+
     @FXML
     void BuyPremium(ActionEvent event) {
         buypremiumBtn.setOnMouseEntered(event1 -> {
@@ -560,8 +597,7 @@ public class headerController {
             if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = loadXMLbutton.getStyle();
                 loadXMLbutton.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
-            }
-            else {
+            } else {
                 buttonStyle = loadXMLbutton.getStyle();
                 loadXMLbutton.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
             }
@@ -592,10 +628,10 @@ public class headerController {
             scaleTransition.setToX(1.1);
             scaleTransition.setToY(1.1);
             scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")){
+            if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = loadData.getStyle();
                 loadData.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
-            } else{
+            } else {
                 buttonStyle = loadData.getStyle();
                 loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
             }
@@ -617,7 +653,7 @@ public class headerController {
             if (StyleManager.getCurrentTheme().equals("light")) {
                 buttonStyle = saveData.getStyle();
                 saveData.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
-            }else {
+            } else {
                 buttonStyle = saveData.getStyle();
                 saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
             }
@@ -637,6 +673,7 @@ public class headerController {
         setLastPressed("flowExecution");
         main.showRoleManagement();
     }
+
     @FXML
     void StatisticsFunc(ActionEvent event) {
         main.showStats();
@@ -652,17 +689,35 @@ public class headerController {
         main.initialize();
         if (selectedFile != null) {
             try {
-                GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
-                ActivateMenuButtons();
-                DataManager.getData().setXmlPath(selectedFile.getPath());
-                roleManagement.setDisable(false);
-                ExecutionsHistory.setDisable(false);//***
-                loadXMLbutton.setText("Loaded:");
-                loaded.setText(DataManager.getData().getXmlPath());
-                initializedData();
-                stopRotate();
-                loadXMLbutton.setRotate(0);
-                main.getBodyController().setBodyScreen();
+                //build http request(okhttp) and send it to the server servlet
+                String res = doRequest(selectedFile);
+                if (res.equals("true")) {
+                   // GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());//heppens in the server
+                    ActivateMenuButtons();
+                    DataManager.getData().setXmlPath(selectedFile.getPath());
+                    roleManagement.setDisable(false);
+                    ExecutionsHistory.setDisable(false);//***
+                    loadXMLbutton.setText("Loaded:");
+                    loaded.setText(DataManager.getData().getXmlPath());
+                    initializedData();
+                    stopRotate();
+                    loadXMLbutton.setRotate(0);
+                    main.getBodyController().setBodyScreen();
+
+                }//else show exception
+
+//
+//                GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
+//                ActivateMenuButtons();
+//                DataManager.getData().setXmlPath(selectedFile.getPath());
+//                roleManagement.setDisable(false);
+//                ExecutionsHistory.setDisable(false);//***
+//                loadXMLbutton.setText("Loaded:");
+//                loaded.setText(DataManager.getData().getXmlPath());
+//                initializedData();
+//                stopRotate();
+//                loadXMLbutton.setRotate(0);
+//                main.getBodyController().setBodyScreen();
 
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -674,6 +729,60 @@ public class headerController {
             }
         }
     }
+
+    @NotNull
+    private static String doRequest(File selectedFile) throws IOException {
+       //add xml file stream to the request
+
+        RequestBody body =
+                new MultipartBody.Builder()
+                        .addFormDataPart("file1", selectedFile.getName(), RequestBody.create(selectedFile, MediaType.parse("text/xml")))
+                        //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                        .build();
+
+        Request request = new Request.Builder()
+                .url(Constants.XML_UPLOAD)
+                .post(body)
+                .build();
+
+        System.out.println(request.toString());
+        Call call = HTTP_CLIENT.newCall(request);
+
+        Response response = call.execute();
+        //updateHttpStatusLine("New request is launched for: " + finalUrl);
+        System.out.println(response.body().string());
+        if (response.code() != 200) {
+            throw new IOException("Something went wrong: " + response.body().string());
+        }
+
+    return "true";
+
+}
+
+
+//        HttpClientUtil.runAsync(finalUrl, new Callback() {
+//
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                Platform.runLater(() ->
+//                        System.out.println("Something went wrong: " + e.getMessage())
+//
+//                );
+//            }
+//
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                if (response.code() != 200) {
+//                    String responseBody = response.body().string();
+//                    Platform.runLater(() ->
+//                            System.out.println("Something went wrong: " + responseBody)
+//                    );
+//                } else {
+//                    Platform.runLater(() -> {
+//                        System.out.println("Request is successful\n Response code: " + response.body().toString());
+//                    });
+//                }
+//            }
 
     private void stopRotate() {
         rotateTransition.stop();

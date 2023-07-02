@@ -68,6 +68,7 @@ public class bodyController {
             lastBodyController=bController;
         }
         catch (IOException e) {
+            e.printStackTrace();
             System.out.println("BASA1");
         }
     }

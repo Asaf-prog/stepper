@@ -44,7 +44,7 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="260.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent;">
+            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="260.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: trans[arent];">
                <children>
                   <Label fx:id="logsLabel" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="433.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>

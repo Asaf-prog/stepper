@@ -56,8 +56,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private VBox outputsVbox4Value;
     @FXML
     private Label flowOutputsLabel;
-    @FXML
-    private Button execute;
+
     @FXML
     private VBox outputsVbox;
     @FXML
@@ -83,8 +82,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     @FXML
-    private  Button continuation;
-    @FXML
     private ChoiceBox<String> filterChoiceBox;
     private List<Pair<String, String>> freeInputsMandatory ;
     private List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD ;
@@ -105,7 +102,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
     @FXML
     void initialize() {
-        style=execute.getStyle();
         setTheme();
         Stepper stepperData = DataManager.getData();
         asserts();
@@ -116,8 +112,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
         setFilter2Table();
-        setBodyButtonStyle(execute);
-        setBodyButtonStyle(continuation);
+
     }
     @Override
     public void onLeave() {
@@ -196,7 +191,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert tableData != null : "fx:id=\"tableData\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert resCol != null : "fx:id=\"resCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert inputsVbox != null : "fx:id=\"inputsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
-        assert execute != null : "fx:id=\"execute\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert outputsVbox != null : "fx:id=\"outputsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert outputsVbox4Value != null : "fx:id=\"outputsVbox4Value\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert idCol != null : "fx:id=\"idCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
@@ -294,8 +288,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 updateOutputs(selectedFlow);
                 updateTime(selectedFlow);
                 updateLogsTree(selectedFlow);
-                continuation.setDisable(false);
-                execute.setDisable(false);
             }
         });
     }

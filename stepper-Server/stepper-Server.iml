@@ -10,7 +10,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../Servlets/web" relative="/" />
         </webroots>
-        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -25,5 +24,6 @@
     <orderEntry type="library" exported="" name="okHttp" level="project" />
     <orderEntry type="library" exported="" name="google-gson-2" level="project" />
     <orderEntry type="module" module-name="stepper-Client" exported="" />
+    <orderEntry type="module" module-name="stepper-Engine" />
   </component>
 </module>
