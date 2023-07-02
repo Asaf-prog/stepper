@@ -15,20 +15,24 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Scanner;
 import modules.DataManeger.GetDataFromXML;
+
+import javax.xml.transform.stream.StreamSource;
+
 @WebServlet(name = "upload Servlet",urlPatterns = "/uploadXmlFile")
 @MultipartConfig
 public class UploadXmlServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //print to page hello world
-        resp.getWriter().println("Hello World !");
+        resp.getWriter().println("Hello World!");
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            GetDataFromXML.fromStream2Stepper(request.getPart("file").getInputStream());
+            InputStream res=request.getPart("file").getInputStream();
+            GetDataFromXML.fromStream2Stepper(res);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

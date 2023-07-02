@@ -729,17 +729,16 @@ public class headerController {
         }
     }
     private static String doRequest(File selectedFile) throws IOException {
-       //add xml file stream to the request
 
         RequestBody body =
                 new MultipartBody.Builder()
-                        .addFormDataPart("file1", selectedFile.getName(), RequestBody.create(selectedFile, MediaType
+                        .addFormDataPart("file", selectedFile.getName(), RequestBody.create(selectedFile, MediaType
                                 .parse("text/xml")))
                         .build();
 
         Request request = new Request.Builder()
                 .url(Constants.XML_UPLOAD)
-                .get()
+                .post(body)
                 .build();
 
         System.out.println(request.toString());

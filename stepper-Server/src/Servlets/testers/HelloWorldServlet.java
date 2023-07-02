@@ -14,10 +14,6 @@ public class HelloWorldServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.getWriter().println( "HELLOOO!");
         //get context from servlet context
-        getServletContext().setAttribute("name","david");
-        //forward to continue servlet
-        getServletContext().getRequestDispatcher("/continue").forward(req,resp);
-
 
     }
 
