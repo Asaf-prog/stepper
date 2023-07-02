@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.headerController">
+   <children>
+      <VBox fx:id="headerVbox" prefHeight="223.0" prefWidth="696.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css">
+         <children>
+            <HBox fx:id="topBar" prefHeight="41.0" prefWidth="1070.0" style="-fx-background-color: #16191c; -fx-background-radius: 20;">
+               <children>
+                  <ImageView fx:id="barLogo" fitHeight="32.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../management/content/stepperIcon.png" />
+                     </image>
+                     <effect>
+                        <Glow level="1.0" />
+                     </effect>
+                  </ImageView>
+                  <ImageView fitHeight="18.0" fitWidth="995.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeApp" prefHeight="33.0" prefWidth="38.0" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fx:id="close" fitHeight="23.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../management/content/close-window-48.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Pane prefHeight="90.0" prefWidth="1070.0">
+               <children>
+                  <ImageView blendMode="HARD_LIGHT" cacheHint="QUALITY" fitHeight="61.0" fitWidth="337.0" layoutX="379.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true" scaleX="1.0" scaleY="1.0" style="-fx-border-color: black;" translateX="0.0" translateY="0.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="379.0" AnchorPane.rightAnchor="379.46429443359375" AnchorPane.topAnchor="-9.0">
+                     <image>
+                        <Image url="@content/toplogoWhite.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+                  <ToggleButton fx:id="themeToggle" layoutX="955.0" layoutY="5.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="37.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 40;" styleClass="toggle-switch" stylesheets="@../management/style/darkTheme.css" text="Dark Theme" textAlignment="CENTER" textFill="#fff200">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </ToggleButton>
+                  <Label alignment="CENTER" layoutX="452.0" layoutY="26.0" prefHeight="53.0" prefWidth="166.0" styleClass="headerTitle" stylesheets="@../management/style/darkTheme.css" text="Admin Edition" textAlignment="CENTER" textFill="#18ff00" wrapText="true">
+                     <font>
+                        <Font name="Avenir Next Condensed Medium" size="25.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#bc2424" spread="0.81" />
+                     </effect>
+                  </Label>
+               </children>
+            </Pane>
+            <HBox fx:id="loadHbox" alignment="TOP_RIGHT" prefHeight="49.0" prefWidth="1070.0" spacing="14.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="loadXMLbutton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loadDataXML" prefHeight="34.0" prefWidth="190.0" style="-fx-background-color: transparent; -fx-border-radius: 20; -fx-border-color: white; -fx-border-width: 2;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Load XML" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font></Button>
+                  <Label fx:id="loaded" alignment="CENTER" prefHeight="34.0" prefWidth="630.0" style="-fx-border-color: rgb(179,0,220); -fx-border-width: 2; -fx-background-radius: 20; -fx-border-radius: 20;" styleClass="PathLabel" stylesheets="@../management/style/darkTheme.css" text="---Path To Your XML---" textFill="#fffafa">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="saveData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Save Data" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="loadData" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadData" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="dataButton" stylesheets="@../management/style/darkTheme.css" text="Load Data" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="14.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="menuHbox" alignment="CENTER" prefHeight="32.0" prefWidth="1065.0" spacing="30.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="userManagement" disable="true" mnemonicParsing="false" onAction="#UserManagementPresent" prefHeight="36.0" prefWidth="217.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="23.0" prefWidth="166.0" spacing="10.0">
+                           <children>
+                              <Label prefHeight="23.0" prefWidth="184.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="User Management">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="roleManagement" disable="true" mnemonicParsing="false" onAction="#RoleManagementPresent" prefHeight="36.0" prefWidth="219.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/dash.png" />
+                                 </image></ImageView>
+
+                              <Label prefHeight="22.0" prefWidth="176.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="Role Management">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font></Label>
+                           </children>
+                        </HBox>
+                     </graphic></Button>
+                  <Button fx:id="Statistics" disable="true" mnemonicParsing="false" onAction="#StatisticsFunc" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" text="Statistics" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="133.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/stats.png" />
+                                 </image></ImageView>
+                              <Label prefHeight="22.0" prefWidth="86.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="Statistics" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </graphic></Button>
+                  <Button fx:id="ExecutionsHistory" disable="true" mnemonicParsing="false" onAction="#ExecutionsHistoryFunc" prefHeight="36.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 20;" styleClass="screenButton" stylesheets="@../management/style/darkTheme.css" text="History" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/history.png" />
+                                 </image></ImageView>
+                              <Label prefHeight="24.0" prefWidth="70.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="History" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font></Label>
+                           </children>
+                        </HBox>
+                     </graphic></Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <StackPane.margin>
+            <Insets left="5.0" right="5.0" />
+         </StackPane.margin>
+         <effect>
+            <Bloom threshold="1.0" />
+         </effect>
+      </VBox>
+   </children>
+</StackPane>
