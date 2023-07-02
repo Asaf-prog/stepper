@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="bodyPane" prefHeight="540.0" prefWidth="1080.0" styleClass="bodyPane" stylesheets="@../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientsApp.app.body.bodyController" />

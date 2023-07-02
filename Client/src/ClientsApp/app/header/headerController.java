@@ -18,11 +18,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import modules.DataManeger.DataManager;
-import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
+import okhttp3.*;
 
 import java.io.File;
+import java.io.IOException;
+
+import static util.Constants.LOAD_XML_FILE;
 
 public class headerController {
 
@@ -83,6 +86,7 @@ public class headerController {
     int nextFreeProgressor = 1;
     String buttonStyle;
     private RotateTransition rotateTransition;
+    public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     @FXML
     private ToggleButton loaderScreen;
 
@@ -173,8 +177,8 @@ public class headerController {
         main.showHistoryExe();
     }
     public void hideInformation() {
-        loaded.setVisible(false);
-        loadXMLbutton.setVisible(false);
+      //  loaded.setVisible(false);
+        //loadXMLbutton.setVisible(false);
     }
     public void setVisibleInformation(){
         loaded.setVisible(true);
@@ -649,7 +653,7 @@ public class headerController {
     }
 
     @FXML
-    void loadDataXML(ActionEvent event) {
+    void loadDataXML(ActionEvent event) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose File");
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -657,19 +661,39 @@ public class headerController {
         loadXMLbutton.setRotate(0);
         main.initialize();
         if (selectedFile != null) {
+
             try {
-                GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
-                ActivateMenuButtons();
-                DataManager.getData().setXmlPath(selectedFile.getPath());
-                FlowsDefinition.setDisable(false);
-                ExecutionsHistory.setDisable(false);//***
-                loadXMLbutton.setText("Loaded:");
-                loaded.setText(DataManager.getData().getXmlPath());
-                initializedData();
-                stopRotate();
-                loadXMLbutton.setRotate(0);
-                main.getBodyController().setBodyScreen();
-                menuHbox.getChildren().remove(flowExecution);
+
+                RequestBody body =
+                        new MultipartBody.Builder()
+                                .addFormDataPart("file1", selectedFile.getName(), RequestBody.create(selectedFile, MediaType.parse("text/xml")))
+                                //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                                .build();
+
+                Request request = new Request.Builder()
+                        .url(LOAD_XML_FILE)
+                        .post(body)
+                        .build();
+
+                Call call = HTTP_CLIENT.newCall(request);
+
+                Response response = call.execute();
+
+                System.out.println(response.body().string());
+
+                // System.out.println(response.body().string());
+
+//                // ActivateMenuButtons();
+//                DataManager.getData().setXmlPath(selectedFile.getPath());
+//                //FlowsDefinition.setDisable(false);
+//                //ExecutionsHistory.setDisable(false);//***
+//                //loadXMLbutton.setText("Loaded:");
+//                //loaded.setText(DataManager.getData().getXmlPath());
+//                initializedData();
+//                //stopRotate();
+//                //loadXMLbutton.setRotate(0);
+//                //main.getBodyController().setBodyScreen();
+//                // menuHbox.getChildren().remove(flowExecution);
 
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

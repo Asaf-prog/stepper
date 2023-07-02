@@ -24,7 +24,7 @@ public class GetDataFromXML {
         stepperData.validateStepper();
         sentToStepper(stepperData);
 }
-    private static void sentToStepper(Stepper stepperData) {DataManager dataManager = new DataManager(stepperData);}//the one and only data manager
+    public static void sentToStepper(Stepper stepperData) {DataManager dataManager = new DataManager(stepperData);}//the one and only data manager
 
     public static final String FILE_NAME = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";
 

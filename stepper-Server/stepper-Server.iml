@@ -25,5 +25,6 @@
     <orderEntry type="library" exported="" name="okHttp" level="project" />
     <orderEntry type="library" exported="" name="google-gson-2" level="project" />
     <orderEntry type="module" module-name="stepper-Client" exported="" />
+    <orderEntry type="module" module-name="stepper-Engine" />
   </component>
 </module>
