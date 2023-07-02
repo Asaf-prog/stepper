@@ -24,7 +24,6 @@ import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
 import util.Constants;
 import util.http.HttpClientUtil;
 
@@ -729,20 +728,18 @@ public class headerController {
             }
         }
     }
-
-    @NotNull
     private static String doRequest(File selectedFile) throws IOException {
        //add xml file stream to the request
 
         RequestBody body =
                 new MultipartBody.Builder()
-                        .addFormDataPart("file1", selectedFile.getName(), RequestBody.create(selectedFile, MediaType.parse("text/xml")))
-                        //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                        .addFormDataPart("file1", selectedFile.getName(), RequestBody.create(selectedFile, MediaType
+                                .parse("text/xml")))
                         .build();
 
         Request request = new Request.Builder()
                 .url(Constants.XML_UPLOAD)
-                .post(body)
+                .get()
                 .build();
 
         System.out.println(request.toString());

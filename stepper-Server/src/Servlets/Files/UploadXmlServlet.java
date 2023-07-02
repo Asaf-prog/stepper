@@ -15,9 +15,15 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Scanner;
 import modules.DataManeger.GetDataFromXML;
-@WebServlet(name = "ServletLogin",urlPatterns = "/upload-xml")
+@WebServlet(name = "upload Servlet",urlPatterns = "/uploadXmlFile")
 @MultipartConfig
 public class UploadXmlServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //print to page hello world
+        resp.getWriter().println("Hello World !");
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

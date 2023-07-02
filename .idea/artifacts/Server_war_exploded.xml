@@ -5,9 +5,19 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="stepper-Server" />
+          <element id="module-output" name="stepper-Admin" />
+          <element id="module-output" name="stepper_GUI" />
+          <element id="module-output" name="stepper-Engine" />
+          <element id="module-output" name="stepper-UI" />
+          <element id="module-output" name="stepper-Client" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="google-gson-2" />
+          <element id="library" level="project" name="okHttp" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Server/web/Web" />
+      <element id="javaee-facet-resources" facet="stepper-Admin/web/Web" />
     </root>
   </artifact>
 </component>
