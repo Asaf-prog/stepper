@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ST-Stepper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../../../Downloads/Stepper-V1.xsd">
+	<ST-Flows>
+		<ST-Flow name="Spend Some Time">
+			<ST-FlowDescription>Spend Some Time</ST-FlowDescription>
+			<ST-FlowOutput></ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Spend Some Time"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="Collect Files In Folder">
+			<ST-FlowDescription>Collect Files In Folder</ST-FlowDescription>
+			<ST-FlowOutput>FILES_LIST,TOTAL_FOUND</ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Collect Files In Folder"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="Files Deleter">
+			<ST-FlowDescription>Files Deleter</ST-FlowDescription>
+			<ST-FlowOutput>DELETED_LIST,DELETION_STATS</ST-FlowOutput>
+			<ST-StepsInFlow>
+                <ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Files Deleter"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="Files Renamer">
+			<ST-FlowDescription>Files Renamer</ST-FlowDescription>
+			<ST-FlowOutput>RENAME_RESULT</ST-FlowOutput>
+			<ST-StepsInFlow>
+                <ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Files Renamer"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+				<ST-FlowLevelAlias step="Collect Files In Folder" source-data-name="FILES_LIST" alias="FILES_TO_RENAME"/>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="CSV Exporter">
+			<ST-FlowDescription>CSV Exporter</ST-FlowDescription>
+			<ST-FlowOutput>RESULT</ST-FlowOutput>
+			<ST-StepsInFlow>
+                <ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Files Content Extractor"/>
+				<ST-StepInFlow name="CSV Exporter"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+				<ST-FlowLevelAlias step="Files Content Extractor" source-data-name="DATA" alias="SOURCE"/>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="Files Content Extractor">
+			<ST-FlowDescription>Files Content Extractor</ST-FlowDescription>
+			<ST-FlowOutput>DATA</ST-FlowOutput>
+			<ST-StepsInFlow>
+                <ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Files Content Extractor"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="Properties Exporter">
+			<ST-FlowDescription>Properties Exporter</ST-FlowDescription>
+			<ST-FlowOutput>RESULT</ST-FlowOutput>
+			<ST-StepsInFlow>
+                <ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Files Content Extractor"/>
+				<ST-StepInFlow name="Properties Exporter"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+				<ST-FlowLevelAlias step="Files Content Extractor" source-data-name="DATA" alias="SOURCE"/>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+		<ST-Flow name="File Dumper">
+			<ST-FlowDescription>File Dumper</ST-FlowDescription>
+			<ST-FlowOutput>RESULT</ST-FlowOutput>
+			<ST-StepsInFlow>
+                <ST-StepInFlow name="File Dumper"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+			</ST-CustomMappings>
+		</ST-Flow>
+	</ST-Flows>
+</ST-Stepper>

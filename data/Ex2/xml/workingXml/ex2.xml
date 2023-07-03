@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ST-Stepper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Stepper-V2.xsd">
+	<ST-ThreadPool>6</ST-ThreadPool>
+	<ST-Flows>
+		<ST-Flow name="Rename Files Zip Results">
+			<ST-FlowDescription>Given a folder adds prefix and\or suffix to each file name. The renaming results are expressed via CSV and Properties files and are finally zipped</ST-FlowDescription>		
+			<ST-FlowOutput>PROP_RESULT,CSV_RESULT</ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Files Renamer"/>
+				<ST-StepInFlow name="CSV Exporter"/>
+				<ST-StepInFlow name="File Dumper" alias="CSV File Dumper"/>
+				<ST-StepInFlow name="Zipper" alias="ZIP CSV File" continue-if-failing="true"/>
+				<ST-StepInFlow name="Properties Exporter"/>
+				<ST-StepInFlow name="File Dumper" alias="Properties File Dumper"/>
+				<ST-StepInFlow name="Zipper" alias="ZIP Prop File" continue-if-failing="true"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+				<ST-FlowLevelAlias step="Files Renamer" source-data-name="RENAME_RESULT" alias="SOURCE"/>
+				<ST-FlowLevelAlias step="CSV File Dumper" source-data-name="FILE_NAME" alias="CSV_FILE_NAME"/>
+				<ST-FlowLevelAlias step="CSV File Dumper" source-data-name="RESULT" alias="CSV_FILE_DUMP_RESULT"/>								
+				<ST-FlowLevelAlias step="CSV Exporter" source-data-name="RESULT" alias="CSV_RESULT"/>
+				<ST-FlowLevelAlias step="Properties File Dumper" source-data-name="FILE_NAME" alias="PROP_FILE_NAME"/>
+				<ST-FlowLevelAlias step="Properties File Dumper" source-data-name="RESULT" alias="PROP_FILE_DUMP_RESULT"/>
+				<ST-FlowLevelAlias step="Properties Exporter" source-data-name="RESULT" alias="PROP_RESULT"/>
+				<ST-FlowLevelAlias step="ZIP CSV File" source-data-name="SOURCE" alias="CSV_FILE_NAME"/>
+				<ST-FlowLevelAlias step="ZIP CSV File" source-data-name="RESULT" alias="CSV_ZIP_RESULT"/>
+				<ST-FlowLevelAlias step="ZIP Prop File" source-data-name="SOURCE" alias="PROP_FILE_NAME"/>				
+				<ST-FlowLevelAlias step="ZIP Prop File" source-data-name="RESULT" alias="PROP_ZIP_RESULT"/>				
+			</ST-FlowLevelAliasing>
+			<ST-CustomMappings>
+				<ST-CustomMapping source-step="Collect Files In Folder" source-data="FILES_LIST" target-step="Files Renamer" target-data="FILES_TO_RENAME"/>
+				<ST-CustomMapping source-step="CSV Exporter" source-data="CSV_RESULT" target-step="CSV File Dumper" target-data="CONTENT"/>
+				<ST-CustomMapping source-step="Properties Exporter" source-data="PROP_RESULT" target-step="Properties File Dumper" target-data="CONTENT"/>
+			</ST-CustomMappings>
+			<ST-Continuations>
+				<ST-Continuation target-flow="Delete Matched Files">
+					<ST-Continuation-Mapping source-data="TOTAL_FOUND" target-data="TIME_TO_SPEND"/>
+				</ST-Continuation>
+			</ST-Continuations>
+			<ST-InitialInputValues>
+				<ST-InitialInputValue input-name="OPERATION" initial-value="ZIP"/>
+			</ST-InitialInputValues>			
+		</ST-Flow>
+		<ST-Flow name="Delete Matched Files">
+			<ST-FlowDescription>Given a folder, deletes files matching a certain pattern</ST-FlowDescription>		
+			<ST-FlowOutput>TOTAL_FOUND,DELETION_STATS</ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Spend Some Time"/>
+				<ST-StepInFlow name="Files Deleter"/>
+			</ST-StepsInFlow>
+		</ST-Flow>
+		<ST-Flow name="Store Command Result">
+			<ST-FlowDescription>Invoke a command line and plots its output to a file. The file is then zipped</ST-FlowDescription>				
+			<ST-FlowOutput>CONTENT</ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Command Line"/>
+				<ST-StepInFlow name="File Dumper"/>
+				<ST-StepInFlow name="Zipper"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+				<ST-FlowLevelAlias step="Command Line" source-data-name="RESULT" alias="CONTENT"/>
+				<ST-FlowLevelAlias step="Zipper" source-data-name="SOURCE" alias="FILE_NAME"/>
+				<ST-FlowLevelAlias step="Zipper" source-data-name="RESULT" alias="ZIP_RESULT"/>
+			</ST-FlowLevelAliasing>
+			<ST-InitialInputValues>
+				<ST-InitialInputValue input-name="OPERATION" initial-value="ZIP"/>
+			</ST-InitialInputValues>
+		</ST-Flow>
+	</ST-Flows>
+</ST-Stepper>
