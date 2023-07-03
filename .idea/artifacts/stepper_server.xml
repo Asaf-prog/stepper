@@ -17,6 +17,8 @@
         </element>
       </element>
       <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />
+      <element id="library" level="project" name="google-gson-2" />
+      <element id="library" level="project" name="okHttp" />
     </root>
   </artifact>
 </component>
