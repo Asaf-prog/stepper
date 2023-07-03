@@ -112,6 +112,10 @@ public class bodyController {
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
+
+    public void setUserList() {
+
+    }
 }
 
 

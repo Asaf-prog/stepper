@@ -1,4 +1,4 @@
-package Servlets.Files;
+package Servlets.AdminServlets;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -15,10 +15,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Scanner;
-import modules.DataManeger.GetDataFromXML;
-import modules.stepper.Stepper;
+import util.Constants;
 
-import javax.xml.transform.stream.StreamSource;
 
 @WebServlet(name = "upload Servlet",urlPatterns = "/uploadXmlFile")
 @MultipartConfig
@@ -34,18 +32,13 @@ public class UploadXmlServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             InputStream res=request.getPart("file").getInputStream();
-            Stepper stepper=GetDataFromXML.fromStream2Stepper(res);
-            response.setStatus(200);
-            System.out.println("Uploaded xml successfully... :)");
-
+            GetDataFromXML.fromStream2Stepper(res);
             // send stepper  to client via body of response using json
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            Gson gson = new Gson();
-            String json = gson.toJson(stepper);
-            response.getWriter().write(json);
-
-
+            //forward to servlet that send all the needed information to the admin when uploading xml
+            //redirect to post method
+            response.sendRedirect(Constants.INIT_ADMIN);
         } catch (Exception e) {
             System.out.println("failed to upload xml... :)");
             throw new RuntimeException(e);

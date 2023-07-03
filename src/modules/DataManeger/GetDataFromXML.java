@@ -35,6 +35,7 @@ public class GetDataFromXML {
         Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
         stepperData.validateStepper();
         sentToStepper(stepperData);
+
     }
     private static void sentToStepper(Stepper stepperData) {DataManager dataManager = new DataManager(stepperData);}//the one and only data manager
 

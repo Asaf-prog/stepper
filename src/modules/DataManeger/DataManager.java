@@ -22,6 +22,9 @@ public class DataManager {
         stepperData = new Stepper();
     }
 
+    public static void setData(Stepper stepperData) {
+    }
+
     public void setStepperData(Stepper stepperData) {
         this.stepperData = stepperData;
     }

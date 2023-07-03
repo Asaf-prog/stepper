@@ -3,6 +3,8 @@ package app.header;
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
 import app.management.style.StyleManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -22,16 +24,22 @@ import javafx.util.Duration;
 import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.stepper.FlowDefinitionException;
 import modules.stepper.Stepper;
+import modules.stepper.StepperDefinitionException;
 import okhttp3.*;
+import org.intellij.lang.annotations.Flow;
+import org.jetbrains.annotations.NotNull;
 import util.Constants;
 import util.http.HttpClientUtil;
 
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.Base64;
+import java.util.List;
 
 public class headerController {
 
@@ -95,6 +103,8 @@ public class headerController {
     @FXML
     private ToggleButton loaderScreen;
     public static OkHttpClient HTTP_CLIENT = new OkHttpClient();
+
+    private static Gson gson = new Gson();
 
 
     ////////////////////////////  functions  ////////////////////////////
@@ -470,8 +480,7 @@ public class headerController {
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             try {
-                //build http request(okhttp) and send it to the server servlet
-                String res = doRequest(file);
+                String res = "false";
                 if (res.equals("true")) {
                     DataManager.loadDataGui(file.getPath());
                     DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
@@ -481,16 +490,13 @@ public class headerController {
                     initializedData();
                     main.getBodyController().setBodyScreen();
                 }//else ->->-> to exception
-
-
-//
-//                DataManager.loadDataGui(file.getPath());
-//                DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
-//                ActivateMenuButtons();
-//                loadXMLbutton.setText("Loaded:");
-//                loaded.setText(DataManager.getData().getXmlPath());
-//                initializedData();
-//                main.getBodyController().setBodyScreen();
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error");
+                    alert.setContentText("Error loading data");
+                    alert.showAndWait();
+                }
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -689,96 +695,80 @@ public class headerController {
         if (selectedFile != null) {
             try {
                 //build http request(okhttp) and send it to the server servlet
-                String res = doRequest(selectedFile);
-                if (res.equals("true")) {
-                   // GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());//heppens in the server
-                    ActivateMenuButtons();
-                    DataManager.getData().setXmlPath(selectedFile.getPath());
-                    roleManagement.setDisable(false);
-                    ExecutionsHistory.setDisable(false);//***
-                    loadXMLbutton.setText("Loaded:");
-                    loaded.setText(DataManager.getData().getXmlPath());
-                    initializedData();
-                    stopRotate();
-                    loadXMLbutton.setRotate(0);
-                    main.getBodyController().setBodyScreen();
+                RequestBody body =
+                        new MultipartBody.Builder()
+                                .addFormDataPart("file", selectedFile.getName(), RequestBody.create(selectedFile, MediaType
+                                        .parse("text/xml")))
+                                .build();
 
-                }//else show exception
+                Request request = new Request.Builder()
+                        .url(Constants.XML_UPLOAD)
+                        .post(body)
+                        .build();
 
-//
-//                GetDataFromXML.fromXmlFileToObject(selectedFile.getAbsolutePath());
-//                ActivateMenuButtons();
-//                DataManager.getData().setXmlPath(selectedFile.getPath());
-//                roleManagement.setDisable(false);
-//                ExecutionsHistory.setDisable(false);//***
-//                loadXMLbutton.setText("Loaded:");
-//                loaded.setText(DataManager.getData().getXmlPath());
-//                initializedData();
-//                stopRotate();
-//                loadXMLbutton.setRotate(0);
-//                main.getBodyController().setBodyScreen();
+                System.out.println(request.toString());
+                HttpClientUtil.runAsync(request, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Platform.runLater(() ->
+                                System.out.println("Something went wrong: " + e.getMessage())
 
+                        );
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.code() != 200) {//because of redirect
+
+                            Platform.runLater(() -> {
+                                //present error message
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error");
+                                alert.setHeaderText("Error");
+                                alert.setContentText("Something went wrong, please try again");
+                                alert.showAndWait();
+                            });
+
+                            //todo check if stepper valid !!!
+                        } else {
+                            Platform.runLater(() -> {
+                                try {
+                                    ActivateMenuButtons();
+                                    String responseBody = response.body().string();
+                                    Type listType = new TypeToken<List<FlowDefinitionImpl>>() {}.getType();
+                                    List<String> flows = gson.fromJson(responseBody, listType);
+                                    System.out.println(flows);
+                                    DataManager.getData().setXmlPath(selectedFile.getPath());
+                                    roleManagement.setDisable(false);
+                                    ExecutionsHistory.setDisable(false);//***
+                                    loadXMLbutton.setText("Loaded:");
+                                    loaded.setText(DataManager.getData().getXmlPath());
+                                    initializedData();
+                                    stopRotate();
+                                    loadXMLbutton.setRotate(0);
+                                    main.getBodyController().setBodyScreen();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                setLists();
+                            });
+                        }
+                    }
+                });
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("An exception occurred");
-
                 alert.setContentText(e.getMessage());
                 alert.showAndWait();
             }
         }
     }
-    private static String doRequest(File selectedFile) throws IOException {
 
-        RequestBody body =
-                new MultipartBody.Builder()
-                        .addFormDataPart("file", selectedFile.getName(), RequestBody.create(selectedFile, MediaType
-                                .parse("text/xml")))
-                        .build();
-
-        Request request = new Request.Builder()
-                .url(Constants.XML_UPLOAD)
-                .post(body)
-                .build();
-
-        System.out.println(request.toString());
-        Call call = HTTP_CLIENT.newCall(request);
-
-        Response response = call.execute();
-        //updateHttpStatusLine("New request is launched for: " + finalUrl);
-        System.out.println(response.body().string());
-        if (response.code() != 200) {
-            throw new IOException("Something went wrong: " + response.body().string());
-        }
-
-    return "true";
-
-}
-
-
-//        HttpClientUtil.runAsync(finalUrl, new Callback() {
-//
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                Platform.runLater(() ->
-//                        System.out.println("Something went wrong: " + e.getMessage())
-//
-//                );
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.code() != 200) {
-//                    String responseBody = response.body().string();
-//                    Platform.runLater(() ->
-//                            System.out.println("Something went wrong: " + responseBody)
-//                    );
-//                } else {
-//                    Platform.runLater(() -> {
-//                        System.out.println("Request is successful\n Response code: " + response.body().toString());
-//                    });
-//                }
-//            }
+    private void setLists() {
+        //update user list
+        main.getBodyController().setUserList();
+    }
 
     private void stopRotate() {
         rotateTransition.stop();

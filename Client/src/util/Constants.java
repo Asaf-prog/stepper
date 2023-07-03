@@ -17,9 +17,11 @@ public class Constants {
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
+
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
-    private final static String CONTEXT_PATH = "/Server_war_exploded";
-    private final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
+    private final static String CONTEXT_PATH = "/stepper-server";
+    public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
+    public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
 
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/loginShortResponse";
     public final static String LOAD_XML_FILE = FULL_SERVER_PATH + "/loadAndDecodeFile";
@@ -27,8 +29,6 @@ public class Constants {
     public final static String LOGOUT = FULL_SERVER_PATH + "/chat/logout";//*********
     public final static String SEND_CHAT_LINE = FULL_SERVER_PATH + "/pages/chatroom/sendChat";//*********
     public final static String CHAT_LINES_LIST = FULL_SERVER_PATH + "/chat";//*********
-
-    public final static String XML_UPLOAD = FULL_SERVER_PATH + "/upload-xml";//*********
 
     // GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

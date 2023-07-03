@@ -33,6 +33,10 @@ public class HttpClientUtil {
 
         call.enqueue(callback);
     }
+    public static void runAsync(Request request, Callback callback) {
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+        call.enqueue(callback);
+    }
 
     public static void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");

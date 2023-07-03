@@ -290,4 +290,8 @@ public class Stepper implements Serializable {
         return null;
     }
 
+    public List<String> getUsers() {
+//todo change to real users
+        return Arrays.asList("user1", "user2", "user3");
+    }
 }

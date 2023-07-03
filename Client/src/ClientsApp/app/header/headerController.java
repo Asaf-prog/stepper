@@ -666,8 +666,7 @@ public class headerController {
 
                 RequestBody body =
                         new MultipartBody.Builder()
-                                .addFormDataPart("file1", selectedFile.getName(), RequestBody.create(selectedFile, MediaType.parse("text/xml")))
-                                //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                                .addFormDataPart("file", selectedFile.getName(), RequestBody.create(selectedFile, MediaType.parse("text/xml")))
                                 .build();
 
                 Request request = new Request.Builder()
@@ -678,6 +677,8 @@ public class headerController {
                 Call call = HTTP_CLIENT.newCall(request);
 
                 Response response = call.execute();
+
+                //check if stepper was valid (exception ,etc..) then stepper is valid and we can continue
 
                 System.out.println(response.body().string());
 
