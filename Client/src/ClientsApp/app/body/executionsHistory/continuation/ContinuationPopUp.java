@@ -25,13 +25,10 @@ import java.util.ResourceBundle;
 import static modules.DataManeger.DataManager.stepperData;
 
 public class ContinuationPopUp {
-
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Button runButton;
     @FXML
@@ -41,7 +38,6 @@ public class ContinuationPopUp {
     private List<Pair<String, String>> freeInputsMandatory ;
     private List<Pair<String, String>> freeInputsOptional;
     private bodyController body;
-
     private List<String>  targetFlows;
     private  Stage  stage;
     private FlowDefinitionImpl targetFlow = null;

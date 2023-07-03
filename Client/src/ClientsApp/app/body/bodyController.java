@@ -45,7 +45,6 @@ public class bodyController {
     private TextField textField;
     @FXML
     private Button loginButton;
-
     @FXML
     private AnchorPane bodyPane;
     public void setMainController(mainController main) {
@@ -81,7 +80,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("BASA1");//todo => remove before sub
+            System.out.println("problem with login-page client");//todo => remove before sub
         }
     }
     private void loadScreen(FXMLLoader fxmlLoader,URL url) {
@@ -297,11 +296,9 @@ public class bodyController {
 //                        mainControllerClient.switchTheLoginPage();
 //                    });
 //                }
-
                     System.out.println(response.body().string());
                 }
             });
-
         }
         private void updateHttpStatusLine(String data) {
            // this.mainControllerClient.updateHttpLine(data);
@@ -309,6 +306,12 @@ public class bodyController {
         public  mainController getMain(){
         return   main;
         }
+        public  void switchBodyScreen() throws IOException {
+        setBodyScreen();
+    }
+    public void setNameOnScreen(String userName){
+        main.getHeaderComponentController().setNameOnScreen(userName);
+    }
     }
 
 

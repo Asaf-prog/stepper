@@ -11,26 +11,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
-import okhttp3.*;
-
-import java.io.File;
-import java.io.IOException;
-
-import static util.Constants.LOAD_XML_FILE;
+import okhttp3.OkHttpClient;
 
 public class headerController {
-
-    @FXML
-    private Button loadXMLbutton;
     @FXML
     private Button FlowsDefinition;
     @FXML
@@ -44,10 +33,6 @@ public class headerController {
     @FXML
     private Button flowExecution;
     @FXML
-    private Button saveData;
-    @FXML
-    private Button loadData;
-    @FXML
     private ProgressBar flow1ProgressBar;
     @FXML
     private ProgressBar flow2ProgressBar;
@@ -58,14 +43,18 @@ public class headerController {
     @FXML
     private GridPane progressGrid;
     @FXML
+    private Pane mainPane;
+    @FXML
+    private VBox headerVbox;
+    @FXML
     private ToggleButton themeToggle;
     @FXML
     private Button Statistics;
     @FXML
+    private TextField myRoles;
+    @FXML
     private Button ExecutionsHistory;
     private mainController main;
-    @FXML
-    private Label loaded;
     @FXML
     private Button buypremiumBtn;
     @FXML
@@ -78,6 +67,9 @@ public class headerController {
     private Button closeButton;
     @FXML
     private HBox menuHbox;
+    @FXML
+    private HBox HBoxData;
+
     public String lastPressed = "none";
     private FlowDefinitionImpl currentFlow;
     private MVC_controller controller;
@@ -89,35 +81,43 @@ public class headerController {
     public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     @FXML
     private ToggleButton loaderScreen;
+    @FXML
+    private Label IsManager;
+    @FXML
+    private Label NameInHeader;
 
 
     ////////////////////////////  functions  ////////////////////////////
-    private void asserts() {
-        assert flow3ProgressBar != null : "fx:id=\"flow3ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow2ProgressBar != null : "fx:id=\"flow2ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert Statistics != null : "fx:id=\"Statistics\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow4ProgressLabel != null : "fx:id=\"flow4ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow2ProgressLabel != null : "fx:id=\"flow2ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert loaded != null : "fx:id=\"loaded\" was not injected: check your FXML file 'header.fxml'.";
-        assert buypremiumBtn != null : "fx:id=\"buypremiumBtn\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow1ProgressLabel != null : "fx:id=\"flow1ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert loadXMLbutton != null : "fx:id=\"path\" was not injected: check your FXML file 'header.fxml'.";
-        assert themeToggle != null : "fx:id=\"themeToggle\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow4ProgressBar != null : "fx:id=\"flow4ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow3ProgressLabel != null : "fx:id=\"flow3ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
-        assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
-        assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
-        assert progressGrid != null : "fx:id=\"progressGrid\" was not injected: check your FXML file 'header.fxml'.";
-        assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
-        assert saveData != null : "fx:id=\"saveData\" was not injected: check your FXML file 'header.fxml'.";
-        assert loadData != null : "fx:id=\"loadData\" was not injected: check your FXML file 'header.fxml'.";
-        assert flowExecution != null : "fx:id=\"flowExecution\" was not injected: check your FXML file 'header.fxml'.";
-        assert close != null : "fx:id=\"close\" was not injected: check your FXML file 'header.fxml'.";
+    void asserts() {
+        assert headerVbox != null : "fx:id=\"headerVbox\" was not injected: check your FXML file 'header.fxml'.";
         assert topBar != null : "fx:id=\"topBar\" was not injected: check your FXML file 'header.fxml'.";
         assert barLogo != null : "fx:id=\"barLogo\" was not injected: check your FXML file 'header.fxml'.";
         assert closeButton != null : "fx:id=\"closeButton\" was not injected: check your FXML file 'header.fxml'.";
+        assert close != null : "fx:id=\"close\" was not injected: check your FXML file 'header.fxml'.";
+        assert buypremiumBtn != null : "fx:id=\"buypremiumBtn\" was not injected: check your FXML file 'header.fxml'.";
+        assert themeToggle != null : "fx:id=\"themeToggle\" was not injected: check your FXML file 'header.fxml'.";
+        assert progressGrid != null : "fx:id=\"progressGrid\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow1ProgressBar != null : "fx:id=\"flow1ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow3ProgressBar != null : "fx:id=\"flow3ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow2ProgressBar != null : "fx:id=\"flow2ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow4ProgressBar != null : "fx:id=\"flow4ProgressBar\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow1ProgressLabel != null : "fx:id=\"flow1ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow2ProgressLabel != null : "fx:id=\"flow2ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow3ProgressLabel != null : "fx:id=\"flow3ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert flow4ProgressLabel != null : "fx:id=\"flow4ProgressLabel\" was not injected: check your FXML file 'header.fxml'.";
+        assert NameInHeader != null : "fx:id=\"NameInHeader\" was not injected: check your FXML file 'header.fxml'.";
+        assert IsManager != null : "fx:id=\"IsManager\" was not injected: check your FXML file 'header.fxml'.";
+        assert myRoles != null : "fx:id=\"myRoles\" was not injected: check your FXML file 'header.fxml'.";
         assert menuHbox != null : "fx:id=\"menuHbox\" was not injected: check your FXML file 'header.fxml'.";
-        assert loaderScreen != null : "fx:id=\"loaderScreen\" was not injected: check your FXML file 'header.fxml'.";
+        assert FlowsDefinition != null : "fx:id=\"FlowsDefinition\" was not injected: check your FXML file 'header.fxml'.";
+        assert ExecutionsHistory != null : "fx:id=\"ExecutionsHistory\" was not injected: check your FXML file 'header.fxml'.";
+        assert flowExecution != null : "fx:id=\"flowExecution\" was not injected: check your FXML file 'header.fxml'.";
+        mainPane.setVisible(false);
+        menuHbox.setVisible(false);
+    }
+    public void setVisibleInformation(){
+        mainPane.setVisible(true);
+        menuHbox.setVisible(true);
     }
     public void setLastPressed(String lastPressed) {
     	if (lastPressed.equals("none")) {
@@ -148,7 +148,10 @@ public class headerController {
             DataManager.getData().getExecutionManager().shutDown();
         Platform.exit();
     }
+    @FXML
+    void setMyRoles(ActionEvent event) {
 
+    }
     @FXML
     void FlowsDefinitionPresent(ActionEvent event) {
         removeLastPressed();
@@ -176,14 +179,8 @@ public class headerController {
         setLastPressed("executionsHistory");
         main.showHistoryExe();
     }
-    public void hideInformation() {
-      //  loaded.setVisible(false);
-        //loadXMLbutton.setVisible(false);
-    }
-    public void setVisibleInformation(){
-        loaded.setVisible(true);
-        loadXMLbutton.setVisible(true);
-    }
+
+
     private void removeLastPressed() {
         switch(lastPressed) {
             case "flowExecution":
@@ -268,15 +265,11 @@ public class headerController {
         setTopBar();
 
         asserts();
-        Events();
-        setCssScreenButtons();
-        setVGrow();
+       // setCssScreenButtons();
     }
 
     private void setMenuButtonGroup() {
         ToggleGroup group = new ToggleGroup();
-
-
     }
 
     private static void setTheme() {
@@ -296,11 +289,6 @@ public class headerController {
             stage.setX(event.getScreenX() - x);
             stage.setY(event.getScreenY() - y);
         });
-    }
-
-    private void setVGrow() {
-        //GridPane.setVgrow(loaded, Priority.ALWAYS);
-        //GridPane.setVgrow(progressGrid, Priority.ALWAYS);
     }
 
     private void setCssScreenButtons() {
@@ -398,7 +386,6 @@ public class headerController {
             scaleTransition.play();
             Statistics.setStyle(buttonStyle);
         });
-
     }
 
     @FXML
@@ -425,53 +412,6 @@ public class headerController {
                 themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: yellow;");
                 themeToggle.getStyleClass().remove("toggle-switch-light");
                 themeToggle.getStyleClass().add("toggle-switch-dark");
-            }
-        }
-    }
-    @FXML
-    void SaveData(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Data");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setInitialFileName("StepperData");
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null) {
-            try {
-                DataManager.saveDataGui(file.getPath());
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error");
-                alert.setContentText("Error saving data");
-                alert.show();
-
-            }
-        }
-    }
-    @FXML
-    void loadData(ActionEvent event) {
-        flowExecution.setDisable(true);
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Data");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            try {
-                DataManager.loadDataGui(file.getPath());
-                DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
-                ActivateMenuButtons();
-                loadXMLbutton.setText("Loaded:");
-                loaded.setText(DataManager.getData().getXmlPath());
-                initializedData();
-                main.getBodyController().setBodyScreen();
-                menuHbox.getChildren().remove(flowExecution);
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error");
-                alert.setContentText("Error loading data");
-                alert.showAndWait();
             }
         }
     }
@@ -559,86 +499,6 @@ public class headerController {
 
     }
 
-    private void Events() {
-        loadXMLbutton.setOnMouseEntered(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadXMLbutton);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")) {
-                buttonStyle = loadXMLbutton.getStyle();
-                loadXMLbutton.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
-            }
-            else {
-                buttonStyle = loadXMLbutton.getStyle();
-                loadXMLbutton.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
-            }
-
-        });
-        loadXMLbutton.setOnMouseExited(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadXMLbutton);
-            scaleTransition.setToX(1);
-            scaleTransition.setToY(1);
-            scaleTransition.play();
-            loadXMLbutton.setStyle(buttonStyle);
-
-        });
-        loadXMLbutton.setOnMousePressed(event -> {
-            rotateTransition = new RotateTransition(Duration.seconds(1), loadXMLbutton);
-            rotateTransition.setByAngle(360); // Rotate by 360 degrees
-            rotateTransition.setCycleCount(800); // Perform the rotation once
-            rotateTransition.setAutoReverse(false); // Disable auto-reverse
-            rotateTransition.play(); // Start the rotation animation
-        });
-//        buypremiumBtn.setStyle("fx-border-color: #ffffff");
-//        buypremiumBtn.setStyle("-fx-border-width: 2px");
-//        buypremiumBtn.setStyle("-fx-text-fill: #ffff00");
-//        buypremiumBtn.setStyle("-fx-background-color:  #24292e");
-
-        loadData.setOnMouseEntered(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")){
-                buttonStyle = loadData.getStyle();
-                loadData.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
-            } else{
-                buttonStyle = loadData.getStyle();
-                loadData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
-            }
-
-        });
-        loadData.setOnMouseExited(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
-            scaleTransition.setToX(1);
-            scaleTransition.setToY(1);
-            scaleTransition.play();
-            loadData.setStyle(buttonStyle);
-
-        });
-        saveData.setOnMouseEntered(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), saveData);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-            if (StyleManager.getCurrentTheme().equals("light")) {
-                buttonStyle = saveData.getStyle();
-                saveData.setStyle("-fx-background-color: rgb(0,30,255);-fx-background-radius: 20;-fx-border-color: #000000; -fx-border-radius: 20;");
-            }else {
-                buttonStyle = saveData.getStyle();
-                saveData.setStyle("-fx-background-color: rgb(139,0,201);-fx-background-radius: 20;-fx-border-color: white; -fx-border-radius: 20;");
-            }
-        });
-        saveData.setOnMouseExited(event -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), saveData);
-            scaleTransition.setToX(1);
-            scaleTransition.setToY(1);
-            scaleTransition.play();
-            saveData.setStyle(buttonStyle);
-        });
-    }
-
     @FXML
     void flowExecutionPresents(ActionEvent event) {
         removeLastPressed();
@@ -650,61 +510,6 @@ public class headerController {
     @FXML
     void StatisticsFunc(ActionEvent event) {
         main.showStats();
-    }
-
-    @FXML
-    void loadDataXML(ActionEvent event) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose File");
-        File selectedFile = fileChooser.showOpenDialog(null);
-        stopRotate();
-        loadXMLbutton.setRotate(0);
-        main.initialize();
-        if (selectedFile != null) {
-
-            try {
-
-                RequestBody body =
-                        new MultipartBody.Builder()
-                                .addFormDataPart("file", selectedFile.getName(), RequestBody.create(selectedFile, MediaType.parse("text/xml")))
-                                .build();
-
-                Request request = new Request.Builder()
-                        .url(LOAD_XML_FILE)
-                        .post(body)
-                        .build();
-
-                Call call = HTTP_CLIENT.newCall(request);
-
-                Response response = call.execute();
-
-                //check if stepper was valid (exception ,etc..) then stepper is valid and we can continue
-
-                System.out.println(response.body().string());
-
-                // System.out.println(response.body().string());
-
-//                // ActivateMenuButtons();
-//                DataManager.getData().setXmlPath(selectedFile.getPath());
-//                //FlowsDefinition.setDisable(false);
-//                //ExecutionsHistory.setDisable(false);//***
-//                //loadXMLbutton.setText("Loaded:");
-//                //loaded.setText(DataManager.getData().getXmlPath());
-//                initializedData();
-//                //stopRotate();
-//                //loadXMLbutton.setRotate(0);
-//                //main.getBodyController().setBodyScreen();
-//                // menuHbox.getChildren().remove(flowExecution);
-
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("An exception occurred");
-
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-            }
-        }
     }
 
     private void stopRotate() {
@@ -722,7 +527,6 @@ public class headerController {
         }
 
     }
-
     public void makeExecutionButtonVisible() {
         menuHbox.getChildren().add(flowExecution);
         flowExecution.setVisible(true);
@@ -778,5 +582,11 @@ public class headerController {
         }
         flowExecution.setDisable(false);
         this.currentFlow = flowDefinition;
+    }
+    public void setNameOnScreen(String userName){
+        NameInHeader.setText(userName);
+        FlowsDefinition.setDisable(false);
+        ExecutionsHistory.setDisable(false);
+        HBoxData.setVisible(true);
     }
 }

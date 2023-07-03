@@ -31,8 +31,6 @@ public class mainController {
    private FlowDefinitionImpl currentFlow;
    @FXML
    public void initialize() {
-      //appBoxStyle = appBox.getStyle();
-      //appBox.setStyle(appBoxStyle + "-fx-background-radius: 20;");
       StyleManager.setTheme(StyleManager.getCurrentTheme());
 
       if (headerComponentController != null && bodyComponentController != null) {
@@ -40,13 +38,12 @@ public class mainController {
          bodyComponentController.setMainController(this);
 
 
-         //initialize a controller that communicate with the engine
          mvcController = new ClientsApp.app.MVC_controller.MVC_controller(this,headerComponentController,bodyComponentController);
          bodyComponentController.setMVCController(mvcController);
          headerComponentController.setMVCController(mvcController);
 
          bodyComponentController.showLogin();
-         headerComponentController.hideInformation();
+        // headerComponentController.hideInformation();
 
       }
 
