@@ -25,8 +25,3 @@ hs_err_pid*
 replay_pid*
 
 out/
-data/
-3rd/
-.idea/
-Stepper-V1.xsd
-stepper-Engine.iml
