@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" build-on-make="true" name="stepper-server">
-    <output-path>$PROJECT_DIR$/out/artifacts/stepper_server</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/stepper-server</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">

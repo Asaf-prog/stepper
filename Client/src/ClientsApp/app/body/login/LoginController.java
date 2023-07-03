@@ -42,7 +42,6 @@ public class LoginController implements bodyControllerForLogin {
     void initialize() {
         assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'loginPage.fxml'.";
         loginButton.setOnAction(this::loginToStepperApplication);
-       //mainControllerClient = body.getMain();
 
     }
     @FXML
@@ -52,8 +51,6 @@ public class LoginController implements bodyControllerForLogin {
             return;
         }
 
-        //noinspection ConstantConditions
-
         String userName = textFiled.getText();
         String finalUrl = HttpUrl
                 .parse(Constants.LOGIN_PAGE)
@@ -61,7 +58,6 @@ public class LoginController implements bodyControllerForLogin {
                 .addQueryParameter("username", userName)
                 .build()
                 .toString();
-     //  updateHttpStatusLine("New request is launched for: " + finalUrl);
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
@@ -80,19 +76,18 @@ public class LoginController implements bodyControllerForLogin {
                     );
                 } else {
                     Platform.runLater(() -> {
-                        //mainControllerClient.updateUserName(userName);
-                        //mainControllerClient.switchTheLoginPage();
                         body.getMain().getHeaderComponentController().setVisibleInformation();
+                        try {
+                            body.switchBodyScreen();
+                            body.setNameOnScreen(userName);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                 }
-                //System.out.println(response.body().string());
             }
         });
     }
-    private void updateHttpStatusLine(String data) {
-        this.mainControllerClient.updateHttpLine(data);
-    }
-
     @Override
     public void show() {
         initialize();

@@ -46,13 +46,9 @@ public class UploadXmlServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            //PrintWriter writer = response.getWriter();
-            //writer.write(json);
-            //writer.flush();
-            try (PrintWriter out = response.getWriter()) {
-                out.print(json);
-                out.flush();
-            }
+            PrintWriter writer = response.getWriter();
+            writer.write(json);
+            writer.flush();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
