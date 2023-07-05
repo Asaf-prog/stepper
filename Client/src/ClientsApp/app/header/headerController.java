@@ -1,5 +1,6 @@
 package ClientsApp.app.header;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.MVC_controller.MVC_controller;
 import ClientsApp.app.management.mainController;
 import ClientsApp.app.management.style.StyleManager;
@@ -18,6 +19,8 @@ import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 import okhttp3.OkHttpClient;
+
+import java.util.List;
 
 public class headerController {
     @FXML
@@ -85,6 +88,7 @@ public class headerController {
     private Label IsManager;
     @FXML
     private Label NameInHeader;
+    protected Client client;
 
 
     ////////////////////////////  functions  ////////////////////////////
@@ -588,5 +592,11 @@ public class headerController {
         FlowsDefinition.setDisable(false);
         ExecutionsHistory.setDisable(false);
         HBoxData.setVisible(true);
+    }
+    public void setClient(String name, boolean theAdminExist , List<FlowDefinitionImpl> flowDefinitions){
+        this.client = new Client(name,flowDefinitions,theAdminExist);
+    }
+    public Client getClient(){
+        return client;
     }
 }

@@ -49,19 +49,16 @@ public class loginServlet extends HttpServlet {
                     //create a new session for the new user
                     request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
 
-                    //redirect the request to the chat room - in order to actually change the URL
+                    //redirect the request  - in order to actually change the URL
                     System.out.println("On login, request URI is: " + request.getRequestURI());
                     response.setStatus(HttpServletResponse.SC_OK);
                 }
             }
-
         }
     }
     else {
         //user is already logged in
         response.setStatus(HttpServletResponse.SC_OK);
-
     }
 }
 }
-//response.getWriter().println("saar ihomo");

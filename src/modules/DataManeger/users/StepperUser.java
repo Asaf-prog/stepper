@@ -39,6 +39,4 @@ public class StepperUser {
         Role = role;
     }
 
-
-
 }

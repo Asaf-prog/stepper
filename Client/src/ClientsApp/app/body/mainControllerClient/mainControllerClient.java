@@ -13,7 +13,7 @@ public class mainControllerClient implements Closeable, HttpStatusUpdate {
 
     @Override
     public void close() throws IOException {
-
+        //close application
     }
 
     @Override

@@ -22,30 +22,29 @@ import util.Constants;
 @MultipartConfig
 public class UploadXmlServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //print to page hello world
-        resp.getWriter().println("Hello World!");
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             InputStream res=request.getPart("file").getInputStream();
             GetDataFromXML.fromStream2Stepper(res);
+
             // send stepper  to client via body of response using json
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             //forward to servlet that send all the needed information to the admin when uploading xml
             //redirect to post method
             response.sendRedirect(Constants.INIT_ADMIN);
+          //  response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             System.out.println("failed to upload xml... :)");
             throw new RuntimeException(e);
         }
-
     }
-
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //print to page hello
+        //maybe we need to do there to redirect to post? or cancel this option
+        resp.getWriter().println("Hello person!");
+    }
     private void printPart(Part part, PrintWriter out) {
         StringBuilder sb = new StringBuilder();
         sb
@@ -57,19 +56,15 @@ public class UploadXmlServlet extends HttpServlet {
         for (String header : part.getHeaderNames()) {
             sb.append(header).append(" : ").append(part.getHeader(header)).append("\n");
         }
-
         out.println(sb.toString());
     }
-
     private String readFromInputStream(InputStream inputStream) {
         return new Scanner(inputStream).useDelimiter("\\Z").next();
     }
-
     private void printFileContent(String content, PrintWriter out) {
         out.println("File content:");
         out.println(content);
     }
-
     private String getFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         String[] elements = contentDisposition.split(";");

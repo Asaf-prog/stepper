@@ -2,7 +2,7 @@
 package app.body.executionsHistory;
 
 import app.body.bodyController;
-import app.body.bodyControllerDefinition;
+import app.body.bodyInterfaces.bodyControllerDefinition;
 import app.body.executionsHistory.DataViewer.DataViewerController;
 import app.body.executionsHistory.continuation.ContinuationPopUp;
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;

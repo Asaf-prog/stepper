@@ -1,5 +1,6 @@
-package app.body;
+package app.body.bodyInterfaces;
 
+import app.body.bodyController;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.step.api.DataDefinitionDeclaration;

@@ -1,5 +1,6 @@
 package ClientsApp.app.body.executeFlow;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
@@ -47,14 +48,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private Button showDetails;
     @FXML
     private Button continuation;
-    private FlowDefinitionImpl currentFlow;
-    private FlowDefinitionImpl lastFlow;
     @FXML
     private Button continuationExe;
     @FXML
     private Button startExecute;
-    private bodyController body;
-    private int sizeOfMandatoryList;
     private Map<String,Object> outputsOfLastFlow;
     @FXML
     private VBox mandatoryList;
@@ -64,6 +61,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private  VBox optionalList;
     @FXML
     private VBox continuationVbox;
+    @FXML
+    private Label flowNameLabel;
+
+    private FlowDefinitionImpl currentFlow;
+
+    private FlowDefinitionImpl lastFlow;
+    private bodyController body;
+    private int sizeOfMandatoryList;
     private List<Pair<String, String>> freeInputsTemp;
     private List<Pair<String, String>>  freeInputsTempForContinuation = new ArrayList<>();
     private List<Pair<String, String>> freeInputsMandatory ;
@@ -72,11 +77,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
     private List<Pair<String, String>> freeInputsMandatoryFromHistory;
     private List<Pair<String, String>> freeInputsOptionalFromHistory;
-    @FXML
-    private Label flowNameLabel;
     private boolean isComeFromHistory =false;
     private String style;
     List<Stage> stages = new ArrayList<>();
+    private Client client;
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -269,7 +273,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return null;
     }
-
     private boolean thisDataSupplyByRecentFlow(String nameToSearch,Continuation continuation){
         if(outputsOfLastFlow.containsKey(nameToSearch) || thisDataSupplyByFreeInputsOfLastFlow(nameToSearch,continuation)||
                 customMappingWithContinuation(nameToSearch,continuation)||existInInitialValue(nameToSearch))
@@ -623,7 +626,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 });
             }
         });
-
     }
     private void enablesDetails(FlowExecution lastFlowExecution) {
         if (lastFlowExecution != null) {
@@ -849,7 +851,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 });
             }
         });
-
     }
     @Override
     public void setBodyControllerContinuation(bodyController body){
@@ -907,7 +908,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public void setFreeInputsMandatoryAndOptional(List<Pair<String, String>> freeInputMandatory,
                                                   List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
     ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
-
         this.freeInputsMandatoryFromHistory = freeInputMandatory;
         this.freeInputsOptionalFromHistory = freeInputOptional;
         this.freeInputsMandatory = freeInputMandatory;
@@ -915,6 +915,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
         this.currentMandatoryFreeInput = freeInputsMandatoryWithDD;
         this.currentOptionalFreeInput = freeInputsOptionalWithDD;
-
+    }
+    @Override
+    public void setClient(Client client){
+        this.client = client;
     }
 }

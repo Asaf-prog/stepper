@@ -13,8 +13,6 @@ import java.util.Scanner;
 
 public class DataManager {
     public static Stepper stepperData;//the one and only steppe!!!
-
-
     public DataManager(Stepper stepperData){
         this.stepperData = stepperData;
     }

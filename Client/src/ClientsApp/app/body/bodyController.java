@@ -1,5 +1,6 @@
 package ClientsApp.app.body;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.MVC_controller.MVC_controller;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
@@ -34,6 +35,12 @@ import java.util.List;
 import java.util.Map;
 
 public class bodyController {
+    @FXML
+    private TextField textField;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private AnchorPane bodyPane;
     private mainController main;
     private MVC_controller controller;
     private FlowDefinitionImpl currentFlow;
@@ -41,12 +48,8 @@ public class bodyController {
 
     private bodyControllerDefinition lastBodyController=null;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
-    @FXML
-    private TextField textField;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private AnchorPane bodyPane;
+
+    private Client client;
     public void setMainController(mainController main) {
         this.main = main;
     }
@@ -92,7 +95,8 @@ public class bodyController {
             bodyControllerDefinition bController = fxmlLoader.getController();
             bController.setFlowsDetails(main.getFlows());
             bController.setBodyController(this);
-            bController.SetCurrentFlow(currentFlow);
+            bController.setClient(getClient());
+          //  bController.SetCurrentFlow(currentFlow);
 
             bController.show();
 
@@ -126,7 +130,7 @@ public class bodyController {
             bodyControllerDefinition bController = fxmlLoader.getController();
             bController.setFlowsDetails(main.getFlows());
             bController.setBodyController(this);
-            bController.SetCurrentFlow(flow);
+            //bController.SetCurrentFlow(flow);
             bController.show();
 
             bodyPane.getChildren().setAll(screen);
@@ -312,7 +316,13 @@ public class bodyController {
     public void setNameOnScreen(String userName){
         main.getHeaderComponentController().setNameOnScreen(userName);
     }
+    public void setClient(Client client){
+        this.client = client;
     }
+    public Client getClient(){
+        return client;
+    }
+}
 
 
 

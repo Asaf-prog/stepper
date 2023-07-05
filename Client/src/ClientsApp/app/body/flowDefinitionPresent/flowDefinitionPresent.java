@@ -1,5 +1,6 @@
 package ClientsApp.app.body.flowDefinitionPresent;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.flowDefinitionPresent.graph.FlowGraphBuilder;
@@ -77,6 +78,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private ToggleGroup flowsToggleGroup;
 
     private List<Stage> stages=new ArrayList<>();
+    private Client client;
 
     @FXML
     void initialize() {
@@ -117,27 +119,28 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             stage.close();
         }
     }
-
     @Override
     public void show(){
         setTheme();
         flowsToggleGroup = new ToggleGroup();
-        for (FlowDefinitionImpl flow :flows){
-            RadioButton button = new RadioButton(flow.getName());
-            button.getStylesheets().add("app/management/style/darkTheme.css");
-            button.getStyleClass().add("flowRadioButton");
-            button.setStyle("-fx-text-fill: #fff608; -fx-font-size: 16; -fx-font-family: 'Arial Rounded MT Bold'");
-            //button.setStyle("-fx-text-fill: #ffd54a");
-            button.getStylesheets().add("app/management/style/darkTheme.css");
-            button.getStyleClass().add("radioButton");
+        if (client.getIsExist()) {
+           flows = client.getFlows();
+            for (FlowDefinitionImpl flow : flows) {
+                RadioButton button = new RadioButton(flow.getName());
+                button.getStylesheets().add("app/management/style/darkTheme.css");
+                button.getStyleClass().add("flowRadioButton");
+                button.setStyle("-fx-text-fill: #fff608; -fx-font-size: 16; -fx-font-family: 'Arial Rounded MT Bold'");
+                //button.setStyle("-fx-text-fill: #ffd54a");
+                button.getStylesheets().add("app/management/style/darkTheme.css");
+                button.getStyleClass().add("radioButton");
 
-           // button.getStylesheets().add("app/management/style/darkTheme.css");
-            button.setOnAction(event -> handleButtonAction(flow));
-            button.setToggleGroup(flowsToggleGroup);
-            firstVbox.getChildren().add(button);
+                // button.getStylesheets().add("app/management/style/darkTheme.css");
+                button.setOnAction(event -> handleButtonAction(flow));
+                button.setToggleGroup(flowsToggleGroup);
+                firstVbox.getChildren().add(button);
+            }
+            firstVbox.setSpacing(10);
         }
-        firstVbox.setSpacing(10);
-
     }
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -275,8 +278,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                 };
             }
         });
-
-
         firstLabelOnScreen.setText("The Number of Free Inputs is: "+flow.getFlowFreeInputs().size());
         TreeItem<String> rootItem = new TreeItem<>("choose Free Input to display its information");
         for(Pair<String, DataDefinitionDeclaration> data :flow.getFlowFreeInputs()){
@@ -356,5 +357,9 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     @Override
     public void SetCurrentFlow(FlowDefinitionImpl flow){
         currentFlow = flow;
+    }
+    @Override
+    public void setClient(Client client){
+        this.client = client;
     }
 }

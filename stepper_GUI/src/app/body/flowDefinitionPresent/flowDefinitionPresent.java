@@ -1,11 +1,9 @@
 package app.body.flowDefinitionPresent;
 
-import app.MVC_controller.MVC_controller;
 import app.body.bodyController;
-import app.body.bodyControllerDefinition;
+import app.body.bodyInterfaces.bodyControllerDefinition;
 import app.body.flowDefinitionPresent.graph.FlowGraphBuilder;
 import app.management.style.StyleManager;
-import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -23,7 +21,6 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.DataDefinitionDeclaration;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;

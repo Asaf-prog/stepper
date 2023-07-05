@@ -33,6 +33,7 @@ public class InitAdminServlet extends HttpServlet {
         Stepper stepper = DataManager.getData();
         List<FlowDefinitionImpl> flows = stepper.getFlows();
         //copy into string list of flows names
+        //need to convert to Gson and then send in to the client all the list of the flow(=> need to present the step in the flows)
         List<String> flowsNames =new ArrayList<>();
         for (FlowDefinitionImpl flow : flows) {
             flowsNames.add(flow.getName());
@@ -44,8 +45,7 @@ public class InitAdminServlet extends HttpServlet {
         try (PrintWriter out = resp.getWriter()) {//returning JSON object telling the client what version of chat is returned
             out.print(flowsJson);
             out.flush();
+            resp.setStatus(HttpServletResponse.SC_OK);
         }
     }
-
-
 }
