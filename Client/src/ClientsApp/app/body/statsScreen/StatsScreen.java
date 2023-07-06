@@ -1,5 +1,6 @@
 package ClientsApp.app.body.statsScreen;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.management.style.StyleManager;
@@ -364,6 +365,11 @@ public class StatsScreen implements bodyControllerDefinition {
 
     @Override
     public void SetCurrentFlow(FlowDefinitionImpl flow) {
+
+    }
+
+    @Override
+    public void setClient(Client client) {
 
     }
 }

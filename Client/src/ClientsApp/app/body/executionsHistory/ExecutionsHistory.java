@@ -1,6 +1,7 @@
 
 package ClientsApp.app.body.executionsHistory;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.executionsHistory.DataViewer.DataViewerController;
@@ -613,6 +614,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
     @Override
     public void SetCurrentFlow(FlowDefinitionImpl flow) {
+
+    }
+
+    @Override
+    public void setClient(Client client) {
 
     }
 }
