@@ -11,5 +11,6 @@
     <orderEntry type="library" exported="" name="okHttp" level="project" />
     <orderEntry type="module" module-name="stepper-Engine" />
     <orderEntry type="module" module-name="stepper_GUI" />
+    <orderEntry type="module" module-name="stepper-Server" />
   </component>
 </module>

@@ -38,7 +38,6 @@ public class FlowLevelAlias implements HasSource<String> , Serializable {
     public String toString() {
         return "Aliasing for step: " + step + " with data called" + sourceDataName + " AKA " + alias;
     }
-
     public Class<?> getAliasType(StepUsageDeclaration step) {
         for(DataDefinitionDeclaration dd :step.getStepDefinition().inputs()) {
             if(dd.getFinalName().equals(sourceDataName))

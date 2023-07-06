@@ -597,7 +597,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 inputValue.setPrefHeight(28);
                 this.inputsVbox4Value.getChildren().add(inputValue);
                 this.inputsVbox.getChildren().add(newInput);
-
             }
         }
     }

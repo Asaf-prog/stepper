@@ -1,5 +1,6 @@
 package app.header;
 
+import Servlets.DTO.DTO;
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
 import app.management.style.StyleManager;
@@ -731,6 +732,13 @@ public class headerController {
 
                             //todo check if stepper valid !!!
                         } else {
+
+                            DTO data = new Gson().fromJson(response.body().string(),DTO.class);
+                            for (FlowDefinitionImpl flow : data.getFlows()){
+                                System.out.println(flow.getName());
+                            }
+
+
                             Platform.runLater(() -> {
                                 try {
                                     ActivateMenuButtons();

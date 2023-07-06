@@ -1,5 +1,6 @@
 package Servlets.AdminServlets;
 
+import Servlets.DTO.DTO;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -34,12 +35,15 @@ public class InitAdminServlet extends HttpServlet {
         List<FlowDefinitionImpl> flows = stepper.getFlows();
         //copy into string list of flows names
         //need to convert to Gson and then send in to the client all the list of the flow(=> need to present the step in the flows)
-        List<String> flowsNames =new ArrayList<>();
-        for (FlowDefinitionImpl flow : flows) {
-            flowsNames.add(flow.getName());
-        }
+
+//        List<String> flowsNames =new ArrayList<>();
+//        for (FlowDefinitionImpl flow : flows) {
+//            flowsNames.add(flow.getName());
+//        }
+        DTO data = new DTO(flows);
         Gson gson = new Gson();
-        String flowsJson = gson.toJson(flowsNames);
+
+        String flowsJson = gson.toJson(data.grtFlowsName());
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         try (PrintWriter out = resp.getWriter()) {//returning JSON object telling the client what version of chat is returned
