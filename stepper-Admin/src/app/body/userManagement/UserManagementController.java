@@ -1,17 +1,26 @@
 package app.body.userManagement;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import app.body.bodyController;
 import app.body.bodyInterfaces.bodyControllerDefinition;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import modules.stepper.Stepper;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import util.Constants;
+import util.http.HttpClientUtil;
 
 public class UserManagementController implements bodyControllerDefinition {
 
@@ -47,9 +56,19 @@ public class UserManagementController implements bodyControllerDefinition {
 
     @FXML
     private VBox infoVbox13;
+    @FXML
+    private ListView<RadioButton> usersList;
+    private Gson gson=new Gson();
 
     @FXML
     void initialize() {
+        asserts();
+        getLastUpdates();
+
+
+    }
+
+    private void asserts() {
         assert userInformationPane != null : "fx:id=\"userInformationPane\" was not injected: check your FXML file 'userManagement.fxml'.";
         assert assignedRolesVbox != null : "fx:id=\"assignedRolesVbox\" was not injected: check your FXML file 'userManagement.fxml'.";
         assert assignableRolesVbox != null : "fx:id=\"assignableRolesVbox\" was not injected: check your FXML file 'userManagement.fxml'.";
@@ -59,7 +78,121 @@ public class UserManagementController implements bodyControllerDefinition {
         assert infoVbox11 != null : "fx:id=\"infoVbox11\" was not injected: check your FXML file 'userManagement.fxml'.";
         assert infoVbox12 != null : "fx:id=\"infoVbox12\" was not injected: check your FXML file 'userManagement.fxml'.";
         assert infoVbox13 != null : "fx:id=\"infoVbox13\" was not injected: check your FXML file 'userManagement.fxml'.";
+        assert usersList != null : "fx:id=\"usersList\" was not injected: check your FXML file 'userManagement.fxml'.";
+    }
 
+    private void getLastUpdates() {
+        //go to init admin servlet
+        Request request = new Request.Builder()
+                .url(Constants.INIT_ADMIN)
+                .build();
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        System.out.println("Something went wrong: " + e.getMessage())
+
+                );
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {//because of redirect
+
+                    Platform.runLater(() -> {
+                        //present error message
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error44");
+                        alert.setContentText("Something went wrong, please try again");
+                        alert.showAndWait();
+                    });
+
+                    //todo check if stepper valid !!!
+                } else {
+                    Platform.runLater(() -> {
+                                try {
+                                    handleResp(response);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+                }
+            }
+        });
+    }
+
+    private void handleResp(@NotNull Response response) throws IOException {
+        ResponseBody responseBody = response.body();
+        TypeToken<List<String>> listTypeToken = new TypeToken<List<String>>() {};
+        String json = responseBody.string();
+        //get only the two arrays between the [ ]
+        String flowsString = json.substring(json.indexOf('['), json.indexOf(']') + 1);
+        //remove from json the flows string
+        json = json.replace(flowsString, "");
+        String userString = json.substring(json.indexOf('['), json.indexOf(']') + 1);
+
+        //get users and flows lists from the response
+        List<String> flows = gson.fromJson(flowsString, listTypeToken.getType());
+        List<String> users = gson.fromJson(userString, listTypeToken.getType());
+        updateUserList(users);
+    }//todo all need to be replaced with StepperUser
+
+    private void updateUserList(List<String> users) {
+        ToggleGroup group = new ToggleGroup();
+        for (String user : users) {
+            RadioButton button = new RadioButton(user);
+            button.setToggleGroup(group);
+            button.setOnAction(event -> {
+                updateAccordingToUser(button.getText());
+            });
+            usersList.getItems().add(button);
+        }
+    }
+
+    private void updateAccordingToUser(String name) {
+        //get stepper user by name from servlet and update the view of the roles
+
+        Request request = new Request.Builder()
+                .url(Constants.GET_USER_BY_NAME + name)
+                .build();
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        System.out.println("Something went wrong: " + e.getMessage())
+
+                );
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {//because of redirect
+
+                    Platform.runLater(() -> {
+                        //present error message
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error44");
+                        alert.setContentText("Something went wrong, please try again");
+                        alert.showAndWait();
+                    });
+
+                    //todo check if stepper valid !!!
+                } else {
+                    Platform.runLater(() -> {
+                                handleUserResp(response);
+                            }
+                    );
+                }
+            }
+        });
+        }
+
+    private void handleUserResp(Response response) {
+        //updateLists(response);
+        //here he is getting the stepper user from the servlet and updating the view!!!
     }
 
     @Override
@@ -69,7 +202,7 @@ public class UserManagementController implements bodyControllerDefinition {
 
     @Override
     public void show() {
-        initialize();
+//        initialize();
     }
 
     @Override

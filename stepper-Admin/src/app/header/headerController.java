@@ -8,8 +8,6 @@ import com.google.gson.reflect.TypeToken;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -22,13 +20,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import modules.DataManeger.DataManager;
-import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.stepper.FlowDefinitionException;
 import modules.stepper.Stepper;
-import modules.stepper.StepperDefinitionException;
 import okhttp3.*;
-import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 import util.Constants;
 import util.http.HttpClientUtil;
@@ -36,9 +30,6 @@ import util.http.HttpClientUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.util.Base64;
 import java.util.List;
 
 public class headerController {
@@ -464,7 +455,7 @@ public class headerController {
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setHeaderText("Error");
+                alert.setHeaderText("Error2");
                 alert.setContentText("Error saving data");
                 alert.show();
 
@@ -493,14 +484,14 @@ public class headerController {
                 else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
-                    alert.setHeaderText("Error");
+                    alert.setHeaderText("Error1");
                     alert.setContentText("Error loading data");
                     alert.showAndWait();
                 }
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setHeaderText("Error");
+                alert.setHeaderText("Error4");
                 alert.setContentText("Error loading data");
                 alert.showAndWait();
             }
@@ -710,47 +701,38 @@ public class headerController {
                 HttpClientUtil.runAsync(request, new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        Platform.runLater(() ->
-                                System.out.println("Something went wrong: " + e.getMessage())
-
-                        );
+                        Platform.runLater(() -> System.out.println("Something went wrong: " + e.getMessage()));
                     }
-
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         if (response.code() != 200) {//because of redirect
-
                             Platform.runLater(() -> {
                                 //present error message
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
-                                alert.setHeaderText("Error");
+                                alert.setHeaderText("Error3");
                                 alert.setContentText("Something went wrong, please try again");
                                 alert.showAndWait();
-                            });
-
-                            //todo check if stepper valid !!!
+                            });//todo check if stepper valid !!!
                         } else {
                             Platform.runLater(() -> {
                                 try {
                                     ActivateMenuButtons();
-                                    String responseBody = response.body().string();
-                                    Type listType = new TypeToken<List<FlowDefinitionImpl>>() {}.getType();
-                                    List<String> flows = gson.fromJson(responseBody, listType);
-                                    System.out.println(flows);
-                                    DataManager.getData().setXmlPath(selectedFile.getPath());
+                                    //List<String> users = gson.fromJson(responseBody.charStream(), listTypeToken.getType());
+                                   // DataManager.getData().setXmlPath(selectedFile.getPath());todo need to set from the server
                                     roleManagement.setDisable(false);
                                     ExecutionsHistory.setDisable(false);//***
                                     loadXMLbutton.setText("Loaded:");
-                                    loaded.setText(DataManager.getData().getXmlPath());
+                                  //  loaded.setText(DataManager.getData().getXmlPath());
                                     initializedData();
                                     stopRotate();
                                     loadXMLbutton.setRotate(0);
                                     main.getBodyController().setBodyScreen();
-                                    } catch (IOException e) {
+                                    updateAdminApp(main,response);
+
+                                } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
-                                setLists();
                             });
                         }
                     }
@@ -758,17 +740,21 @@ public class headerController {
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setHeaderText("An exception occurred");
+                alert.setHeaderText("An exception occurred4");
                 alert.setContentText(e.getMessage());
                 alert.showAndWait();
             }
         }
     }
 
-    private void setLists() {
-        //update user list
-        main.getBodyController().setUserList();
+    private static void updateAdminApp(mainController main, @NotNull Response response) throws IOException {
+
+        //update using main and body controllers
+        main.getBodyController().initAdminApp();
+
+
     }
+
 
     private void stopRotate() {
         rotateTransition.stop();
@@ -789,12 +775,9 @@ public class headerController {
     public void setDisableOnExecutionsHistory() {
         ExecutionsHistory.setDisable(false);
     }
-
     private void initializedData() {
-        Stepper stepperData = DataManager.getData();
-        main.setFlows(stepperData.getFlows());
+        main.setFlows(DataManager.getData().getFlows());
     }
-
     public ProgressBar getNextProgressBar(int free) {
         switch (free) {
             case 1:

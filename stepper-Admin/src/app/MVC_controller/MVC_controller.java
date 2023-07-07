@@ -66,6 +66,13 @@ public class MVC_controller {
        // header.addProgress(progressBar,label,nextIndex);
     }
 
+    private void initAdmin(){
+
+
+
+
+    }
+
 
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;

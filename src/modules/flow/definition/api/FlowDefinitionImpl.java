@@ -16,7 +16,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     protected final String name;
     protected final String description;
     protected List<String> flowOutputs;//list of what the user ask to get after the flow!
-    List<String> flowOfAllStepsOutputs;//list of all the outputs of all the steps in the flow
+    protected List<String> flowOfAllStepsOutputs;//list of all the outputs of all the steps in the flow
 
     protected final List<StepUsageDeclaration> steps;
     protected List<CustomMapping> customMappings;
@@ -183,7 +183,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
                     counter++;
             }
         }
-
         if (counter == continuations.size())
             return true;
         else

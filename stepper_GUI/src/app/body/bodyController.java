@@ -20,6 +20,7 @@ public class bodyController {
     private MVC_controller controller;
     private FlowDefinitionImpl currentFlow;
 
+
     private bodyControllerDefinition lastBodyController=null;
 
     @FXML

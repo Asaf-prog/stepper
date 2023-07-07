@@ -292,6 +292,6 @@ public class Stepper implements Serializable {
 
     public List<String> getUsers() {
 //todo change to real users
-        return Arrays.asList("user1", "user2", "user3");
+        return Arrays.asList("Asaf ha homo ", "Asaf ha mozez", "Saar  ha gever");
     }
 }

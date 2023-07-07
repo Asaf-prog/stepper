@@ -2,8 +2,6 @@ package app.body;
 
 import app.MVC_controller.MVC_controller;
 import app.body.bodyInterfaces.bodyControllerDefinition;
-import app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
-import app.body.bodyInterfaces.bodyControllerForContinuation;
 import app.body.mainControllerClient.mainControllerClient;
 import app.management.mainController;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,17 +9,13 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.step.api.DataDefinitionDeclaration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 public class bodyController {
     private mainController main;
@@ -113,7 +107,11 @@ public class bodyController {
         loadScreen(fxmlLoader, url);
     }
 
-    public void setUserList() {
+
+    public void initAdminApp() {
+        //set body to user management
+        showUserManagement();
+
 
     }
 }
