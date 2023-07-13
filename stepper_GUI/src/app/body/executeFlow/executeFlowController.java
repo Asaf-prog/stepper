@@ -1,8 +1,8 @@
 package app.body.executeFlow;
 import app.body.bodyController;
-import app.body.bodyControllerDefinition;
-import app.body.bodyControllerExecuteFromHistory;
-import app.body.bodyControllerForContinuation;
+import app.body.bodyInterfaces.bodyControllerDefinition;
+import app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
+import app.body.bodyInterfaces.bodyControllerForContinuation;
 import app.body.executeFlow.executionDetails.ExecutionsDetails;
 import app.management.style.StyleManager;
 import javafx.animation.PauseTransition;
@@ -45,15 +45,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private Button showDetails;
     @FXML
     private Button continuation;
-    private FlowDefinitionImpl currentFlow;
-    private FlowDefinitionImpl lastFlow;
     @FXML
     private Button continuationExe;
     @FXML
     private Button startExecute;
-    private bodyController body;
-    private int sizeOfMandatoryList;
-    private Map<String,Object> outputsOfLastFlow;
     @FXML
     private VBox mandatoryList;
     @FXML
@@ -62,6 +57,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private  VBox optionalList;
     @FXML
     private VBox continuationVbox;
+    @FXML
+    private Label flowNameLabel;
+
+    private FlowDefinitionImpl currentFlow;
+    private FlowDefinitionImpl lastFlow;
+    private bodyController body;
+    private int sizeOfMandatoryList;
+    private Map<String,Object> outputsOfLastFlow;
     private List<Pair<String, String>> freeInputsTemp;
     private List<Pair<String, String>>  freeInputsTempForContinuation = new ArrayList<>();
     private List<Pair<String, String>> freeInputsMandatory ;
@@ -70,8 +73,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
     private List<Pair<String, String>> freeInputsMandatoryFromHistory;
     private List<Pair<String, String>> freeInputsOptionalFromHistory;
-    @FXML
-    private Label flowNameLabel;
     private boolean isComeFromHistory =false;
     private String style;
     List<Stage> stages = new ArrayList<>();
@@ -133,7 +134,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         optionalHandler(optionalInputs);
         setSizeOfMandatoryList(mandatoryInputs.size());
         flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
-
     }
     @Override
     public void showForContinuation() {
@@ -629,10 +629,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 showDetails.setDisable(false);
                 showDetails.setVisible(true);
             }
-
         }
-
-
     }
     private void setTheNewInputsThatTheUserSupply(){
         freeInputsMandatory = new ArrayList<>();
@@ -783,7 +780,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         return true;
     }
-
     private static void setApropTooltip(TextField textField, String msg) {
         Tooltip tooltip = new Tooltip(msg);
         tooltip.setStyle("-fx-background-color: #ff0000; -fx-text-fill: #000000;");
@@ -795,7 +791,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         delay.play();
         textField.clear();
     }
-
     private int checkHowMandatoryInputsINFreeInputsTemp(){
         int counter = 0;
         for (Pair<String, String> data: freeInputsTemp){
@@ -847,7 +842,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 });
             }
         });
-
     }
     @Override
     public void setBodyControllerContinuation(bodyController body){
@@ -913,6 +907,5 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
         this.currentMandatoryFreeInput = freeInputsMandatoryWithDD;
         this.currentOptionalFreeInput = freeInputsOptionalWithDD;
-
     }
 }

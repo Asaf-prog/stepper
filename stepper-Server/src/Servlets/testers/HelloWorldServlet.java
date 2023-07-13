@@ -12,13 +12,12 @@ import java.io.IOException;
 public class HelloWorldServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        resp.getWriter().println( "HELLOOO!");
+        resp.getWriter().println( "HELLOO!");
         //get context from servlet context
 
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("doPost");
+        System.out.println("doPostR");
     }
 }

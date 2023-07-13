@@ -38,7 +38,6 @@ public class ExecutionsDetails {
     private VBox outputsVbox4Value;
     @FXML
     private Label flowOutputsLabel;
-
     @FXML
     private VBox outputsVbox;
     @FXML
@@ -56,7 +55,6 @@ public class ExecutionsDetails {
     private Label exeTime;
     @FXML
     private Label statusLabel;
-
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private FlowExecution theFlow=null;

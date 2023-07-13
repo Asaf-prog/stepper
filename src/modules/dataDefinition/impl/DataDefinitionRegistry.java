@@ -8,7 +8,7 @@ import modules.dataDefinition.impl.relation.RelationDataDefinition;
 import modules.dataDefinition.impl.string.StringDataDefinition;
 import modules.dataDefinition.impl.file.FileDataDefinition;
 import modules.dataDefinition.impl.mapping.MappingDataDefinition;
-import modules.dataDefinition.impl.json.JsonDataDifinition;
+import modules.dataDefinition.impl.json.JsonDataDefinition;
 import modules.dataDefinition.impl.list.ListDataDefinition;
 import modules.dataDefinition.impl.number.NumberDataDefinition;
 
@@ -20,7 +20,8 @@ public enum DataDefinitionRegistry implements DataDefinition {
     MAPPING(new MappingDataDefinition()),
     FILE(new FileDataDefinition()),
     LIST(new ListDataDefinition()),
-    ENUMERATION(new EnumeratorDataDefinition())
+    ENUMERATION(new EnumeratorDataDefinition()),
+    JASON(new JsonDataDefinition())
 
     ;
 

@@ -1,5 +1,6 @@
 package ClientsApp.app.body.bodyInterfaces;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyController;
 import modules.flow.definition.api.FlowDefinitionImpl;
 
@@ -11,4 +12,5 @@ public interface bodyControllerDefinition {
     void setBodyController(bodyController body);
     void setFlowsDetails(List<FlowDefinitionImpl> list);
     void SetCurrentFlow(FlowDefinitionImpl flow);
+    void setClient(Client client);
 }

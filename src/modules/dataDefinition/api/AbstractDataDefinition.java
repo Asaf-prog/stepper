@@ -27,6 +27,7 @@ public abstract class AbstractDataDefinition implements DataDefinition , Seriali
     public Class<?> getType() {
         return type;
     }
+
     @Override
     public String getTypeName() {
         return type.getSimpleName();

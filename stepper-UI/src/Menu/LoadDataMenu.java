@@ -42,7 +42,7 @@ public class LoadDataMenu {
     }
 
     private static void getXmlDataFromUser() {
-        System.out.println("Please enter the path to the xml file");
+        System.out.println("Please enter the path to the xml file:");
         Scanner input = new Scanner(System.in);
         while (true) {
             String path = input.nextLine();

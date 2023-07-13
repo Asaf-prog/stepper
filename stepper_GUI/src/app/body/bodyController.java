@@ -1,6 +1,9 @@
 package app.body;
 
 import app.MVC_controller.MVC_controller;
+import app.body.bodyInterfaces.bodyControllerDefinition;
+import app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
+import app.body.bodyInterfaces.bodyControllerForContinuation;
 import app.management.mainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
