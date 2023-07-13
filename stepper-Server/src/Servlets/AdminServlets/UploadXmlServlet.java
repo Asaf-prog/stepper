@@ -36,7 +36,7 @@ public class UploadXmlServlet extends HttpServlet {
             // send stepper  to client via body of response using json
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            //forwards the request to the initadmin servlet
+            //forwards the request to the initAdmin servlet
             //request.getRequestDispatcher("/initAdmin").forward(request, response);
         } catch (Exception e) {
             System.out.println("failed to upload xml... :)");

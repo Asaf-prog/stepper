@@ -18,7 +18,7 @@ public interface FlowDefinition {
 
     List<String> getFlowFormalOutputs();
 
-    void validateFlowStructure() throws FlowDefinitionException;
+    void validateFlowStructure(List<FlowDefinitionImpl> flows) throws FlowDefinitionException;//added due to the need to validate the flow continuation
 
     List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs();
 

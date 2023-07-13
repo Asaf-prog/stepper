@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/stepper-Admin/stepper-Admin.iml" filepath="$PROJECT_DIR$/stepper-Admin/stepper-Admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/Client/stepper-Client.iml" filepath="$PROJECT_DIR$/Client/stepper-Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stepper-DTO/stepper-DTO.iml" filepath="$PROJECT_DIR$/stepper-DTO/stepper-DTO.iml" />
       <module fileurl="file://$PROJECT_DIR$/stepper-Engine.iml" filepath="$PROJECT_DIR$/stepper-Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/stepper-Server/stepper-Server.iml" filepath="$PROJECT_DIR$/stepper-Server/stepper-Server.iml" />
       <module fileurl="file://$PROJECT_DIR$/stepper-UI/stepper-UI.iml" filepath="$PROJECT_DIR$/stepper-UI/stepper-UI.iml" />

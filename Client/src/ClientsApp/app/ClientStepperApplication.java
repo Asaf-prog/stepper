@@ -24,7 +24,7 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StepperApplication extends Application {
+public class ClientStepperApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {

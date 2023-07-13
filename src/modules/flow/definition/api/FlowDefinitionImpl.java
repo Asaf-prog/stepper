@@ -30,7 +30,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
     //EX2
     protected List<Continuation> continuations;
-    private List<FlowDefinitionImpl> flows;
 
     protected List<InitialInputValues> InitialInputValuesData;
     public FlowDefinitionImpl(String name, String description) {
@@ -152,7 +151,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void addFlowOutput(String outputName) {flowOutputs.add(outputName);}
 
     @Override
-    public void validateFlowStructure() throws FlowDefinitionException {
+    public void validateFlowStructure(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
             checkIfTwoInputsOfTheSameAlias();
             uniqueOutputForStep();//4.1
             checkIfMandatoryInputsAreNotUserFriendly();//4.2
@@ -162,23 +161,23 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             checkIfTheFormalOutputsExist();//4.5
             checkIfAllConnectionsAreValid();
             //new validation for task two
-            checkIfCarriedOutContinuationToFlowThatNotExist();
-            checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition();
+            checkIfCarriedOutContinuationToFlowThatNotExist(flows);
+            checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(flows);
             checkIfTheInitialValueExistInFlow();// check if the input-name exist in the list of the inputs of this flows
 
     }
-    private void checkIfCarriedOutContinuationToFlowThatNotExist() throws FlowDefinitionException {
-        if (!checkContinuationCorrect()){
-            String name = getNameOFTheFlowThatNotExist();
+    private void checkIfCarriedOutContinuationToFlowThatNotExist(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
+        if (!checkContinuationCorrect(flows)){
+            String name = getNameOFTheFlowThatNotExist(flows);
             String message = "The Flow "+ name +" is not exist.";
             throw new FlowDefinitionException(FlowDefinitionExceptionItems.THIS_FLOW_FOR_CONTINUATION_DOES_NOT_EXIST,message);
         }
     }
-    private boolean checkContinuationCorrect(){
+    private boolean checkContinuationCorrect(List<FlowDefinitionImpl> flows){
         int counter = 0;
 
         for (Continuation continuation:continuations) {
-            for (FlowDefinitionImpl flowDefinition : this.flows) {
+            for (FlowDefinitionImpl flowDefinition : flows) {
                 if (continuation.getTargetFlow().equals(flowDefinition.getName()))
                     counter++;
             }
@@ -188,12 +187,13 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         else
             return false;
     }
-    private String getNameOFTheFlowThatNotExist(){
+    private String getNameOFTheFlowThatNotExist(List<FlowDefinitionImpl> flows){
+
         List<String> tempName = new ArrayList<>();
         List<String> tempContinuation = new ArrayList<>();
         for (Continuation continuation:continuations) {
             tempContinuation.add(continuation.getTargetFlow());
-            for (FlowDefinitionImpl flowDefinition : this.flows) {
+            for (FlowDefinitionImpl flowDefinition : flows) {
                 if (continuation.getTargetFlow().equals(flowDefinition.getName()))
                     tempName.add(continuation.getTargetFlow());
             }
@@ -204,19 +204,21 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         }
         return null;
     }
-    private void checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition() throws FlowDefinitionException {
+    private void checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
         for (Continuation continuation:continuations) {
             for (ContinuationMapping mapping: continuation.getMappingList()){
-                if (!sameType(mapping.getSourceData(),mapping.getTargetData(),continuation.getTargetFlow())){
+                if (!sameType(mapping.getSourceData()
+                        ,mapping.getTargetData(),continuation.getTargetFlow(),flows
+                )){
                     String message = "The Data Definition "+ mapping.getSourceData() + " and "+ mapping.getTargetData()+ " are not in the same type";
                     throw new FlowDefinitionException(FlowDefinitionExceptionItems.THE_TARGET_AND_THE_SOURCE_ARE_NOT_IN_THE_SAME_TYPE,message);
                 }
             }
         }
     }
-    private boolean sameType(String sourceDD, String targetDD,String targetFlow) throws FlowDefinitionException {
+    private boolean sameType(String sourceDD, String targetDD, String targetFlow, List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
 
-        FlowDefinitionImpl targetFlowImp = getFlowByName(targetFlow);
+        FlowDefinitionImpl targetFlowImp = getFlowByName(targetFlow,flows);
         DataDefinitionDeclaration source =returnTheDDByNameOfOutputsDD(sourceDD);
         DataDefinitionDeclaration target= returnTheDDByNameOfInputsDD(targetDD,targetFlowImp);
         // need to check if one of them is null
@@ -290,7 +292,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         }
         return null;
     }
-    private FlowDefinitionImpl getFlowByName (String name){
+    private FlowDefinitionImpl getFlowByName (String name, List<FlowDefinitionImpl> flows){
         for (FlowDefinitionImpl flowDefinition: flows){
             if (flowDefinition.getName().equals(name))
                 return flowDefinition;
@@ -695,7 +697,5 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
     public void setOutputs(List<String> asList) {
         flowOutputs = asList;
     }
-    public void SetAllFlows(List<FlowDefinitionImpl> flows){
-        this.flows = flows;
-    }
+
 }

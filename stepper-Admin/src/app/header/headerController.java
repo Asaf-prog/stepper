@@ -23,6 +23,7 @@ import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 import okhttp3.*;
+import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 import util.Constants;
 import util.http.HttpClientUtil;
@@ -718,7 +719,8 @@ public class headerController {
                             Platform.runLater(() -> {
                                 try {
                                     ActivateMenuButtons();
-                                    //List<String> users = gson.fromJson(responseBody.charStream(), listTypeToken.getType());
+                                    List<FlowDefinitionImpl> flows2 = gson.fromJson(response.body().charStream(), new TypeToken<List<FlowDefinitionImpl>>() {
+                                    }.getType());
                                    // DataManager.getData().setXmlPath(selectedFile.getPath());todo need to set from the server
                                     roleManagement.setDisable(false);
                                     ExecutionsHistory.setDisable(false);//***
@@ -728,7 +730,7 @@ public class headerController {
                                     stopRotate();
                                     loadXMLbutton.setRotate(0);
                                     main.getBodyController().setBodyScreen();
-                                    updateAdminApp(main,response);
+                                    updateAdminApp(main);
 
                                 } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -747,10 +749,10 @@ public class headerController {
         }
     }
 
-    private static void updateAdminApp(mainController main, @NotNull Response response) throws IOException {
-
+    private static void updateAdminApp(mainController main) throws IOException {
         //update using main and body controllers
         main.getBodyController().initAdminApp();
+
 
 
     }

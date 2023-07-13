@@ -193,8 +193,8 @@ public class Stepper implements Serializable {
         //Stepper Validate
         validateFlowsUniqueName();
         for (FlowDefinitionImpl flow : flows) {
-            flow.SetAllFlows(flows);
-            flow.validateFlowStructure();
+            //flow.SetAllFlows(flows);
+            flow.validateFlowStructure(flows);// todo maybe to move 2 func to stepper in order to avoid
         }
     }
 

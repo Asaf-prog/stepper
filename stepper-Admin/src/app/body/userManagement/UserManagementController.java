@@ -125,18 +125,17 @@ public class UserManagementController implements bodyControllerDefinition {
 
     private void handleResp(@NotNull Response response) throws IOException {
         ResponseBody responseBody = response.body();
-        TypeToken<List<String>> listTypeToken = new TypeToken<List<String>>() {};
-        String json = responseBody.string();
-        //get only the two arrays between the [ ]
-        String flowsString = json.substring(json.indexOf('['), json.indexOf(']') + 1);
-        //remove from json the flows string
-        json = json.replace(flowsString, "");
-        String userString = json.substring(json.indexOf('['), json.indexOf(']') + 1);
+        if (responseBody != null) {
+            String body = responseBody.string();
+            List<FlowDefinitionImpl> flows = gson.fromJson(body, new TypeToken<List<FlowDefinitionImpl>>() {
+            }.getType());
+            for (FlowDefinitionImpl flow : flows) {
+                System.out.println(flow.getName());
+                }
+        }
 
-        //get users and flows lists from the response
-        List<String> flows = gson.fromJson(flowsString, listTypeToken.getType());
-        List<String> users = gson.fromJson(userString, listTypeToken.getType());
-        updateUserList(users);
+
+
     }//todo all need to be replaced with StepperUser
 
     private void updateUserList(List<String> users) {
@@ -182,7 +181,11 @@ public class UserManagementController implements bodyControllerDefinition {
                     //todo check if stepper valid !!!
                 } else {
                     Platform.runLater(() -> {
-                                handleUserResp(response);
+                                try {
+                                    handleUserResp(response);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                     );
                 }
@@ -190,9 +193,20 @@ public class UserManagementController implements bodyControllerDefinition {
         });
         }
 
-    private void handleUserResp(Response response) {
+    private void handleUserResp(Response response) throws IOException {
         //updateLists(response);
         //here he is getting the stepper user from the servlet and updating the view!!!
+        ResponseBody responseBody = response.body();
+        if (responseBody != null) {
+            String body = responseBody.string();
+            List<FlowDefinitionImpl> flows = gson.fromJson(body, new TypeToken<List<FlowDefinitionImpl>>() {
+            }.getType());
+            for (FlowDefinitionImpl flow : flows) {
+                System.out.println(flow.getName());
+            }
+
+
+        }
     }
 
     @Override

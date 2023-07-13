@@ -25,7 +25,7 @@ import util.Constants;
 
 import javax.xml.transform.stream.StreamSource;
 
-@WebServlet(name = "InitAdmin Servlet",urlPatterns = "/initAdmin")
+@WebServlet(name = "InitAdmin Servlet",urlPatterns = "/initAdminP")
 public class InitAdminServlet extends HttpServlet {
     private Gson gson=new Gson();
 
@@ -35,22 +35,23 @@ public class InitAdminServlet extends HttpServlet {
         Stepper stepper = DataManager.getData();
         List<FlowDefinitionImpl> flows = stepper.getFlows();
         //copy into string list of flows names
-        List<String> flowsNames =new ArrayList<>();
-        for (FlowDefinitionImpl flow : flows) {
-            flowsNames.add(flow.getName());
-        }
-        String flowsJson = gson.toJson(flowsNames);
+//        List<String> flowsNames =new ArrayList<>();
+//        for (FlowDefinitionImpl flow : flows) {
+//            flowsNames.add(flow.getName());
+//        }
+        String flowsJson = gson.toJson(flows);
         List<String> users = stepper.getUsers();
         String usersJson = gson.toJson(users);
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         try (PrintWriter out = resp.getWriter()) {//returning JSON object telling the client what version of chat is returned
-            out.print("{\"flows\":"+flowsJson+",\"users\":"+usersJson+"}");
+            out.print(flowsJson);
             out.flush();
         } catch (Exception e) {
             System.out.println("failed to init admin... ");
             throw new RuntimeException(e);
         }
+
     }
 
 

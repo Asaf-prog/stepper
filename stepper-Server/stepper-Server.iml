@@ -10,7 +10,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$" relative="/" />
         </webroots>
-        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -27,5 +26,6 @@
     <orderEntry type="module" module-name="stepper-Client" exported="" />
     <orderEntry type="module" module-name="stepper-Engine" exported="" />
     <orderEntry type="module" module-name="stepper-Admin" exported="" />
+    <orderEntry type="module" module-name="stepper-DTO" exported="" />
   </component>
 </module>
