@@ -5,6 +5,9 @@ import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.flowDefinitionPresent.graph.FlowGraphBuilder;
 import ClientsApp.app.management.style.StyleManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -21,7 +24,18 @@ import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.step.api.DataDefinitionDeclaration;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
+import services.stepper.FlowDefinitionDTO;
+import services.stepper.flow.DataDefinitionDeclarationDTO;
+import services.stepper.flow.StepUsageDeclarationDTO;
+import util.Constants;
+import util.http.HttpClientUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +84,11 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private ImageView graphPNG;
     @FXML
     private RadioButton graph;
-    private List<FlowDefinitionImpl> flows;
+    private List<FlowDefinitionDTO> flows;
     private bodyController body;
-    private FlowDefinitionImpl currentFlow;
+    private FlowDefinitionDTO currentFlow;
     String style="";
+    private Gson gson = new Gson();
 
     private ToggleGroup flowsToggleGroup;
 
@@ -111,6 +126,61 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             executeButton.setStyle(style);
         });
 
+        getLastUpdates();
+
+    }
+
+    private void getLastUpdates() {
+       //get list of the flow definition available from the server and show them in the list
+        Request request = new Request.Builder()
+                .url(Constants.INIT_ADMIN)
+                .build();
+        HttpClientUtil.runAsync(request, new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed to get the list of the flow definition");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    //get flows list from json body using gson
+                    ResponseBody responseBody = response.body();
+                    if (responseBody != null) {
+                        String body = responseBody.string();
+                        List<FlowDefinitionDTO> flowsDTO = gson.fromJson(responseBody.string(), new TypeToken<List<FlowDefinitionDTO>>() {
+                        }.getType());
+                        for (FlowDefinitionDTO flow : flowsDTO) {
+                            System.out.println(flow.getName());
+                        }
+                        flows=flowsDTO;
+                    }
+                    Platform.runLater(() -> {
+//show the list of the flows in the list
+                        setTheme();
+                        flowsToggleGroup = new ToggleGroup();
+                        for (FlowDefinitionDTO flow :flows){
+                            RadioButton button = new RadioButton(flow.getName());
+                            button.getStylesheets().add("app/management/style/darkTheme.css");
+                            button.getStyleClass().add("flowRadioButton");
+                            button.setStyle("-fx-text-fill: #fff608; -fx-font-size: 16; -fx-font-family: 'Arial Rounded MT Bold'");
+                            //button.setStyle("-fx-text-fill: #ffd54a");
+                            button.getStylesheets().add("app/management/style/darkTheme.css");
+                            button.getStyleClass().add("radioButton");
+
+                            // button.getStylesheets().add("app/management/style/darkTheme.css");
+                            button.setOnAction(event -> handleButtonAction(flow));
+                            button.setToggleGroup(flowsToggleGroup);
+                            firstVbox.getChildren().add(button);
+                        }
+                        firstVbox.setSpacing(10);
+
+                    });
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -124,8 +194,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         setTheme();
         flowsToggleGroup = new ToggleGroup();
         if (client.getIsExist()) {
-           flows = client.getFlows();
-            for (FlowDefinitionImpl flow : flows) {
+           //todo 1 !! get flow From server
+            for (FlowDefinitionDTO flow : flows) {
                 RadioButton button = new RadioButton(flow.getName());
                 button.getStylesheets().add("app/management/style/darkTheme.css");
                 button.getStyleClass().add("flowRadioButton");
@@ -145,12 +215,12 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
-    private void handleButtonAction(FlowDefinitionImpl flow) {
-
-        this.body.setButtonExecutionFromHeader(flow);
+    private void handleButtonAction(FlowDefinitionDTO flow) {
+//todo remove // from below
+     //   this.body.setButtonExecutionFromHeader(flow);
         ToggleGroup group = new ToggleGroup();
         executeButton.setDisable(false);
-        body.setCurrentFlow(flow);
+   //     body.setCurrentFlow(flow);
         seocendVbox.setVisible(true);
         nameOfFlowSelected.setText("Name: " + flow.getName());
         FormalOutputs.setText("Formal Outputs: " + flow.getFlowFormalOutputs().toString());
@@ -171,8 +241,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
         graph.setToggleGroup(group);
         graph.setOnAction(event -> handleButtonActionForGraph(flow));
-        DrawFlow(flow);
-
+        //DrawFlow(flow);
+//todo check if work with the new flowDTO
 
         flowsToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -182,7 +252,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                 //get selected item that was selected from the group and do the onAction that  was selected with the new value(flow)
                 RadioButton selectedFlowButton = (RadioButton) newValue;
                 String selectedFlow = selectedFlowButton.getText();
-                for (FlowDefinitionImpl flow1 : flows) {
+                for (FlowDefinitionDTO flow1 : flows) {
                     if (flow1.getName().equals(selectedFlow)) {
                         Toggle selectedToggle = group.getSelectedToggle();
                         if (selectedToggle != null) {
@@ -203,7 +273,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             }
         });
     }
-    private void handleButtonActionForGraph(FlowDefinitionImpl flow) {
+    private void handleButtonActionForGraph(FlowDefinitionDTO flow) {
         scatchPane.setVisible(true);
         graphPNG.setVisible(true);
         graphPNG.setFitWidth(400);
@@ -255,7 +325,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                 }
         );
     }
-    private void handleButtonActionForFreeInputs(FlowDefinitionImpl flow){
+    private void handleButtonActionForFreeInputs(FlowDefinitionDTO flow){
         scatchPane.setVisible(false);
         thiredVbox.setVisible(true);
         treeList.setVisible(false);
@@ -280,12 +350,14 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         });
         firstLabelOnScreen.setText("The Number of Free Inputs is: "+flow.getFlowFreeInputs().size());
         TreeItem<String> rootItem = new TreeItem<>("choose Free Input to display its information");
-        for(Pair<String, DataDefinitionDeclaration> data :flow.getFlowFreeInputs()){
+        for(Pair<String, DataDefinitionDeclarationDTO> data :flow.getFlowFreeInputs()){
             TreeItem <String> branch = new TreeItem<>(data.getKey());
             TreeItem <String> branch1 = new TreeItem<>("Is Mandatory? "+data.getValue().isMandatory());
-            TreeItem <String> branch2 = new TreeItem<>("The type is: "+ data.getValue().dataDefinition().getTypeName());
+           // TreeItem <String> branch2 = new TreeItem<>("The type is: "+ data.getValue().dataDefinition().getTypeName());\
+            //todo add this whenever all dto ready
             TreeItem <String> branch3 = new TreeItem<>("User String: "+ data.getValue().getUserString());
-            branch.getChildren().addAll(branch1,branch2,branch3);
+            branch.getChildren().addAll(branch1,branch3);
+            //todo add branch 2 to ^^^^^
             rootItem.getChildren().addAll(branch);
         }
         rootItem.setExpanded(true);
@@ -297,11 +369,11 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
 
     }
-    private void handleButtonActionForOutputs(FlowDefinitionImpl flow){
+    private void handleButtonActionForOutputs(FlowDefinitionDTO flow){
         scatchPane.setVisible(false);
         thiredVbox.setVisible(true);
         treeList.setVisible(false);
-        firstLabelOnScreen.setText("The Number of the Outputs is: "+flow.getFlowFormalOutputs().size());
+        firstLabelOnScreen.setText("The Number of the Outputs is: "+ flow.getFlowFormalOutputsSize());
         TreeItem<String> rootItem = new TreeItem<>("Outputs");
 
         for(String out: flow.getFlowOutputs()){
@@ -313,14 +385,14 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         treeList.setShowRoot(false);
         treeList.setVisible(true);
     }
-    private void handleButtonActionForSteps(FlowDefinitionImpl flow){
+    private void handleButtonActionForSteps(FlowDefinitionDTO flow){
         scatchPane.setVisible(false);
         thiredVbox.setVisible(true);
         treeList.setVisible(false);
         firstLabelOnScreen.setText("Choose Step to display its information: ");
         TreeItem<String> rootItem = new TreeItem<>("Steps");
 
-        for(StepUsageDeclaration step: flow.getFlowSteps()){
+        for(StepUsageDeclarationDTO step: flow.getSteps()){
             TreeItem <String> branch = new TreeItem<>(step.getFinalStepName());
             TreeItem <String> branch1 = new TreeItem<>("Step original name: "+step.getStepDefinition().getName());
             TreeItem <String> branch2 = new TreeItem<>("This step is readOnly? " +step.getStepDefinition().isReadonly());
@@ -340,22 +412,25 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     @FXML
     void executeButtonForFlow(ActionEvent event) {
-        body.executeExistFlowScreen(body.getCurrentFlow());
+        //todo move to server
+       // body.executeExistFlowScreen(body.getCurrentFlow());
     }
    @FXML
     void executeFlowFunc(ActionEvent event) {
-        body.executeExistFlowScreen(body.getCurrentFlow());
+       //todo move to server
+
+       //body.executeExistFlowScreen(body.getCurrentFlow());
     }
     @Override
     public void setBodyController(bodyController body) {
         this.body = body;
     }
     @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
+    public void setFlowsDetails(List<FlowDefinitionDTO> list) {
         this.flows = list;
     }
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow){
+    public void SetCurrentFlow(FlowDefinitionDTO flow){
         currentFlow = flow;
     }
     @Override

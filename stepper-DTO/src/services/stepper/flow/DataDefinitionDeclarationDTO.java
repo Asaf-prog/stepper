@@ -10,13 +10,13 @@ public class DataDefinitionDeclarationDTO implements Serializable {
     private String finalName;
     private final DataNecessity necessity;
     private final String userString;
-    private final DataDefinition dataDefinition;
+    private final DataDefinitionDTO dataDefinition;
 
     public DataDefinitionDeclarationDTO(String name, DataNecessity necessity, String userString, DataDefinition dataDefinition) {
         this.name = name;
         this.necessity = necessity;
         this.userString = userString;
-        this.dataDefinition = dataDefinition;
+        this.dataDefinition =new DataDefinitionDTO(dataDefinition);
         finalName = name;
     }
 
@@ -32,7 +32,7 @@ public class DataDefinitionDeclarationDTO implements Serializable {
         return userString;
     }
 
-    public DataDefinition getDataDefinition() {
+    public DataDefinitionDTO getDataDefinition() {
         return dataDefinition;
     }
 

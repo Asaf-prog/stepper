@@ -1,7 +1,6 @@
 package ClientsApp.app.management;
 
 import ClientsApp.app.body.bodyController;
-import ClientsApp.app.body.statsScreen.StatsScreen;
 import ClientsApp.app.header.headerController;
 import ClientsApp.app.management.style.StyleManager;
 import ClientsApp.app.MVC_controller.MVC_controller;
@@ -10,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import services.stepper.FlowDefinitionDTO;
 
 import java.awt.*;
 import java.util.List;
@@ -22,13 +22,12 @@ public class mainController {
    @FXML private HBox appBox;
    @FXML private ScrollPane scrollPane;
    @FXML private bodyController bodyComponentController;
-   private StatsScreen statsScreen;
    String appBoxStyle;
    private MVC_controller mvcController;
    private double xOffset;
    private double yOffset;
-   private List<FlowDefinitionImpl> flows;
-   private FlowDefinitionImpl currentFlow;
+   private List<FlowDefinitionDTO> flows;
+   private FlowDefinitionDTO currentFlow;
    @FXML
    public void initialize() {
       StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -48,10 +47,10 @@ public class mainController {
       }
 
    }
-   public void setCurrentFlow(FlowDefinitionImpl flow) {
+   public void setCurrentFlow(FlowDefinitionDTO flow) {
       this.currentFlow = flow;
    }
-   public void setFlows(List<FlowDefinitionImpl> f){
+   public void setFlows(List<FlowDefinitionDTO> f){
        this.flows = f;
    }
    public void showFlowDefinition() {
@@ -63,7 +62,7 @@ public class mainController {
    public void FlowsExecutionInMenu(){
       bodyComponentController.showAllFlowAndExe();
    }
-   public List<FlowDefinitionImpl> getFlows(){
+   public List<FlowDefinitionDTO> getFlows(){
       return flows;
    }
    public void showHistoryExe(){

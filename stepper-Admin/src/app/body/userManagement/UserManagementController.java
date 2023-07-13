@@ -19,6 +19,7 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import services.stepper.FlowDefinitionDTO;
 import util.Constants;
 import util.http.HttpClientUtil;
 
@@ -63,7 +64,7 @@ public class UserManagementController implements bodyControllerDefinition {
     @FXML
     void initialize() {
         asserts();
-        getLastUpdates();
+        //getLastUpdates();
 
 
     }
@@ -127,11 +128,12 @@ public class UserManagementController implements bodyControllerDefinition {
         ResponseBody responseBody = response.body();
         if (responseBody != null) {
             String body = responseBody.string();
-            List<FlowDefinitionImpl> flows = gson.fromJson(body, new TypeToken<List<FlowDefinitionImpl>>() {
+            List<FlowDefinitionDTO> flows = gson.fromJson(response.body().string(), new TypeToken<List<FlowDefinitionDTO>>() {
             }.getType());
-            for (FlowDefinitionImpl flow : flows) {
+            for (FlowDefinitionDTO flow : flows) {
                 System.out.println(flow.getName());
-                }
+
+            }
         }
 
 

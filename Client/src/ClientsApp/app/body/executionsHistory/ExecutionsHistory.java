@@ -36,6 +36,7 @@ import modules.flow.execution.FlowExecution;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
+import services.stepper.FlowDefinitionDTO;
 
 import java.io.IOException;
 import java.util.*;
@@ -215,9 +216,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
             addValueOfFreeInputsByTypes(flowDefinition);
             setFreeInputsByTypesToMandatoryAndOptionalWithDD(flowDefinition);
-            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition,freeInputsMandatoryWithDD
-            ,freeInputsOptionalWithDD);
-
+//            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition,freeInputsMandatoryWithDD
+//            ,freeInputsOptionalWithDD);
+// todo: moveto server
         }
     }
     private void setFreeInputsByTypesToMandatoryAndOptionalWithDD(FlowDefinitionImpl flowDefinition){
@@ -608,11 +609,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         this.body=body;
     }
     @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
+    public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+    public void SetCurrentFlow(FlowDefinitionDTO flow) {
 
     }
 

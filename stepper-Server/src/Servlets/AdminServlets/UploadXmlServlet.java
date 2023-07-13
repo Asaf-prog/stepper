@@ -33,11 +33,6 @@ public class UploadXmlServlet extends HttpServlet {
         try {
             InputStream res=request.getPart("file").getInputStream();
             GetDataFromXML.fromStream2Stepper(res);
-            // send stepper  to client via body of response using json
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            //forwards the request to the initAdmin servlet
-            //request.getRequestDispatcher("/initAdmin").forward(request, response);
         } catch (Exception e) {
             System.out.println("failed to upload xml... :)");
             throw new RuntimeException(e);

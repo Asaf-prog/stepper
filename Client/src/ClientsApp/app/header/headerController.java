@@ -15,11 +15,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import mapper.Mapper;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 import okhttp3.OkHttpClient;
+import services.stepper.FlowDefinitionDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class headerController {
@@ -74,7 +77,7 @@ public class headerController {
     private HBox HBoxData;
 
     public String lastPressed = "none";
-    private FlowDefinitionImpl currentFlow;
+    private FlowDefinitionDTO currentFlow;
     private MVC_controller controller;
     double x, y;
     boolean subscription = false;
@@ -545,9 +548,16 @@ public class headerController {
 
     private void initializedData() {
         Stepper stepperData = DataManager.getData();
-        main.setFlows(stepperData.getFlows());
+        main.setFlows(getFlowsDTO(stepperData.getFlows()));
     }
-
+    private List<FlowDefinitionDTO> getFlowsDTO(List<FlowDefinitionImpl> flows  ) {
+        List<FlowDefinitionDTO> flowsDTO=new ArrayList<>();
+        for (FlowDefinitionImpl flow : flows) {
+            FlowDefinitionDTO toAdd = Mapper.convertToFlowDefinitionDTO(flow);
+            flowsDTO.add(toAdd);
+        }
+        return flowsDTO;
+    }
     public ProgressBar getNextProgressBar(int free) {
         switch (free) {
             case 1:
@@ -576,7 +586,7 @@ public class headerController {
         }
         return null;
     }
-    public void SetExecutionButtonVisible(FlowDefinitionImpl flowDefinition){
+    public void SetExecutionButtonVisible(FlowDefinitionDTO flowDefinition){
 
         if (!menuHbox.getChildren().contains(flowExecution)) {
             flowExecution.setVisible(true);
@@ -593,8 +603,8 @@ public class headerController {
         ExecutionsHistory.setDisable(false);
         HBoxData.setVisible(true);
     }
-    public void setClient(String name, boolean theAdminExist , List<FlowDefinitionImpl> flowDefinitions){
-        this.client = new Client(name,flowDefinitions,theAdminExist);
+    public void setClient(String name, boolean theAdminExist){
+        this.client = new Client(name,theAdminExist);
     }
     public Client getClient(){
         return client;

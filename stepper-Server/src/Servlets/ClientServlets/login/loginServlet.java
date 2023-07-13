@@ -1,4 +1,4 @@
-package Servlets.login;
+package Servlets.ClientServlets.login;
 
 import Servlets.userManager.UserManager;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static Constants.Constants.USERNAME;
 
-@WebServlet(name = "ServletLogin",urlPatterns = "/loginShortResponse")
+@WebServlet(name = "ServletLogin",urlPatterns = "/login")
 public class loginServlet extends HttpServlet {
 @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException{

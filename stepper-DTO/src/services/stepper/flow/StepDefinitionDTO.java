@@ -47,17 +47,6 @@ public class StepDefinitionDTO implements Serializable {
         return stepName;
     }
 
-    public DataDefinition getDataDefinitionByName(String DDName) {
-        for (DataDefinitionDeclarationDTO dataDefinitionDeclaration : outputs) {
-            if (dataDefinitionDeclaration.getName().equals(DDName)) {
-                return dataDefinitionDeclaration.getDataDefinition();
-            } else if (dataDefinitionDeclaration.getFinalName() != null) {
-                if (dataDefinitionDeclaration.getFinalName().equals(DDName))
-                    return dataDefinitionDeclaration.getDataDefinition();
-            }
-        }
-        return null;
-    }
 
     public DataDefinitionDeclarationDTO getDataDefinitionDeclarationByName(String DDName) {
         for (DataDefinitionDeclarationDTO dataDefinitionDeclaration : outputs) {
@@ -83,13 +72,5 @@ public class StepDefinitionDTO implements Serializable {
         return null;
     }
 
-    public DataDefinition getDataDefinitionByNameTarget(String DDName) {
-        for (DataDefinitionDeclarationDTO dataDefinitionDeclaration : inputs) {
-            if (dataDefinitionDeclaration.getName().equals(DDName)) {
-                return dataDefinitionDeclaration.getDataDefinition();
-            }
-        }
-        return null;
-    }
 }
 

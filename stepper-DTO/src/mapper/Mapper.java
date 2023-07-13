@@ -4,6 +4,7 @@ import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
+import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.FlowExecutionDTO;
 import services.stepper.StepperDTO;
@@ -11,9 +12,9 @@ import services.stepper.StepperDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mapper {
+public  class Mapper {
 
-    public StepperDTO convertToStepperDTO(Stepper stepper) {
+    public static StepperDTO convertToStepperDTO(Stepper stepper) {
         StepperDTO stepperDTO = new StepperDTO();
 
         // Copy TPSize and XmlPath
@@ -37,7 +38,7 @@ public class Mapper {
         return stepperDTO;
     }
 
-    private FlowExecutionDTO convertToFlowExecutionDTO(FlowExecution flowExecution) {
+    public static FlowExecutionDTO convertToFlowExecutionDTO(FlowExecution flowExecution) {
         FlowExecutionDTO res = new FlowExecutionDTO();
         res.setFlowExecutionResult(flowExecution.getFlowExecutionResult().toString());//todo check if ok ?
         res.setLogs(flowExecution.getLogs());
@@ -52,14 +53,23 @@ public class Mapper {
         return res;
     }
 
-    private FlowDefinitionDTO convertToFlowDefinitionAbsDTO(FlowDefinition flowDefinition) {
+    public static List<FlowDefinitionDTO> getFlowsDTO(List<FlowDefinitionImpl> flows ) {
+        List<FlowDefinitionDTO> flowsDTO=new ArrayList<>();
+        for (FlowDefinitionImpl flow : flows) {
+            FlowDefinitionDTO toAdd = Mapper.convertToFlowDefinitionDTO(flow);
+            flowsDTO.add(toAdd);
+        }
+        return flowsDTO;
+    }
+    public static FlowDefinitionDTO convertToFlowDefinitionAbsDTO(FlowDefinition flowDefinition) {
         FlowDefinitionDTO res = new FlowDefinitionDTO(flowDefinition.getName(), flowDefinition.getDescription());
         res.setAvgTime(flowDefinition.getAvgTime());
         //todo dont forget to complete the rest of the fields
         return res;
     }
 
-    private FlowDefinitionDTO convertToFlowDefinitionDTO(FlowDefinitionImpl flowDefinition) {
+    @NotNull
+    public static FlowDefinitionDTO convertToFlowDefinitionDTO(FlowDefinitionImpl flowDefinition) {
         FlowDefinitionDTO res = new FlowDefinitionDTO(flowDefinition.getName(), flowDefinition.getDescription());
         res.setAvgTime(flowDefinition.getAvgTime());
         res.setReadOnly(flowDefinition.isReadOnly());

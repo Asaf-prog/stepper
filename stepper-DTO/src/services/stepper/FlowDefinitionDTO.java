@@ -10,6 +10,8 @@ import services.stepper.other.FlowLevelAliasDTO;
 import services.stepper.other.InitialInputValuesDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class FlowDefinitionDTO implements Serializable {
@@ -174,6 +176,20 @@ public class FlowDefinitionDTO implements Serializable {
             StepUsageDeclarationDTO stepUsageDeclarationDTO = new StepUsageDeclarationDTO(step.getStepDefinition(), step.skipIfFail(), step.getFinalStepName());
             this.steps.add(stepUsageDeclarationDTO);
         }
+    }
+
+    public Object getFlowFormalOutputs() {
+        return flowOutputs;
+    }
+
+    public String getFlowFormalOutputsSize() {
+        return flowOutputs.size() + "";
+    }
+
+    public  List<Pair<String, DataDefinitionDeclarationDTO>>  getFlowFreeInputs() {
+        return freeInputs;
+        //todo change in order to work , needto add all of the stepper into the dto?
+
     }
 }
 

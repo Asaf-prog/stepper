@@ -1,6 +1,7 @@
 package ClientsApp.app.header;
 
 public class RequestData {
+
     private String filePath;
 
     public RequestData(String filePath) {

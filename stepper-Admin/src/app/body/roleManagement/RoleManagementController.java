@@ -12,6 +12,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import okhttp3.Callback;
+import okhttp3.Request;
+import util.Constants;
+import util.http.HttpClientUtil;
 
 public class RoleManagementController implements bodyControllerDefinition {
         @FXML
@@ -58,8 +62,13 @@ public class RoleManagementController implements bodyControllerDefinition {
             assert infoVbox11 != null : "fx:id=\"infoVbox11\" was not injected: check your FXML file 'roleManagement.fxml'.";
             assert infoVbox12 != null : "fx:id=\"infoVbox12\" was not injected: check your FXML file 'roleManagement.fxml'.";
             assert newRoleButton != null : "fx:id=\"newRoleButton\" was not injected: check your FXML file 'roleManagement.fxml'.";
+            getLastUpdates();
 
         }
+
+    private void getLastUpdates() {
+
+    }
 
     @Override
     public void onLeave() {

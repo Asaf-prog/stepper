@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
+import mapper.Mapper;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.step.api.DataDefinitionDeclaration;
 import okhttp3.Call;
@@ -26,6 +27,7 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import services.stepper.FlowDefinitionDTO;
 import util.Constants;
 import util.http.HttpClientUtil;
 
@@ -43,7 +45,7 @@ public class bodyController {
     private AnchorPane bodyPane;
     private mainController main;
     private MVC_controller controller;
-    private FlowDefinitionImpl currentFlow;
+    private FlowDefinitionDTO currentFlow;
     private mainControllerClient controllerClient;
 
     private bodyControllerDefinition lastBodyController=null;
@@ -107,7 +109,7 @@ public class bodyController {
             System.out.println("BASA1");
         }
     }
-    public void executeExistFlowScreen(FlowDefinitionImpl flow) {
+    public void executeExistFlowScreen(FlowDefinitionDTO flow) {
         setCurrentFlow(flow);
         //need to supply the free inputs
         try {//first create a new body with the relevant free inputs and then update in context
@@ -124,7 +126,7 @@ public class bodyController {
             System.out.println("");
         }
     }
-    private void loadScreenWithCurrentFlow(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow) {
+    private void loadScreenWithCurrentFlow(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow) {//todo possible to move to server
         try {
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerDefinition bController = fxmlLoader.getController();
@@ -157,21 +159,21 @@ public class bodyController {
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
-    public void setCurrentFlow(FlowDefinitionImpl flow){
+    public void setCurrentFlow(FlowDefinitionDTO flow){
         this.currentFlow = flow;
     }
-    public FlowDefinitionImpl getCurrentFlow(){
+    public FlowDefinitionDTO getCurrentFlow(){
         return currentFlow;
     }
     public MVC_controller getMVC_controller(){
         return controller;
     }
-    public void handlerContinuation(FlowDefinitionImpl flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
+    public void handlerContinuation(FlowDefinitionDTO flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                     List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,List<Pair<String, String>>optionalIn,
                                     Map<String,Object> outputs,FlowDefinitionImpl currentFlow){
         executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn,outputs,currentFlow);
     }
-    public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
+    public void executeExistFlowScreenOfContinuation(FlowDefinitionDTO flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                      List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
                                                      List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
         //setCurrentFlow(flow);
@@ -188,7 +190,7 @@ public class bodyController {
             throw new RuntimeException(e);
         }
     }
-    private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
+    private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                           List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
                                                           List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
         try {
@@ -196,7 +198,8 @@ public class bodyController {
             bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(flow);
             bodyController.setBodyControllerContinuation(this);
-            bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,this.currentFlow);
+           // bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,this.currentFlow);
+            //todo 4
             setCurrentFlow(flow);
             bodyController.showForContinuation();
 
@@ -207,13 +210,13 @@ public class bodyController {
         }
     }
     public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
-            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+            , String>> freeInputOptional,FlowDefinitionDTO flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
     ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
 
         executeExistFlowScreenFromHistoryScreen(freeInputMandatory,freeInputOptional,flowDefinition,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
     }
     private void executeExistFlowScreenFromHistoryScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
-            , String>> freeInputOptional,FlowDefinitionImpl flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+            , String>> freeInputOptional,FlowDefinitionDTO flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
     ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
         setCurrentFlow(flowDefinition);
 
@@ -229,7 +232,7 @@ public class bodyController {
             System.out.println("BASA4");
         }
     }
-    private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
+    private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow,List<Pair<String, String>> freeInputMandatory,
                                        List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
     ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
 
@@ -247,7 +250,7 @@ public class bodyController {
             System.out.println("BASA5");
         }
     }
-    public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){
+    public void setButtonExecutionFromHeader(FlowDefinitionDTO flowDefinition){
         main.getHeaderComponentController().SetExecutionButtonVisible(flowDefinition);
         this.currentFlow = flowDefinition;
 

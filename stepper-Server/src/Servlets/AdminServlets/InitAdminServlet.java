@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import mapper.Mapper;
 import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
 import java.io.IOException;
@@ -21,11 +22,14 @@ import java.util.Scanner;
 import modules.DataManeger.GetDataFromXML;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
+import services.stepper.FlowDefinitionDTO;
 import util.Constants;
 
 import javax.xml.transform.stream.StreamSource;
 
-@WebServlet(name = "InitAdmin Servlet",urlPatterns = "/initAdminP")
+import static mapper.Mapper.convertToFlowDefinitionDTO;
+
+@WebServlet(name = "InitAdmin Servlet",urlPatterns = "/initAdmin")
 public class InitAdminServlet extends HttpServlet {
     private Gson gson=new Gson();
 
@@ -33,12 +37,7 @@ public class InitAdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("init admin servlet...");
         Stepper stepper = DataManager.getData();
-        List<FlowDefinitionImpl> flows = stepper.getFlows();
-        //copy into string list of flows names
-//        List<String> flowsNames =new ArrayList<>();
-//        for (FlowDefinitionImpl flow : flows) {
-//            flowsNames.add(flow.getName());
-//        }
+        List<FlowDefinitionDTO> flows=getFlowsDTO(stepper);
         String flowsJson = gson.toJson(flows);
         List<String> users = stepper.getUsers();
         String usersJson = gson.toJson(users);
@@ -52,6 +51,16 @@ public class InitAdminServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private List<FlowDefinitionDTO> getFlowsDTO(Stepper stepper) {
+        List<FlowDefinitionDTO> flowsDTO=new ArrayList<>();
+        List<FlowDefinitionImpl> flows = stepper.getFlows();
+        for (FlowDefinitionImpl flow : flows) {
+            FlowDefinitionDTO toAdd =convertToFlowDefinitionDTO(flow);
+            flowsDTO.add(toAdd);
+        }
+        return flowsDTO;
     }
 
 

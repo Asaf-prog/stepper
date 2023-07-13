@@ -34,6 +34,7 @@ import modules.mappings.ContinuationMapping;
 import modules.mappings.InitialInputValues;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
+import services.stepper.FlowDefinitionDTO;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +65,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @FXML
     private Label flowNameLabel;
 
-    private FlowDefinitionImpl currentFlow;
+    private FlowDefinitionDTO currentFlow;
 
-    private FlowDefinitionImpl lastFlow;
+    private FlowDefinitionDTO lastFlow;
     private bodyController body;
     private int sizeOfMandatoryList;
     private List<Pair<String, String>> freeInputsTemp;
@@ -121,56 +122,59 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @Override
     public void show() {
         //first of all, create a two list : mandatoryInputs and optionalInputs:
-        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
-        List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
-        List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
-
-        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
-            if (pair.getValue().isMandatory()) {
-                mandatoryInputs.add(pair);
-            } else {
-                optionalInputs.add(pair);
-            }
-        }
-        freeInputsTemp = new ArrayList<>();
-        currentMandatoryFreeInput = mandatoryInputs;
-        currentOptionalFreeInput = optionalInputs;
-        mandatoryHandler(mandatoryInputs);
-        optionalHandler(optionalInputs);
-        setSizeOfMandatoryList(mandatoryInputs.size());
-        flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
+//        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
+//        List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
+//        List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
+//
+//        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
+//            if (pair.getValue().isMandatory()) {
+//                mandatoryInputs.add(pair);
+//            } else {
+//                optionalInputs.add(pair);
+//            }
+//        }
+//        freeInputsTemp = new ArrayList<>();
+//        currentMandatoryFreeInput = mandatoryInputs;
+//        currentOptionalFreeInput = optionalInputs;
+//        mandatoryHandler(mandatoryInputs);
+//        optionalHandler(optionalInputs);
+//        setSizeOfMandatoryList(mandatoryInputs.size());
+//        flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
+        //todo 3 need to move into servlet
 
     }
     @Override
     public void showForContinuation() {
-        continuationExe.setVisible(true);
-        continuationExe.setDisable(true);
-        startExecute.setVisible(false);
-        flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
-        //first, create a list of mandatory and optional that the user need to supply
-        //secondly, create the component
-        Continuation continuation1 = null;//=> fulfil the data of the mapping to the flow
-        for (Continuation continuationToThisFlow: lastFlow.getContinuations()){
-            if (continuationToThisFlow.getTargetFlow().equals(currentFlow.getName()))
-                continuation1 = continuationToThisFlow;
-        }
-        createVboxMandatoryAndOptionalWithInitValue(continuation1);
+        //todo 3 need to move into servlet
+//        continuationExe.setVisible(true);
+//        continuationExe.setDisable(true);
+//        startExecute.setVisible(false);
+//        flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
+//        //first, create a list of mandatory and optional that the user need to supply
+//        //secondly, create the component
+//        Continuation continuation1 = null;//=> fulfil the data of the mapping to the flow
+//        for (Continuation continuationToThisFlow: lastFlow.getContinuations()){
+//            if (continuationToThisFlow.getTargetFlow().equals(currentFlow.getName()))
+//                continuation1 = continuationToThisFlow;
+//        }
+//        createVboxMandatoryAndOptionalWithInitValue(continuation1);
     }
     private void createVboxMandatoryAndOptionalWithInitValue(Continuation continuation){
-        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
-        List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
-        List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
-
-        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
-            if (pair.getValue().isMandatory()) {
-                mandatoryInputs.add(pair);
-            } else {
-                optionalInputs.add(pair);
-            }
-        }
-        freeInputsTemp = new ArrayList<>();
-        mandatoryHandlerForContinuation(continuation,mandatoryInputs);
-        optionalHandlerForContinuation(continuation,optionalInputs);
+//        List<Pair<String, DataDefinitionDeclaration>> freeInputs = getCurrentFlow().getFlowFreeInputs();
+//        List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs = new ArrayList<>();
+//        List<Pair<String, DataDefinitionDeclaration>> optionalInputs = new ArrayList<>();
+//
+//        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
+//            if (pair.getValue().isMandatory()) {
+//                mandatoryInputs.add(pair);
+//            } else {
+//                optionalInputs.add(pair);
+//            }
+//        }
+//        freeInputsTemp = new ArrayList<>();
+//        mandatoryHandlerForContinuation(continuation,mandatoryInputs);
+//        optionalHandlerForContinuation(continuation,optionalInputs);
+//        todo 3 need to move into servlet
     }
     private void mandatoryHandlerForContinuation(Continuation continuation,List<Pair<String, DataDefinitionDeclaration>> mandatoryInputs){
         for (Pair<String, DataDefinitionDeclaration> mandatory:mandatoryInputs){
@@ -267,10 +271,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             return null;
     }
     private String getData(String nameToSearch){
-        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
-            if (initialInputValues.getInputName().equals(nameToSearch))
-                return initialInputValues.getInitialValue();
-        }
+//        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
+//            if (initialInputValues.getInputName().equals(nameToSearch))
+//                return initialInputValues.getInitialValue();
+//        }
+        //also need to move to the server
         return null;
     }
     private boolean thisDataSupplyByRecentFlow(String nameToSearch,Continuation continuation){
@@ -364,10 +369,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         return outputsOfLastFlow;
     }
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+    public void SetCurrentFlow(FlowDefinitionDTO flow) {
         currentFlow = flow;
     }
-    public FlowDefinitionImpl getCurrentFlow() {
+    public FlowDefinitionDTO getCurrentFlow() {
         return currentFlow;
     }
 
@@ -383,7 +388,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         return false;
     }
     @Override
-    public void setCurrentFlowForContinuation(FlowDefinitionImpl flow) {
+    public void setCurrentFlowForContinuation(FlowDefinitionDTO flow) {
         currentFlow = flow;
     }
 
@@ -396,7 +401,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         freeInputsMandatory = mandatoryIn;
         freeInputsOptional = optionalIn;
         outputsOfLastFlow = outputs;
-        this.lastFlow = lastFlow;
+//        this.lastFlow = lastFlow;
+        //todo remove when moving to server
     }
     private List<Pair<String, DataDefinitionDeclaration>> getCurrentMandatoryFreeInput() {
         return currentMandatoryFreeInput;
@@ -515,40 +521,42 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
 
     private String getExistInInitialValue(String nameToSearchInKey){
-        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
-            if (initialInputValues.getInputName().equals(nameToSearchInKey))
-                return initialInputValues.getInitialValue();
-        }
+//        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
+//            if (initialInputValues.getInputName().equals(nameToSearchInKey))
+//                return initialInputValues.getInitialValue();
+//        }
+        //todo 4
         return null;
     }
     private boolean existInInitialValue(String nameToSearchInKey){
-        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
-            if (initialInputValues.getInputName().equals(nameToSearchInKey))
-                return true;
-        }
+//        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
+//            if (initialInputValues.getInputName().equals(nameToSearchInKey))
+//                return true;
+//        }
+        //todo 5 same as 4
         return false;
     }
 
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
-        continuationVbox.getChildren().clear();
-        ToggleGroup group = new ToggleGroup();
-        for (Continuation continuation : currentFlow.getContinuations()) {
-            RadioButton button = new RadioButton(continuation.getTargetFlow());
-            button.setStyle("-fx-text-fill: white");
-            button.setOnAction(e -> {
-                try {
-                    handleButtonActionForContinuation(continuation.getTargetFlow());
-                } catch (Exception ex) {
-                    System.out.println("Basa10");
-                }
-            });
-            button.setToggleGroup(group);
-            continuationVbox.getChildren().add(button);
-        }
-        continuationVbox.setSpacing(10);
-        continuationVbox.setVisible(true);
-        continuationLabel.setText("Continuation for " + currentFlow.getName());
+//        continuationVbox.getChildren().clear();
+//        ToggleGroup group = new ToggleGroup();
+//        for (Continuation continuation : currentFlow.getContinuations()) {
+//            RadioButton button = new RadioButton(continuation.getTargetFlow());
+//            button.setStyle("-fx-text-fill: white");
+//            button.setOnAction(e -> {
+//                try {
+//                    handleButtonActionForContinuation(continuation.getTargetFlow());
+//                } catch (Exception ex) {
+//                    System.out.println("Basa10");
+//                }
+//            });
+//            button.setToggleGroup(group);
+//            continuationVbox.getChildren().add(button);
+//        }
+//        continuationVbox.setSpacing(10);
+//        continuationVbox.setVisible(true);
+//        continuationLabel.setText("Continuation for " + currentFlow.getName());
     }
     private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
         FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
@@ -564,7 +572,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
                 }
                 setTheNewInputsThatTheUserSupply();
-            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
+        //todo remove // before adding all this to server side
+          //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
         }
             else
                 throw new RuntimeException();
@@ -606,7 +615,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
         showDetails.setDisable(true);
         continuation.setVisible(true);
-        body.getMVC_controller().executeFlow(currentFlow);
+//        body.getMVC_controller().executeFlow(currentFlow);
+        //todo 6 same as 4
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
@@ -824,7 +834,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         this.body = body;
     }
     @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
+    public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
     public void showDetails(ActionEvent actionEvent){
@@ -834,7 +844,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     void ContinuationExecution(ActionEvent event) {
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
 
-        body.getMVC_controller().executeFlow(currentFlow);
+       // body.getMVC_controller().executeFlow(currentFlow);
+        //todo: remove^?^
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
@@ -901,7 +912,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         this.body = body;
     }
     @Override
-    public void SetCurrentFlowFromHistory(FlowDefinitionImpl flow){
+    public void SetCurrentFlowFromHistory(FlowDefinitionDTO flow){
         this.currentFlow = flow;
     }
     @Override

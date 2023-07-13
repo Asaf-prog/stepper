@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="stepper-Engine" />
+    <orderEntry type="library" name="okHttp" level="project" />
   </component>
 </module>

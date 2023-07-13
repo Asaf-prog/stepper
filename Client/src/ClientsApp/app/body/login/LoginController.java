@@ -85,7 +85,7 @@ public class LoginController implements bodyControllerForLogin {
                             throw new RuntimeException(e);
                         }
                         //after we get the permission that we can add a new user to our system we crete the client object
-                        body.getMain().getHeaderComponentController().setClient(userName,theAdminExistInSystem,flows);
+                        body.getMain().getHeaderComponentController().setClient(userName,theAdminExistInSystem);
                         body.setClient(body.getMain().getHeaderComponentController().getClient());//set the data-member client in body class from header
                     });
                 }

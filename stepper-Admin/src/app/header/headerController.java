@@ -26,6 +26,7 @@ import modules.stepper.Stepper;
 import okhttp3.*;
 import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
+import services.stepper.FlowDefinitionDTO;
 import util.Constants;
 import util.http.HttpClientUtil;
 
@@ -717,18 +718,9 @@ public class headerController {
                                 alert.showAndWait();
                             });//todo check if stepper valid !!!
                         } else {
-
-                            DTO data = new Gson().fromJson(response.body().string(),DTO.class);
-                            for (FlowDefinitionImpl flow : data.getFlows()){
-                                System.out.println(flow.getName());
-                            }
-
-
                             Platform.runLater(() -> {
                                 try {
                                     ActivateMenuButtons();
-                                    List<FlowDefinitionImpl> flows2 = gson.fromJson(response.body().charStream(), new TypeToken<List<FlowDefinitionImpl>>() {
-                                    }.getType());
                                    // DataManager.getData().setXmlPath(selectedFile.getPath());todo need to set from the server
                                     roleManagement.setDisable(false);
                                     ExecutionsHistory.setDisable(false);//***
@@ -786,7 +778,7 @@ public class headerController {
         ExecutionsHistory.setDisable(false);
     }
     private void initializedData() {
-        main.setFlows(DataManager.getData().getFlows());
+     //   main.setFlows(DataManager.getData().getFlows());
     }
     public ProgressBar getNextProgressBar(int free) {
         switch (free) {
