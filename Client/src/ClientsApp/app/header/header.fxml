@@ -185,7 +185,10 @@
                      <graphic>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
                            <children>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage" />
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/dash.png" />
+                                 </image></ImageView>
 
                               <Label prefHeight="25.0" prefWidth="102.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="DashBoard">
                                  <font>
@@ -201,7 +204,10 @@
                      <graphic>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
                            <children>
-                              <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage" />
+                              <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@content/menu%20icons/history.png" />
+                                 </image></ImageView>
 
                               <Label prefHeight="24.0" prefWidth="70.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="History" textFill="WHITE">
                                  <font>
@@ -218,8 +224,9 @@
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="130.0" spacing="10.0">
                            <children>
                               <ImageView fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-
-                              </ImageView>
+                                 <image>
+                                    <Image url="@content/menu%20icons/exe.png" />
+                                 </image></ImageView>
                               <Label prefHeight="25.0" prefWidth="102.0" style="-fx-text-fill: white;" styleClass="buttonLabel" stylesheets="@../management/style/darkTheme.css" text="Execution">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="18.0" />

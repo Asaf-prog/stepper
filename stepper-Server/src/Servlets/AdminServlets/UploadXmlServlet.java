@@ -1,6 +1,5 @@
 package Servlets.AdminServlets;
 
-import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,14 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.Scanner;
-import util.Constants;
 
 
 @WebServlet(name = "upload Servlet",urlPatterns = "/uploadXmlFile")

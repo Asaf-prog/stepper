@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
-import mapper.Mapper;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.step.api.DataDefinitionDeclaration;
 import okhttp3.Call;
@@ -28,8 +27,9 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
-import util.Constants;
-import util.http.HttpClientUtil;
+import services.stepper.flow.DataDefinitionDeclarationDTO;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -210,14 +210,14 @@ public class bodyController {
         }
     }
     public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
-            , String>> freeInputOptional,FlowDefinitionDTO flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
-    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
+            , String>> freeInputOptional,FlowDefinitionDTO flowDefinition,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ){
 
         executeExistFlowScreenFromHistoryScreen(freeInputMandatory,freeInputOptional,flowDefinition,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
     }
     private void executeExistFlowScreenFromHistoryScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
-            , String>> freeInputOptional,FlowDefinitionDTO flowDefinition,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
-    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
+            , String>> freeInputOptional,FlowDefinitionDTO flowDefinition,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ){
         setCurrentFlow(flowDefinition);
 
         try {//first create a new body with the relevant free inputs and then update in context
@@ -233,8 +233,8 @@ public class bodyController {
         }
     }
     private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow,List<Pair<String, String>> freeInputMandatory,
-                                       List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
-    ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
+                                       List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD
+    ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ){
 
         try {
             Parent screen = fxmlLoader.load(url.openStream());
@@ -275,13 +275,13 @@ public class bodyController {
 
             String userName = textField.getText();
             String finalUrl = HttpUrl
-                    .parse(Constants.LOGIN_PAGE)
+                    .parse(ClientConstants.LOGIN_PAGE)
                     .newBuilder()
                     .addQueryParameter("username", userName)
                     .build()
                     .toString();
             updateHttpStatusLine("New request is launched for: " + finalUrl);
-            HttpClientUtil.runAsync(finalUrl, new Callback() {
+            ClientHttpClientUtil.runAsync(finalUrl, new Callback() {
 
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {

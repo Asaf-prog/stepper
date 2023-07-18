@@ -2,6 +2,7 @@ package services.stepper;
 
 import javafx.util.Pair;
 import modules.flow.definition.api.StepUsageDeclaration;
+import modules.mappings.InitialInputValues;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.flow.StepUsageDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
@@ -189,6 +190,15 @@ public class FlowDefinitionDTO implements Serializable {
     public  List<Pair<String, DataDefinitionDeclarationDTO>>  getFlowFreeInputs() {
         return freeInputs;
         //todo change in order to work , needto add all of the stepper into the dto?
+
+    }
+
+    public List<InitialInputValues> getORIGINALInitialInputValuesData() {
+        List<InitialInputValues> initialInputValues = new ArrayList<>();
+        for (InitialInputValuesDTO initialInputValuesDTO : initialInputValuesData) {
+            initialInputValues.add(new InitialInputValues(initialInputValuesDTO.getName(), initialInputValuesDTO.getValue()));
+        }
+        return initialInputValues;
 
     }
 }

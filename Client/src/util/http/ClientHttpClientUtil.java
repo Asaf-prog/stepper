@@ -7,9 +7,9 @@ import okhttp3.Request;
 
 import java.util.function.Consumer;
 
-public class HttpClientUtil {
+public class ClientHttpClientUtil {
 
-    private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
+    private final static ClientSimpleCookieManager simpleCookieManager = new ClientSimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
                     .cookieJar(simpleCookieManager)
@@ -29,13 +29,13 @@ public class HttpClientUtil {
                 .url(finalUrl)
                 .build();
 
-        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+        Call call = ClientHttpClientUtil.HTTP_CLIENT.newCall(request);
 
         call.enqueue(callback);
     }
 
     public static void runAsync(Request request, Callback callback) {
-        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+        Call call = ClientHttpClientUtil.HTTP_CLIENT.newCall(request);
         call.enqueue(callback);
     }
 

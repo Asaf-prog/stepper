@@ -12,5 +12,6 @@
     <orderEntry type="module" module-name="stepper-Engine" />
     <orderEntry type="module" module-name="stepper_GUI" />
     <orderEntry type="module" module-name="stepper-Server" />
+    <orderEntry type="module" module-name="stepper-DTO" />
   </component>
 </module>

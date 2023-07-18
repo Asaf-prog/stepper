@@ -2,7 +2,9 @@ package util;
 
 import com.google.gson.Gson;
 
-public class Constants {
+import java.net.URL;
+
+public class ClientConstants {
 
     // global constants
     public final static String LINE_SEPARATOR = System.getProperty("line.separator");
@@ -17,11 +19,14 @@ public class Constants {
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
+    public static final String EXECUTE_FLOW = "/Client/executeFlow";
 
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/stepper_server";
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
+
+    public final static String GET_FLOWS = FULL_SERVER_PATH + "/Client/getFlows" ;
 
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String LOAD_XML_FILE = FULL_SERVER_PATH + "/loadAndDecodeFile";

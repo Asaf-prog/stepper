@@ -23,17 +23,13 @@ import javafx.util.Callback;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
-import modules.step.api.DataDefinitionDeclaration;
-import okhttp3.Call;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.flow.StepUsageDeclarationDTO;
-import util.Constants;
-import util.http.HttpClientUtil;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -133,9 +129,9 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     private void getLastUpdates() {
        //get list of the flow definition available from the server and show them in the list
         Request request = new Request.Builder()
-                .url(Constants.INIT_ADMIN)
+                .url(ClientConstants.GET_FLOWS)
                 .build();
-        HttpClientUtil.runAsync(request, new okhttp3.Callback() {
+        ClientHttpClientUtil.runAsync(request, new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("failed to get the list of the flow definition");
@@ -148,7 +144,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     ResponseBody responseBody = response.body();
                     if (responseBody != null) {
                         String body = responseBody.string();
-                        List<FlowDefinitionDTO> flowsDTO = gson.fromJson(responseBody.string(), new TypeToken<List<FlowDefinitionDTO>>() {
+                        List<FlowDefinitionDTO> flowsDTO = gson.fromJson(body, new TypeToken<List<FlowDefinitionDTO>>() {
                         }.getType());
                         for (FlowDefinitionDTO flow : flowsDTO) {
                             System.out.println(flow.getName());
@@ -217,10 +213,11 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     private void handleButtonAction(FlowDefinitionDTO flow) {
 //todo remove // from below
-     //   this.body.setButtonExecutionFromHeader(flow);
+        this.body.setButtonExecutionFromHeader(flow);
         ToggleGroup group = new ToggleGroup();
         executeButton.setDisable(false);
-   //     body.setCurrentFlow(flow);
+        body.setCurrentFlow(flow);
+
         seocendVbox.setVisible(true);
         nameOfFlowSelected.setText("Name: " + flow.getName());
         FormalOutputs.setText("Formal Outputs: " + flow.getFlowFormalOutputs().toString());
@@ -242,8 +239,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         graph.setToggleGroup(group);
         graph.setOnAction(event -> handleButtonActionForGraph(flow));
         //DrawFlow(flow);
-//todo check if work with the new flowDTO
-
         flowsToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 executeButton.setDisable(true);
@@ -412,14 +407,13 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
     }
     @FXML
     void executeButtonForFlow(ActionEvent event) {
-        //todo move to server
-       // body.executeExistFlowScreen(body.getCurrentFlow());
+
+        body.executeExistFlowScreen(body.getCurrentFlow());
     }
    @FXML
     void executeFlowFunc(ActionEvent event) {
-       //todo move to server
 
-       //body.executeExistFlowScreen(body.getCurrentFlow());
+       body.executeExistFlowScreen(body.getCurrentFlow());
     }
     @Override
     public void setBodyController(bodyController body) {

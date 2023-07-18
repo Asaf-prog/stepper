@@ -9,5 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="stepper-Engine" />
     <orderEntry type="library" name="okHttp" level="project" />
+    <orderEntry type="module" module-name="stepper-Admin" />
+    <orderEntry type="module" module-name="stepper-Client" />
+    <orderEntry type="module" module-name="stepper-Server" />
   </component>
 </module>

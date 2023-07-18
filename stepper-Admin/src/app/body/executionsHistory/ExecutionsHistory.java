@@ -232,7 +232,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private void setupTable(Stepper stepperData) {
         tableData.setStyle("-fx-control-inner-background: transparent;");
         initTable();
-        executionCounterLabel.setText("There are " + stepperData.getFlowExecutions().size() + " Flow Executions");
+        if(stepperData.getFlowExecutions().size() == 0) {
+            executionCounterLabel.setText("There are no Flow Executions");
+            return;
+        }else
+            executionCounterLabel.setText("There are " + stepperData.getFlowExecutions().size() + " Flow Executions");
 
         final ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
         ToggleGroup group = new ToggleGroup();

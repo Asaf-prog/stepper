@@ -16,8 +16,8 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import util.Constants;
-import util.http.HttpClientUtil;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,12 +52,12 @@ public class LoginController implements bodyControllerForLogin {
         }
         String userName = textFiled.getText();
         String finalUrl = HttpUrl
-                .parse(Constants.LOGIN_PAGE)
+                .parse(ClientConstants.LOGIN_PAGE)
                 .newBuilder()
                 .addQueryParameter("username", userName)
                 .build()
                 .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        ClientHttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

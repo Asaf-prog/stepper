@@ -14,14 +14,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.stepper.Stepper;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
+import util.ClientConstants;
 import util.Constants;
-import util.http.HttpClientUtil;
+import util.http.ClientHttpClientUtil;
 
 public class UserManagementController implements bodyControllerDefinition {
 
@@ -85,9 +84,9 @@ public class UserManagementController implements bodyControllerDefinition {
     private void getLastUpdates() {
         //go to init admin servlet
         Request request = new Request.Builder()
-                .url(Constants.INIT_ADMIN)
+                .url(ClientConstants.INIT_ADMIN)
                 .build();
-        HttpClientUtil.runAsync(request, new Callback() {
+        ClientHttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
@@ -158,7 +157,7 @@ public class UserManagementController implements bodyControllerDefinition {
         Request request = new Request.Builder()
                 .url(Constants.GET_USER_BY_NAME + name)
                 .build();
-        HttpClientUtil.runAsync(request, new Callback() {
+        ClientHttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
