@@ -16,7 +16,7 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "get last execution Servlet",urlPatterns = "/Client/getLastExecution")
+@WebServlet(name = "get last execution Servlet",urlPatterns = "/Client/flowEnded")
 @MultipartConfig
 public class GetLastExecutionServlet extends HttpServlet {
     private Gson gson = new Gson();
@@ -24,7 +24,8 @@ public class GetLastExecutionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //get dataManager from context
         DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");
-        FlowExecution execution = getLastExecutionForUser(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req));
+        String flowId = req.getHeader("flowId");
+        FlowExecution execution = getLastExecutionForUser(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req),flowId);
         FlowExecutionDTO flowExecutionDTO = Mapper.convertToFlowExecutionDTO(execution);
         //gson
         String json = gson.toJson(flowExecutionDTO);
@@ -33,15 +34,17 @@ public class GetLastExecutionServlet extends HttpServlet {
 
     }
 
-    private FlowExecution getLastExecutionForUser(List<FlowExecution> flowExecutions, String username) {
+    private FlowExecution getLastExecutionForUser(List<FlowExecution> flowExecutions, String username, String flowId) {
         if (flowExecutions == null  || flowExecutions.isEmpty()) {
             return null;
         }
+
         //search from the top of the list
-        for (int i = flowExecutions.size() - 1; i >= 0; i--) {
-            FlowExecution flowExecution = flowExecutions.get(i);
-            if (flowExecution.getOwner().equals(username)) {
-                return flowExecution;
+        for (FlowExecution flowExecution : flowExecutions) {
+            if (flowExecution.getUniqueId().toString().equals(flowId) && flowExecution.getOwner().equals(username)) {
+                if (flowExecution.isDone()) {
+                    return flowExecution;
+                }
             }
         }
         return null;

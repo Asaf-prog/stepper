@@ -5,6 +5,7 @@
       <option name="customHeaders">
         <set>
           <option value="message" />
+          <option value="flowId" />
         </set>
       </option>
     </inspection_tool>

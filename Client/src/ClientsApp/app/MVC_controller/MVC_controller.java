@@ -5,6 +5,7 @@ import ClientsApp.app.body.executeFlow.executionDetails.ExecutionsDetails;
 import ClientsApp.app.header.headerController;
 import ClientsApp.app.management.mainController;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,11 +15,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.flow.execution.FlowExecution;
-import modules.flow.execution.executionManager.ExecutionManager;
 import modules.flow.execution.executionManager.tasks.ExecutionTask;
-import modules.flow.execution.runner.FLowExecutor;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
@@ -28,8 +25,8 @@ import util.http.ClientHttpClientUtil;
 
 import java.io.IOException;
 import java.util.List;
-
-import static modules.DataManeger.DataManager.stepperData;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MVC_controller {
     private mainController main;
@@ -47,6 +44,7 @@ public class MVC_controller {
 
     public void executeFlow(FlowDefinitionDTO flow) {
         //send to server flow name and free inputs
+
 
         List<Pair<String, String>> userInputs = flow.getUserInputs();
         String flowName = flow.getName();
@@ -67,19 +65,31 @@ public class MVC_controller {
 
             }
 
+
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 //means execution over
                 if (response.code() == 200) {
                     System.out.println("success");
                     //get flowExecutionDTO from server
-                    String flowExecutionDTO = response.body().string();
-                    FlowExecutionDTO flowExecutionDTO1 = gson.fromJson(flowExecutionDTO, FlowExecutionDTO.class);
-
-                    popupDetails();
+//                    String flowExecutionDTO = response.body().string();
+//                    FlowExecutionDTO flowExecutionDTO1 = gson.fromJson(flowExecutionDTO, FlowExecutionDTO.class);
+//
+//                    popupDetails();
 
                     //setProgressBar(task);
                     header.setDisableOnExecutionsHistory();
+                    //define new timer to check every 200 ms if the flow ended
+                    //if so, popup the details
+                    Timer timer = new Timer();
+                    String id=response.header("flowId");
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            //check if the flow ended
+                            FlowEnded(id,timer);
+                        }
+                    }, 0, 200);
                 }else {
                     System.out.println("fail");
                 }
@@ -89,53 +99,97 @@ public class MVC_controller {
         });
     }
 
-    private void popupDetails() {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("executionDetails/ExecutionsDetails.fxml"));
-            ExecutionsDetails executionsDetails = new ExecutionsDetails();
-            try {
+    private boolean FlowEnded(String id, Timer timer) {
+        //send to server the request
+        Request request = new Request.Builder()
+                .url(ClientConstants.FLOW_ENDED)
+                .get()
+                .addHeader("flowId", id)
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("fail");
 
-                Parent root = loader.load();
-                Stage stage = new Stage();
-                stage.setTitle("Flow Details");
-                //set icon as previous stage
-                stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
-                stage.setScene(new Scene(root, 1060, 365));
-                stage.show();
-                //disable app until the user close the window
-            }catch (IllegalStateException | IOException ex) {
-                VerySecretCode();
             }
-        }
 
-    private void VerySecretCode() {
-        String secretcode="skvmbeoivnreonvoirvrev";
-        Compile(secretcode);
-    }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() == 200) {
+                    Platform.runLater(() -> {
+                        popupDetails(id);
+                        timer.cancel();
+                    });
+                } else {
+                    System.out.println("fail,,");
+                }
+            }
 
-    private void Compile(String secretcode) {
-        //come this far ... eh?
-    }
+            private void popupDetails(String id) {
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
+               // loader.setController(new ExecutionsDetails(id));
+                loader.setControllerFactory(controllerClass -> {
+                    if (controllerClass == ExecutionsDetails.class) {
+                        // Instantiate the controller and pass the data
+                        return new ExecutionsDetails(id);
+                    } else {
+                        try {
+                            // If it's not the desired controller, use the default factory
+                            return controllerClass.getDeclaredConstructor().newInstance();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                try {
 
-    private void setProgressBar(ExecutionTask task) {
-        int nextIndex = header.getNextFreeProgress();
-        ProgressBar progressBar = header.getNextProgressBar(nextIndex);
-        progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
-        progressBar.progressProperty().bind(task.getProgress());
-        task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
-                progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
+                    Parent root = loader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Flow Details");
+                    //set icon as previous stage
+                    stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
+                    stage.setScene(new Scene(root, 1060, 365));
+                    stage.show();
+                    //disable app until the user close the window
+                } catch (IllegalStateException | IOException ex) {
+                    VerySecretCode();
+                    //todo remove@!!!
+                    ex.printStackTrace();
+                }
+            }
+
+            private void VerySecretCode() {
+                String secretcode = "skvmbeoivnreonvoirvrev";
+                Compile(secretcode);
+            }
+
+            private void Compile(String secretcode) {
+                //come this far ... eh?
+            }
+
+            private void setProgressBar(ExecutionTask task) {
+                int nextIndex = header.getNextFreeProgress();
+                ProgressBar progressBar = header.getNextProgressBar(nextIndex);
+                progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
+                progressBar.progressProperty().bind(task.getProgress());
+                task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (newValue) {
+                        progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
+                    }
+                });
+                task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (newValue) {
+                        progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
+                    }
+                });
+                Label label = header.getNextLabel(nextIndex);
+                label.setText(task.get4DigId());
+                // header.addProgress(progressBar,label,nextIndex);
             }
         });
-        task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
-                progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
-            }
-        });
-        Label label = header.getNextLabel(nextIndex);
-        label.setText(task.get4DigId());
-       // header.addProgress(progressBar,label,nextIndex);
+        return false;
     }
-
 
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;

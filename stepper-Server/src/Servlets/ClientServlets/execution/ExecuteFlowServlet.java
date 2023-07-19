@@ -53,9 +53,12 @@ public class ExecuteFlowServlet extends HttpServlet {
 
         FlowExecution flowExecution = CreateFlowExecution(freeInputsList, flowName, dataManager,username);
         Execute(flowExecution, dataManager);
+        String id= flowExecution.getUniqueId().toString();
+        resp.setHeader("flowId",id);
+
 
         //put flowExecutionDTO in dataManager
-        sendBackFlowExeDTO(resp, flowExecution);
+//        sendBackFlowExeDTO(resp, flowExecution); todo move to new servlet
         resp.setStatus(200);
 
     }

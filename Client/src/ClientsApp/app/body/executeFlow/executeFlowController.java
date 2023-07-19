@@ -681,7 +681,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     private void showExecutionDetails() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("executionDetails/ExecutionsDetails.fxml"));
-        ExecutionsDetails executionsDetails = new ExecutionsDetails();
+        //ExecutionsDetails executionsDetails = new ExecutionsDetails();
         try {
 
             Parent root = loader.load();

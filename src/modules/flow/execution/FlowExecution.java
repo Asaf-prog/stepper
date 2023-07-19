@@ -236,6 +236,10 @@ public class FlowExecution implements Serializable {//This class accumulates all
     public Observable isDoneProperty() {
         return isDone;
     }
+
+    public boolean isDone() {
+        return isDone.getValue();
+    }
 }
 
 

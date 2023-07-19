@@ -68,10 +68,18 @@ public class ExecutionsDetails {
 
     public String currStyle="";
     private Gson gson = new Gson();
+    private String flowId=null;
+    public ExecutionsDetails(String flowid) {
+        this.flowId=flowid;
+    }
+    public ExecutionsDetails() {
+    }
+
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
+
     @FXML
     void initialize() {
         setTheme();
@@ -79,7 +87,7 @@ public class ExecutionsDetails {
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
-        getLastFlowExecutionForUser();
+        getFlowExecutionForUser();
 
 //        theFlow = getLastFlowExecutionForUser(stepperData);
 //
@@ -91,10 +99,11 @@ public class ExecutionsDetails {
 //        }
     }
 
-    private void getLastFlowExecutionForUser() {
+    private void getFlowExecutionForUser() {
         String finalurl = HttpUrl.
                 parse(ClientConstants.GET_LAST_FLOW)
                 .newBuilder()
+                .addQueryParameter("flowId", flowId)
                 .build().toString();
         ClientHttpClientUtil.runAsync(finalurl, new Callback() {
             @Override
