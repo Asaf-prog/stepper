@@ -107,7 +107,7 @@ public class AdminStepperApplication extends Application {
         if (loto<90)
             return false;
         else
-            return true;
+            return false;
 
 
     }

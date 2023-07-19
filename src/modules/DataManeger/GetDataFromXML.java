@@ -1,6 +1,5 @@
 package modules.DataManeger;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Part;
 import modules.stepper.StepperDefinitionExceptionItems;
 import modules.stepper.Stepper;
 import modules.stepper.StepperDefinitionException;
@@ -27,14 +26,15 @@ public class GetDataFromXML {
         stepperData.validateStepper();
         sentToStepper(stepperData);
 }
-    public static void fromStream2Stepper(InputStream stream)throws Exception{
+    public static DataManager fromStream2Stepper(InputStream stream)throws Exception{
         JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(new StreamSource(stream));//import all data from xml to stepperDemo
         DeepCopy deepCopy = new DeepCopy(stStepper);
         Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
         stepperData.validateStepper();
-        sentToStepper(stepperData);
+        //sentToStepper(stepperData);
+        return  new DataManager(stepperData);
 
     }
     private static void sentToStepper(Stepper stepperData) {DataManager dataManager = new DataManager(stepperData);}//the one and only data manager

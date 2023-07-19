@@ -103,7 +103,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     void initialize() {
         setTheme();
-        Stepper stepperData = DataManager.getData();
+        //Stepper stepperData = DataManager.getData();
         asserts();
         setBisli();
         setupTable(stepperData);

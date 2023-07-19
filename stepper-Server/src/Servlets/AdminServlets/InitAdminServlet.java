@@ -26,7 +26,8 @@ public class InitAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("init admin servlet...");
-        Stepper stepper = DataManager.getData();
+        DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");
+        Stepper stepper = dataManager.getData();
         List<FlowDefinitionDTO> flows=getFlowsDTO(stepper);
         String flowsJson = gson.toJson(flows);
         List<String> users = stepper.getUsers();

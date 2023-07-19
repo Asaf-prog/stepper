@@ -29,15 +29,16 @@ import javafx.util.Pair;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
-import modules.mappings.Continuation;
-import modules.mappings.ContinuationMapping;
 import modules.mappings.InitialInputValues;
-import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
 import services.stepper.other.ContinuationMappingDTO;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -619,29 +620,31 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (!isComeFromHistory)
             setTheNewInputsThatTheUserSupply();
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        currentFlow.setUserInputs(freeInputsTemp);
         showDetails.setDisable(true);
         continuation.setVisible(true);
-//        body.getMVC_controller().executeFlow(currentFlow);
+        body.getMVC_controller().executeFlow(currentFlow);
         //todo 6 same as 4
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
         isComeFromHistory = false;
 
-        FlowExecution lastFlowExecution = getLastFlowExecution();
+       // FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
         showDetails.setDisable(false);
-        enablesDetails(lastFlowExecution);
+       // enablesDetails(lastFlowExecution);
         showDetails.setDisable(false);
 
-        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                Platform.runLater(() -> {
-                    popupDetails();
-                });
-            }
-        });
+//
+//        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
+//            @Override
+//            public void invalidated(Observable observable) {
+//                Platform.runLater(() -> {
+//                    popupDetails();
+//                });
+//            }
+//        });
     }
     private void enablesDetails(FlowExecution lastFlowExecution) {
         if (lastFlowExecution != null) {
@@ -700,7 +703,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
 
     private FlowExecution getLastFlowExecution() {
-        return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
+        if (stepperData == null)
+            stepperData = DataManager.getData();
+        if (stepperData.getFlowExecutions()!= null && stepperData.getFlowExecutions().size() != 0)
+             return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
+        return null;
     }
     private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, String type, HBox Hbox,boolean isOptional) {
         if (addButton.getText().equals("Edit")) {
@@ -713,7 +720,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         int index = getIndexOfLabel(Hbox);
                         Label label = (Label) Hbox.getChildren().get(index);
                         label.setText(selectedDirectory.getAbsolutePath());
-                        data = selectedDirectory.getAbsolutePath();
+                        data = selectedDirectory.getAbsolutePath();//already valid
                     }
 
             } else {
@@ -733,13 +740,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         else {
             if (!data.isEmpty() && !nameOfDD.equals("FOLDER_NAME")) {
-                Boolean valid=validateInput(data, type,textField,addButton);
-                if (valid) {
-                    freeInputsTemp.add(new Pair<>(nameOfDD, data));
-                    addButton.setText("Edit");
-                }else {
-                    addButton.setText("Save");
-                }
+               validateInput(data, type,textField,addButton,nameOfDD);
 
             } else if (nameOfDD.equals("FOLDER_NAME")) {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -773,35 +774,54 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     }
 
-    private boolean validateInput(String data, String type, TextField textField,Button btn) {
-        if (type.equals(Integer.class)) {
-            try {
-                Integer.parseInt(data);
-            } catch (NumberFormatException e) {
-                String msg = "Please enter a number";
-                setApropTooltip(textField, msg);
-                return false;
-            }
-        } else if (type.equals(Double.class)) {
-            try {
-                Double.parseDouble(data);
-            } catch (NumberFormatException e) {
-                String msg = "Please enter a double";
-                setApropTooltip(textField, msg);
-                return false;
-            }
-        }else if (type.equals(String.class)) {
-                if (data.isEmpty()) {
-                    String msg = "Please enter a String";
+    private void validateInput(String data, String type, TextField textField, Button btn, String nameOfDD) {
+
+        //build req for valid input servlet
+        String finalUrl = HttpUrl
+                .parse(ClientConstants.VALIDATE_INPUT)
+                .newBuilder()
+                .addQueryParameter("userInput", data)
+                .addQueryParameter("dataType", type)
+                .build()
+                .toString();
+        //dummy body
+        RequestBody body = RequestBody.create("", MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .put(body)
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {//general error
+                    String msg = "Please enter a valid input";
                     setApropTooltip(textField, msg);
-                    return false;
-                }if (data.contains("?")) {
-                    String msg = "Please enter a String without '?'";
-                    setApropTooltip(textField, msg);
-                    return false;
+                    btn.setText("Save");
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() == 200) {
+                    Platform.runLater(() -> {
+                        freeInputsTemp.add(new Pair<>(nameOfDD, data));
+                        btn.setText("Edit");
+                        if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()) {
+                            startExecute.setDisable(false);
+                        }
+                    });
+                } else {//code 422
+                    Platform.runLater(() -> {
+                        //get msg from response
+                        String msg = response.header("message");
+                        setApropTooltip(textField, msg);
+                        btn.setText("Save");
+                    });
                 }
+
             }
-        return true;
+        }
+        );
     }
 
     private static void setApropTooltip(TextField textField, String msg) {
@@ -848,7 +868,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @FXML
     void ContinuationExecution(ActionEvent event) {
-        body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        //body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        //todo send to server the free inputs and run the flow
+
 
        // body.getMVC_controller().executeFlow(currentFlow);
         //todo: remove^?^

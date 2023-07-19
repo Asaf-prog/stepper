@@ -7,7 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import modules.DataManeger.DataManager;
 import modules.DataManeger.GetDataFromXML;
+import modules.stepper.Stepper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -20,15 +23,16 @@ public class UploadXmlServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //print to page hello world
-        resp.getWriter().println("Hello World!");
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             InputStream res=request.getPart("file").getInputStream();
-            GetDataFromXML.fromStream2Stepper(res);
+            DataManager dataManager=GetDataFromXML.fromStream2Stepper(res);
+            //send to servletContext
+            request.getServletContext().setAttribute("dataManager",dataManager);
+
         } catch (Exception e) {
             System.out.println("failed to upload xml... :)");
             throw new RuntimeException(e);

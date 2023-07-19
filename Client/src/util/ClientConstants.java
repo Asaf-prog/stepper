@@ -19,7 +19,7 @@ public class ClientConstants {
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
-    public static final String EXECUTE_FLOW = "/Client/executeFlow";
+
 
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/stepper_server";
@@ -27,6 +27,9 @@ public class ClientConstants {
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
 
     public final static String GET_FLOWS = FULL_SERVER_PATH + "/Client/getFlows" ;
+    public static final String EXECUTE_FLOW = FULL_SERVER_PATH +"/Client/executeFlow";
+    public static final String GET_LAST_FLOW = FULL_SERVER_PATH + "/Client/getLastExecution";
+    public static final String VALIDATE_INPUT =FULL_SERVER_PATH + "/Client/validate";
 
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String LOAD_XML_FILE = FULL_SERVER_PATH + "/loadAndDecodeFile";

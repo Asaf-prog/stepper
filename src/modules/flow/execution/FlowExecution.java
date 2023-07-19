@@ -20,6 +20,7 @@ import java.util.*;
 
 public class FlowExecution implements Serializable {//This class accumulates all the data for the flow
     public final UUID uniqueId;
+
     private final FlowDefinition flowDefinition;
     private Map<String, String> summaryLines;
     private Map<String, List<Pair<String, String>>> logs;//List<Pair<stepName,List<Pair<date Log occur,the actual log>>>
@@ -29,7 +30,7 @@ public class FlowExecution implements Serializable {//This class accumulates all
     private Map<String, Object> executionFormalOutputs = new HashMap<>();
     private Map<String, Object> allExecutionOutputs = new HashMap<>();
     protected List<Pair<String,String>> userInputs;
-
+    private String executedBy = null;
     public transient SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
 
@@ -48,7 +49,6 @@ public class FlowExecution implements Serializable {//This class accumulates all
     public void setUserInputs() {
         this.userInputs = flowDefinition.getUserInputs();
         clearUserInputs();
-
     }
     public void clearUserInputs() {
         this.flowDefinition.clearUserInputs();
@@ -79,6 +79,18 @@ public class FlowExecution implements Serializable {//This class accumulates all
         this.flowDefinition = flowDefinition;
         startTime = new Date();
 
+        ///duration, number of steps, number of steps that failed,etc...
+    }
+    public String getOwner() {
+        return executedBy;
+    }
+    public FlowExecution(FlowDefinition flowDefinition,String username) {// Here, I am referring to a specific flow for tracing.
+        this.uniqueId = GenerateUniqueID();//each flow execution has a unique id
+        flowDefinition.addUsage();//for stats
+        this.flowDefinition = flowDefinition;
+        startTime = new Date();
+        executedBy = username;
+        userInputs = flowDefinition.getUserInputs();
         ///duration, number of steps, number of steps that failed,etc...
     }
 

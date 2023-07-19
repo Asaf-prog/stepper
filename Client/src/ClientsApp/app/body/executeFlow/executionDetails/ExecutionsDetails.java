@@ -3,6 +3,7 @@ package ClientsApp.app.body.executeFlow.executionDetails;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.executionsHistory.DataViewer.DataViewerController;
 import ClientsApp.app.management.style.StyleManager;
+import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,12 @@ import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
 import modules.stepper.Stepper;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import services.stepper.FlowExecutionDTO;
+import services.stepper.flow.StepUsageDeclarationDTO;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,9 +64,10 @@ public class ExecutionsDetails {
     private Label statusLabel;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
-    private FlowExecution theFlow=null;
+    private FlowExecutionDTO theFlow=null;
 
     public String currStyle="";
+    private Gson gson = new Gson();
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -71,34 +79,65 @@ public class ExecutionsDetails {
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
-        if (stepperData.getFlowExecutions().size()!=0)
-            theFlow = getLastFlowExecution(stepperData);
-        if (theFlow != null) {
-        updateLogs(theFlow, stepperData);
-        updateLogsTree(theFlow);
-        updateInputs(theFlow);
-        updateOutputs(theFlow);
-        updateStatusAndTime(theFlow);
-        }
+        getLastFlowExecutionForUser();
+
+//        theFlow = getLastFlowExecutionForUser(stepperData);
+//
+//        updateLogs(theFlow, stepperData);
+//        updateLogsTree(theFlow);
+//        updateInputs(theFlow);
+//        updateOutputs(theFlow);
+//        updateStatusAndTime(theFlow);
+//        }
     }
 
-    private void updateStatusAndTime(FlowExecution theFlow) {
+    private void getLastFlowExecutionForUser() {
+        String finalurl = HttpUrl.
+                parse(ClientConstants.GET_LAST_FLOW)
+                .newBuilder()
+                .build().toString();
+        ClientHttpClientUtil.runAsync(finalurl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                //get flow execution from response gson
+                FlowExecutionDTO flowExecution = null;
+                if (response.body() != null) {
+                    flowExecution = gson.fromJson(response.body().string(), FlowExecutionDTO.class);
+                }
+                theFlow = flowExecution;
+
+                updateLogs(theFlow);
+                updateLogsTree(theFlow);
+                updateInputs(theFlow);
+                updateOutputs(theFlow);
+                updateStatusAndTime(theFlow);
+            }
+        });
+
+    }
+
+    private void updateStatusAndTime(FlowExecutionDTO theFlow) {
         switch (theFlow.getFlowExecutionResult()){
-            case SUCCESS:
+            case "SUCCESS":
                 statusLabel.setText("Result: Success");
                 statusLabel.setStyle("-fx-text-fill: #24ff21;");
                 break;
-            case WARNING:
+            case "WARNING":
                 statusLabel.setText("Result: Warning");
                 statusLabel.setStyle("-fx-text-fill: #fffa00;");
                 break;
-            case FAILURE:
+            case "FAILURE":
                 statusLabel.setText("Result: Failure");
                 statusLabel.setStyle("-fx-text-fill: #ff0000;");
                 break;
         }
 
-        exeTime.setText("Execution time: "+theFlow.getTotalTime().toMillis()+" ms");
+        exeTime.setText("Execution time: "+theFlow.getTotalTime()+" ms");
         executionCounterLabel.setText("Execution number: "+theFlow.getUniqueId());
     }
 
@@ -122,7 +161,7 @@ public class ExecutionsDetails {
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
 
     }
-    private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {
+    private void updateLogs(FlowExecutionDTO flowExecution) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
         logsLabel.setText("logs for flow with id : "+flowExecution.getUniqueId());
@@ -138,12 +177,12 @@ public class ExecutionsDetails {
             newLog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
         logsVbox.getChildren().add(newLog);
     }
-    private void updateLogsTree(FlowExecution selectedFlow) {//check
+    private void updateLogsTree(FlowExecutionDTO selectedFlow) {//check
         stepTree.getChildren().clear();
         TreeView<String> stepTreeView = new TreeView<>();
         TreeItem<String> root = new TreeItem<>("Steps");
         stepTreeView.setRoot(root);
-        for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
+        for (StepUsageDeclarationDTO step : selectedFlow.getFlowDefinition().getSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
             if (selectedFlow.getLogs().get(step.getFinalStepName()) != null) {
                 for (Pair<String, String> log : selectedFlow.getLogs().get(step.getFinalStepName())) {
@@ -199,7 +238,7 @@ public class ExecutionsDetails {
         stepItem.getRoot().getChildren().add(logItem);
     }
 
-    public void setFlowExecution(FlowExecution flow) {
+    public void setFlowExecution(FlowExecutionDTO flow) {
         theFlow = flow;
     }
     private void updateTime(FlowExecution selectedFlow) {
@@ -208,7 +247,7 @@ public class ExecutionsDetails {
         exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" MS ");
     }
 
-    private void updateOutputs(FlowExecution selectedFlow) {
+    private void updateOutputs(FlowExecutionDTO selectedFlow) {
         Label title= (Label) this.outputsVbox.getChildren().get(0);
         Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
         this.outputsVbox4Value.getChildren().clear();
@@ -275,7 +314,7 @@ public class ExecutionsDetails {
         return result;
     }
 
-    private void updateInputs(FlowExecution selectedFlow) {
+    private void updateInputs(FlowExecutionDTO selectedFlow) {
         Label title = (Label) this.inputsVbox.getChildren().get(0);
         Label title2 = (Label) this.inputsVbox4Value.getChildren().get(0);
         this.inputsVbox.getChildren().clear();
