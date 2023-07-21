@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 import static modules.DataManeger.DataManager.stepperData;
 
@@ -629,12 +630,13 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             continuation.setDisable(false);
         }
         isComeFromHistory = false;
-
-       // FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
         showDetails.setDisable(false);
-       // enablesDetails(lastFlowExecution);
+        enablesDetails();
         showDetails.setDisable(false);
+
+       // FlowExecution lastFlowExecution = getLastFlowExecution();
+
 
 //
 //        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
@@ -646,16 +648,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 //            }
 //        });
     }
-    private void enablesDetails(FlowExecution lastFlowExecution) {
-        if (lastFlowExecution != null) {
-            if (lastFlowExecution.isDone.get()) {
+    private void enablesDetails() {
                 showDetails.setDisable(false);
                 showDetails.setVisible(true);
-            }
-
-        }
-
-
     }
     private void setTheNewInputsThatTheUserSupply(){
         freeInputsMandatory = new ArrayList<>();
@@ -672,32 +667,71 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
     }
     private void popupDetails() {
-        showExecutionDetails();
+
         showDetails.setDisable(false);
         showDetails.setVisible(true);
     }
     private void handleButtonActionForShowDetails() {
-        showExecutionDetails();
+        String id =getLastExecutionId();
+        FlowEnded(id);
     }
-    private void showExecutionDetails() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("executionDetails/ExecutionsDetails.fxml"));
-        //ExecutionsDetails executionsDetails = new ExecutionsDetails();
+
+    private String getLastExecutionId() {
+        return body.getMVC_controller().getLastExecutionId();
+    }
+
+    private boolean FlowEnded(String id) {
+        //send to server the request
+        Request request = new Request.Builder()
+                .url(ClientConstants.FLOW_ENDED)
+                .get()
+                .addHeader("flowId", id)
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("fail");
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() == 200) {
+                    Platform.runLater(() -> {
+                        showExecutionDetails(id);
+
+                    });
+                } else {
+                    System.out.println("fail,,");
+                }
+            }
+        });
+        return true;
+    }
+    private void showExecutionDetails(String id) {
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
+        // loader.setController(new ExecutionsDetails(id));
+        loader.setControllerFactory(controllerClass -> {
+            return new ExecutionsDetails(id);
+
+        });
         try {
 
             Parent root = loader.load();
             Stage stage = new Stage();
-            stages.add(stage);
             stage.setTitle("Flow Details");
             //set icon as previous stage
             stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
             stage.setScene(new Scene(root, 1060, 365));
             stage.show();
             //disable app until the user close the window
-        }catch (IllegalStateException | IOException ex) {
+        } catch (IllegalStateException | IOException ex) {
             VerySecretCode();
+            //todo remove@!!!
+            ex.printStackTrace();
         }
     }
-
     private void VerySecretCode() {
         // :)
     }
@@ -864,7 +898,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     }
     public void showDetails(ActionEvent actionEvent){
-        showExecutionDetails();
+        showExecutionDetails(body.getMVC_controller().getLastExecutionId());
     }
     @FXML
     void ContinuationExecution(ActionEvent event) {
@@ -879,7 +913,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
-        enablesDetails(lastFlowExecution);
+       // enablesDetails();
         showDetails.setDisable(false);
 
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {

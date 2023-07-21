@@ -84,6 +84,8 @@ public class ExecuteFlowServlet extends HttpServlet {
                     flowExecution.getUniqueId(), flowExecution, fLowExecutor);
             ExeManager.executeTask(task);
             stepperData.addFlowExecution(flowExecution);
+            //add task to ServletContext
+
 
             //setProgressBar(task);
             //header.setDisableOnExecutionsHistory();

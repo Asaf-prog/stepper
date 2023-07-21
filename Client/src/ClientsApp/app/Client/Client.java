@@ -10,6 +10,12 @@ public class Client {
 
         this.isExist = isExist;
     }
+
+    public String getName() {
+        return name;
+    }
+
+
     String name;
     boolean isExist; // check from the server if the admin is in the application
     public boolean getIsExist(){

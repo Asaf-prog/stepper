@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="365.0" minWidth="1060.0" prefHeight="365.0" prefWidth="1060.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="365.0" minWidth="1060.0" prefHeight="365.0" prefWidth="1060.0" style="-fx-background-color: #24292e;" styleClass="bodyPane" stylesheets="@../../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientsApp.app.body.executeFlow.executionDetails.ExecutionsDetails" >
    <children>
       <Label fx:id="executionCounterLabel" alignment="CENTER" layoutX="228.0" prefHeight="41.0" prefWidth="565.0" styleClass="titles" stylesheets="@../../../management/style/darkTheme.css" text="Flow X Details" textFill="#fffb05">
          <font>

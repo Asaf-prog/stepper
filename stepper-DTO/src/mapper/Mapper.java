@@ -45,13 +45,18 @@ public class Mapper {
 
     public static FlowExecutionDTO convertToFlowExecutionDTO(FlowExecution flowExecution) {
         FlowExecutionDTO res = new FlowExecutionDTO();
-        res.setFlowExecutionResult(flowExecution.getFlowExecutionResult().toString());//todo check if ok ?
+        res.setFlowExecutionResult(flowExecution.getFlowExecutionResult().toString());
+        res.setFlowDefinition(convertToFlowDefinitionAbsDTO(flowExecution.getFlowDefinition()));
         res.setLogs(flowExecution.getLogs());
+        res.setUniqueId(flowExecution.getUniqueId());
+        res.setUserInputs(flowExecution.getUserInputs());
+        res.setExecutionFormalOutputs(flowExecution.getExecutionOutputs());
+        res.setAllExecutionOutputs(flowExecution.getAllExecutionOutputs());
+
         long time=flowExecution.getTotalTime().toMillis();
         res.setTotalTime(String.valueOf(time));
         res.setStartTime(flowExecution.getStartDateTime());
         res.setSummaryLines(flowExecution.getSummaryLines());
-        res.setFlowDefinition(convertToFlowDefinitionAbsDTO(flowExecution.getFlowDefinition()));
 
 
 
@@ -69,9 +74,13 @@ public class Mapper {
     public static FlowDefinitionDTO convertToFlowDefinitionAbsDTO(FlowDefinition flowDefinition) {
         FlowDefinitionDTO res = new FlowDefinitionDTO(flowDefinition.getName(), flowDefinition.getDescription());
         res.setAvgTime(flowDefinition.getAvgTime());
+        res.setUserInputs(flowDefinition.getUserInputs());
+        res.setFreeInputsFromStepper(flowDefinition.getFlowFreeInputs());
+
         res.setFlowOutputs(flowDefinition.getFlowFormalOutputs());
         res.setFlowOfAllStepsOutputs(flowDefinition.getFlowOfAllStepsOutputs());
-
+        res.setStepsFromStepper(flowDefinition.getFlowSteps());
+       // res.setUserInputs(flowDefinition.getUserInputs());
 
         return res;
     }
@@ -120,5 +129,14 @@ public class Mapper {
 
     private static DataDefinitionDeclarationDTO convertToDataDefinitionDeclarationDTO(DataDefinitionDeclaration value) {
         return new DataDefinitionDeclarationDTO( value.getName(), value.necessity(), value.getUserString(), value.dataDefinition());
+    }
+
+    public static List<Pair<String, DataDefinitionDeclarationDTO>> ConvertToFreeInputsDTO(List<Pair<String, DataDefinitionDeclaration>> flowFreeInputs) {
+        List<Pair<String, DataDefinitionDeclarationDTO>> res = new ArrayList<>();
+        for (Pair<String, DataDefinitionDeclaration> pair : flowFreeInputs) {
+            DataDefinitionDeclarationDTO newDD = convertToDataDefinitionDeclarationDTO(pair.getValue());
+            res.add(new Pair<>(pair.getKey(), newDD));
+        }
+        return res;
     }
 }

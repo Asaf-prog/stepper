@@ -1,8 +1,10 @@
 package services.stepper;
 
 import javafx.util.Pair;
+import mapper.Mapper;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.mappings.InitialInputValues;
+import modules.step.api.DataDefinitionDeclaration;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.flow.StepUsageDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
@@ -114,6 +116,9 @@ public class FlowDefinitionDTO implements Serializable {
     public void setFreeInputs(List<Pair<String, DataDefinitionDeclarationDTO>> freeInputs) {
         this.freeInputs = freeInputs;
     }
+    public void setFreeInputsFromStepper(List<Pair<String, DataDefinitionDeclaration>> flowFreeInputs) {
+       this.freeInputs= Mapper.ConvertToFreeInputsDTO(flowFreeInputs);
+    }
 
     public List<Pair<String, String>> getUserInputs() {
         return userInputs;
@@ -201,5 +206,7 @@ public class FlowDefinitionDTO implements Serializable {
         return initialInputValues;
 
     }
+
+
 }
 

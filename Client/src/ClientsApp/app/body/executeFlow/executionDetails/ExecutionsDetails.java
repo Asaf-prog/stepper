@@ -4,6 +4,7 @@ import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.executionsHistory.DataViewer.DataViewerController;
 import ClientsApp.app.management.style.StyleManager;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -73,6 +74,7 @@ public class ExecutionsDetails {
         this.flowId=flowid;
     }
     public ExecutionsDetails() {
+
     }
 
 
@@ -88,24 +90,15 @@ public class ExecutionsDetails {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
         getFlowExecutionForUser();
-
-//        theFlow = getLastFlowExecutionForUser(stepperData);
-//
-//        updateLogs(theFlow, stepperData);
-//        updateLogsTree(theFlow);
-//        updateInputs(theFlow);
-//        updateOutputs(theFlow);
-//        updateStatusAndTime(theFlow);
-//        }
     }
 
     private void getFlowExecutionForUser() {
-        String finalurl = HttpUrl.
-                parse(ClientConstants.GET_LAST_FLOW)
-                .newBuilder()
-                .addQueryParameter("flowId", flowId)
-                .build().toString();
-        ClientHttpClientUtil.runAsync(finalurl, new Callback() {
+        Request request = new Request.Builder()
+                .url(ClientConstants.FLOW_ENDED)
+                .get()
+                .addHeader("flowId", flowId)
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("error");
@@ -120,11 +113,13 @@ public class ExecutionsDetails {
                 }
                 theFlow = flowExecution;
 
-                updateLogs(theFlow);
-                updateLogsTree(theFlow);
-                updateInputs(theFlow);
-                updateOutputs(theFlow);
-                updateStatusAndTime(theFlow);
+                Platform.runLater( () -> {
+                    updateLogs(theFlow);
+                    updateLogsTree(theFlow);
+                    updateInputs(theFlow);
+                    updateOutputs(theFlow);
+                    updateStatusAndTime(theFlow);
+                });
             }
         });
 
@@ -173,7 +168,7 @@ public class ExecutionsDetails {
     private void updateLogs(FlowExecutionDTO flowExecution) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
-        logsLabel.setText("logs for flow with id : "+flowExecution.getUniqueId());
+        logsLabel.setText("logs for flow with id : "+flowId);
         logsLabel.setStyle("-fx-font-size: 14;"+LOG_LINE_STYLE);
         logsVbox.getChildren().add(logsLabel);
         logsVbox.getChildren().add(stepTree);
@@ -303,7 +298,7 @@ public class ExecutionsDetails {
         });
         result.setOnMouseClicked(event -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/body/executionsHistory/DataViewer/DataViewer.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientsApp/app/body/executionsHistory/DataViewer/DataViewer.fxml"));
                         Parent root = (Parent) loader.load();
                         DataViewerController controller = loader.getController();
 
@@ -347,7 +342,7 @@ public class ExecutionsDetails {
                     inputValue.setStyle(currStyle);
                 });
                 inputValue.setOnMouseClicked(event -> {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/body/executionsHistory/DataViewer/DataViewer.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientsApp/app/body/executionsHistory/DataViewer/DataViewer.fxml"));
                             try {
                                 Parent root = loader.load();
                                 DataViewerController controller = loader.getController();

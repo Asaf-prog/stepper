@@ -19,7 +19,6 @@ import modules.flow.execution.executionManager.tasks.ExecutionTask;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
-import services.stepper.FlowExecutionDTO;
 import util.ClientConstants;
 import util.http.ClientHttpClientUtil;
 
@@ -33,6 +32,8 @@ public class MVC_controller {
     private headerController header;
     private bodyController body;
     List<Pair<String, String>> freeInputs;
+    private String lastExeId=null;
+
 
     private Gson gson = new Gson();
 
@@ -117,30 +118,26 @@ public class MVC_controller {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
                     Platform.runLater(() -> {
-                        popupDetails(id);
                         timer.cancel();
+                        popupDetails(id);
+                        lastExeId=id;
+
                     });
                 } else {
-                    System.out.println("fail,,");
+                    //probably processing
+
+
                 }
             }
 
             private void popupDetails(String id) {
+                //check why todo ... send few timnes!!!
                 FXMLLoader loader = new FXMLLoader(getClass()
                         .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
                // loader.setController(new ExecutionsDetails(id));
                 loader.setControllerFactory(controllerClass -> {
-                    if (controllerClass == ExecutionsDetails.class) {
-                        // Instantiate the controller and pass the data
                         return new ExecutionsDetails(id);
-                    } else {
-                        try {
-                            // If it's not the desired controller, use the default factory
-                            return controllerClass.getDeclaredConstructor().newInstance();
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+
                 });
                 try {
 
@@ -198,4 +195,7 @@ public class MVC_controller {
         return  freeInputs;
     }
 
+    public String getLastExecutionId() {
+        return lastExeId;
+    }
 }

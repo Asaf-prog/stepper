@@ -2,6 +2,7 @@ package modules.flow.execution;
 
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.util.Pair;
 import modules.dataDefinition.api.DataDefinition;
 import modules.flow.definition.api.FlowDefinition;
@@ -33,12 +34,12 @@ public class FlowExecution implements Serializable {//This class accumulates all
     private String executedBy = null;
     public transient SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
+    public transient SimpleDoubleProperty progress=new SimpleDoubleProperty(0.0);//todo maybe ruin ex2
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.writeBoolean(isDone.get());
     }
-
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         isDone = new SimpleBooleanProperty(in.readBoolean());
