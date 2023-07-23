@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import util.ClientConstants;
 import util.Constants;
 import util.http.ClientHttpClientUtil;
+import util.http.HttpClientUtil;
 
 
 import java.io.File;
@@ -282,6 +283,46 @@ public class headerController {
         Events();
         setCssScreenButtons();
         setVGrow();
+        ifAlreadyLoaded();
+    }
+
+    private void ifAlreadyLoaded() {
+        Request request = new Request.Builder().url(Constants.GET_IS_ALREADY_LOADED).build();
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error");
+                    alert.setContentText("Error connecting to server");
+                    alert.showAndWait();
+                });
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                boolean isAlreadyLoaded = Boolean.parseBoolean(responseBody.string());
+                responseBody.close();
+                if (isAlreadyLoaded) {
+                    Platform.runLater(() -> {
+                        setVisibleInformation();
+                        setAllButtonsAnable();
+                    });
+                }
+
+            }
+        });
+    }
+
+
+    private void setAllButtonsAnable() {
+        roleManagement.setDisable(false);
+        userManagement.setDisable(false);
+        Statistics.setDisable(false);
+        ExecutionsHistory.setDisable(false);
     }
 
     private void setMenuButtonGroup() {

@@ -52,6 +52,8 @@ public class Mapper {
         res.setUserInputs(flowExecution.getUserInputs());
         res.setExecutionFormalOutputs(flowExecution.getExecutionOutputs());
         res.setAllExecutionOutputs(flowExecution.getAllExecutionOutputs());
+        res.setExecutedBy(flowExecution.getOwner());
+        res.setIsDone(flowExecution.isDone);
 
         long time=flowExecution.getTotalTime().toMillis();
         res.setTotalTime(String.valueOf(time));

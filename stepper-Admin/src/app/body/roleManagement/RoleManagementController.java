@@ -259,12 +259,12 @@ public class RoleManagementController implements bodyControllerDefinition{
     }
 
     @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
+    public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
 
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+    public void SetCurrentFlow(FlowDefinitionDTO flow) {
 
     }
 

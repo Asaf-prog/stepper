@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import okhttp3.Response;
+import services.stepper.FlowDefinitionDTO;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +22,7 @@ import java.util.List;
 public class bodyController {
     private mainController main;
     private MVC_controller controller;
-    private FlowDefinitionImpl currentFlow;
+    private FlowDefinitionDTO currentFlow;
     private mainControllerClient controllerClient;
 
     private bodyControllerDefinition lastBodyController=null;
@@ -55,7 +56,7 @@ public class bodyController {
             bodyControllerDefinition bController = fxmlLoader.getController();
             bController.setFlowsDetails(main.getFlows());
             bController.setBodyController(this);
-            bController.SetCurrentFlow(currentFlow);
+            //  bController.SetCurrentFlow(currentFlow);
 
             bController.show();
 
@@ -63,8 +64,8 @@ public class bodyController {
             lastBodyController=bController;
         }
         catch (IOException e) {
-            e.printStackTrace();
             System.out.println("BASA1");
+            e.printStackTrace();
         }
     }
     public void showHistoryExe(){
@@ -79,10 +80,10 @@ public class bodyController {
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
-    public void setCurrentFlow(FlowDefinitionImpl flow){
+    public void setCurrentFlow(FlowDefinitionDTO flow){
         this.currentFlow = flow;
     }
-    public FlowDefinitionImpl getCurrentFlow(){
+    public FlowDefinitionDTO getCurrentFlow(){
         return currentFlow;
     }
     public MVC_controller getMVC_controller(){

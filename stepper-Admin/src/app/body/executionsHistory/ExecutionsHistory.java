@@ -4,10 +4,14 @@ package app.body.executionsHistory;
 import app.body.bodyController;
 import app.body.bodyInterfaces.bodyControllerDefinition;
 import app.body.executionsHistory.DataViewer.DataViewerController;
-
 import app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
 import app.management.style.StyleManager;
+import Constants.Constants;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,14 +36,16 @@ import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
+import modules.flow.execution.FlowExecutionResult;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
-import okhttp3.Request;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import services.stepper.FlowDefinitionDTO;
 import services.stepper.FlowExecutionDTO;
-import services.stepper.flow.DataDefinitionDeclarationDTO;
-import services.stepper.flow.StepUsageDeclarationDTO;
-import util.Constants;
+import util.ClientConstants;
+import util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -61,7 +67,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private VBox outputsVbox4Value;
     @FXML
     private Label flowOutputsLabel;
-
+    @FXML
+    private Button execute;
     @FXML
     private VBox outputsVbox;
     @FXML
@@ -87,18 +94,25 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private TableColumn<FlowExecutionTableItem,  String> resCol;
     @FXML
+    private TableColumn<FlowExecutionTableItem,  String> executedByCol;
+
+    @FXML
+    private  Button continuation;
+    @FXML
     private ChoiceBox<String> filterChoiceBox;
     private List<Pair<String, String>> freeInputsMandatory ;
-    private List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD ;
+    private List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD ;
     private List<Pair<String, String>> freeInputsOptional;
-    private List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD;
+    private List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private bodyController body;
-    private FlowExecutionDTO pickedExecution;
+    private FlowExecution pickedExecution;
 
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
     private String style;
+
+    private Gson gson = new Gson();
 
     private final List<Stage> stages = new ArrayList<>();
 
@@ -107,32 +121,25 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
     @FXML
     void initialize() {
+        style=execute.getStyle();
         setTheme();
-        //Stepper stepperData = DataManager.getData();
+        Stepper stepperData = DataManager.getData();
         asserts();
         setBisli();
+        setupTable();
         setAviadCursor();
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
-        getUpdates();
-        setupTable(stepperData);
         setFilter2Table();
-
+        setBodyButtonStyle(execute);
+        setBodyButtonStyle(continuation);
     }
-
-    private void getUpdates() {
-        Request request = new Request.Builder()
-                .url(Constants.GET_USER_EXECUTIONS)
-                .build();
-        //todo continue here
-    }
-
     @Override
     public void onLeave() {
-    for (Stage stage : stages) {
-        stage.close();
-    }
+        for (Stage stage : stages) {
+            stage.close();
+        }
     }
 
     private void setFilter2Table() {
@@ -205,6 +212,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert tableData != null : "fx:id=\"tableData\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert resCol != null : "fx:id=\"resCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert inputsVbox != null : "fx:id=\"inputsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
+        assert execute != null : "fx:id=\"execute\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert outputsVbox != null : "fx:id=\"outputsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert outputsVbox4Value != null : "fx:id=\"outputsVbox4Value\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert idCol != null : "fx:id=\"idCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
@@ -215,17 +223,112 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         assert executionCounterLabel != null : "fx:id=\"executionCounterLabel\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert timeCol != null : "fx:id=\"timeCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
         assert logsVbox != null : "fx:id=\"logsVbox\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
+        assert bisli != null : "fx:id=\"bisli\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
+        assert executedByCol != null : "fx:id=\"executedByCol\" was not injected: check your FXML file 'ExecutionsHistory.fxml'.";
     }
+    @FXML
+    void executeFlow(ActionEvent event) {
+        if (pickedExecution != null) {
+            FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
+            addValueOfFreeInputsByTypes(flowDefinition);
+            setFreeInputsByTypesToMandatoryAndOptionalWithDD(flowDefinition);
+//            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition,freeInputsMandatoryWithDD
+//            ,freeInputsOptionalWithDD);
+// todo: moveto server
+        }
+    }
+    private void setFreeInputsByTypesToMandatoryAndOptionalWithDD(FlowDefinitionImpl flowDefinition){
+        freeInputsMandatoryWithDD = new ArrayList<>();
+        freeInputsOptionalWithDD = new ArrayList<>();
+        for (Pair<String,DataDefinitionDeclaration>pair: flowDefinition.getFlowFreeInputs()){
+            if (pair.getValue().isMandatory())
+                freeInputsMandatoryWithDD.add(pair);
+            else
+                freeInputsOptionalWithDD.add(pair);
+        }
+    }
+    private void addValueOfFreeInputsByTypes(FlowDefinitionImpl flowDefinition){
+        freeInputsMandatory = new ArrayList<>();
+        freeInputsOptional = new ArrayList<>();
+        for (Pair<String, String> pair: pickedExecution.getUserInputs()){
+            if (existInMandatoryList(flowDefinition,pair.getKey()))
+                freeInputsMandatory.add(pair);
+
+            else freeInputsOptional.add(pair);
+        }
+    }
+    private boolean existInMandatoryList(FlowDefinitionImpl flowDefinition,String nameToSearch){
+        for (Pair<String, DataDefinitionDeclaration> pair: flowDefinition.getFlowFreeInputs()){
+            if (pair.getKey().equals(nameToSearch))
+                return pair.getValue().isMandatory();
+        }
+        return true;
+    }
+    @FXML
+    void onActionContinuation(ActionEvent event) {
+        if (pickedExecution != null) {
+            FlowDefinitionImpl flowDefinition = (FlowDefinitionImpl) pickedExecution.getFlowDefinition();
+            if (flowDefinition.getContinuations() == null)
+                return;
+            //build list from target flows in continuations
+
+            List<Continuation> continuations = flowDefinition.getContinuations();
+            List<String> targetFlows = new ArrayList<>();
+            for (Continuation continuation : continuations) {
+                targetFlows.add(continuation.getTargetFlow());
+            }
+            if (targetFlows.size() != 0) {
+                //popup scene with list of target flows to choose one from
+                Stage stage = new Stage();
+                stages.add(stage);
+                stage.setTitle("Choose target flow");
+                //ContinuationPopUp controller = new ContinuationPopUp(pickedExecution, targetFlows, stage, body);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("continuation/ContinuationPopUp.fxml"));
+               // loader.setController(controller);
+                Parent root;
+                try {
+                    root = loader.load();
+
+                    Scene scene = new Scene(root, 500, 300);
+                    stage.setScene(scene);
+                    stage.show();
+
+                }  catch (IllegalStateException | IOException ex) {
+                    // Handle the exception gracefully
+                }
+            } else{
+                Tooltip tooltip = new Tooltip("No continuations for this flow");
+                double tooltipX = continuation.localToScreen(continuation.getBoundsInLocal()).getMinX() + continuation.getWidth() / 2;
+                double tooltipY = continuation.localToScreen(continuation.getBoundsInLocal()).getMinY() - 30; // Adjust the offset as needed
+                tooltip.show(continuation, tooltipX, tooltipY);
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(e -> tooltip.hide());
+                delay.play();
+                tooltip.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: red; -fx-background-color: white;");
+                continuation.setTooltip(tooltip);
+            }
+        }
+
+    }
+
     private void setBodyButtonStyle(Button button) {
         button.setOnMouseEntered(event ->
-                button.setStyle(style + "-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff"));
+                button.setStyle(style+ "-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff"));
         button.setOnMouseExited(event ->
                 button.setStyle(style));
 
 
     }
 
-    private void updateLogs(FlowExecutionDTO flowExecution,Stepper stepperData) {
+    private FlowDefinitionImpl getFlowFromName(String targetFlow) {
+        for (FlowDefinitionImpl flowDefinition : stepperData.getFlows()) {
+            if (flowDefinition.getName().equals(targetFlow))
+                return flowDefinition;
+        }
+        return null;
+    }
+
+    private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
         logsLabel.setText("   logs for flow with id : " + flowExecution.getUniqueId());
@@ -243,55 +346,99 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             newLog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
         logsVbox.getChildren().add(newLog);
     }
-    private void setupTable(Stepper stepperData) {
-        tableData.setStyle("-fx-control-inner-background: transparent;");
-        initTable();
-        if(stepperData.getFlowExecutions().size() == 0) {
-            executionCounterLabel.setText("There are no Flow Executions");
-            return;
-        }else
-            executionCounterLabel.setText("There are " + stepperData.getFlowExecutions().size() + " Flow Executions");
+    private void setupTable() {
+        Request request = new Request.Builder()
+                .url(util.Constants.GET_TABLE_DATA)
+                .get()
+                .build();
 
-        final ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
-        ToggleGroup group = new ToggleGroup();
-
-        for (FlowExecution flowExecution : stepperData.getFlowExecutions()) {
-            FlowExecutionTableItem item =new FlowExecutionTableItem(flowExecution.getUniqueId(), flowExecution.getFlowDefinition().getName(),
-                    flowExecution.getStartDateTime(), flowExecution.getFlowExecutionResult());
-            flowExecution.isDone.addListener((observable, oldValue, newValue) -> {
-                if (newValue) {
-                    item.setResultFromExecutionResult(flowExecution.getFlowExecutionResult());
-                    setResultColumn();
-                }
-            });
-
-            item.addToToggleGroup(group);
-            data.add(item);
-            tableItemEvents(stepperData, group, item);
-        }
-        tableData.setItems(data);
-        setResultColumn();
-        allExecutions=data;
-
-
-
-        // Add the status column to the TableView
-        for (TableColumn<?, ?> column : tableData.getColumns()) {
-            if (column.getText().equals("Status")) { // Replace "ColumnName" with the actual column name
-                column = (TableColumn<FlowExecutionTableItem,  String>) resCol;
-                break;
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed to get table data");
             }
-        }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+
+                ResponseBody responseBody = response.body();
+                String body = responseBody.string();
+                responseBody.close();
+
+                if (body == "" || body == null)
+                    return;
+                try {
+                    List<FlowExecutionDTO> flowExecutionDTOS = gson.fromJson(body, new TypeToken<List<FlowExecutionDTO>>() {
+                    }.getType());
+                    if (flowExecutionDTOS == null)
+                        return;
+
+                    Platform.runLater(() -> {
+                                tableData.setStyle("-fx-control-inner-background: transparent;");
+                                initTable();
+                                executionCounterLabel.setText("There are " + stepperData.getFlowExecutions().size() + " Flow Executions");
+
+                                final ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
+                                ToggleGroup group = new ToggleGroup();
+                                FlowExecutionResult flowExecutionResult;
+                                for (FlowExecutionDTO flowExecution : flowExecutionDTOS) {
+                                    if (flowExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE))
+                                        flowExecutionResult = FlowExecutionResult.FAILURE;
+                                    else if (flowExecution.getFlowExecutionResult().equals(FlowExecutionResult.SUCCESS))
+                                        flowExecutionResult = FlowExecutionResult.SUCCESS;
+                                    else
+                                        flowExecutionResult = FlowExecutionResult.WARNING;
+
+
+                                    FlowExecutionTableItem item = new FlowExecutionTableItem(flowExecution.getUniqueId(), flowExecution.getExecutedBy(), flowExecution.getFlowDefinition().getName(),
+                                            flowExecution.getStartTime(), flowExecutionResult);
+                                    flowExecution.isDone.addListener((observable, oldValue, newValue) -> {
+                                        if (newValue) {
+                                            item.setResultFromExecutionResult(flowExecution.getFlowExecutionResult());
+                                            setResultColumn();
+                                        }
+                                    });
+
+                                    item.addToToggleGroup(group);
+                                    data.add(item);
+                                    tableItemEvents(stepperData, group, item);
+                                }
+                                tableData.setItems(data);
+                                setResultColumn();
+                                allExecutions = data;
+
+
+                                // Add the status column to the TableView
+                                for (TableColumn<?, ?> column : tableData.getColumns()) {
+                                    if (column.getText().equals("Status")) { // Replace "ColumnName" with the actual column name
+                                        column = (TableColumn<FlowExecutionTableItem, String>) resCol;
+                                        break;
+                                    }
+                                }
+                            }
+                    );
+
+                } catch (JsonSyntaxException e) {
+                    return;
+                }
+            }
+        });
+
+
+
     }
     private void initTable() {
         idCol.getStyleClass().add("titleOfColumn");
         nameCol.getStyleClass().add("titleOfColumn");
         timeCol.getStyleClass().add("titleOfColumn");
         resCol.getStyleClass().add("titleOfColumn");
+        executedByCol.getStyleClass().add("titleOfColumn");
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         resCol.setCellValueFactory(new PropertyValueFactory<>("result"));
+        executedByCol.setCellValueFactory(new PropertyValueFactory<>("executedBy"));
     }
 
     private void tableItemEvents(Stepper stepperData, ToggleGroup group, FlowExecutionTableItem item) {
@@ -299,13 +446,15 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             RadioButton selectedFlowRadioButton = (RadioButton) group.getSelectedToggle();
             if (selectedFlowRadioButton != null) {
                 UUID uuid= UUID.fromString(selectedFlowRadioButton.getText());
-                FlowExecutionDTO selectedFlow = stepperData.getFlowExecutionDTOById(uuid);
+                FlowExecution selectedFlow = stepperData.getFlowExecutionById(uuid);
                 pickedExecution=selectedFlow;
                 updateLogs(selectedFlow, stepperData);
                 updateInputs(selectedFlow);
                 updateOutputs(selectedFlow);
                 updateTime(selectedFlow);
                 updateLogsTree(selectedFlow);
+                continuation.setDisable(false);
+                execute.setDisable(false);
             }
         });
     }
@@ -337,7 +486,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         });
     }
 
-    private void updateLogsTree(FlowExecutionDTO selectedFlow) {
+    private void updateLogsTree(FlowExecution selectedFlow) {
 
         stepTree.getChildren().clear();
 
@@ -349,7 +498,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         stepTreeView.getStyleClass().add("tree");
 
         stepTreeView.setRoot(root);
-        for (StepUsageDeclarationDTO step : selectedFlow.getFlowDefinition().getSteps()) {
+        for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
             List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
             if (logsPerStep != null) {
@@ -402,13 +551,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         stepItem.getRoot().getChildren().add(logItem);
     }
 
-    private void updateTime(FlowExecutionDTO selectedFlow) {
+    private void updateTime(FlowExecution selectedFlow) {
         exeTime.setDisable(false);
         exeTime.setVisible(true);
-        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime()+" ms ");
+        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" ms ");
     }
 
-    private void updateOutputs(FlowExecutionDTO selectedFlow) {
+    private void updateOutputs(FlowExecution selectedFlow) {
         Label title= (Label) this.outputsVbox.getChildren().get(0);
         Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
         this.outputsVbox4Value.getChildren().clear();
@@ -471,7 +620,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         );
         return result;
     }
-    private void updateInputs(FlowExecutionDTO selectedFlow) {
+    private void updateInputs(FlowExecution selectedFlow) {
         Label title= (Label) this.inputsVbox.getChildren().get(0);
         Label title2= (Label) this.inputsVbox4Value.getChildren().get(0);
         this.inputsVbox.getChildren().clear();
@@ -513,7 +662,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 inputValue.setPrefHeight(28);
                 this.inputsVbox4Value.getChildren().add(inputValue);
                 this.inputsVbox.getChildren().add(newInput);
-
             }
         }
     }
@@ -525,11 +673,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         this.body=body;
     }
     @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
+    public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+    public void SetCurrentFlow(FlowDefinitionDTO flow) {
 
     }
 }

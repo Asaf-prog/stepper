@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import modules.flow.definition.api.FlowDefinitionImpl;
+import services.stepper.FlowDefinitionDTO;
 
 import java.awt.*;
 import java.util.List;
@@ -27,8 +28,8 @@ public class mainController {
    private MVC_controller mvcController;
    private double xOffset;
    private double yOffset;
-   private List<FlowDefinitionImpl> flows;
-   private FlowDefinitionImpl currentFlow;
+   private List<FlowDefinitionDTO> flows;
+   private FlowDefinitionDTO currentFlow;
    @FXML
    public void initialize() {
       //appBoxStyle = appBox.getStyle();
@@ -54,10 +55,10 @@ public class mainController {
       }
 
    }
-   public void setCurrentFlow(FlowDefinitionImpl flow) {
+   public void setCurrentFlow(FlowDefinitionDTO flow) {
       this.currentFlow = flow;
    }
-   public void setFlows(List<FlowDefinitionImpl> f){
+   public void setFlows(List<FlowDefinitionDTO> f){
        this.flows = f;
    }
 
@@ -67,7 +68,7 @@ public class mainController {
    public void RoleManagementInMenu(){
       bodyComponentController.showRoleManagement();
    }
-   public List<FlowDefinitionImpl> getFlows(){
+   public List<FlowDefinitionDTO> getFlows(){
       return flows;
    }
    public void showHistoryExe(){

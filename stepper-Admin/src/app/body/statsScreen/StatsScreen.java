@@ -18,6 +18,7 @@ import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.stepper.Stepper;
+import services.stepper.FlowDefinitionDTO;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -358,12 +359,12 @@ public class StatsScreen implements bodyControllerDefinition {
     }
 
     @Override
-    public void setFlowsDetails(List<FlowDefinitionImpl> list) {
+    public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
 
     @Override
-    public void SetCurrentFlow(FlowDefinitionImpl flow) {
+    public void SetCurrentFlow(FlowDefinitionDTO flow) {
 
     }
 }

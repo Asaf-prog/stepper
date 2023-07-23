@@ -1,4 +1,7 @@
 package services.stepper;
+import com.google.gson.annotations.Expose;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -19,11 +22,22 @@ public class FlowExecutionDTO implements Serializable {
     private Map<String, Object> executionFormalOutputs;//todo will have to change
     private Map<String, Object> allExecutionOutputs;
     private List<Pair<String, String>> userInputs;
+    private String executedBy;
+    @Expose(deserialize = false)
+    public transient SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
     // Constructors, getters, and setters
 
     public UUID getUniqueId() {
         return uniqueId;
+    }
+
+    public String getExecutedBy() {
+        return executedBy;
+    }
+
+    public void setExecutedBy(String executedBy) {
+        this.executedBy = executedBy;
     }
 
     public void setUniqueId(UUID uniqueId) {
@@ -100,6 +114,13 @@ public class FlowExecutionDTO implements Serializable {
 
     public void setUserInputs(List<Pair<String, String>> userInputs) {
         this.userInputs = userInputs;
+    }
+
+    public void setIsDone(SimpleBooleanProperty done) {
+        this.isDone=done;
+    }
+    public void setValIsDone(boolean done) {
+        this.isDone.setValue(done);
     }
 }
 

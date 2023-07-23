@@ -12,17 +12,20 @@ public class FlowExecutionTableItem {
     private String name;
     private String time;
     private String result;
+    private String executedBy;
 
-    public FlowExecutionTableItem(RadioButton id, String name, String time, String result) {
+    public FlowExecutionTableItem(RadioButton id,String executedBy, String name, String time, String result) {
         this.id = id;
         this.name = name;
         this.time = time;
         this.result = result;
+        this.executedBy = executedBy;
     }
-    public FlowExecutionTableItem(UUID id, String name, String time, FlowExecutionResult result) {
+    public FlowExecutionTableItem(UUID id,String executedBy, String name, String time, FlowExecutionResult result) {
         String idString = id.toString();
         this.id = new RadioButton(idString);
         this.id.getStyleClass().add("radio-button-in-table");
+        this.executedBy = executedBy;
         this.name = name;
         //get only the first 3 digits after the dot
         DecimalFormat decimalFormat = new DecimalFormat("#####.#####");
@@ -68,6 +71,14 @@ public class FlowExecutionTableItem {
         this.result = result;
     }
 
+    public String getExecutedBy() {
+        return executedBy;
+    }
+
+    public void setExecutedBy(String executedBy) {
+        this.executedBy = executedBy;
+    }
+
     public void addToToggleGroup(ToggleGroup group) {
         id.getStyleClass().add("radio-button-for-table");
         id.setToggleGroup(group);
@@ -92,10 +103,10 @@ public class FlowExecutionTableItem {
 
     }
 
-    public void setResultFromExecutionResult(FlowExecutionResult flowExecutionResult) {
-        if(flowExecutionResult==FlowExecutionResult.SUCCESS)
+    public void setResultFromExecutionResult(String flowExecutionResult) {
+        if(flowExecutionResult.equals(FlowExecutionResult.SUCCESS))//todo check if work
             this.result = "Success";
-        else if(flowExecutionResult==FlowExecutionResult.WARNING)
+        else if(flowExecutionResult.equals(FlowExecutionResult.WARNING))
             this.result = "Warning";
         else
             this.result = "Failure";
