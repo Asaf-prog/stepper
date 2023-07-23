@@ -25,6 +25,12 @@ public class ClientConstants {
     private final static String CONTEXT_PATH = "/stepper_server";
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
+    public static final String GET_FLOWS_FOR_ROLE = FULL_SERVER_PATH + "/getFlowsForRole";
+    public static final String GET_ROLES_FOR_CLIENT = FULL_SERVER_PATH + "/getRolesForClient";
+
+
+    public static final String VALIDATE_ADMIN = FULL_SERVER_PATH + "/Admin/valid";
+
 
     public final static String GET_FLOWS = FULL_SERVER_PATH + "/Client/getFlows" ;
     public static final String EXECUTE_FLOW = FULL_SERVER_PATH +"/Client/executeFlow";
@@ -35,7 +41,7 @@ public class ClientConstants {
 
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String LOAD_XML_FILE = FULL_SERVER_PATH + "/loadAndDecodeFile";
-    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
+    public final static String USERS_LIST = FULL_SERVER_PATH + "/users-list";
     public final static String LOGOUT = FULL_SERVER_PATH + "/chat/logout";//*********
     public final static String SEND_CHAT_LINE = FULL_SERVER_PATH + "/pages/chatroom/sendChat";//*********
     public final static String CHAT_LINES_LIST = FULL_SERVER_PATH + "/chat";//*********

@@ -18,6 +18,13 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +48,7 @@ public class AdminStepperApplication extends Application {
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(600);
         imageView.setFitHeight(250);
-        StackPane preloadLayout = new StackPane( imageView);
+        StackPane preloadLayout = new StackPane(imageView);
         preloadLayout.setPrefWidth(600);
         preloadLayout.setPrefHeight(300);
         ProgressBar progressBar = new ProgressBar();
@@ -51,8 +58,7 @@ public class AdminStepperApplication extends Application {
         //check if another instance of the app is running
         boolean alreadyRunning = isAppActive();
         if (!alreadyRunning) {
-
-
+            setAdminON();
             Scene preloadScene = new Scene(preloadLayout, 485, 245);
             primaryStage.setScene(preloadScene);
             primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -64,8 +70,7 @@ public class AdminStepperApplication extends Application {
 
             // Simulate loading time
             simulatePreloadTime(primaryStage, progressBar);
-        }else
-        {
+        } else {
             // Display the appropriate message in an alert dialog
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -84,111 +89,132 @@ public class AdminStepperApplication extends Application {
         }
     }
 
+    private void setAdminON() {
+
+        //create req to post method
+    }
+
     private boolean isAppActive() {
-        //check if instance of the app is already running
-//        try {
-//            // Get the list of process info
-//            ProcessBuilder processBuilder = new ProcessBuilder("tasklist.exe");
-//            Process process = processBuilder.start();
-//            InputStream inputStream = process.getInputStream();
-//            byte[] buffer = new byte[1024];
-//            inputStream.read(buffer);
-//            inputStream.close();
-//
-//            // Convert the buffer into a string
-//            String taskList = new String(buffer);
-//            // Check whether the app is running
-//            return taskList.contains("AdminStepperApplication");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-        int loto=(int)(Math.random()*100);
-        if (loto<90)
-            return false;
-        else
-            return false;
-
-
-    }
-
-    private static void setBounds(Stage primaryStage) {
-        primaryStage.initStyle(StageStyle.UNDECORATED);
-        ResizeHelper.addResizeListener(primaryStage);
-    }
-
-    private void showWindow(Stage primaryStage) {
-        primaryStage.setOpacity(1.0); // Make the window fully opaque
-    }
-
-    private void hideWindow(Stage primaryStage) {
-        primaryStage.setOpacity(0.99); // Make the window fully transparent
-    }
-
-
-    private static void setPrimaryStage(Stage primaryStage) {
-        primaryStage.setResizable(true);
-        primaryStage.setMaxWidth(1440);
-        primaryStage.setMaxHeight(960);
-
-    }
-    private void centerWindowOnScreen(Stage stage) {
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-
-        double screenWidth = bounds.getWidth();
-        double screenHeight = bounds.getHeight();
-        double windowWidth = stage.getWidth();
-        double windowHeight = stage.getHeight();
-
-        double windowX = (screenWidth - windowWidth) / 2;
-        double windowY = (screenHeight - windowHeight) / 2;
-
-        stage.setX(windowX);
-        stage.setY(windowY);
-
-
-
-    }
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-
-    private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
-        //Properties config = loadConfigProperties();
-        int preloadTime = 1800;
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        //check with the server if admin active
+        Request request = new Request.Builder()
+                .url(ClientConstants.VALIDATE_ADMIN)
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
             @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    try {
-                        // Load the main app UI
-                        Parent root = FXMLLoader.load(getClass().getResource("management/app.fxml"));
-                        Scene scene = new Scene(root, 1090, 734);
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        System.out.println("Something went wrong: " + e.getMessage())
 
-                        primaryStage.setScene(scene);
-                        ResizeHelper.addResizeListener(primaryStage);
-                        primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
-                        primaryStage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                );
             }
-        }, preloadTime);//problems with scrifts
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                //get boolean from header
+                boolean active = Boolean.parseBoolean(response.header("active"));
+                if (active) {
+                    //need to close app
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText("---Admin app in Use!!---");
+                        alert.setContentText("Only one instance of the Admin App is allowed.");
+                        alert.setOnCloseRequest(event -> {
+                            Platform.exit();
+                            System.exit(0);
+                        });
+                        alert.showAndWait();
+
+                        Platform.exit();
+                    });
+
+
+                } else {
+                    //continue
+                }
+            }
+        });
+        return false;
     }
 
-    private Properties loadConfigProperties() {
-        Properties config = new Properties();
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
-            //config.load(inputStream);
-        } catch (IOException e) {
-           Properties  p = new Properties();
-           p.setProperty("preload.time", "2000");
-           return p ;
+            private static void setBounds(Stage primaryStage) {
+                primaryStage.initStyle(StageStyle.UNDECORATED);
+                ResizeHelper.addResizeListener(primaryStage);
+            }
+
+            private void showWindow(Stage primaryStage) {
+                primaryStage.setOpacity(1.0); // Make the window fully opaque
+            }
+
+            private void hideWindow(Stage primaryStage) {
+                primaryStage.setOpacity(0.99); // Make the window fully transparent
+            }
+
+
+            private static void setPrimaryStage(Stage primaryStage) {
+                primaryStage.setResizable(true);
+                primaryStage.setMaxWidth(1440);
+                primaryStage.setMaxHeight(960);
+
+            }
+
+            private void centerWindowOnScreen(Stage stage) {
+                Screen screen = Screen.getPrimary();
+                Rectangle2D bounds = screen.getVisualBounds();
+
+                double screenWidth = bounds.getWidth();
+                double screenHeight = bounds.getHeight();
+                double windowWidth = stage.getWidth();
+                double windowHeight = stage.getHeight();
+
+                double windowX = (screenWidth - windowWidth) / 2;
+                double windowY = (screenHeight - windowHeight) / 2;
+
+                stage.setX(windowX);
+                stage.setY(windowY);
+
+
+            }
+
+            public static void main(String[] args) {
+                launch(args);
+            }
+
+
+            private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
+                //Properties config = loadConfigProperties();
+                int preloadTime = 1800;
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(() -> {
+                            try {
+                                // Load the main app UI
+                                Parent root = FXMLLoader.load(getClass().getResource("management/app.fxml"));
+                                Scene scene = new Scene(root, 1090, 734);
+
+                                primaryStage.setScene(scene);
+                                ResizeHelper.addResizeListener(primaryStage);
+                                primaryStage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
+                                primaryStage.show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                }, preloadTime);//problems with scrifts
+            }
+
+            private Properties loadConfigProperties() {
+                Properties config = new Properties();
+                try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+                    //config.load(inputStream);
+                } catch (IOException e) {
+                    Properties p = new Properties();
+                    p.setProperty("preload.time", "2000");
+                    return p;
+                }
+                return config;
+            }
         }
-        return config;
-    }
-}

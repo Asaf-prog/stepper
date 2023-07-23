@@ -1,11 +1,4 @@
-package app.body.userManagement;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+package app.body.roleManagement;
 
 import app.body.bodyController;
 import app.body.bodyInterfaces.bodyControllerDefinition;
@@ -16,15 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import modules.DataManeger.RoleManager;
 import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.flow.execution.FlowExecution;
 import modules.flow.execution.FlowExecutionResult;
 import okhttp3.*;
 import org.controlsfx.control.ListSelectionView;
@@ -32,12 +22,16 @@ import org.controlsfx.control.ToggleSwitch;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.FlowExecutionDTO;
-import util.ClientConstants;
 import util.Constants;
 import util.http.ClientHttpClientUtil;
 import util.http.HttpClientUtil;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class UserManagementController implements bodyControllerDefinition {
 

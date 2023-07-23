@@ -42,6 +42,11 @@ public class MVC_controller {
         this.header = header;
         this.body = body;
     }
+    public void updateRoles(List<String> roles){
+        Platform.runLater(() -> {
+            header.updateRoles(roles);
+        });
+    }
 
     public void executeFlow(FlowDefinitionDTO flow) {
         //send to server flow name and free inputs
@@ -65,6 +70,7 @@ public class MVC_controller {
                 System.out.println("fail");
 
             }
+
 
 
             @Override

@@ -35,6 +35,11 @@ import modules.flow.execution.FlowExecution;
 import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
+import okhttp3.Request;
+import services.stepper.FlowExecutionDTO;
+import services.stepper.flow.DataDefinitionDeclarationDTO;
+import services.stepper.flow.StepUsageDeclarationDTO;
+import util.Constants;
 
 import java.io.IOException;
 import java.util.*;
@@ -84,13 +89,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private ChoiceBox<String> filterChoiceBox;
     private List<Pair<String, String>> freeInputsMandatory ;
-    private List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD ;
+    private List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD ;
     private List<Pair<String, String>> freeInputsOptional;
-    private List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD;
+    private List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private bodyController body;
-    private FlowExecution pickedExecution;
+    private FlowExecutionDTO pickedExecution;
 
     ObservableList<FlowExecutionTableItem> allExecutions = FXCollections.observableArrayList();
     private String style;
@@ -106,14 +111,23 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         //Stepper stepperData = DataManager.getData();
         asserts();
         setBisli();
-        setupTable(stepperData);
         setAviadCursor();
         logsLabel.setText(". . .");
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
+        getUpdates();
+        setupTable(stepperData);
         setFilter2Table();
 
     }
+
+    private void getUpdates() {
+        Request request = new Request.Builder()
+                .url(Constants.GET_USER_EXECUTIONS)
+                .build();
+        //todo continue here
+    }
+
     @Override
     public void onLeave() {
     for (Stage stage : stages) {
@@ -211,7 +225,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
     }
 
-    private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {
+    private void updateLogs(FlowExecutionDTO flowExecution,Stepper stepperData) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
         logsLabel.setText("   logs for flow with id : " + flowExecution.getUniqueId());
@@ -285,7 +299,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             RadioButton selectedFlowRadioButton = (RadioButton) group.getSelectedToggle();
             if (selectedFlowRadioButton != null) {
                 UUID uuid= UUID.fromString(selectedFlowRadioButton.getText());
-                FlowExecution selectedFlow = stepperData.getFlowExecutionById(uuid);
+                FlowExecutionDTO selectedFlow = stepperData.getFlowExecutionDTOById(uuid);
                 pickedExecution=selectedFlow;
                 updateLogs(selectedFlow, stepperData);
                 updateInputs(selectedFlow);
@@ -323,7 +337,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         });
     }
 
-    private void updateLogsTree(FlowExecution selectedFlow) {
+    private void updateLogsTree(FlowExecutionDTO selectedFlow) {
 
         stepTree.getChildren().clear();
 
@@ -335,7 +349,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         stepTreeView.getStyleClass().add("tree");
 
         stepTreeView.setRoot(root);
-        for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
+        for (StepUsageDeclarationDTO step : selectedFlow.getFlowDefinition().getSteps()) {
             TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
             List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
             if (logsPerStep != null) {
@@ -388,13 +402,13 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         stepItem.getRoot().getChildren().add(logItem);
     }
 
-    private void updateTime(FlowExecution selectedFlow) {
+    private void updateTime(FlowExecutionDTO selectedFlow) {
         exeTime.setDisable(false);
         exeTime.setVisible(true);
-        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" ms ");
+        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime()+" ms ");
     }
 
-    private void updateOutputs(FlowExecution selectedFlow) {
+    private void updateOutputs(FlowExecutionDTO selectedFlow) {
         Label title= (Label) this.outputsVbox.getChildren().get(0);
         Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
         this.outputsVbox4Value.getChildren().clear();
@@ -457,7 +471,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         );
         return result;
     }
-    private void updateInputs(FlowExecution selectedFlow) {
+    private void updateInputs(FlowExecutionDTO selectedFlow) {
         Label title= (Label) this.inputsVbox.getChildren().get(0);
         Label title2= (Label) this.inputsVbox4Value.getChildren().get(0);
         this.inputsVbox.getChildren().clear();

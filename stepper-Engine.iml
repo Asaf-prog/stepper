@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="stepper-UI" exported="" />
+    <orderEntry type="module" module-name="stepper-UI" />
+    <orderEntry type="module" module-name="stepper-DTO" />
   </component>
 </module>

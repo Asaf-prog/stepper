@@ -35,6 +35,9 @@ public class mainController {
       //appBox.setStyle(appBoxStyle + "-fx-background-radius: 20;");
       StyleManager.setTheme(StyleManager.getCurrentTheme());
 
+
+
+
       if (headerComponentController != null && bodyComponentController != null) {
          headerComponentController.setMainController(this);
          bodyComponentController.setMainController(this);

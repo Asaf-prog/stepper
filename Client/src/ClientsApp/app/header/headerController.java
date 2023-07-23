@@ -186,6 +186,15 @@ public class headerController {
         setLastPressed("executionsHistory");
         main.showHistoryExe();
     }
+    public void updateRoles(List<String> roles){
+        myRoles.clear();
+        String rolesString = "";
+        for (String role : roles) {
+            rolesString += role + ", ";
+        }
+        myRoles.setText(rolesString);
+
+    }
 
 
     private void removeLastPressed() {

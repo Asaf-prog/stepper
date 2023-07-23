@@ -2,41 +2,62 @@ package modules.DataManeger.users;
 
 import modules.flow.execution.FlowExecution;
 
+import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StepperUser {
+    private static final String DEFAULT_ROLE = "all-flows";
     private String username;
-    private String Role;//will change...
-    private List<FlowExecution> flowExecutions;
+    private List<String> roles;//will change...
+    private List<String> flowExecutionsIDs;
 
-    public StepperUser(String username, String role, List<FlowExecution> flowExecutions) {
+    private boolean isManager=false;
+
+    public StepperUser(String username, List<String> role, List<String> flowExecutions) {
         this.username = username;
-        Role = role;
-        this.flowExecutions = flowExecutions;
+        roles = role;
+        this.flowExecutionsIDs = flowExecutions;
+        isManager=false;
+    }
+
+    public StepperUser(String username) {
+        this.username = username;
+        roles=new ArrayList<>();
+        roles.add(DEFAULT_ROLE);
+        flowExecutionsIDs=new ArrayList<>();
+        isManager=false;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getRole() {
-            return Role;
+    public List<String> getRoles() {
+            return roles;
     }
 
-    public List<FlowExecution> getFlowExecutions() {
-        return flowExecutions;
+    public List<String> getFlowExecutions() {
+        return flowExecutionsIDs;
     }
 
-    public void setFlowExecutions(List<FlowExecution> flowExecutions) {
-        this.flowExecutions = flowExecutions;
+    public void setFlowExecutions(List<String> flowExecutions) {
+        this.flowExecutionsIDs = flowExecutions;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setRole(String role) {
-        Role = role;
+    public void setRoles(List<String> role) {
+        roles = role;
     }
 
+    public boolean getIsManager() {
+        return isManager;
+    }
+
+    public void setManager(boolean manager) {
+        isManager = manager;
+    }
 }

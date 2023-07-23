@@ -6,6 +6,10 @@
         <set>
           <option value="message" />
           <option value="flowId" />
+          <option value="active" />
+          <option value="flowName" />
+          <option value="username" />
+          <option value="isManager" />
         </set>
       </option>
     </inspection_tool>

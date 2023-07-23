@@ -1,4 +1,5 @@
 package modules.stepper;
+ import mapper.Mapper;
  import modules.flow.execution.executionManager.ExecutionManager;
  import modules.mappings.*;
  import modules.flow.definition.api.FlowDefinitionImpl;
@@ -9,6 +10,7 @@ package modules.stepper;
  import modules.step.api.DataDefinitionDeclaration;
  import modules.step.api.StepDefinition;
  import schemeTest2.generatepackage.*;
+ import services.stepper.FlowExecutionDTO;
 
  import java.io.Serializable;
  import java.util.*;
@@ -57,6 +59,15 @@ public class Stepper implements Serializable {
         return null;
 
     }
+    public FlowExecutionDTO getFlowExecutionDTOById(UUID id){
+        Optional<FlowExecution> res = flowExecutions.stream().filter(flowExecution -> flowExecution.getUniqueId().equals(id)).findFirst();
+        if(res.isPresent()){
+            return Mapper.convertToFlowExecutionDTO(res.get());
+        }
+        return null;
+
+    }
+
 
     public Stepper(){
         flows = new ArrayList<>();

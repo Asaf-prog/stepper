@@ -19,7 +19,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -123,7 +122,40 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         });
 
         getLastUpdates();
+        GetMyRoles(body);
 
+    }
+
+    private void GetMyRoles(bodyController body3) {
+
+        String username=client.getName();
+        Request request = new Request.Builder()
+                .url(ClientConstants.GET_ROLES_FOR_CLIENT)
+                .addHeader("username",username)
+                .build();
+
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed to get the list of the flow definition");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    //get flows list from json body using gson
+                    ResponseBody responseBody = response.body();
+                    if (responseBody != null) {
+                        String body = responseBody.string();
+                        List<String> roles = gson.fromJson(body, new TypeToken<List<String>>() {
+                        }.getType());
+                        Platform.runLater(() -> {
+                            body3.getMVC_controller().updateRoles(roles);
+                        });
+                    }
+                }
+            }
+        });
     }
 
     private void getLastUpdates() {
@@ -325,7 +357,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         thiredVbox.setVisible(true);
         treeList.setVisible(false);
 
-        treeList.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>() {
+        treeList.setCellFactory(new javafx.util.Callback<TreeView<String>, TreeCell<String>>() {
             @Override
             public TreeCell<String> call(TreeView<String> param) {
                 return new TreeCell<String>() {

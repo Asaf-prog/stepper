@@ -1,0 +1,123 @@
+
+.button {
+    -fx-background-color: #5f67ff;
+
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+    -fx-border-color: #000000;
+}
+.button:hover {
+    -fx-background-color: #00ff9d;
+}
+.screenButton {
+    -fx-background-color: #5f67ff;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+}
+.radioButton:hover {
+    -fx-background-color: #00ff9d;
+}
+.flowDefPresent {
+    -fx-background-color: #00ff9d;
+}
+.radioButton {
+    -fx-background-color: #5f67ff;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+}
+.flowRadioButton {
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-size: 24;
+}
+.lists{
+    -fx-background-color: transparent;
+}
+
+.lists.list-view.list-cell:hover{
+    -fx-background-color: blue;
+
+}
+.lists.list-view.list-cell:selected{
+    -fx-background-color: green;
+
+}
+.lists.list-view.list-cell{
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-font-size: 16;
+}
+.list-view{
+    -fx-background-color: transparent;
+
+}
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: yellow;
+    -fx-font-size: 18;
+    -fx-background-radius: 15;
+    -fx-alignment: center;
+
+}
+.list-view .list-cell:hover {
+    -fx-background-color: #f817e0;
+    -fx-text-fill: white;
+    -fx-background-radius: 15;
+    -fx-alignment: center;
+
+
+}
+.list-view .list-cell:selected {
+    -fx-background-color: #8d077f;
+    -fx-text-fill: white;
+    -fx-background-radius: 15;
+    -fx-alignment: center;
+
+
+
+}
+.list-view.header {
+    visibility: hidden;
+    -fx-background-color: blue;
+    -fx-padding: 0; /* Optional: Remove padding to free up space */
+
+
+}
+.list-selection-view .header {
+    visibility: hidden;
+    -fx-background-color: blue;
+    -fx-padding: 0; /* Optional: Remove padding to free up space */
+
+}
+.list-selection-view:hover .header {
+    -fx-background-color: #00ff9d;
+}
+.list-selection-view{
+    -fx-text-fill: blue;
+}
+.toggle-switch {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.toggle-switch .thumb {
+    -fx-background-radius: 17;
+    -fx-padding: 13;
+}
+
+.toggle-switch .thumb-area{
+    -fx-background-radius: 5;
+    -fx-padding: 3 40 3 40; /* describes length: 50+50 = 100 width, 5+5=10 height */
+}
+
+.toggle-switch .label {
+    -fx-padding: 0 60 0 0; //label belonging to the toggle at the left side of the toggle with 90 between them
+
+}
+
+
+

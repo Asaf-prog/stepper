@@ -426,7 +426,7 @@ public class headerController {
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
-                DataManager.saveDataGui(file.getPath());
+                //DataManager.saveDataGui(file.getPath());//todo dont forget to remove
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -447,7 +447,7 @@ public class headerController {
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             try {
-                DataManager.loadDataGui(file.getPath());
+              //  DataManager.loadDataGui(file.getPath());
                 DataManager.getData().setXmlPath(DataManager.getData().getXmlPath());
                 ActivateMenuButtons();
                 loadXMLbutton.setText("Loaded:");

@@ -30,8 +30,6 @@ public class InitAdminServlet extends HttpServlet {
         Stepper stepper = dataManager.getData();
         List<FlowDefinitionDTO> flows=getFlowsDTO(stepper);
         String flowsJson = gson.toJson(flows);
-        List<String> users = stepper.getUsers();
-        String usersJson = gson.toJson(users);
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         try (PrintWriter out = resp.getWriter()) {//returning JSON object telling the client what version of chat is returned

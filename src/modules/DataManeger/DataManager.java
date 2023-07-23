@@ -3,22 +3,54 @@ package modules.DataManeger;
 import Menu.MenuException;
 import Menu.MenuExceptionItems;
 
+import modules.DataManeger.users.StepperUser;
+import modules.DataManeger.users.UserManager;
+import modules.flow.definition.api.FlowDefinition;
+import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
+import services.stepper.FlowDefinitionDTO;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class DataManager {
     public static Stepper stepperData;//the one and only steppe!!!
-    public DataManager(Stepper stepperData){
+    //UserManager userManager;
+    RoleManager roleManager;
+
+    public DataManager(Stepper stepperData) {
         this.stepperData = stepperData;
+        //this.userManager = new UserManager();
+        roleManager = new RoleManager(stepperData.getFlows());
+
     }
-    public DataManager(){
+
+    public DataManager() {
         stepperData = new Stepper();
+       // this.userManager = new UserManager();
+
     }
+
+    public RoleManager getRoleManager() {
+        return roleManager;
+    }
+
+    public void setRoleManager(RoleManager roleManager) {
+        this.roleManager = roleManager;
+    }
+
+//    public UserManager getUserManager() {
+//        return userManager;
+//    }
+
+//    public void setUserManager(UserManager userManager) {
+//        this.userManager = userManager;
+//    }
 
     public static void setData(Stepper stepperData) {
     }
@@ -31,7 +63,7 @@ public class DataManager {
         return stepperData;
     }
 
-    public static Stepper getData(){
+    public static Stepper getData() {
         return stepperData;
     }
 
@@ -41,7 +73,7 @@ public class DataManager {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter the path to the data file");
         String filePath = input.nextLine();
-        Optional<Path> path= Optional.ofNullable(Paths.get(filePath));
+        Optional<Path> path = Optional.ofNullable(Paths.get(filePath));
         if (!path.isPresent()) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
         }
@@ -50,15 +82,15 @@ public class DataManager {
             return true;
         } catch (IOException e) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File wont created...(try enter good path to your file)");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new MenuException(MenuExceptionItems.EMPTY, " unknown error..");
         }
 
     }
+
     public static boolean saveDataGui(String filePath) throws MenuException {
 //        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
-        Optional<Path> path= Optional.ofNullable(Paths.get(filePath));
+        Optional<Path> path = Optional.ofNullable(Paths.get(filePath));
         if (!path.isPresent()) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
         }
@@ -67,16 +99,17 @@ public class DataManager {
             return true;
         } catch (IOException e) {
             throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File wont created...(try enter good path to your file)");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new MenuException(MenuExceptionItems.EMPTY, " unknown error..");
         }
 
     }
+
     public static boolean isFilePathExist(String path) {
         File file = new File(path);
         return file.isFile() && file.exists();
     }
+
     public static boolean loadData() throws MenuException {
 //        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
         Scanner input = new Scanner(System.in);
@@ -93,6 +126,7 @@ public class DataManager {
         }
         return false;
     }
+
     public static boolean loadDataGui(String filePath) throws MenuException {
 //        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
         if (!isFilePathExist(filePath)) {
@@ -104,9 +138,20 @@ public class DataManager {
             return true;
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error reading data from file: " + filePath);
-           // e.printStackTrace();
+            // e.printStackTrace();
         }
         return false;
     }
+
+    public List<FlowDefinitionImpl> getFlowsForRole(List<String> roles) {
+        List<FlowDefinitionImpl> flows = new ArrayList<>();
+        for (String role : roles) {
+            //gets the flow def list of each role in the list ,from the role manager
+            Role r1 = roleManager.getRoleByName(role);
+            flows.addAll(r1.getFlows());
+        }
+        return flows;
+    }
+
 
 }

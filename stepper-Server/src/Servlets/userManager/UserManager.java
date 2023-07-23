@@ -1,26 +1,27 @@
 package Servlets.userManager;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import modules.DataManeger.users.StepperUser;
+
+import java.util.*;
 
 public class UserManager {
 
-        private final Set<String> usersSet = new HashSet();
+        private final List<StepperUser> usersSet = new ArrayList<>();
 
         public UserManager() {
+
         }
 
         public synchronized void addUser(String username) {
-            this.usersSet.add(username);
+            this.usersSet.add(new StepperUser(username));
         }
 
         public synchronized void removeUser(String username) {
             this.usersSet.remove(username);
         }
 
-        public synchronized Set<String> getUsers() {
-            return Collections.unmodifiableSet(this.usersSet);
+        public synchronized List<StepperUser> getUsers() {
+            return Collections.unmodifiableList(this.usersSet);
         }
 
         public boolean isUserExists(String username) {
@@ -28,4 +29,21 @@ public class UserManager {
         }
 
 
+    public List<String> getRolesForUser(String username) {
+        for (StepperUser user : usersSet) {
+            if (user.getUsername().equals(username)) {
+                return user.getRoles();
+            }
+        }
+        return null;
+    }
+
+    public StepperUser getUser(String username) {
+        for (StepperUser user : usersSet) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
