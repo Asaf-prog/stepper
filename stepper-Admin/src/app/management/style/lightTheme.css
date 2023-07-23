@@ -75,5 +75,9 @@
     -fx-text-fill: black;
     -fx-font-size: 16;
 }
+.saveButton:hover {
+    -fx-background-color: #fffc2e;
+    -fx-text-fill: black;
+}
 
 

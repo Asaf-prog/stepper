@@ -27,9 +27,18 @@ public class Constants {
 
     public static final String GET_USER_EXECUTIONS = FULL_SERVER_PATH + "/getUserExecutions";
     public static final String GET_ALL_ROLES = FULL_SERVER_PATH + "/getAllRoles";
+    public static final String GET_ALL_ROLES_DTOS = FULL_SERVER_PATH + "/getAllRolesDTOs";
+
+
+    public static final String GET_ALL_FLOWS = FULL_SERVER_PATH + "/getAllFlows";//todo
     public final static String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;//*********
     public static final String GET_USER_BY_NAME ="/getUser";
+    public static final String GET_USERS_FOR_ROLE =FULL_SERVER_PATH + "/getUsersForRole" ;//todo
+
     public static final String  GET_USER = FULL_SERVER_PATH + GET_USER_BY_NAME;
+
+    public static final String UPDATE_ROLE_FLOWS = FULL_SERVER_PATH + "/updateRoleFlows";
+
 
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String USERS_LIST = FULL_SERVER_PATH + "/users-list";

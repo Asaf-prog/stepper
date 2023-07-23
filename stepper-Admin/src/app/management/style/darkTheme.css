@@ -148,3 +148,8 @@
 .toggle-switch .thumb:pressed {
     -fx-effect: none;
 }
+
+.saveButton:hover {
+    -fx-background-color: #fffc2e;
+    -fx-text-fill: black;
+}

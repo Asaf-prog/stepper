@@ -10,6 +10,7 @@
           <option value="flowName" />
           <option value="username" />
           <option value="isManager" />
+          <option value="roleName" />
         </set>
       </option>
     </inspection_tool>
