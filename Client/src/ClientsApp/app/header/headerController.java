@@ -121,7 +121,13 @@ public class headerController {
         assert flowExecution != null : "fx:id=\"flowExecution\" was not injected: check your FXML file 'header.fxml'.";
         mainPane.setVisible(false);
         menuHbox.setVisible(false);
+        setRoleBox();
     }
+
+    private void setRoleBox() {
+        myRoles.setStyle("-fx-background-color: transparent; -fx-text-fill: yellow; -fx-font-size: 16px; -fx-font-weight: bold;-fx-wrap-text: true;");
+    }
+
     public void setVisibleInformation(){
         mainPane.setVisible(true);
         menuHbox.setVisible(true);
@@ -192,6 +198,10 @@ public class headerController {
         for (String role : roles) {
             rolesString += role + ", ";
         }
+        //replace last , with .
+        rolesString = rolesString.substring(0, rolesString.length() - 2);
+
+
         myRoles.setText(rolesString);
 
     }

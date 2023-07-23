@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +20,7 @@ public class GetRolesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getHeader("username");
+        String username = SessionUtils.getUsername(req);
         if (username==null){
             resp.setStatus(400);
             return;

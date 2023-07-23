@@ -128,10 +128,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
     private void GetMyRoles(bodyController body3) {
 
-        String username=client.getName();
         Request request = new Request.Builder()
                 .url(ClientConstants.GET_ROLES_FOR_CLIENT)
-                .addHeader("username",username)
                 .build();
 
         ClientHttpClientUtil.runAsync(request, new Callback() {
@@ -146,11 +144,11 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                     //get flows list from json body using gson
                     ResponseBody responseBody = response.body();
                     if (responseBody != null) {
-                        String body = responseBody.string();
-                        List<String> roles = gson.fromJson(body, new TypeToken<List<String>>() {
+                        String bodyres = responseBody.string();
+                        List<String> roles = gson.fromJson(bodyres, new TypeToken<List<String>>() {
                         }.getType());
                         Platform.runLater(() -> {
-                            body3.getMVC_controller().updateRoles(roles);
+                            body.getMVC_controller().updateRoles(roles);
                         });
                     }
                 }
@@ -178,9 +176,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                         String body = responseBody.string();
                         List<FlowDefinitionDTO> flowsDTO = gson.fromJson(body, new TypeToken<List<FlowDefinitionDTO>>() {
                         }.getType());
-                        for (FlowDefinitionDTO flow : flowsDTO) {
-                            System.out.println(flow.getName());
-                        }
+                        removeDuplicate(flowsDTO);
                         flows=flowsDTO;
                     }
                     Platform.runLater(() -> {
@@ -195,6 +191,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                             //button.setStyle("-fx-text-fill: #ffd54a");
                             button.getStylesheets().add("app/management/style/darkTheme.css");
                             button.getStyleClass().add("radioButton");
+                            button.setVisible(true);
+                            button.setDisable(false);
 
                             // button.getStylesheets().add("app/management/style/darkTheme.css");
                             button.setOnAction(event -> handleButtonAction(flow));
@@ -209,6 +207,25 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             }
         });
 
+    }
+
+    private void removeDuplicate(List<FlowDefinitionDTO> flowsDTO) {
+      //byname...
+        List<FlowDefinitionDTO> flowsDTO1=new ArrayList<>();
+        for (FlowDefinitionDTO flow:flowsDTO){
+            boolean flag=true;
+            for (FlowDefinitionDTO flow1:flowsDTO1){
+                if (flow.getName().equals(flow1.getName())){
+                    flag=false;
+                    break;
+                }
+            }
+            if (flag){
+                flowsDTO1.add(flow);
+            }
+        }
+        flowsDTO.clear();
+        flowsDTO.addAll(flowsDTO1);
     }
 
     @Override

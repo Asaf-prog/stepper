@@ -107,6 +107,7 @@ public class bodyController {
         }
         catch (IOException e) {
             System.out.println("BASA1");
+            e.printStackTrace();
         }
     }
     public void executeExistFlowScreen(FlowDefinitionDTO flow) {

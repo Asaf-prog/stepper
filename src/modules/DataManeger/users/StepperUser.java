@@ -25,6 +25,7 @@ public class StepperUser {
         this.username = username;
         roles=new ArrayList<>();
         roles.add(DEFAULT_ROLE);
+        roles.add("read-only");
         flowExecutionsIDs=new ArrayList<>();
         isManager=false;
     }

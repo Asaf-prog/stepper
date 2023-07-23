@@ -92,6 +92,7 @@ public class UserManagementController implements bodyControllerDefinition {
     @FXML
     private HBox forManagerSwitch;
     private ToggleSwitch isManager;
+    String style=null;
     @FXML
     void initialize() {
         asserts();
@@ -101,6 +102,18 @@ public class UserManagementController implements bodyControllerDefinition {
     }
 
     private void setSave() {
+        saveChanges.setOnMouseEntered(event -> {
+            style=saveChanges.getStyle();
+            saveChanges.setStyle(style+"-fx-background-color: #00ebf6;-fx-background-radius: 15;");
+
+
+        });
+        saveChanges.setOnMouseClicked(event -> {
+            saveChanges.setStyle(style+"-fx-background-color: #0d7277;-fx-background-radius: 15;");
+        });
+        saveChanges.setOnMouseExited(event -> {
+            saveChanges.setStyle(style);
+        });
         saveChanges.setOnAction(event -> {
             List<String> newRoles=roleManagement.getTargetItems();
             RequestBody body = RequestBody.create(gson.toJson(newRoles), MediaType.parse("application/json"));
@@ -241,6 +254,7 @@ public class UserManagementController implements bodyControllerDefinition {
                 List<String> roles = gson.fromJson(response.body().string(), new TypeToken<List<String>>() {
                 }.getType());
                 updateRolesList(roles);
+                response.close();
 
                 RequestBody body = RequestBody.create(gson.toJson(roles), MediaType.parse("application/json"));
                 Request request = new Request.Builder()
@@ -258,7 +272,7 @@ public class UserManagementController implements bodyControllerDefinition {
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        if (response.code() != 200) {//because of redirect
+                        if (response.code() != 200) {
 
                             Platform.runLater(() -> {
                                 //present error message
@@ -361,7 +375,13 @@ public class UserManagementController implements bodyControllerDefinition {
             List<FlowDefinitionDTO> flows = gson.fromJson(body, new TypeToken<List<FlowDefinitionDTO>>() {
             }.getType());
             for (FlowDefinitionDTO flow : flows) {
-                flowsList.getItems().add(flow.getName());
+                if (flowsList.getItems().contains(flow.getName()))
+                    continue;
+                else{
+                    flowsList.getItems().add(flow.getName());
+
+
+                }
             }
         }
 
@@ -486,10 +506,10 @@ public class UserManagementController implements bodyControllerDefinition {
                 add.getStyleClass().add("list-label");
                 //if execution is ended with error, text in red else in green
                 if (flow.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE.toString())) {//todo check if works
-                    add.setStyle(add.getStyle() + "-fx-text-fill: red;");
+                    add.setStyle(add.getStyle() + "-fx-text-fill: #ff1c1c;-fx-font-size: 12;");
                     executionsList.getItems().add(add);
                 } else {
-                    add.setStyle(add.getStyle() + "-fx-text-fill: green;");
+                    add.setStyle(add.getStyle() + "-fx-text-fill: #2cff2c;-fx-font-size: 12;");
                     executionsList.getItems().add(add);
                 }
             }

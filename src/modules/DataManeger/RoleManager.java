@@ -14,6 +14,7 @@ public class RoleManager {
     public RoleManager(){
         roles=new ArrayList<>();
         roles.add(new Role("all-flows",flows));
+        roles.add(new Role("read-only",flows.subList(0,flows.size()-1)));
 
 
 
@@ -22,6 +23,7 @@ public class RoleManager {
     public RoleManager(List<FlowDefinitionImpl> flows) {
         roles=new ArrayList<>();
         roles.add(new Role("all-flows",flows));
+        roles.add(new Role("read-only",flows.subList(0,flows.size()-1)));
 
 
     }

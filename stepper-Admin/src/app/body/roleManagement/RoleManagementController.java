@@ -50,7 +50,7 @@ public class RoleManagementController implements bodyControllerDefinition{
         private Button saveChanges;
 
         @FXML
-        private ListView<String> UsersList;
+        private ListView<String> usersList;
 
         @FXML
         private Label label;
@@ -63,8 +63,10 @@ public class RoleManagementController implements bodyControllerDefinition{
 
         @FXML
         private Button addRole;
+        String style=null;
 
-        private Gson gson = new Gson();
+
+    private Gson gson = new Gson();
         private ListSelectionView<String> flowsManagement;
         private String currentRole=null;
         private List<RoleDTO> currentRoles;
@@ -74,7 +76,7 @@ public class RoleManagementController implements bodyControllerDefinition{
         void initialize() {
             assert RoleInformationPane != null : "fx:id=\"RoleInformationPane\" was not injected: check your FXML file 'roleManagement.fxml'.";
             assert saveChanges != null : "fx:id=\"saveChanges\" was not injected: check your FXML file 'roleManagement.fxml'.";
-            assert UsersList != null : "fx:id=\"executionsList\" was not injected: check your FXML file 'roleManagement.fxml'.";
+            assert usersList != null : "fx:id=\"usersList\" was not injected: check your FXML file 'roleManagement.fxml'.";
             assert label != null : "fx:id=\"label\" was not injected: check your FXML file 'roleManagement.fxml'.";
             assert hbox4list != null : "fx:id=\"hbox4list\" was not injected: check your FXML file 'roleManagement.fxml'.";
             assert roleDescription != null : "fx:id=\"roleDescription\" was not injected: check your FXML file 'roleManagement.fxml'.";
@@ -86,6 +88,30 @@ public class RoleManagementController implements bodyControllerDefinition{
         }
 
     private void setSave() {
+        saveChanges.setOnMouseEntered(event -> {
+            style=saveChanges.getStyle();
+            saveChanges.setStyle(style+"-fx-background-color: #00ebf6;-fx-background-radius: 15;");
+
+
+        });
+        saveChanges.setOnMouseExited(event -> {
+            saveChanges.setStyle(style);
+        });
+        saveChanges.setOnMouseClicked(event -> {
+            saveChanges.setStyle(style+"-fx-background-color: #0d7277;-fx-background-radius: 15;");
+        });
+        addRole.setOnMouseEntered(event -> {
+            style=addRole.getStyle();
+            addRole.setStyle(style+"-fx-background-color: #00ebf6;-fx-background-radius: 15;");
+
+
+        });
+        addRole.setOnMouseClicked(event -> {
+            addRole.setStyle(style+"-fx-background-color: #0d7277;-fx-background-radius: 15;");
+        });
+        addRole.setOnMouseExited(event -> {
+            addRole.setStyle(style);
+        });
         saveChanges.setOnAction(event -> {
             List<String> newFlows=flowsManagement.getTargetItems();
             RequestBody body = RequestBody.create(gson.toJson(newFlows), MediaType.parse("application/json"));
@@ -157,6 +183,7 @@ public class RoleManagementController implements bodyControllerDefinition{
     }
 
     private void updateRolesList() {
+        rolesList.getItems().clear();
         ToggleGroup group = new ToggleGroup();
         for (RoleDTO role : currentRoles) {
             RadioButton button = new RadioButton(role.getName());
@@ -188,10 +215,10 @@ public class RoleManagementController implements bodyControllerDefinition{
                 }.getType());
 
                 Platform.runLater(() -> {
-                    UsersList.getItems().clear();
-                    UsersList.getItems().addAll(users);
-                    UsersList.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
-                    UsersList.setCellFactory(param -> new ListCell<String>() {
+                    usersList.getItems().clear();
+                    usersList.getItems().addAll(users);
+                    usersList.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
+                    usersList.setCellFactory(param -> new ListCell<String>() {
                         @Override
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
