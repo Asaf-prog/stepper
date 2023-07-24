@@ -787,9 +787,6 @@ public class headerController {
     private static void updateAdminApp(mainController main) throws IOException {
         //update using main and body controllers
         main.getBodyController().initAdminApp();
-
-
-
     }
 
 
