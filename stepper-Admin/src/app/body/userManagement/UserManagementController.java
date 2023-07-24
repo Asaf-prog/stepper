@@ -11,6 +11,7 @@ import app.body.bodyController;
 import app.body.bodyInterfaces.bodyControllerDefinition;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -21,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import modules.DataManeger.RoleManager;
 import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -93,11 +95,15 @@ public class UserManagementController implements bodyControllerDefinition {
     private HBox forManagerSwitch;
     private ToggleSwitch isManager;
     String style=null;
+    private bodyController bodyController;
+    ToggleGroup group = new ToggleGroup();
+
     @FXML
     void initialize() {
         asserts();
         getUsers();
         setSave();
+
 
     }
 
@@ -105,8 +111,6 @@ public class UserManagementController implements bodyControllerDefinition {
         saveChanges.setOnMouseEntered(event -> {
             style=saveChanges.getStyle();
             saveChanges.setStyle(style+"-fx-background-color: #00ebf6;-fx-background-radius: 15;");
-
-
         });
         saveChanges.setOnMouseClicked(event -> {
             saveChanges.setStyle(style+"-fx-background-color: #0d7277;-fx-background-radius: 15;");
@@ -118,7 +122,25 @@ public class UserManagementController implements bodyControllerDefinition {
             List<String> newRoles=roleManagement.getTargetItems();
             RequestBody body = RequestBody.create(gson.toJson(newRoles), MediaType.parse("application/json"));
             String username = currentUser;
+
+            //todo move to servlet dah!
+            //todo check if manager in servlet if so cant change roles unless the change is change the manager role:(
+
             Boolean isManager = this.isManager.isSelected();
+            if (isManager.booleanValue()==true){
+                Tooltip tooltip = new Tooltip("Manager can't change roles");
+                tooltip.setStyle("-fx-background-color: #0d7277; -fx-text-fill: white; -fx-font-size: 15px;");
+
+                // Assuming 'yourButton' represents the button where you want to show the tooltip.
+                Tooltip.install(saveChanges, tooltip);
+
+                // Use PauseTransition to hide the tooltip after 1 second
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(event2 -> Tooltip.uninstall(saveChanges, tooltip));
+                pause.play();
+
+                return;
+            }
 
             Request request = new Request.Builder()
                     .url(Constants.UPDATE_USER_ROLES)//and isManager
@@ -135,6 +157,7 @@ public class UserManagementController implements bodyControllerDefinition {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
                     String responseJson = response.body().string();
                     //only if success
                     if (response.isSuccessful()) {
@@ -171,7 +194,10 @@ public class UserManagementController implements bodyControllerDefinition {
                     List<StepperUser> users = gson.fromJson(usersJson, new TypeToken<List<StepperUser>>() {
                     }.getType());
                     currentUsers=users;
-                    updateUserList(users);
+                    Platform.runLater(() -> {
+                        updateUserList(users);
+                    });
+
                 } else {
                     Platform.runLater(() -> {
                         JOptionPane.showMessageDialog(null, "Failed to get users list");
@@ -390,7 +416,14 @@ public class UserManagementController implements bodyControllerDefinition {
     }//todo all need to be replaced with StepperUser
 
     private void updateUserList(List<StepperUser> users) {
-        ToggleGroup group = new ToggleGroup();
+        Toggle picked=group.getSelectedToggle();
+        group.getToggles().clear();
+        group=new ToggleGroup();
+        usersList.getItems().clear();
+
+        if (users==null)
+            return;
+
         for (StepperUser user : users) {
             RadioButton button = new RadioButton(user.getUsername());
             button.getStyleClass().add("flowRadioButton");
@@ -405,6 +438,11 @@ public class UserManagementController implements bodyControllerDefinition {
             });
             usersList.getItems().add(button);
             usersList.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
+            try{
+                group.selectToggle(picked);
+            }catch (Exception e){
+                System.out.println("no toggle selected ,probably first time or updated list");
+            }
 
         }
     }
@@ -523,12 +561,12 @@ public class UserManagementController implements bodyControllerDefinition {
 
     @Override
     public void show() {
-//        initialize();
+        initialize();
     }
 
     @Override
     public void setBodyController(bodyController body) {
-
+        this.bodyController=body;
     }
 
     @Override

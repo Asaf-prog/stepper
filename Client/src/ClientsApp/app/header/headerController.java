@@ -91,6 +91,7 @@ public class headerController {
     private Label IsManager;
     @FXML
     private Label NameInHeader;
+
     protected Client client;
 
 
@@ -122,6 +123,7 @@ public class headerController {
         mainPane.setVisible(false);
         menuHbox.setVisible(false);
         setRoleBox();
+
     }
 
     private void setRoleBox() {
@@ -542,17 +544,7 @@ public class headerController {
         rotateTransition.stop();
     }
 
-    private void ActivateMenuButtons() {
-        FlowsDefinition.setDisable(false);
-        Statistics.setDisable(false);
-        if (DataManager.getData() != null) {
-            if (DataManager.getData().getFlowExecutions().size() > 0)
-                ExecutionsHistory.setDisable(false);
-            else
-                ExecutionsHistory.setDisable(true);
-        }
 
-    }
     public void makeExecutionButtonVisible() {
         menuHbox.getChildren().add(flowExecution);
         flowExecution.setVisible(true);
@@ -565,10 +557,7 @@ public class headerController {
         ExecutionsHistory.setDisable(false);
     }
 
-    private void initializedData() {
-        Stepper stepperData = DataManager.getData();
-        main.setFlows(getFlowsDTO(stepperData.getFlows()));
-    }
+
     private List<FlowDefinitionDTO> getFlowsDTO(List<FlowDefinitionImpl> flows  ) {
         List<FlowDefinitionDTO> flowsDTO=new ArrayList<>();
         for (FlowDefinitionImpl flow : flows) {
@@ -628,4 +617,16 @@ public class headerController {
     public Client getClient(){
         return client;
     }
+
+    public void updateClient(boolean isManager) {
+        client.setManager(isManager);
+
+
+        Platform.runLater( () -> {
+            IsManager.setText(client.isManager());
+             }
+        );
+    }
+
+
 }

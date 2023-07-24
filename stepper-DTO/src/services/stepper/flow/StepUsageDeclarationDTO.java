@@ -192,4 +192,8 @@ public class StepUsageDeclarationDTO {
     public String getValueOfSourceNameByNameOfAliasFromInputs(String key) {
         return inputFromAliasToName.get(key);
     }
+
+    public void setAvgTime(double avgTime) {
+        this.avgTime = avgTime;
+    }
 }

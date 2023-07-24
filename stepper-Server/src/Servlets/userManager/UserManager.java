@@ -46,4 +46,14 @@ public class UserManager {
         }
         return null;
     }
+
+    public boolean isUserManager(String username) {
+
+        for (StepperUser user : usersSet) {
+            if (user.getUsername().equals(username)) {
+                return user.getIsManager();
+            }
+        }
+        return false;
+    }
 }

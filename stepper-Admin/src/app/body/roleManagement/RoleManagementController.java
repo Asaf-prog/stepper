@@ -17,15 +17,14 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.util.Pair;
 import modules.DataManeger.Role;
 import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import okhttp3.*;
 import org.controlsfx.control.ListSelectionView;
@@ -84,8 +83,89 @@ public class RoleManagementController implements bodyControllerDefinition{
             assert rolesList != null : "fx:id=\"rolesList\" was not injected: check your FXML file 'roleManagement.fxml'.";
             updateRoles();
             setSave();
+            setNewRole();
 
         }
+
+    private void setNewRole() {
+        //add the role to the list
+        addRole.setOnMouseClicked(event -> {
+            showAddRoleDialog();
+        });
+
+    }
+    private void showAddRoleDialog() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Add New Role");
+        dialog.setHeaderText("Enter Role Name and Description");
+
+        // Set the button types (OK and Cancel)
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Create the role name and description input fields.
+        TextField roleNameField = new TextField();
+        TextArea descriptionField = new TextArea();
+        descriptionField.setWrapText(true);
+
+        // Set the dialog content.
+        GridPane gridPane = new GridPane();
+        gridPane.add(new Label("Role Name:"), 0, 0);
+        gridPane.add(roleNameField, 1, 0);
+        gridPane.add(new Label("Description:"), 0, 1);
+        gridPane.add(descriptionField, 1, 1);
+
+        dialog.getDialogPane().setContent(gridPane);
+
+        // Convert the result to a pair when the OK button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return new Pair<>(roleNameField.getText(), descriptionField.getText());
+            }
+            return null;
+        });
+
+        // Show the dialog and wait for the user's input.
+        dialog.showAndWait().ifPresent(result -> {
+            // Add the new role to the list and update the table.
+            String roleName = result.getKey();
+            String description = result.getValue();
+
+            // Call a method to add the role to the list and update the table.
+            addRoleToListAndTable(roleName, description);
+        });
+    }
+
+    private void addRoleToListAndTable(String roleName, String description) {
+        RoleDTO roleDTO = new RoleDTO(roleName, description);
+        String roleString=gson.toJson(roleDTO);
+        RequestBody body = RequestBody.create(roleString, Constants.JSON);
+        Request request = new Request.Builder()
+                .url(Constants.ADD_ROLE)
+                .post(body)
+                .build();
+
+        HttpClientUtil.runAsync(request, new Callback() {
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+                Platform.runLater(() -> {
+                    updateRoles();
+                });
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    JOptionPane.showMessageDialog(null, "role name empty or already exist");
+                });
+
+            }
+        });
+
+
+    }
 
     private void setSave() {
         saveChanges.setOnMouseEntered(event -> {
@@ -139,7 +219,7 @@ public class RoleManagementController implements bodyControllerDefinition{
                     roleDTO.setFlows(updatedRole.getFlows());//only if success
                     if (response.isSuccessful()) {
                         Platform.runLater(() -> {
-                            updateRoles();//todo check if work
+                            //updateRoles();//todo check if work
                         });
                     } else {
                         Platform.runLater(() -> {
@@ -213,6 +293,10 @@ public class RoleManagementController implements bodyControllerDefinition{
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 List<String> users = gson.fromJson(response.body().string(), new TypeToken<List<String>>() {
                 }.getType());
+                response.close();
+                if (users == null) {
+                    return;
+                }
 
                 Platform.runLater(() -> {
                     usersList.getItems().clear();

@@ -123,6 +123,46 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
 
         getLastUpdates();
         GetMyRoles(body);
+        getIsManager();
+
+    }
+
+    private void getIsManager() {
+        Request request = new Request.Builder()
+                .url(ClientConstants.GET_IS_MANAGER)
+                .build();
+
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                if (responseBody == null) {
+                    return;
+                }
+                String bodyres = responseBody.string();
+                responseBody.close();
+                try{
+                    boolean isManager = Boolean.parseBoolean(bodyres);
+                    body.getMVC_controller().updateClient(isManager);
+                    Client updated=body.getClient();
+                    updated.setManager(isManager);
+                    body.setClient(updated);
+
+                }
+                catch (Exception e){
+                    System.out.println("failed to get the is manager");
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+        });
+
+
 
     }
 
@@ -149,6 +189,7 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                         }.getType());
                         Platform.runLater(() -> {
                             body.getMVC_controller().updateRoles(roles);
+                          //  body.getMVC_controller().updateManager(flows);
                         });
                     }
                 }

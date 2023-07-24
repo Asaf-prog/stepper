@@ -1,5 +1,6 @@
 package ClientsApp.app.MVC_controller;
 
+import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.executeFlow.executionDetails.ExecutionsDetails;
 import ClientsApp.app.header.headerController;
@@ -45,6 +46,11 @@ public class MVC_controller {
     public void updateRoles(List<String> roles){
         Platform.runLater(() -> {
             header.updateRoles(roles);
+        });
+    }
+    public void updateClient(boolean isManager){
+        Platform.runLater(() -> {
+            header.updateClient(isManager);
         });
     }
 

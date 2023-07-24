@@ -1,6 +1,7 @@
 package util;
 
 import com.google.gson.Gson;
+import okhttp3.MediaType;
 
 import java.net.URL;
 
@@ -18,7 +19,7 @@ public class Constants {
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
-
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
@@ -30,6 +31,9 @@ public class Constants {
     public static final String GET_ALL_ROLES = FULL_SERVER_PATH + "/getAllRoles";
     public static final String GET_ALL_ROLES_DTOS = FULL_SERVER_PATH + "/getAllRolesDTOs";
     public static final String GET_IS_ALREADY_LOADED = FULL_SERVER_PATH + "/getIsAlreadyLoaded";
+
+    public static final String ADD_ROLE = FULL_SERVER_PATH + "/addRole";
+
 
     public static final String GET_ALL_FLOWS = FULL_SERVER_PATH + "/getAllFlows";
 

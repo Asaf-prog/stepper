@@ -31,9 +31,9 @@ public class FlowExecutionTableItem {
         DecimalFormat decimalFormat = new DecimalFormat("#####.#####");
         //String formattedValue = decimalFormat.format(time);
         this.time = time;
-        if(result==FlowExecutionResult.SUCCESS)
+        if(result.equals(FlowExecutionResult.SUCCESS))
             this.result = "Success";
-        else if(result==FlowExecutionResult.WARNING)
+        else if(result.equals(FlowExecutionResult.WARNING))
             this.result = "Warning";
         else
             this.result = "Failure";

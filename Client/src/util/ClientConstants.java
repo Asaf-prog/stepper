@@ -21,13 +21,14 @@ public class ClientConstants {
     public final static String BASE_DOMAIN = "localhost";
 
 
+
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/stepper_server";
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
     public static final String GET_ROLES_FOR_CLIENT = FULL_SERVER_PATH + "/getRolesForClient";
 
-
+    public static final String GET_IS_MANAGER = FULL_SERVER_PATH + "/Client/isManager";
     public static final String VALIDATE_ADMIN = FULL_SERVER_PATH + "/Admin/valid";
 
 

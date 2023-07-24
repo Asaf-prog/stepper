@@ -19,6 +19,7 @@ import java.util.List;
 public class GetUserListServlet extends HttpServlet {
     private Gson gson=new Gson();
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("get user list servlet...");
@@ -28,7 +29,6 @@ public class GetUserListServlet extends HttpServlet {
         if (userManager == null) {
             System.out.println("user manager is null");
         } else {
-
 
             List<StepperUser> usernames = userManager.getUsers();
             String usersJson = gson.toJson(usernames);

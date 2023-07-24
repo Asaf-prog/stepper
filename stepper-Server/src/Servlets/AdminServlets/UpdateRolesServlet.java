@@ -9,8 +9,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import modules.DataManeger.DataManager;
+import modules.DataManeger.Role;
 import modules.DataManeger.RoleManager;
 import modules.DataManeger.users.StepperUser;
+import services.user.RoleDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +33,7 @@ public class UpdateRolesServlet extends HttpServlet {
         };
         List<String> roles  = gson.fromJson(roleString, typeToken.getType());
         setNewRoles(roles,dataManager,username, isManager);
+
         if (roles==null){
             resp.setStatus(400);
             return;
@@ -46,7 +49,11 @@ public class UpdateRolesServlet extends HttpServlet {
         UserManager userManager= (UserManager) getServletContext().getAttribute("userManager");
         StepperUser user = userManager.getUser(username);
         user.setManager(Boolean.parseBoolean(isManager));
-        user.setRoles(roles);
+        if (user.getIsManager()){
+            user.getRoles().clear();
+            user.getRoles().add("all-flows");
+        }else
+            user.setRoles(roles);
 
     }
 }

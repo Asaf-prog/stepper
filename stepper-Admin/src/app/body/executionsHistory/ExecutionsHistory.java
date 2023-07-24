@@ -28,16 +28,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+
 import javafx.util.Pair;
 import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.flow.definition.api.StepUsageDeclaration;
-import modules.flow.execution.FlowExecution;
+
 import modules.flow.execution.FlowExecutionResult;
-import modules.mappings.Continuation;
 import modules.step.api.DataDefinitionDeclaration;
-import modules.stepper.Stepper;
+
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
@@ -319,9 +317,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                                 ToggleGroup group = new ToggleGroup();
                                 FlowExecutionResult flowExecutionResult;
                                 for (FlowExecutionDTO flowExecution : flowExecutionDTOS) {
-                                    if (flowExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE))
+                                    if (flowExecution.getFlowExecutionResult().equals("FAILURE"))
                                         flowExecutionResult = FlowExecutionResult.FAILURE;
-                                    else if (flowExecution.getFlowExecutionResult().equals(FlowExecutionResult.SUCCESS))
+                                    else if (flowExecution.getFlowExecutionResult().equals("SUCCESS"))
                                         flowExecutionResult = FlowExecutionResult.SUCCESS;
                                     else
                                         flowExecutionResult = FlowExecutionResult.WARNING;

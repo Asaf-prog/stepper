@@ -58,5 +58,21 @@ public class RoleManager {
         }
         return rolesNames;
     }
+
+    public void isRoleExist(String name) {
+        for (Role role : roles) {
+            if (role.getName().equals(name)) {
+                throw new IllegalArgumentException("Role already exist");
+            }
+        }
+    }
+
+    public Role updateFlowsForRole(List<FlowDefinitionImpl> newFlows, String roleName) {
+        Role role=getRoleByName(roleName);
+        role.setNewFlows(newFlows);
+        return role;
+
+
+    }
 }
 
