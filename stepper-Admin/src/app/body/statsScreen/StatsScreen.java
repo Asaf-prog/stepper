@@ -3,6 +3,8 @@ package app.body.statsScreen;
 import app.body.bodyController;
 import app.body.bodyInterfaces.bodyControllerDefinition;
 import app.management.style.StyleManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -14,20 +16,25 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import modules.DataManeger.DataManager;
-import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.flow.definition.api.StepUsageDeclaration;
-import modules.stepper.Stepper;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
+import services.stepper.flow.StepUsageDeclarationDTO;
+import util.Constants;
+import util.http.HttpClientUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class StatsScreen implements bodyControllerDefinition {
-    FlowDefinitionImpl currSelectedFlow = null;//event on choosen flow
-    StepUsageDeclaration currSelectedStep = null;//event on choosen step
+    FlowDefinitionDTO currSelectedFlow = null;//event on choosen flow
+    StepUsageDeclarationDTO currSelectedStep = null;//event on choosen step
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -43,6 +50,8 @@ public class StatsScreen implements bodyControllerDefinition {
 
     @FXML
     private ListView<RadioButton> flowsList;
+
+    private Gson gson = new Gson();
 
     @FXML
     private Pane flowPane;
@@ -62,8 +71,9 @@ public class StatsScreen implements bodyControllerDefinition {
     @FXML
     private Pane stepperPane;
 
-    private Stepper stepperData;
     private String listStyle;
+
+    private List<FlowDefinitionDTO> updatedFlows;
 
 
     @FXML
@@ -72,14 +82,40 @@ public class StatsScreen implements bodyControllerDefinition {
         listStyle=flowsList.getStyle();
         asserts();
         setListsToVisible();
-        stepperData= DataManager.getData();
         //setListsView();
         Binds();
-        updateLists(); //set Labels and check if needed to put on tables
+        getLastUpdates();
         //set listeners
         setListeners();
         setListsView();
     }
+
+    private void getLastUpdates() {
+
+        Request request = new Request.Builder()
+                .url(Constants.GET_FLOWS_DEF)
+                .build();
+
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed to get all flows");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+                String json = response.body().string();
+                response.close();
+                List<FlowDefinitionDTO> flowExecutionDTOS = gson.fromJson(json, new TypeToken<List<FlowDefinitionDTO>>() {
+                }.getType());
+
+                updatedFlows = flowExecutionDTOS;
+                updateLists(); //set Labels and check if needed to put on tables
+            }
+        });
+    }
+
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
@@ -97,7 +133,7 @@ public class StatsScreen implements bodyControllerDefinition {
         assert chart2 != null : "fx:id=\"chart2\" was not injected: check your FXML file 'StatsScreen.fxml'.";
     }
 
-    private void setCharts(FlowDefinitionImpl selectedFlow) {
+    private void setCharts(FlowDefinitionDTO selectedFlow) {
 
 
         BarChart<String, Number> barChart = getBarChart(selectedFlow);
@@ -112,7 +148,7 @@ public class StatsScreen implements bodyControllerDefinition {
 
     }
 
-    private BarChart<String, Number> getBarChart(FlowDefinitionImpl selectedFlow) {
+    private BarChart<String, Number> getBarChart(FlowDefinitionDTO selectedFlow) {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Steps");
@@ -137,7 +173,7 @@ public class StatsScreen implements bodyControllerDefinition {
         series.setName("Time Taken");
         xAxis.setTickLabelRotation(90);
         // Add data to the series
-        for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+        for (StepUsageDeclarationDTO step : selectedFlow.getSteps()) {
             series.getData().add(new XYChart.Data<>(step.getFinalStepName(), step.getAvgTime()));
         }
 
@@ -162,17 +198,17 @@ public class StatsScreen implements bodyControllerDefinition {
     }
 
 
-    private static PieChart getPieChart(FlowDefinitionImpl selectedFlow) {
+    private static PieChart getPieChart(FlowDefinitionDTO selectedFlow) {
         PieChart pieChart = new PieChart();
         pieChart.getStyleClass().add("pie-chart");
         pieChart.setTitle("Flow Time Division");
         pieChart.setMaxHeight(270);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         double totalFlowTime = 0.0;
-        for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+        for (StepUsageDeclarationDTO step : selectedFlow.getSteps()) {
             totalFlowTime += step.getAvgTime();
         }
-        for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+        for (StepUsageDeclarationDTO step : selectedFlow.getSteps()) {
             double percentage = (step.getAvgTime() / totalFlowTime) * 100;
             PieChart.Data data = new PieChart.Data(step.getFinalStepName(), percentage);
 
@@ -258,15 +294,15 @@ public class StatsScreen implements bodyControllerDefinition {
 
     }
 
-    private void updateStepsList(FlowDefinitionImpl selectedFlow) {
+    private void updateStepsList(FlowDefinitionDTO selectedFlow) {
         stepsList.getItems().clear();
         stepStatsList.getItems().clear();
         if (selectedFlow != null) {
-            for (StepUsageDeclaration step : selectedFlow.getSteps()) {
+            for (StepUsageDeclarationDTO step : selectedFlow.getSteps()) {
                 stepsList.getItems().add(step.getFinalStepName());
                 stepStatsList.getItems().add("Used "+step.getTimeUsed()+" times ||" + " Average time: "+GoodLookingDouble(step.getAvgTime())+" ms");
             }
-            flowExecutionsSize.setText("There are "+selectedFlow.getFlowSteps().size()+" Steps in this flow");
+            flowExecutionsSize.setText("There are "+selectedFlow.getSteps().size()+" Steps in this flow");
         } else {
             flowExecutionsSize.setText("Nothing Selected yet");
         }
@@ -277,9 +313,9 @@ public class StatsScreen implements bodyControllerDefinition {
         return df.format(avgTime);
     }
 
-    private FlowDefinitionImpl getFlowFromRadioButton(RadioButton pick) {
+    private FlowDefinitionDTO getFlowFromRadioButton(RadioButton pick) {
         String flowName = pick.getText();
-        for (FlowDefinitionImpl flow : stepperData.getFlows()) {
+        for (FlowDefinitionDTO flow : updatedFlows) {
             if (flow.getName().equals(flowName)) {
                 return flow;
             }
@@ -288,15 +324,15 @@ public class StatsScreen implements bodyControllerDefinition {
         return null;
     }
     private void updateLists() {
-        if (stepperData.getFlows().size()>0){
+        if (updatedFlows.size()>0){
             ToggleGroup flowToggle = new ToggleGroup();
-            for (FlowDefinitionImpl flow:stepperData.getFlows()){
+            for (FlowDefinitionDTO flow:updatedFlows){
                 RadioButton flowSelection = new RadioButton(flow.getName());
                 flowSelection.setToggleGroup(flowToggle);
                 flowSelection.setOnAction(event -> {
                     RadioButton selectedFlowRadioButton = (RadioButton) flowToggle.getSelectedToggle();
                     if (selectedFlowRadioButton != null) {
-                        FlowDefinitionImpl selectedFlow = getFlowFromRadioButton(selectedFlowRadioButton);
+                        FlowDefinitionDTO selectedFlow = getFlowFromRadioButton(selectedFlowRadioButton);
                         updateStepsList(selectedFlow);
                         currSelectedFlow = selectedFlow;
                         setCharts(selectedFlow);
@@ -305,10 +341,10 @@ public class StatsScreen implements bodyControllerDefinition {
 
                 flowsList.getItems().add(flowSelection);//check what happened her
             }
-            flowDefinitionsSize.setText("There are "+stepperData.getFlows().size()+" Flow Definitions");
+            flowDefinitionsSize.setText("There are "+updatedFlows.size()+" Flow Definitions");
             //set stats table here
             //maybe add listener to the second list
-            for (FlowDefinitionImpl flow:stepperData.getFlows()){
+            for (FlowDefinitionDTO flow:updatedFlows){
                 String singleFlowStats= "Used "+flow.getTimesUsed()+" times ||" + " Average time: "+GoodLookingDouble(flow.getAvgTime())+" ms";
                 flowStatsList.getItems().add(singleFlowStats);
             }
@@ -320,7 +356,7 @@ public class StatsScreen implements bodyControllerDefinition {
         //set stats table here
 
         //sync all menu buttons
-        if (stepperData.getFlows().size() == 0) {//both are empty
+        if (updatedFlows.size() == 0) {//both are empty
             popAlert();//show appropriate message
         }
     }

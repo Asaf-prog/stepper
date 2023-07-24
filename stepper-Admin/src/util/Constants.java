@@ -31,10 +31,12 @@ public class Constants {
     public static final String GET_ALL_ROLES_DTOS = FULL_SERVER_PATH + "/getAllRolesDTOs";
     public static final String GET_IS_ALREADY_LOADED = FULL_SERVER_PATH + "/getIsAlreadyLoaded";
 
-    public static final String GET_ALL_FLOWS = FULL_SERVER_PATH + "/getAllFlows";//todo
+    public static final String GET_ALL_FLOWS = FULL_SERVER_PATH + "/getAllFlows";
+
+    public static final String GET_FLOWS_DEF = FULL_SERVER_PATH + "/getFlowsDefinitions";
     public final static String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;//*********
     public static final String GET_USER_BY_NAME ="/getUser";
-    public static final String GET_USERS_FOR_ROLE =FULL_SERVER_PATH + "/getUsersForRole" ;//todo
+    public static final String GET_USERS_FOR_ROLE =FULL_SERVER_PATH + "/getUsersForRole" ;
 
     public static final String  GET_USER = FULL_SERVER_PATH + GET_USER_BY_NAME;
 

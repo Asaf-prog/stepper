@@ -1,5 +1,5 @@
 package app.body.executionsHistory.DataViewer;
-import app.management.style.StyleManager;
+import ClientsApp.app.management.style.StyleManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,7 +45,7 @@ public class DataViewerController {
 
     }
     private static void setTheme() {
-        StyleManager.setTheme(StyleManager.getCurrentTheme());
+        ClientsApp.app.management.style.StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     @FXML
     void initialize() {
@@ -61,7 +61,7 @@ public class DataViewerController {
         assert list != null : "fx:id=\"list\" was not injected: check your FXML file 'DataViewer.fxml'.";
         assert tableView != null : "fx:id=\"tableView\" was not injected: check your FXML file 'DataViewer.fxml'.";
 
-       // init();
+        // init();
 
     }
 
@@ -97,7 +97,7 @@ public class DataViewerController {
         listPane.setDisable(false);
         listPane.setVisible(true);
         ObservableList<?> listData = FXCollections.observableArrayList((List<?>) data);
-       // listData.forEach(System.out::println);
+        // listData.forEach(System.out::println);
         ObservableList<String> listData2=FXCollections.observableArrayList();
         for (Object o:listData) {//convert to string
             String item =o.toString();
@@ -135,7 +135,7 @@ public class DataViewerController {
             tablePane.getChildren().add(new Label("-------------Empty Table---------------"));
 
 
-            for (int i = 0; i < relationData.getNumColumns(); i++) {
+        for (int i = 0; i < relationData.getNumColumns(); i++) {
             TableColumn<RelationData.SingleRow, String> column = new TableColumn<>(relationData.getValInList(i));
             final int columnIndex = i;
             column.setCellValueFactory(cellData -> {
@@ -153,7 +153,7 @@ public class DataViewerController {
                 + "-fx-font-family: \"Segoe UI Semibold\";"
                 + "-fx-alignment: top-center; -fx-background-color: blue; -fx-text-fill: purple;" +
                 "-fx-border-color: white; -fx-border-width: 1px;");
-       tablePane.getChildren().add(tableView);
+        tablePane.getChildren().add(tableView);
 
 
     }
@@ -191,7 +191,7 @@ public class DataViewerController {
             state = 1;
             otherPane.setDisable(false);
         }
-       return state;
+        return state;
     }
 
     public void setData(Object value, String name) {

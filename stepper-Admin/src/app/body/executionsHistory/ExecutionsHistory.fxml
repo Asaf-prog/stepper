@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.effect.Bloom?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.ExecutionsHistory">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1080" styleClass="bodyPane" stylesheets="@../../management/style/darkTheme.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.body.executionsHistory.ExecutionsHistory">
    <children>
       <TableView fx:id="tableData" editable="true" layoutX="12.0" layoutY="35.0" prefHeight="176.0" prefWidth="1057.0" style="-fx-background-color: transparent;" styleClass="Table" stylesheets="@../../management/style/darkTheme.css">
          <columns>
             <TableColumn fx:id="idCol" editable="false" minWidth="20.0" prefWidth="336.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" styleClass="tableColumn" text="Flow ID" />
-            <TableColumn fx:id="idCol1" editable="false" minWidth="20.0" prefWidth="191.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" styleClass="tableColumn" text="Executed By" />
+            <TableColumn fx:id="executedByCol" editable="false" minWidth="20.0" prefWidth="191.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana;-fx-alignment: center; -fx-font-size: 14; -fx-background-color: #36393e" styleClass="tableColumn" text="Executed By" />
 
             <TableColumn fx:id="nameCol" editable="false" prefWidth="232.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14; -fx-background-color: #36393e; -fx-alignment: center;" styleClass="tableColumn" text="Flow Name" />
             <TableColumn fx:id="timeCol" editable="false" maxWidth="296.0" prefWidth="156.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" styleClass="tableColumn" text="Time" />
-            <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="141.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" styleClass="tableColumn" text="Status" />
+            <TableColumn fx:id="resCol" editable="false" minWidth="0.0" prefWidth="139.0" style="-fx-text-fill: white;-fx-border-color: black; -fx-font-family: Verdana; -fx-font-size: 14;-fx-alignment: center; -fx-background-color: #36393e" styleClass="tableColumn" text="Status" />
          </columns>
       </TableView>
       <Label fx:id="executionCounterLabel" layoutX="415.0" layoutY="-4.0" prefHeight="37.0" prefWidth="251.0" styleClass="titles" stylesheets="@../../management/style/darkTheme.css" text="there are X flow Executions" textFill="#fffb05">
@@ -36,9 +27,9 @@
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="logsPane" layoutX="616.0" layoutY="232.0" prefHeight="252.0" prefWidth="458.0" style="-fx-background-color: transparent;">
+      <Pane fx:id="logsPane" layoutX="616.0" layoutY="232.0" prefHeight="291.0" prefWidth="458.0" style="-fx-background-color: transparent;">
          <children>
-            <ImageView fitHeight="252.0" fitWidth="462.0" layoutX="-6.0" layoutY="-1.0">
+            <ImageView fitHeight="291.0" fitWidth="462.0" layoutX="-6.0" layoutY="-1.0">
                <image>
                   <Image url="@content/commandScreen.png" />
                </image>
@@ -46,14 +37,14 @@
                   <InnerShadow color="#fffafa" />
                </effect>
             </ImageView>
-            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="220.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: transparent;">
+            <VBox fx:id="logsVbox" layoutY="31.0" prefHeight="266.0" prefWidth="429.0" spacing="3.0" style="-fx-background-color: transparent;">
                <children>
                   <Label fx:id="logsLabel" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="433.0" style="-fx-background-color: transparent;" textFill="#24ff21" wrapText="true">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="195.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@tableStuff/table-style.css" />
+                  <VBox fx:id="stepTree" blendMode="SRC_ATOP" prefHeight="240.0" prefWidth="429.0" spacing="5.0" style="-fx-background-color: transparent;" styleClass="vboxLog" stylesheets="@tableStuff/table-style.css" />
                </children>
             </VBox>
          </children>
@@ -112,18 +103,6 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="execute" disable="true" layoutX="845.0" layoutY="489.0" mnemonicParsing="false" onAction="#executeFlow" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text=" Execute" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Narrow" size="18.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="26.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@content/flash.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <ImageView fx:id="bisli" blendMode="SRC_ATOP" cacheHint="SPEED" fitHeight="190.0" fitWidth="172.0" layoutX="-45.0" layoutY="429.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@content/bisliGrill.png" />
@@ -143,17 +122,5 @@
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="continuation" alignment="CENTER" disable="true" layoutX="613.0" layoutY="489.0" mnemonicParsing="false" onAction="#onActionContinuation" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: yellow; -fx-border-color: yellow; -fx-border-radius: 20; -fx-border-width: 2;" styleClass="BodyButton" stylesheets="@../../management/style/darkTheme.css" text=" Continuation" textAlignment="CENTER" textFill="#e6ff04" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Narrow" size="18.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="22.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@content/right-arrow.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
    </children>
 </AnchorPane>
