@@ -47,6 +47,7 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.FlowExecutionDTO;
+import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.flow.StepUsageDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
 import util.ClientConstants;
@@ -106,9 +107,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     private ChoiceBox<String> filterChoiceBox;
     private List<Pair<String, String>> freeInputsMandatory;
-    private List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD;
+    private List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD;
     private List<Pair<String, String>> freeInputsOptional;
-    private List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD;
+    private List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD;
     private static final String LOG_LINE_STYLE = "-fx-text-fill: #24ff21;";
     private static final String ERROR_LINE_STYLE = "-fx-text-fill: #ff0000;";
     private bodyController body;
@@ -226,11 +227,14 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     @FXML
     void executeFlow(ActionEvent event) {
         if (pickedExecution != null) {
+           FlowDefinitionDTO flowDefinition= pickedExecution.getFlowDefinition();
+            flowDefinition.setUserInputs(pickedExecution.getUserInputs());
+//            body.getMVC_controller().executeFlow(flowDefinition);
 //            FlowDefinitionImpl flowDefinition =(FlowDefinitionImpl) pickedExecution.getFlowDefinition();
-//            addValueOfFreeInputsByTypes(flowDefinition);
-//            setFreeInputsByTypesToMandatoryAndOptionalWithDD(flowDefinition);
-//            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition,freeInputsMandatoryWithDD
-//                    ,freeInputsOptionalWithDD);
+            addValueOfFreeInputsByTypes(flowDefinition);
+            setFreeInputsByTypesToMandatoryAndOptionalWithDD(flowDefinition);
+            body.handlerForExecuteFromStatisticScreen(freeInputsMandatory,freeInputsOptional,flowDefinition,
+                    freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
 
         }
     }
@@ -300,10 +304,10 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
     }
 
-    private void setFreeInputsByTypesToMandatoryAndOptionalWithDD(FlowDefinitionImpl flowDefinition) {
+    private void setFreeInputsByTypesToMandatoryAndOptionalWithDD(FlowDefinitionDTO flowDefinition) {
         freeInputsMandatoryWithDD = new ArrayList<>();
         freeInputsOptionalWithDD = new ArrayList<>();
-        for (Pair<String, DataDefinitionDeclaration> pair : flowDefinition.getFlowFreeInputs()) {
+        for (Pair<String, DataDefinitionDeclarationDTO> pair : flowDefinition.getFlowFreeInputs()) {
             if (pair.getValue().isMandatory())
                 freeInputsMandatoryWithDD.add(pair);
             else
@@ -311,7 +315,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         }
     }
 
-    private void addValueOfFreeInputsByTypes(FlowDefinitionImpl flowDefinition) {
+    private void addValueOfFreeInputsByTypes(FlowDefinitionDTO flowDefinition) {
         freeInputsMandatory = new ArrayList<>();
         freeInputsOptional = new ArrayList<>();
         for (Pair<String, String> pair : pickedExecution.getUserInputs()) {
@@ -321,8 +325,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         }
     }
 
-    private boolean existInMandatoryList(FlowDefinitionImpl flowDefinition, String nameToSearch) {
-        for (Pair<String, DataDefinitionDeclaration> pair : flowDefinition.getFlowFreeInputs()) {
+    private boolean existInMandatoryList(FlowDefinitionDTO flowDefinition, String nameToSearch) {
+        for (Pair<String, DataDefinitionDeclarationDTO> pair : flowDefinition.getFlowFreeInputs()) {
             if (pair.getKey().equals(nameToSearch))
                 return pair.getValue().isMandatory();
         }
@@ -473,6 +477,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                         return;
                     }
                     pickedExecution = selectedFlow;
+                    execute.setDisable(false);
                     updateLogs(selectedFlow);
                     updateInputs(selectedFlow);
                     updateOutputs(selectedFlow);

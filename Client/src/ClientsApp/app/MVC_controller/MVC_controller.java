@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -56,59 +57,80 @@ public class MVC_controller {
 
     public void executeFlow(FlowDefinitionDTO flow) {
         //send to server flow name and free inputs
-
-
-        List<Pair<String, String>> userInputs = flow.getUserInputs();
-        String flowName = flow.getName();
-        //add to the request the free inputs
-        //send to server the request
-        String userGson = gson.toJson(userInputs);
-        //add string to requestbody object
-        RequestBody gsonBody = RequestBody.create(MediaType.parse("application/json"), userGson);
+        //check if user has roles match the flow
         Request request = new Request.Builder()
-                .url(ClientConstants.EXECUTE_FLOW)
-                .post(gsonBody)
-                .addHeader("flowName", flowName)
+                .url(ClientConstants.IS_AUTHORIZED)
+                .get()
+                .addHeader("flowName", flow.getName())
                 .build();
         ClientHttpClientUtil.runAsync(request, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.out.println("fail");
-            }
+
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //means execution over
-                if (response.code() == 200) {
-                    System.out.println("success");
-                    //get flowExecutionDTO from server
-//                    String flowExecutionDTO = response.body().string();
-//                    FlowExecutionDTO flowExecutionDTO1 = gson.fromJson(flowExecutionDTO, FlowExecutionDTO.class);
-//
-//                    popupDetails();
+                if (response.code() != 200) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Not Authorized");
+                    alert.setHeaderText("not authorized to execute this flow");
+                    alert.setContentText("you don't have the required roles to execute this flow");
+                    alert.showAndWait();
 
-                    //setProgressBar(task);
-                    header.setDisableOnExecutionsHistory();
-                    //define new timer to check every 200 ms if the flow ended
-                    //if so, popup the details
-                    Timer timer = new Timer();
-                    String id=response.header("flowId");
-                    timer.scheduleAtFixedRate(new TimerTask() {
+                } else {
+                    List<Pair<String, String>> userInputs = flow.getUserInputs();
+                    String flowName = flow.getName();
+                    //add to the request the free inputs
+                    //send to server the request
+                    String userGson = gson.toJson(userInputs);
+                    //add string to requestbody object
+                    RequestBody gsonBody = RequestBody.create(MediaType.parse("application/json"), userGson);
+                    Request request = new Request.Builder()
+                            .url(ClientConstants.EXECUTE_FLOW)
+                            .post(gsonBody)
+                            .addHeader("flowName", flowName)
+                            .build();
+                    ClientHttpClientUtil.runAsync(request, new Callback() {
                         @Override
-                        public void run() {
-                            //check if the flow ended
-                            FlowEnded(id,timer);
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            System.out.println("fail");
                         }
-                    }, 0, 200);
-                }else {
-                    System.out.println("fail");
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            //means execution over
+                            if (response.code() == 200) {
+                                System.out.println("success");
+                                //setProgressBar(task);
+                                header.setDisableOnExecutionsHistory();
+                                //define new timer to check every 200 ms if the flow ended
+                                //if so, popup the details
+                                Timer timer = new Timer();
+                                String id = response.header("flowId");
+                                timer.scheduleAtFixedRate(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        //check if the flow ended
+                                        FlowEnded(id, timer);
+                                    }
+                                }, 0, 200);
+                            } else {
+                                System.out.println("fail");
+                            }
+                            response.close();
+
+
+                        }
+                    });
+
+
                 }
-                response.close();
+            }
 
-
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
             }
         });
     }
+
+
 
     private boolean FlowEnded(String id, Timer timer) {
         //send to server the request
