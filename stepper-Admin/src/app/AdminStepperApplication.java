@@ -132,6 +132,8 @@ public class AdminStepperApplication extends Application {
                 } else {
                     //continue
                 }
+                response.close();
+
             }
         });
         return false;

@@ -152,6 +152,8 @@ public class RoleManagementController implements bodyControllerDefinition{
                 Platform.runLater(() -> {
                     updateRoles();
                 });
+                response.close();
+
 
             }
 
@@ -244,6 +246,7 @@ public class RoleManagementController implements bodyControllerDefinition{
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String usersJson = response.body().string();
+                response.close();
                 //only if success
 
                 if (response.isSuccessful()) {
@@ -271,6 +274,7 @@ public class RoleManagementController implements bodyControllerDefinition{
             button.setPrefWidth(270);
             button.setToggleGroup(group);
             button.setOnAction(event -> {
+                updateDescription(role.getDescription());
                 updateUsersList(role);
                 updateFlowsList();
                 currentRole = button.getText();
@@ -280,6 +284,13 @@ public class RoleManagementController implements bodyControllerDefinition{
             rolesList.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
 
         }
+    }
+
+    private void updateDescription(String description) {
+        Platform.runLater(() -> {
+            roleDescription.setText(description);
+            roleDescription.setWrapText(true);
+        });
     }
 
     private void updateUsersList(RoleDTO role) {

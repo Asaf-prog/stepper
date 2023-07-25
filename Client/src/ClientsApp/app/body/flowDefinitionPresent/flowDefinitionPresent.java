@@ -191,6 +191,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                             body.getMVC_controller().updateRoles(roles);
                           //  body.getMVC_controller().updateManager(flows);
                         });
+                        response.close();
+
                     }
                 }
             }
@@ -243,6 +245,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
                         firstVbox.setSpacing(10);
 
                     });
+                    response.close();
+
                 }
             }
         });

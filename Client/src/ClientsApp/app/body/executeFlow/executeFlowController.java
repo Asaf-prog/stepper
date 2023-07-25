@@ -704,6 +704,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 } else {
                     System.out.println("fail,,");
                 }
+                response.close();
+
             }
         });
         return true;
@@ -852,6 +854,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         btn.setText("Save");
                     });
                 }
+                response.close();
+
 
             }
         }

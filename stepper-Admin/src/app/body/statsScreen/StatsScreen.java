@@ -5,6 +5,7 @@ import app.body.bodyInterfaces.bodyControllerDefinition;
 import app.management.style.StyleManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -111,8 +112,9 @@ public class StatsScreen implements bodyControllerDefinition {
                 }.getType());
 
                 updatedFlows = flowExecutionDTOS;
-                updateLists(); //set Labels and check if needed to put on tables
-            }
+                Platform.runLater(() -> {
+                    updateLists();
+                });}
         });
     }
 

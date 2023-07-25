@@ -6,13 +6,28 @@ import java.util.*;
 
 public class UserManager {
 
+        private  boolean isUpToDate = true;
+
         private final List<StepperUser> usersSet = new ArrayList<>();
 
         public UserManager() {
 
         }
 
-        public synchronized void addUser(String username) {
+    public void setUpToDate(boolean upToDate) {
+        isUpToDate = upToDate;
+    }
+
+    public boolean isUpToDate() {
+        return isUpToDate;
+    }
+
+    public List<StepperUser> getUsersSet() {
+        return usersSet;
+    }
+
+
+    public synchronized void addUser(String username) {
             this.usersSet.add(new StepperUser(username));
         }
 
@@ -32,6 +47,10 @@ public class UserManager {
     public List<String> getRolesForUser(String username) {
         for (StepperUser user : usersSet) {
             if (user.getUsername().equals(username)) {
+                if  (user.getIsManager()) {
+                    user.getRoles().clear();
+                    user.getRoles().add("all-flows");
+                }
                 return user.getRoles();
             }
         }

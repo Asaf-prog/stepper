@@ -120,6 +120,8 @@ public class ExecutionsDetails {
                     updateOutputs(theFlow);
                     updateStatusAndTime(theFlow);
                 });
+                response.close();
+
             }
         });
 

@@ -26,6 +26,8 @@ public class Constants {
     private final static String CONTEXT_PATH = "/stepper_server";//*********
     private final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public static final String UPDATE_USER_ROLES =FULL_SERVER_PATH + "/updateUserRoles";
+    public static final String USERS_LIST_UPDATE = FULL_SERVER_PATH + "/users-list-update";
+
 
     public static final String GET_USER_EXECUTIONS = FULL_SERVER_PATH + "/getUserExecutions";
     public static final String GET_ALL_ROLES = FULL_SERVER_PATH + "/getAllRoles";

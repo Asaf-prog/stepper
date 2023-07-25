@@ -305,6 +305,8 @@ public class bodyController {
 //                    });
 //                }
                     System.out.println(response.body().string());
+                    response.close();
+
                 }
             });
         }

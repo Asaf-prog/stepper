@@ -106,6 +106,8 @@ public class MVC_controller {
                 }else {
                     System.out.println("fail");
                 }
+                response.close();
+
 
 
             }
@@ -135,6 +137,8 @@ public class MVC_controller {
                         lastExeId=id;
 
                     });
+                    response.close();
+
                 } else {
                     //probably processing
 

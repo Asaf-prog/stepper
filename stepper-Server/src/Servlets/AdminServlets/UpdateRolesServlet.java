@@ -48,9 +48,9 @@ public class UpdateRolesServlet extends HttpServlet {
 
         UserManager userManager= (UserManager) getServletContext().getAttribute("userManager");
         StepperUser user = userManager.getUser(username);
+        userManager.setUpToDate(false);
         user.setManager(Boolean.parseBoolean(isManager));
-        if (user.getIsManager()){
-            user.getRoles().clear();
+        if (user.getIsManager() && !roles.contains("all-flows")){
             user.getRoles().add("all-flows");
         }else
             user.setRoles(roles);

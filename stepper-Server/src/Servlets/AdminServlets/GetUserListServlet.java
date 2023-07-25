@@ -32,6 +32,7 @@ public class GetUserListServlet extends HttpServlet {
 
             List<StepperUser> usernames = userManager.getUsers();
             String usersJson = gson.toJson(usernames);
+            userManager.setUpToDate(true);
             try (PrintWriter out = resp.getWriter()) {//returning JSON object telling the client what version of chat is returned
                 out.print(usersJson);
                 out.flush();

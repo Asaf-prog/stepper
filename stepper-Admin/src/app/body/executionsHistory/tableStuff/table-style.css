@@ -63,3 +63,13 @@
     -fx-opacity: 0;
     -fx-pref-width: 0;
 }
+.VBox {
+    -fx-background-color: transparent;
+
+}
+.vboxLog {
+    -fx-background-color: transparent;
+}
+.VBox.vboxLog{
+    -fx-background-color: transparent;
+}

@@ -73,6 +73,7 @@ public class LoginController implements bodyControllerForLogin {
                     Platform.runLater(() ->
                             errorMessageProperty.set("Something went wrong: " + responseBody)
                     );
+                    response.close();
                 } else {
                     // need to take the list of the flowsName that's back from the Admin
                     List<FlowDefinitionImpl>flows = null;
@@ -88,6 +89,7 @@ public class LoginController implements bodyControllerForLogin {
                         body.getMain().getHeaderComponentController().setClient(userName,theAdminExistInSystem);
                         body.setClient(body.getMain().getHeaderComponentController().getClient());//set the data-member client in body class from header
                     });
+
                 }
             }
         });

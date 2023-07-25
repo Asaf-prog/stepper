@@ -11,6 +11,7 @@
           <option value="username" />
           <option value="isManager" />
           <option value="roleName" />
+          <option value="url" />
         </set>
       </option>
     </inspection_tool>

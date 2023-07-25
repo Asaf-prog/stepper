@@ -17,10 +17,9 @@ public class loginServlet extends HttpServlet {
 @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException{
     response.setContentType("text/plain;charset=UTF-8");
-
-    UserManager userManager = ServletUtils.getUserManager(getServletContext());//swap's lines
     String usernameFromSession = SessionUtils.getUsername(request);
-
+    UserManager userManager = ServletUtils.getUserManager(getServletContext());//swap's lines
+    userManager.setUpToDate(false);//on the gui ofc
     if (usernameFromSession == null) { //user is not logged in yet
 
         String usernameFromParameter = request.getParameter(USERNAME);

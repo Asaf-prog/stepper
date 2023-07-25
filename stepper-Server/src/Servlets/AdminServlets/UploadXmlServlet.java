@@ -33,6 +33,8 @@ public class UploadXmlServlet extends HttpServlet {
             //send to servletContext
             request.getServletContext().setAttribute("dataManager",dataManager);
 
+            response.addHeader("url",dataManager.getStepperData().getXmlPath());
+
         } catch (Exception e) {
             System.out.println("failed to upload xml... :)");
             throw new RuntimeException(e);

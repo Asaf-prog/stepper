@@ -181,6 +181,8 @@ public class FlowDefinitionDTO implements Serializable {
 
             StepUsageDeclarationDTO stepUsageDeclarationDTO = new StepUsageDeclarationDTO(step.getStepDefinition(), step.skipIfFail(), step.getFinalStepName());
             stepUsageDeclarationDTO.setAvgTime(step.getAvgTime());
+            stepUsageDeclarationDTO.setTimesUsed(step.getTimeUsed());
+           // stepUsageDeclarationDTO.setStepDuration(step.getStepDuration());
             this.steps.add(stepUsageDeclarationDTO);
         }
     }

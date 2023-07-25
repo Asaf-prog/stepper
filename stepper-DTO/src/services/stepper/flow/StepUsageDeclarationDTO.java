@@ -57,6 +57,14 @@ public class StepUsageDeclarationDTO {
         updateAvgTime(duration);
     }
 
+    public void setTotalTime(Duration totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public void setTimesUsed(int timesUsed) {
+        this.timesUsed = timesUsed;
+    }
+
     public Duration getTotalTime() {
         return totalTime;
     }

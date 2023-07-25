@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -98,13 +99,61 @@ public class UserManagementController implements bodyControllerDefinition {
     private bodyController bodyController;
     ToggleGroup group = new ToggleGroup();
 
+    Timer timer =null;
     @FXML
     void initialize() {
         asserts();
         getUsers();
         setSave();
+        setTimerUpdater();
 
 
+
+    }
+
+    private void setTimerUpdater() {
+        try {
+            timer.stop();
+        }catch (Exception e){
+            //do nothing
+        }
+        timer = new Timer(1000, e -> {
+            setUpdater();
+        });
+        timer.start();
+
+    }
+
+    private void setUpdater() {
+        //send req if the users has changed if so to update the list
+        Request request = new Request.Builder()
+                .url(Constants.USERS_LIST_UPDATE)
+                .build();
+
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed to update user roles");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+                String res = response.body().string();
+                boolean isUpToDate = gson.fromJson(res, Boolean.class);
+                response.close();
+                //only if success
+                if (response.isSuccessful()) {
+                    if (!isUpToDate) {
+                        updateUsersList();
+                    }
+                } else {
+                    //do nothing
+                }
+            }
+
+        });
     }
 
     private void setSave() {
@@ -127,20 +176,20 @@ public class UserManagementController implements bodyControllerDefinition {
             //todo check if manager in servlet if so cant change roles unless the change is change the manager role:(
 
             Boolean isManager = this.isManager.isSelected();
-            if (isManager.booleanValue()==true){
-                Tooltip tooltip = new Tooltip("Manager can't change roles");
-                tooltip.setStyle("-fx-background-color: #0d7277; -fx-text-fill: white; -fx-font-size: 15px;");
-
-                // Assuming 'yourButton' represents the button where you want to show the tooltip.
-                Tooltip.install(saveChanges, tooltip);
-
-                // Use PauseTransition to hide the tooltip after 1 second
-                PauseTransition pause = new PauseTransition(Duration.seconds(1));
-                pause.setOnFinished(event2 -> Tooltip.uninstall(saveChanges, tooltip));
-                pause.play();
-
-                return;
-            }
+//            if (isManager.booleanValue()==true){
+//                Tooltip tooltip = new Tooltip("Manager can't change roles");
+//                tooltip.setStyle("-fx-background-color: #0d7277; -fx-text-fill: white; -fx-font-size: 15px;");
+//
+//                // Assuming 'yourButton' represents the button where you want to show the tooltip.
+//                Tooltip.install(saveChanges, tooltip);
+//
+//                // Use PauseTransition to hide the tooltip after 1 second
+//                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+//                pause.setOnFinished(event2 -> Tooltip.uninstall(saveChanges, tooltip));
+//                pause.play();
+//
+//                return;
+//            }
 
             Request request = new Request.Builder()
                     .url(Constants.UPDATE_USER_ROLES)//and isManager
@@ -159,6 +208,8 @@ public class UserManagementController implements bodyControllerDefinition {
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
                     String responseJson = response.body().string();
+                    response.close();
+
                     //only if success
                     if (response.isSuccessful()) {
                         Platform.runLater(() -> {
@@ -172,6 +223,105 @@ public class UserManagementController implements bodyControllerDefinition {
                 }
             });
         });
+    }
+    private void updateUsersList() {
+            Request request = new Request.Builder()
+                    .url(Constants.USERS_LIST)
+                    .build();
+            HttpClientUtil.runAsync(request, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    System.out.println("failed to get users list");
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    String usersJson = response.body().string();
+                    response.close();
+
+                    //only if success
+
+                    if (response.isSuccessful()) {
+                        List<StepperUser> users = gson.fromJson(usersJson, new TypeToken<List<StepperUser>>() {
+                        }.getType());
+
+                        Platform.runLater(() -> {
+                            DeltaUpdate(users);
+                            currentUsers=users;
+                        });
+
+                    } else {
+                        Platform.runLater(() -> {
+                            JOptionPane.showMessageDialog(null, "Failed to get users list");
+                        });
+                    }
+                }
+            });
+        }
+
+    private void DeltaUpdate(List<StepperUser> users) {
+        List<String> newUsers = users.stream().map(StepperUser::getUsername).collect(Collectors.toList());
+        List<String> oldUsers = currentUsers.stream().map(StepperUser::getUsername).collect(Collectors.toList());
+        List<String> delta = newUsers.stream().filter(e -> !oldUsers.contains(e)).collect(Collectors.toList());
+        if (delta.size() > 0) {
+            //new user added
+            //todo add to list
+            //save previous selection
+            String selected=GetSelectedName(usersList);
+            //check if something is selected
+            group=new ToggleGroup();
+            for (RadioButton button:usersList.getItems()) {
+                if (oldUsers.contains(button.getText()))
+                    button.setToggleGroup(group);
+            }
+
+            //add old users to toggle
+
+
+            for (String user : delta) {
+                RadioButton button = new RadioButton(user);
+                button.getStyleClass().add("flowRadioButton");
+                button.setPrefWidth(250);
+                button.setToggleGroup(group);
+                String buttonStyle = button.getStyle();
+                if(usersList.getItems().size()>0)
+                    buttonStyle=usersList.getItems().get(0).getStyle();
+                String finalButtonStyle = buttonStyle;
+                button.setOnAction(event -> {
+                            updateAccordingToUserExe(button.getText());
+                            updateAccordingToUserDef(button.getText());
+                            currentUser = button.getText();
+                            StepperUser stepperUser = users.stream().filter(e -> e.getUsername().equals(button.getText())).findFirst().get();
+                            currentStepperUser = stepperUser;
+                            setIsManager(stepperUser);
+                            button.setStyle(finalButtonStyle);
+
+
+
+                        });
+                usersList.getItems().add(button);
+
+
+
+            }
+            if (selected!=null)
+                usersList.getItems().stream().filter(e -> e.getText().equals(selected)).findFirst().ifPresent(e -> usersList.getSelectionModel().select(e));
+
+        } else {
+            oldUsers.stream().filter(e -> !newUsers.contains(e)).forEach(e -> {
+                //user deleted
+                usersList.getItems().removeIf(r -> r.getText().equals(e));
+            });
+        }
+    }
+
+    private String GetSelectedName(ListView<RadioButton> usersList) {
+        RadioButton selected = usersList.getItems().stream().filter(e -> e.isSelected()).findFirst().orElse(null);
+        if (selected != null) {
+            return selected.getText();
+        }
+        return null;
     }
 
     private List<String> getUsers() {
@@ -198,11 +348,14 @@ public class UserManagementController implements bodyControllerDefinition {
                         updateUserList(users);
                     });
 
+
+
                 } else {
                     Platform.runLater(() -> {
                         JOptionPane.showMessageDialog(null, "Failed to get users list");
                     });
                 }
+                response.close();
             }
         });
         return null;
@@ -221,6 +374,9 @@ public class UserManagementController implements bodyControllerDefinition {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String usersJson = response.body().string();
+                response.close();
+
+
                 //only if success
 
                 if (response.isSuccessful()) {
@@ -233,7 +389,9 @@ public class UserManagementController implements bodyControllerDefinition {
                     });
                 }
             }
+
         });
+
         return null;
     }
 
@@ -556,7 +714,9 @@ public class UserManagementController implements bodyControllerDefinition {
 
     @Override
     public void onLeave() {
-
+        if (timer!=null){
+            timer.stop();
+        }
     }
 
     @Override

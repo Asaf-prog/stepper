@@ -352,6 +352,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                                 }
                             }
                     );
+                    response.close();
+
 
                 } catch (JsonSyntaxException e) {
                     return;
@@ -432,185 +434,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         });
     }
 
-//    private void updateLogsTree(FlowExecution selectedFlow) {
-//
-//        stepTree.getChildren().clear();
-//
-//        TreeView<String> stepTreeView = new TreeView<>();
-//        TreeItem<String> root = new TreeItem<>("Steps");
-//
-//        stepTreeView.setStyle("-fx-background-color: transparent; -fx-blend-mode: MULTIPLY;");
-//        stepTreeView.getStylesheets().add("app/management/style/darkTheme.css");
-//        stepTreeView.getStyleClass().add("tree");
-//
-//        stepTreeView.setRoot(root);
-//        for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
-//            TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
-//            List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
-//            if (logsPerStep != null) {
-//                for (Pair<String, String> log : logsPerStep) {
-//                    if (log != null) {
-//                        TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
-//                        stepRoot.getChildren().add(logItem);
-//                    }
-//                }
-//            }
-//            stepTreeView.getRoot().getChildren().add(stepRoot);
-//            stepTreeView.setCellFactory(treeView -> {
-//                TreeCell<String> cell = new TreeCell<String>() {
-//                    @Override
-//                    protected void updateItem(String item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (empty || item == null) {
-//                            setText(null);
-//                            setGraphic(null);
-//                        } else {
-//                            setText(item);
-//                            setStyle("-fx-background-color: transparent; -fx-text-fill: #24ff21;"); // Set the style of each tree component
-//                        }
-//                    }
-//                };
-//                cell.setOnMouseClicked(event -> {
-//                    if (!cell.isEmpty()) {
-//                        TreeItem<String> treeItem = cell.getTreeItem();
-//                        if (treeItem != null) {
-//                            if (treeItem.isExpanded()) {
-//                                treeItem.setExpanded(false);
-//                            } else {
-//                                treeItem.setExpanded(true);
-//                            }
-//                        }
-//                    }
-//                });
-//                return cell;
-//            });
-//            stepTreeView.setShowRoot(false);
-//            stepTreeView.getStyleClass().add("logsTree");
-//
-//        }
-//        stepTree.getChildren().add(stepTreeView);
-//        //logScrollPane.setStyle("-fx-background-color: transparent;");
-//
-//    }
-//    private void addLogToTree(TreeView<String> stepItem, Pair<String, String> log) {
-//        TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
-//        stepItem.getRoot().getChildren().add(logItem);
-//    }
-//
-//    private void updateTime(FlowExecution selectedFlow) {
-//        exeTime.setDisable(false);
-//        exeTime.setVisible(true);
-//        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" ms ");
-//    }
-//
-//    private void updateOutputs(FlowExecution selectedFlow) {
-//        Label title= (Label) this.outputsVbox.getChildren().get(0);
-//        Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
-//        this.outputsVbox4Value.getChildren().clear();
-//        this.outputsVbox.getChildren().clear();
-//        this.outputsVbox.getChildren().add(title);
-//        this.outputsVbox4Value.getChildren().add(title2);
-//        Map<String, Object> outputs=selectedFlow.getAllExecutionOutputs();
-//        if(outputs!=null) {
-//            for (Map.Entry<String, Object> entry : outputs.entrySet()) {
-//                Label newOutput = new Label(entry.getKey());
-//                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());
-//                newOutput.getStyleClass().add("DDLabel");
-//                outputValue.getStyleClass().add("DDLabel");
-//                newOutput.setPrefWidth(outputsVbox.getPrefWidth());
-//                outputValue.setPrefWidth(outputsVbox4Value.getPrefWidth());
-//                newOutput.setPrefHeight(28);
-//                outputValue.setPrefHeight(28);
-//                this.outputsVbox4Value.getChildren().add(outputValue);
-//                this.outputsVbox.getChildren().add(newOutput);
-//            }
-//        }
-//
-//    }
-//
-//    private Label setLabelForOutput(Object value, String name) {
-//        Label result = new Label();
-//        if (value instanceof RelationData) {
-//            result.setText("Relation");
-//        }else if (value instanceof ArrayList) {//print an arraylist
-//            result.setText("List");
-//        }else if (value instanceof List) {
-//            result.setText("List");
-//        }else {
-//            result.setText(value.toString());
-//        }
-//        result.setOnMouseEntered(event -> {
-//            result.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
-//        });
-//        result.setOnMouseExited(event -> {
-//            result.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
-//        });
-//        result.setOnMouseClicked(event -> {
-//                    try {
-//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
-//                        Parent root = (Parent) loader.load();
-//                        DataViewerController controller = loader.getController();
-//
-//                        if (controller!=null ) {
-//                            controller.setData(value, name);
-//                            Stage stage = new Stage();
-//                            stages.add(stage);
-//                            stage.setTitle("Data Viewer");
-//                            stage.setScene(new Scene(root, 600, 400));
-//                            stage.show();
-//                        }
-//                    }  catch (IllegalStateException | IOException ex) {
-//                        // Handle the exception gracefully
-//                    }
-//                }
-//        );
-//        return result;
-//    }
-//    private void updateInputs(FlowExecution selectedFlow) {
-//        Label title= (Label) this.inputsVbox.getChildren().get(0);
-//        Label title2= (Label) this.inputsVbox4Value.getChildren().get(0);
-//        this.inputsVbox.getChildren().clear();
-//        this.inputsVbox4Value.getChildren().clear();
-//        this.inputsVbox.getChildren().add(title);
-//        this.inputsVbox4Value.getChildren().add(title2);
-//        List<Pair<String, String>> inputs=selectedFlow.getUserInputs();
-//        if(inputs!=null) {
-//            for (Pair<String, String> entry : inputs) {
-//                Label newInput = new Label(entry.getKey());
-//                Label inputValue = new Label(entry.getValue());
-//                inputValue.setOnMouseEntered(event -> {
-//                    inputValue.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
-//                });
-//                inputValue.setOnMouseExited(event -> {
-//                    inputValue.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
-//                });
-//                inputValue.setOnMouseClicked(event -> {
-//                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
-//                            try {
-//                                Parent root = loader.load();
-//                                DataViewerController controller = loader.getController();
-//                                controller.setData(entry.getValue(), entry.getKey());
-//                                Stage stage = new Stage();
-//                                stages.add(stage);
-//                                stage.setTitle("Data Viewer");
-//                                stage.setScene(new Scene(root, 600, 400));
-//                                stage.show();
-//                            } catch (IllegalStateException | IOException ex) {
-//                                // Handle the exception gracefully
-//                            }
-//                        }
-//                );
-//                newInput.getStyleClass().add("DDLabel");
-//                inputValue.getStyleClass().add("DDLabel");
-//                newInput.setPrefWidth(inputsVbox.getPrefWidth());
-//                inputValue.setPrefWidth(inputsVbox4Value.getPrefWidth());
-//                newInput.setPrefHeight(28);
-//                inputValue.setPrefHeight(28);
-//                this.inputsVbox4Value.getChildren().add(inputValue);
-//                this.inputsVbox.getChildren().add(newInput);
-//            }
-//        }
-//    }
 private void updateLogs(FlowExecutionDTO flowExecution) {
     logsVbox.getChildren().clear();
     Label logsLabel = new Label();
@@ -630,6 +453,7 @@ private void updateLogs(FlowExecutionDTO flowExecution) {
     private void updateLogsTree(FlowExecutionDTO selectedFlow) {//check
         stepTree.getChildren().clear();
         TreeView<String> stepTreeView = new TreeView<>();
+        stepTreeView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         TreeItem<String> root = new TreeItem<>("Steps");
         stepTreeView.setRoot(root);
         for (StepUsageDeclarationDTO step : selectedFlow.getFlowDefinition().getSteps()) {

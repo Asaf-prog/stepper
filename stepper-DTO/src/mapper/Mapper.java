@@ -79,6 +79,8 @@ public class Mapper {
         res.setUserInputs(flowDefinition.getUserInputs());
         res.setFreeInputsFromStepper(flowDefinition.getFlowFreeInputs());
 
+
+
         res.setFlowOutputs(flowDefinition.getFlowFormalOutputs());
         res.setFlowOfAllStepsOutputs(flowDefinition.getFlowOfAllStepsOutputs());
         res.setStepsFromStepper(flowDefinition.getFlowSteps());
@@ -95,6 +97,7 @@ public class Mapper {
         res.setFlowOutputs(flowDefinition.getFlowFormalOutputs());
         res.setFlowOfAllStepsOutputs(flowDefinition.getFlowOfAllStepsOutputs());
         res.setFreeInputs(getFreeInputs(flowDefinition));
+
         //custome map,aliasing,init input,continuation
         copyFreeInputs(flowDefinition, res);
         copyInitialInputs(flowDefinition, res);

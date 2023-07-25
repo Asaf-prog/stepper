@@ -756,11 +756,11 @@ public class headerController {
                             Platform.runLater(() -> {
                                 try {
                                     ActivateMenuButtons();
-                                   // DataManager.getData().setXmlPath(selectedFile.getPath());todo need to set from the server
+                                    String urlHeader = response.header("url");
                                     roleManagement.setDisable(false);
                                     ExecutionsHistory.setDisable(false);//***
                                     loadXMLbutton.setText("Loaded:");
-                                  //  loaded.setText(DataManager.getData().getXmlPath());
+                                    loaded.setText(urlHeader);
                                     initializedData();
                                     stopRotate();
                                     loadXMLbutton.setRotate(0);

@@ -15,6 +15,9 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
 import modules.step.api.DataDefinitionDeclaration;
 import modules.stepper.Stepper;
+import services.stepper.FlowDefinitionDTO;
+import services.stepper.FlowExecutionDTO;
+import services.stepper.flow.DataDefinitionDeclarationDTO;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,15 +36,15 @@ public class ContinuationPopUp {
     private Button runButton;
     @FXML
     private VBox flowsVbox;
-    private List<Pair<String, DataDefinitionDeclaration>> currentMandatoryFreeInput;
-    private List<Pair<String, DataDefinitionDeclaration>> currentOptionalFreeInput;
+    private List<Pair<String, DataDefinitionDeclarationDTO>> currentMandatoryFreeInput;
+    private List<Pair<String, DataDefinitionDeclarationDTO>> currentOptionalFreeInput;
     private List<Pair<String, String>> freeInputsMandatory ;
     private List<Pair<String, String>> freeInputsOptional;
     private bodyController body;
     private List<String>  targetFlows;
     private  Stage  stage;
-    private FlowDefinitionImpl targetFlow = null;
-    private FlowExecution pickedExecution;
+    private FlowDefinitionDTO targetFlow = null;
+    private FlowExecutionDTO pickedExecution;
     private String buttonStyle;
     @FXML
     void initialize() {
@@ -57,19 +60,19 @@ public class ContinuationPopUp {
             flowButton.setToggleGroup(group);
             flowButton.setStyle("-fx-font-size: 18px; -fx-text-fill: white;-fx-pref-width: 600;-fx-alignment: center;-fx-border-color: white;");
             flowButton.setOnAction(e -> {
-                FlowDefinitionImpl flow =  stepperData.getFlowFromName(flowName);
-                if (flow == null) {
-                    System.out.println("flow is null");
-                    return;
-                }
-                targetFlow = flow;
+                //FlowDefinitionDTO flow =  stepperData.getFlowFromName(flowName);
+//                if (flow == null) {
+//                    System.out.println("flow is null");
+//                    return;
+//                }
+//                targetFlow = flow;
                 runButton.setDisable(false);
             });
             flowsVbox.getChildren().add(flowButton);
 
         }
     }
-    public ContinuationPopUp(FlowExecution pickedExecution, List<String> targetFlows, Stage stage,bodyController body) {
+    public ContinuationPopUp(FlowExecutionDTO pickedExecution, List<String> targetFlows, Stage stage, bodyController body) {
         this.pickedExecution = pickedExecution;
         this.targetFlows = targetFlows;
         this.stage = stage;
@@ -80,21 +83,21 @@ public class ContinuationPopUp {
 
         Map<String,Object> outputs = pickedExecution.getAllExecutionOutputs();
 
-        FlowDefinitionImpl currentFlow = getFlowDefinitionImplByFlowExecution();
+        FlowDefinitionDTO currentFlow = getFlowDefinitionImplByFlowExecution();
         MandatoryAndOptionalFreeInputWithDD(currentFlow);
 //todo possible move to server side
         //body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,currentFlow);
 
         stage.close();
     }
-    private void MandatoryAndOptionalFreeInputWithDD(FlowDefinitionImpl flow){
+    private void MandatoryAndOptionalFreeInputWithDD(FlowDefinitionDTO flow){
 
-        List<Pair<String, DataDefinitionDeclaration>> freeInputs = flow.getFlowFreeInputs();
+        List<Pair<String, DataDefinitionDeclarationDTO>> freeInputs = flow.getFlowFreeInputs();
          currentMandatoryFreeInput = new ArrayList<>();
          currentOptionalFreeInput = new ArrayList<>();
         freeInputsMandatory = new ArrayList<>();
         freeInputsOptional = new ArrayList<>();
-        for (Pair<String, DataDefinitionDeclaration> pair : freeInputs) {
+        for (Pair<String, DataDefinitionDeclarationDTO> pair : freeInputs) {
             if (pair.getValue().isMandatory()) {
                 currentMandatoryFreeInput.add(pair);
                 String data = getDataOfFreeInputsFromCurrentFlow(flow,pair.getKey());
@@ -108,19 +111,19 @@ public class ContinuationPopUp {
             }
         }
     }
-    private String getDataOfFreeInputsFromCurrentFlow(FlowDefinitionImpl currentFlow,String nameOfDD){
+    private String getDataOfFreeInputsFromCurrentFlow(FlowDefinitionDTO currentFlow,String nameOfDD){
         for (Pair<String, String> pair: pickedExecution.getUserInputs()){
            if (pair.getKey().equals(nameOfDD))
                return pair.getValue();
         }
         return null;
     }
-    private FlowDefinitionImpl getFlowDefinitionImplByFlowExecution(){
-        Stepper stepperData = DataManager.getData();
-        for (FlowDefinitionImpl flow: stepperData.getFlows()){
-            if (flow.getName().equals(pickedExecution.getFlowDefinition().getName()))
-                return flow;
-        }
+    private FlowDefinitionDTO getFlowDefinitionImplByFlowExecution(){
+//        Stepper stepperData = DataManager.getData();
+//        for (FlowDefinitionImpl flow: stepperData.getFlows()){
+//            if (flow.getName().equals(pickedExecution.getFlowDefinition().getName()))
+//                return flow;
+//        }
         return null;
     }
     private static void setTheme() {
