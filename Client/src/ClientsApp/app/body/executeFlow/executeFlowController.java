@@ -1184,18 +1184,18 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         isComeFromHistory = true;
     }
     private void createComponentForOptionalFromHistory() {
-        for (Pair<String,String> optinal: freeInputsOptionalFromHistory) {
-            Label label = new Label(optinal.getKey());
+        for (Pair<String,String> optional: freeInputsOptionalFromHistory) {
+            Label label = new Label(optional.getKey());
             label.setStyle("-fx-text-fill: white");
             HBox nameAndAddOrEdit = new HBox();
-            Label data = new Label(optinal.getValue());
+            Label data = new Label(optional.getValue());
             data.setStyle("-fx-text-fill: white");
             nameAndAddOrEdit.getChildren().add(label);
             nameAndAddOrEdit.getChildren().add(data);
             nameAndAddOrEdit.setSpacing(5);
             optionalList.getChildren().add(nameAndAddOrEdit);
             optionalList.setSpacing(10);
-            freeInputsTemp.add(optinal);
+            freeInputsTemp.add(optional);
             setLabelStyle(data);
         }
     }
