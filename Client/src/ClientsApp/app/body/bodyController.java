@@ -106,7 +106,7 @@ public class bodyController {
             lastBodyController=bController;
         }
         catch (IOException e) {
-            System.out.println("BASA1");
+            System.out.println("exception in  body controller");
             e.printStackTrace();
         }
     }
@@ -290,20 +290,8 @@ public class bodyController {
                             errorMessageProperty.set("Something went wrong: " + e.getMessage())
                     );
                 }
-
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.code() != 200) {
-//                    String responseBody = response.body().string();
-//                    Platform.runLater(() ->
-//                            errorMessageProperty.set("Something went wrong: " + responseBody)
-//                    );
-//                } else {
-//                    Platform.runLater(() -> {
-//                        mainControllerClient.updateUserName(userName);
-//                        mainControllerClient.switchTheLoginPage();
-//                    });
-//                }
                     System.out.println(response.body().string());
                     response.close();
 

@@ -20,27 +20,22 @@ public class ClientConstants {
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
 
-
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/stepper_server";
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
     public static final String GET_TABLE_DATA_FOR_USER =FULL_SERVER_PATH+ "/Client/getTableDataForUser"; ;
-
     public static final String GET_ROLES_FOR_CLIENT = FULL_SERVER_PATH + "/getRolesForClient";
-
     public static final String GET_IS_MANAGER = FULL_SERVER_PATH + "/Client/isManager";
     public static final String VALIDATE_ADMIN = FULL_SERVER_PATH + "/Admin/valid";
-
 
     public final static String GET_FLOWS = FULL_SERVER_PATH + "/Client/getFlows" ;
     public static final String EXECUTE_FLOW = FULL_SERVER_PATH +"/Client/executeFlow";
     public static final String GET_LAST_FLOW = FULL_SERVER_PATH + "/Client/flowEnded";
     public static final String VALIDATE_INPUT =FULL_SERVER_PATH + "/Client/validate";
+    public static final String CHECK_CONTINUATION = FULL_SERVER_PATH + "/Client/Continuation";
     public static final String FLOW_ENDED =FULL_SERVER_PATH+ "/Client/flowEnded";
-
-///Client/getFileTypeName
-public static final String FILE_NAME = FULL_SERVER_PATH+"/Client/getFileTypeName";
+    public static final String FILE_NAME = FULL_SERVER_PATH+"/Client/getFileTypeName";
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String LOAD_XML_FILE = FULL_SERVER_PATH + "/loadAndDecodeFile";
     public final static String USERS_LIST = FULL_SERVER_PATH + "/users-list";

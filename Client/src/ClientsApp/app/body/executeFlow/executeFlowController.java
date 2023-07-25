@@ -125,7 +125,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             stage.close();
         }
     }
-
     @Override
     public void show() {
 
@@ -620,14 +619,73 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         //todo 5 same as 4
         return false;
     }
-
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
+
+        String finalUrl = HttpUrl
+                .parse(ClientConstants.CHECK_CONTINUATION)
+                .newBuilder()
+                .addQueryParameter("flowName", currentFlow.getName())
+                .build()
+                .toString();
+        //dummy body
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Platform.runLater(() -> {//general error
+                            String msg = "Please enter a valid input";
+                        });
+                    }
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.code() == 200) {
+                            ResponseBody responseBody = response.body();
+                            if (responseBody != null) {
+                                String bodyRes = responseBody.string();
+                                System.out.println(bodyRes);
+                                List<String> ContinuationFromServlet = gson.fromJson(bodyRes, new TypeToken<List<String>>() {
+                                }.getType());
+
+                                Platform.runLater(() -> {
+                                    if (!continuationVbox.getChildren().isEmpty()) {
+                                        continuationVbox.getChildren().clear();
+                                    }
+
+                                    ToggleGroup group = new ToggleGroup();
+                                    for(String nameOfFlow : ContinuationFromServlet){
+                                        RadioButton button = new RadioButton(nameOfFlow);
+                                        button.setStyle("-fx-text-fill: #9c3b3b");
+                                        button.setOnAction(e ->{
+                                            try{
+                                                handleButtonActionForContinuation(nameOfFlow);
+                                            }catch (Exception ex){
+                                                System.out.println("collapse");
+                                            }
+                                        });
+                                        button.setToggleGroup(group);
+                                        continuationVbox.getChildren().add(button);
+                                    }
+                                    continuationVbox.setSpacing(10);
+                                    continuationVbox.setVisible(true);
+                                    continuationLabel.setText("Continuation for " + currentFlow.getName());
+                                });
+
+                            } else {//code 422
+
+                            }
+                        }
+                    }
+                }
+        );
 //        continuationVbox.getChildren().clear();
 //        ToggleGroup group = new ToggleGroup();
 //        for (Continuation continuation : currentFlow.getContinuations()) {
-//            RadioButton button = new RadioButton(continuation.getTargetFlow());
-//            button.setStyle("-fx-text-fill: white");
+//            //RadioButton button = new RadioButton(continuation.getTargetFlow());
+//            //button.setStyle("-fx-text-fill: white");
 //            button.setOnAction(e -> {
 //                try {
 //                    handleButtonActionForContinuation(continuation.getTargetFlow());
@@ -641,29 +699,32 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 //        continuationVbox.setSpacing(10);
 //        continuationVbox.setVisible(true);
 //        continuationLabel.setText("Continuation for " + currentFlow.getName());
+
     }
     private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
-        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
-        if (targetFlow != null) {
-            ///need to add the list of the output of the current step
-            FlowExecution flowThatCurrentFinish = getFlowExecutionByName(currentFlow.getName());
-            if (flowThatCurrentFinish != null){
-                Map<String,Object> outputs = flowThatCurrentFinish.getAllExecutionOutputs();
-                if (currentMandatoryFreeInput == null){
-                    System.out.println("null");
-                }
-                if (currentOptionalFreeInput == null){
+//        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
+//        if (targetFlow != null) {
+//            ///need to add the list of the output of the current step
+//            FlowExecution flowThatCurrentFinish = getFlowExecutionByName(currentFlow.getName());
+//            if (flowThatCurrentFinish != null){
+//                Map<String,Object> outputs = flowThatCurrentFinish.getAllExecutionOutputs();
+//                if (currentMandatoryFreeInput == null){
+//                    System.out.println("null");
+//                }
+//                if (currentOptionalFreeInput == null){
+//                    System.out.println("null");
+//                }
+//                setTheNewInputsThatTheUserSupply();
+//                //todo remove // before adding all this to server side
+//                //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
+//            }
+//            else
+//                throw new RuntimeException();
+//        }
+//        else
+//            throw new Exception("Target flow is null");
 
-                }
-                setTheNewInputsThatTheUserSupply();
-                //todo remove // before adding all this to server side
-                //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
-            }
-            else
-                throw new RuntimeException();
-        }
-        else
-            throw new Exception("Target flow is null");
+        //todo need to get this information from servlet
     }
     private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow) {
         List<FlowDefinitionImpl> flows = stepperData.getFlows();
@@ -708,7 +769,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         showDetails.setDisable(false);
         enablesDetails();
         showDetails.setDisable(false);
-
+        continuation.setDisable(false);
     }
     private void enablesDetails() {
         showDetails.setDisable(false);
@@ -1045,11 +1106,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         }
                     }
                 });
-
     }
-
-
-
     private static void setApropTooltip(TextField textField, String msg) {
         Tooltip tooltip = new Tooltip(msg);
         tooltip.setStyle("-fx-background-color: #ff0000; -fx-text-fill: #000000;");

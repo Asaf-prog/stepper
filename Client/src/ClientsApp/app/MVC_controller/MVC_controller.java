@@ -57,7 +57,6 @@ public class MVC_controller {
     public void executeFlow(FlowDefinitionDTO flow) {
         //send to server flow name and free inputs
 
-
         List<Pair<String, String>> userInputs = flow.getUserInputs();
         String flowName = flow.getName();
         //add to the request the free inputs
@@ -139,13 +138,10 @@ public class MVC_controller {
 
                 } else {
                     //probably processing
-
-
                 }
             }
 
             private void popupDetails(String id) {
-                //check why todo ... send few timnes!!!
                 FXMLLoader loader = new FXMLLoader(getClass()
                         .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
                // loader.setController(new ExecutionsDetails(id));

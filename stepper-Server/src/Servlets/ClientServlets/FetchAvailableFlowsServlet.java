@@ -79,5 +79,4 @@ public class FetchAvailableFlowsServlet extends HttpServlet {
         return roles;
     }
 
-
 }
