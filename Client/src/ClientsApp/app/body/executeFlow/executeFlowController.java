@@ -753,14 +753,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("fail");
-
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
                     Platform.runLater(() -> {
                         showExecutionDetails(id);
-
                     });
                 } else {
                     System.out.println("did not finish yet");
@@ -849,7 +847,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
                         firstTimeLoadFolderName(addButton, textField, nameOfDD, Hbox);
                     }else {
-                        firstTimeLOadPathOfFileThatWeWillGoingToCreate(addButton, textField, nameOfDD, Hbox);
+                        firstTimeLOadPathOfFileThatWeWillGoingToCreate(addButton, textField, nameOfDD, Hbox,isOptional);
                     }
                 }
                 if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional)
@@ -857,15 +855,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
-    private void firstTimeLOadPathOfFileThatWeWillGoingToCreate(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
+    private void firstTimeLOadPathOfFileThatWeWillGoingToCreate(Button addButton, TextField textField, String nameOfDD, HBox Hbox,boolean isOptional) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
         File selectedFile = directoryChooser.showDialog(null);
 
         if (selectedFile != null)
-            updateUserInterfaceWithTheNewPath(addButton, textField, nameOfDD, Hbox, selectedFile);
+            updateUserInterfaceWithTheNewPath(addButton, textField, nameOfDD, Hbox, selectedFile,isOptional);
+        if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional)
+            startExecute.setDisable(false);
     }
-    private void updateUserInterfaceWithTheNewPath(Button addButton, TextField textField, String nameOfDD, HBox Hbox, File selectedFile) {
+    private void updateUserInterfaceWithTheNewPath(Button addButton, TextField textField, String nameOfDD, HBox Hbox, File selectedFile,boolean isOptional) {
         Platform.runLater(() -> {
             // Alert alert = new Alert(Alert.AlertType.INFORMATION);
             TextInputDialog dialog = new TextInputDialog();
@@ -892,8 +892,13 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 Hbox.getChildren().set(index, label);
                 //textField.setText(selectedFile.toString());
                 textField.setText(fullPath);
+                checkUpdate(isOptional);
             });
         });
+    }
+    private void checkUpdate(boolean isOptional) {
+        if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional)
+            startExecute.setDisable(false);
     }
     private void firstTimeLoadFolderName(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -913,7 +918,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             textField.setText(selectedFile.toString());
         }
     }
-
     private void editTheDataDefinitionThatWeWantToChange(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
         Platform.runLater(() -> {
             addButton.setText("Save");
@@ -1041,7 +1045,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
         );
     }
-
     private static void setApropTooltip(TextField textField, String msg) {
         Tooltip tooltip = new Tooltip(msg);
         tooltip.setStyle("-fx-background-color: #ff0000; -fx-text-fill: #000000;");
@@ -1053,7 +1056,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         delay.play();
         textField.clear();
     }
-
     private int checkHowMandatoryInputsINFreeInputsTemp(){
         int counter = 0;
         for (Pair<String, String> data: freeInputsTemp){
@@ -1088,10 +1090,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     void ContinuationExecution(ActionEvent event) {
         //body.getMVC_controller().setFreeInputs(freeInputsTemp);
         //todo send to server the free inputs and run the flow
-
-
+        
         // body.getMVC_controller().executeFlow(currentFlow);
-        //todo: remove^?^
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
