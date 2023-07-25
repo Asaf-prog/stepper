@@ -38,7 +38,8 @@ public class ClientConstants {
     public static final String VALIDATE_INPUT =FULL_SERVER_PATH + "/Client/validate";
     public static final String FLOW_ENDED =FULL_SERVER_PATH+ "/Client/flowEnded";
 
-
+///Client/getFileTypeName
+public static final String FILE_NAME = FULL_SERVER_PATH+"/Client/getFileTypeName";
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String LOAD_XML_FILE = FULL_SERVER_PATH + "/loadAndDecodeFile";
     public final static String USERS_LIST = FULL_SERVER_PATH + "/users-list";

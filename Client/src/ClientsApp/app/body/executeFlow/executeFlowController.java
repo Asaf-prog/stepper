@@ -7,6 +7,9 @@ import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerForContinuation;
 import ClientsApp.app.body.executeFlow.executionDetails.ExecutionsDetails;
 import ClientsApp.app.management.style.StyleManager;
+import Servlets.ClientServlets.login.FileName;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -42,10 +45,7 @@ import util.http.ClientHttpClientUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
+import java.util.*;
 
 import static modules.DataManeger.DataManager.stepperData;
 
@@ -87,7 +87,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private String style;
     List<Stage> stages = new ArrayList<>();
     private Client client;
-
+    private List<String> fileName;// list of all the data definition that type of File
+    private Gson gson = new Gson();
+    private int indexOfLabel;
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
@@ -226,9 +228,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         mandatoryList.setSpacing(10);
     }
     private String getDataThatSupplyAndUpdateTheListOfFreeInputsForOptional(ContinuationDTO continuation,String nameToSearch){
-       if (existInInitialValue(nameToSearch)){
-           return getExistInInitialValue(nameToSearch);
-       }
+        if (existInInitialValue(nameToSearch)){
+            return getExistInInitialValue(nameToSearch);
+        }
         else if (customMappingWithContinuation(nameToSearch,continuation)){//let search this data in the outputs of last flow
             for(ContinuationMappingDTO mapping: continuation.getMappingList()){
                 if (mapping.getTargetData().equals(nameToSearch)) {
@@ -276,7 +278,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
             }
         }
-            return null;
+        return null;
     }
     private String getData(String nameToSearch){
 //        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
@@ -309,11 +311,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     private boolean customMappingWithContinuation(String nameToSearch,ContinuationDTO continuation){
 
-       for(ContinuationMappingDTO mapping: continuation.getMappingList()){
-           if (mapping.getTargetData().equals(nameToSearch))
-               return true;
-       }
-       return false;
+        for(ContinuationMappingDTO mapping: continuation.getMappingList()){
+            if (mapping.getTargetData().equals(nameToSearch))
+                return true;
+        }
+        return false;
     }
     private boolean thisDataSupplyByFreeInputsOfLastFlow(String nameToSearch,ContinuationDTO continuation){
         for (Pair<String, DataDefinitionDeclarationDTO> lastMandatory: currentMandatoryFreeInput){
@@ -460,11 +462,66 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+    private void createListOfFreeInputFromTypeFile(){
+        String finalUrl = HttpUrl
+                .parse(ClientConstants.FILE_NAME)
+                .newBuilder()
+                .addQueryParameter("flowName", currentFlow.getName())
+                .build()
+                .toString();
+        //dummy body
+        // RequestBody body = RequestBody.create("", MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Platform.runLater(() -> {//general error
+                            String msg = "Please enter a valid input";
+                        });
+                    }
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.code() == 200) {
+                            ResponseBody responseBody = response.body();
+                            if (responseBody != null) {
+                                String bodyRes = responseBody.string();
+                                List<String> roles = gson.fromJson(bodyRes, new TypeToken<List<String>>() {
+                                }.getType());
+                            } else {//code 422
+
+                            }
+                        }
+                    }
+                }
+        );
+    }
+    private void createListOfFreeInputFromFileName(){
+        fileName = new ArrayList<>();
+        List<Pair<String, DataDefinitionDeclarationDTO>>  freeInput = getCurrentFlow().getFlowFreeInputs();
+        for (Pair<String, DataDefinitionDeclarationDTO> free : freeInput){
+            if (existInFileName(free.getKey())){
+                fileName.add(free.getKey());
+            }
+        }
+    }
+    private boolean existInFileName(String name2Search){
+        for (FileName n : FileName.values()){
+            if (n.name().equalsIgnoreCase(name2Search))
+                return true;
+        }
+        return false;
+    }
     private void mandatoryHandler(List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs) {
+        //createListOfFreeInputFromTypeFile();
+        createListOfFreeInputFromFileName();
         for (Pair<String, DataDefinitionDeclarationDTO> mandatory : mandatoryInputs) {
             Label label = new Label(mandatory.getKey());
             label.getStylesheets().add("app/management/style/darkTheme.css");
             label.getStyleClass().add("inputLabel");
+
 
             setLabelStyle(label);
             TextField textField = new TextField();
@@ -482,7 +539,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
             });
             if (!existInInitialValue(mandatory.getKey())){//to this value in this current step there is no initial value
-                if (mandatory.getKey().equals("FOLDER_NAME")) {
+                if (mandatory.getKey().equals("FOLDER_NAME") || existInFileName(mandatory.getKey())) {
                     textField.setEditable(false);
                     addButton.setText("Browse");
                     textField.setText("FOLDER_PATH");
@@ -490,6 +547,25 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     nameAndAddOrEdit.getChildren().add(textField);
                     nameAndAddOrEdit.getChildren().add(addButton);
                     nameAndAddOrEdit.setSpacing(10);
+                } else if (mandatory.getKey().equals("OPERATION")) {
+                    ToggleGroup toggleGroup = new ToggleGroup();
+                    HBox hBoxToToggel = new HBox();
+                    textField.setVisible(false);
+                    RadioButton radioButtonZip = new RadioButton("ZIP");
+                    radioButtonZip.setToggleGroup(toggleGroup);
+                    radioButtonZip.setOnAction(event -> handleButtonAction(addButton, textField,"ZIP",
+                            mandatory.getKey(), mandatory.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                    radioButtonZip.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+                    RadioButton radioButtonUnZip = new RadioButton("UNZIP");
+                    radioButtonUnZip.setToggleGroup(toggleGroup);
+                    radioButtonUnZip.setOnAction(event -> handleButtonAction(addButton, textField, "UNZIP",
+                            mandatory.getKey(), mandatory.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+
+                    radioButtonUnZip.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+                    hBoxToToggel.getChildren().addAll(radioButtonZip,radioButtonUnZip);
+                    hBoxToToggel.setSpacing(10);
+                    nameAndAddOrEdit.getChildren().add(hBoxToToggel);
+
                 } else {
                     nameAndAddOrEdit.getChildren().add(textField);
                     nameAndAddOrEdit.getChildren().add(addButton);
@@ -580,9 +656,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
                 }
                 setTheNewInputsThatTheUserSupply();
-        //todo remove // before adding all this to server side
-          //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
-        }
+                //todo remove // before adding all this to server side
+                //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
+            }
             else
                 throw new RuntimeException();
         }
@@ -611,11 +687,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private void setSizeOfMandatoryList(int size) {
         this.sizeOfMandatoryList = size;
     }
-
     public int getSizeOfMandatoryList() {
         return sizeOfMandatoryList;
     }
-
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
         if (!isComeFromHistory)
@@ -635,22 +709,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         enablesDetails();
         showDetails.setDisable(false);
 
-       // FlowExecution lastFlowExecution = getLastFlowExecution();
-
-
-//
-//        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-//            @Override
-//            public void invalidated(Observable observable) {
-//                Platform.runLater(() -> {
-//                    popupDetails();
-//                });
-//            }
-//        });
     }
     private void enablesDetails() {
-                showDetails.setDisable(false);
-                showDetails.setVisible(true);
+        showDetails.setDisable(false);
+        showDetails.setVisible(true);
     }
     private void setTheNewInputsThatTheUserSupply(){
         freeInputsMandatory = new ArrayList<>();
@@ -693,7 +755,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 System.out.println("fail");
 
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
@@ -702,7 +763,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
                     });
                 } else {
-                    System.out.println("fail,,");
+                    System.out.println("did not finish yet");
                 }
             }
         });
@@ -740,74 +801,199 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (stepperData == null)
             stepperData = DataManager.getData();
         if (stepperData.getFlowExecutions()!= null && stepperData.getFlowExecutions().size() != 0)
-             return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
+            return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
         return null;
     }
-    private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, String type, HBox Hbox,boolean isOptional) {
-        if (addButton.getText().equals("Edit")) {
-            //if
-            if (nameOfDD.equals("FOLDER_NAME")) {
-                    DirectoryChooser directoryChooser = new DirectoryChooser();
-                    directoryChooser.setTitle("Choose Directory");
-                    File selectedDirectory = directoryChooser.showDialog(null);
-                    if (selectedDirectory != null) {
-                        int index = getIndexOfLabel(Hbox);
-                        Label label = (Label) Hbox.getChildren().get(index);
-                        label.setText(selectedDirectory.getAbsolutePath());
-                        data = selectedDirectory.getAbsolutePath();//already valid
-                    }
-
-            } else {
-                addButton.setText("Save");
-                for (Pair<String, String> pair : freeInputsTemp) {
-                    if (pair.getKey().equals(nameOfDD)) {
-                        freeInputsTemp.remove(pair);
-                        break;
-                    }
-                }
-                textField.clear();
-                addButton.setText("Save");
-                if (freeInputsTemp.size() != getSizeOfMandatoryList()) {
-                    startExecute.setDisable(true);
-                }
+    private boolean nameOfDDExistInListOfFreeInputChangeData(String nameOfDD,String data){
+        for (Pair<String, String> pair:freeInputsTemp){
+            if (pair.getKey().equals(nameOfDD)) {
+                freeInputsTemp.remove(pair);
+                freeInputsTemp.add(new Pair<>(nameOfDD,data));
+                return true;
             }
         }
-        else {
-            if (!data.isEmpty() && !nameOfDD.equals("FOLDER_NAME")) {
-               validateInput(data, type,textField,addButton,nameOfDD);
+        return false;// the data definition is  not exist
+    }
+    private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, String type, HBox Hbox,boolean isOptional) {
 
-            } else if (nameOfDD.equals("FOLDER_NAME")) {
-                DirectoryChooser directoryChooser = new DirectoryChooser();
-                directoryChooser.setTitle("Choose Directory");
-                File selectedFile = directoryChooser.showDialog(null);
-                if (selectedFile != null) {
-                    freeInputsTemp.add(new Pair<>(nameOfDD, selectedFile.toString()));
+        if (nameOfDD.equals("OPERATION"))
+            handleOperation(addButton, data, nameOfDD);
+        else {
+            if (addButton.getText().equals("Edit")) {
+                if (nameOfDD.equals("FOLDER_NAME") || existInFileName(nameOfDD)) {
+                    if (nameOfDD.equals("FOLDER_NAME")){
+                        handleEditFolderName(Hbox);
+                    } else
+                        editTheDataDefinitionThatWeWantToChange(addButton, textField, nameOfDD, Hbox);
+
+                } else {
+                    addButton.setText("Save");
+                    for (Pair<String, String> pair : freeInputsTemp) {
+                        if (pair.getKey().equals(nameOfDD)) {
+                            freeInputsTemp.remove(pair);
+                            break;
+                        }
+                    }
+                    textField.clear();
+                    addButton.setText("Save");
+                    if (freeInputsTemp.size() != getSizeOfMandatoryList()) {
+                        startExecute.setDisable(true);
+                    }
+                }
+            } else {//equals to save, so it's the first time that we save the data of the user
+                if (!data.isEmpty() && !(nameOfDD.equals("FOLDER_NAME") || existInFileName(nameOfDD))) {
+                    validateInput(data, type,textField,addButton,nameOfDD);
+
+                } else if (nameOfDD.equals("FOLDER_NAME")|| existInFileName(nameOfDD)) {
+                    if (nameOfDD.equals("FOLDER_NAME")){//popUp For The Name Of The File
+
+                        firstTimeLoadFolderName(addButton, textField, nameOfDD, Hbox);
+                    }else {
+                        firstTimeLOadPathOfFileThatWeWillGoingToCreate(addButton, textField, nameOfDD, Hbox);
+                    }
+                }
+                if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional)
+                    startExecute.setDisable(false);
+            }
+        }
+    }
+    private void firstTimeLOadPathOfFileThatWeWillGoingToCreate(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose Directory");
+        File selectedFile = directoryChooser.showDialog(null);
+
+        if (selectedFile != null)
+            updateUserInterfaceWithTheNewPath(addButton, textField, nameOfDD, Hbox, selectedFile);
+    }
+    private void updateUserInterfaceWithTheNewPath(Button addButton, TextField textField, String nameOfDD, HBox Hbox, File selectedFile) {
+        Platform.runLater(() -> {
+            // Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Name Of File Dialog");
+            dialog.setContentText("Name Of File:");
+
+            // Show the input dialog and wait for user input
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(name -> {
+                // Here, you can use the user's name in your application
+                System.out.println("User's name: " + name);
+                String fullPath = selectedFile.toString() +File.separator+ name;
+                freeInputsTemp.add(new Pair<>(nameOfDD, fullPath));
+
+                addButton.setText("Edit");
+                int index = Hbox.getChildren().indexOf(textField);
+                indexOfLabel=index;
+                // Label label = new Label(selectedFile.toString());
+                Label label = new Label(fullPath);
+                label.getStylesheets().add("app/management/style/darkTheme.css");
+                label.getStyleClass().add("inputLabel");
+                label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
+                setLabelStyle(label);
+                Hbox.getChildren().set(index, label);
+                //textField.setText(selectedFile.toString());
+                textField.setText(fullPath);
+            });
+        });
+    }
+    private void firstTimeLoadFolderName(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose Directory");
+        File selectedFile = directoryChooser.showDialog(null);
+
+        if (selectedFile != null) {
+            freeInputsTemp.add(new Pair<>(nameOfDD, selectedFile.toString()));
+            addButton.setText("Edit");
+            int index = Hbox.getChildren().indexOf(textField);
+            Label label = new Label(selectedFile.toString());
+            label.getStylesheets().add("app/management/style/darkTheme.css");
+            label.getStyleClass().add("inputLabel");
+            label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
+            setLabelStyle(label);
+            Hbox.getChildren().set(index, label);
+            textField.setText(selectedFile.toString());
+        }
+    }
+
+    private void editTheDataDefinitionThatWeWantToChange(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
+        Platform.runLater(() -> {
+            addButton.setText("Save");
+            for (Pair<String, String> pair : freeInputsTemp) {
+                if (pair.getKey().equals(nameOfDD)) {
+                    freeInputsTemp.remove(pair);
+                    break;
+                }
+            }
+            // textField.clear();
+            addButton.setText("Save");
+            if (freeInputsTemp.size() != getSizeOfMandatoryList()) {
+                startExecute.setDisable(true);
+            }
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Choose Directory");
+            File selectedFile = directoryChooser.showDialog(null);
+
+            if (selectedFile != null) {
+
+                // Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Name Of File Dialog");
+                dialog.setContentText("Name Of File:");
+
+                // Show the input dialog and wait for user input
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(name -> {
+                    // Here, you can use the user's name in your application
+                    System.out.println("User's name: " + name);
+                    String fullPath = selectedFile.toString() + File.separator + name;
+                    freeInputsTemp.add(new Pair<>(nameOfDD, fullPath));
+
                     addButton.setText("Edit");
-                    int index = Hbox.getChildren().indexOf(textField);
-                    Label label = new Label(selectedFile.toString());
+                    //int index = Hbox.getChildren().indexOf(Label);//**
+                    // Label label = new Label(selectedFile.toString());
+                    Label label = new Label(fullPath);
                     label.getStylesheets().add("app/management/style/darkTheme.css");
                     label.getStyleClass().add("inputLabel");
                     label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
                     setLabelStyle(label);
-                    Hbox.getChildren().set(index, label);
-                    textField.setText(selectedFile.toString());
-                }
+                    Hbox.getChildren().set( indexOfLabel,label);
+                    //textField.setText(selectedFile.toString());
+                    textField.setText(fullPath);
+                });
             }
-            if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional) {
+        });
+    }
+    private void handleEditFolderName(HBox Hbox) {
+        String data;
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose Directory");
+        File selectedDirectory = directoryChooser.showDialog(null);
+        if (selectedDirectory != null) {
+            int index = getIndexOfLabel(Hbox);
+            Label label = (Label) Hbox.getChildren().get(index);
+            label.setText(selectedDirectory.getAbsolutePath());
+            data = selectedDirectory.getAbsolutePath();//already valid
+        }
+    }
+    private void handleOperation(Button addButton, String data, String nameOfDD) {
+        if (nameOfDDExistInListOfFreeInputChangeData(nameOfDD, data)){
+            //we change to exist data-definition from zip to unzip and vice versa
+            if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()) {
+                startExecute.setDisable(false);
+            }
+        } else {
+            freeInputsTemp.add(new Pair<>(nameOfDD, data));
+            addButton.setText("Edit");
+            if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()) {
                 startExecute.setDisable(false);
             }
         }
     }
-
     private void setBodyButtonStyle(Button button) {
         button.setOnMouseEntered(event ->
                 button.setStyle(style+ "-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff"));
         button.setOnMouseExited(event ->
                 button.setStyle(style));
-
-
     }
-
     private void validateInput(String data, String type, TextField textField, Button btn, String nameOfDD) {
 
         //build req for valid input servlet
@@ -825,36 +1011,34 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 .put(body)
                 .build();
         ClientHttpClientUtil.runAsync(request, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() -> {//general error
-                    String msg = "Please enter a valid input";
-                    setApropTooltip(textField, msg);
-                    btn.setText("Save");
-                });
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() == 200) {
-                    Platform.runLater(() -> {
-                        freeInputsTemp.add(new Pair<>(nameOfDD, data));
-                        btn.setText("Edit");
-                        if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()) {
-                            startExecute.setDisable(false);
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Platform.runLater(() -> {//general error
+                            String msg = "Please enter a valid input";
+                            setApropTooltip(textField, msg);
+                            btn.setText("Save");
+                        });
+                    }
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.code() == 200) {
+                            Platform.runLater(() -> {
+                                freeInputsTemp.add(new Pair<>(nameOfDD, data));
+                                btn.setText("Edit");
+                                if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()) {
+                                    startExecute.setDisable(false);
+                                }
+                            });
+                        } else {//code 422
+                            Platform.runLater(() -> {
+                                //get msg from response
+                                String msg = response.header("message");
+                                setApropTooltip(textField, msg);
+                                btn.setText("Save");
+                            });
                         }
-                    });
-                } else {//code 422
-                    Platform.runLater(() -> {
-                        //get msg from response
-                        String msg = response.header("message");
-                        setApropTooltip(textField, msg);
-                        btn.setText("Save");
-                    });
+                    }
                 }
-
-            }
-        }
         );
     }
 
@@ -906,14 +1090,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         //todo send to server the free inputs and run the flow
 
 
-       // body.getMVC_controller().executeFlow(currentFlow);
+        // body.getMVC_controller().executeFlow(currentFlow);
         //todo: remove^?^
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }
         FlowExecution lastFlowExecution = getLastFlowExecution();
         showDetails.setVisible(true);
-       // enablesDetails();
+        // enablesDetails();
         showDetails.setDisable(false);
 
         lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
@@ -953,7 +1137,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             setLabelStyle(data);
         }
     }
-
     private void createComponentForMandatoryFromHistory() {
         for (Pair<String,String> mandatory: freeInputsMandatoryFromHistory) {
             Label label = new Label(mandatory.getKey());
@@ -980,7 +1163,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @Override
     public void setFreeInputsMandatoryAndOptional(List<Pair<String, String>> freeInputMandatory,
                                                   List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD
-    ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ){
+            ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ){
         this.freeInputsMandatoryFromHistory = freeInputMandatory;
         this.freeInputsOptionalFromHistory = freeInputOptional;
         this.freeInputsMandatory = freeInputMandatory;
