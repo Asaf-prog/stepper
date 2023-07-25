@@ -28,5 +28,6 @@
     <orderEntry type="module" module-name="stepper-Engine" exported="" />
     <orderEntry type="module" module-name="stepper-Admin" exported="" />
     <orderEntry type="module" module-name="stepper-DTO" exported="" />
+    <orderEntry type="library" exported="" name="jayson path" level="project" />
   </component>
 </module>

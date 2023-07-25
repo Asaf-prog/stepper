@@ -74,11 +74,7 @@ public class MVC_controller {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("fail");
-
             }
-
-
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 //means execution over
@@ -131,6 +127,8 @@ public class MVC_controller {
                 if (response.code() == 200) {
                     Platform.runLater(() -> {
                         timer.cancel();
+                        //open the option to continuation
+                        //body.setContinuationButton();
                         popupDetails(id);
                         lastExeId=id;
 

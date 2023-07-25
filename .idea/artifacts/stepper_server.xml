@@ -16,6 +16,8 @@
           <element id="library" level="project" name="okHttp" />
           <element id="library" level="project" name="google-gson-2" />
           <element id="library" level="application_server_libraries" name="Tomcat 10.0.11" />
+          <element id="library" level="project" name="controlsfx-8.40.141" />
+          <element id="library" level="project" name="jayson path" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />

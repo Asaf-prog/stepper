@@ -1,5 +1,8 @@
 package modules.dataDefinition.impl.enumerator;
 
-public enum MethodEnum {
+import java.io.Serializable;
+
+public enum MethodEnum implements Serializable {
+
     GET,PUT,POST,DELETE
 }

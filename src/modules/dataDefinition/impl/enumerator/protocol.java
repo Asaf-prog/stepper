@@ -1,6 +1,8 @@
 package modules.dataDefinition.impl.enumerator;
 
-public enum protocol {
+import java.io.Serializable;
+
+public enum protocol implements Serializable {
     HTTP,HTTPS;
 
     @Override
