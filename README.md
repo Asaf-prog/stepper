@@ -26,10 +26,3 @@ Assemble these steps into a flow that represents your desired workflow structure
 Execute the flow using the provided UI clients or programmatically.
 Feel free to customize and enhance your workflows as per your unique requirements.
 
-Technologies Used:
-java (1.8)
-Multithreading
-JSON serialization
-Desktop application -javaFX
-Client-server architecture (Tomcat)
-Users and permission management
