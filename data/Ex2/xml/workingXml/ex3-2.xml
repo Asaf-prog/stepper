@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ST-Stepper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Stepper-V2.xsd">
+	<ST-ThreadPool>2</ST-ThreadPool>
+	<ST-Flows>
+		<ST-Flow name="Delete Matched Files">
+			<ST-FlowDescription>Given a folder, deletes files matching a certain pattern</ST-FlowDescription>				
+			<ST-FlowOutput>TOTAL_FOUND,DELETION_STATS</ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Collect Files In Folder"/>
+				<ST-StepInFlow name="Spend Some Time"/>
+				<ST-StepInFlow name="Files Deleter"/>
+			</ST-StepsInFlow>
+		</ST-Flow>
+		<ST-Flow name="Store Command Result">
+			<ST-FlowDescription>Invoke a command line and plots its output to a file. The file is then zipped</ST-FlowDescription>						
+			<ST-FlowOutput>CONTENT</ST-FlowOutput>
+			<ST-StepsInFlow>
+				<ST-StepInFlow name="Command Line"/>
+				<ST-StepInFlow name="File Dumper"/>
+				<ST-StepInFlow name="Zipper"/>
+			</ST-StepsInFlow>
+			<ST-FlowLevelAliasing>
+				<ST-FlowLevelAlias step="Command Line" source-data-name="RESULT" alias="CONTENT"/>
+				<ST-FlowLevelAlias step="Zipper" source-data-name="SOURCE" alias="FILE_NAME"/>
+				<ST-FlowLevelAlias step="Zipper" source-data-name="RESULT" alias="ZIP_RESULT"/>
+			</ST-FlowLevelAliasing>
+			<ST-InitialInputValues>
+				<ST-InitialInputValue input-name="OPERATION" initial-value="ZIP"/>
+			</ST-InitialInputValues>
+		</ST-Flow>
+	</ST-Flows>
+</ST-Stepper>

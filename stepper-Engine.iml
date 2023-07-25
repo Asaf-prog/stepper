@@ -9,5 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="stepper-UI" />
     <orderEntry type="module" module-name="stepper-DTO" />
+    <orderEntry type="library" name="google-gson-2" level="project" />
+    <orderEntry type="library" name="jayson path" level="project" />
+    <orderEntry type="library" name="okHttp" level="project" />
   </component>
 </module>

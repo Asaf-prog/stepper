@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jayson path">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/3rd/jayson path" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/3rd/jayson path" recursive="false" />
+  </library>
+</component>

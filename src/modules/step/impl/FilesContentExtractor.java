@@ -25,7 +25,6 @@ public class FilesContentExtractor extends AbstractStepDefinition {
         addOutput(new DataDefinitionDeclarationImpl("DATA", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.RELATION));
 
     }
-
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
         List<FileData> FileList = context.getDataValue("FILES_LIST", List.class);

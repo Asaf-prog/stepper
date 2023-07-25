@@ -3,6 +3,8 @@ package modules.dataDefinition.impl;
 
 import modules.dataDefinition.api.DataDefinition;
 import modules.dataDefinition.impl.enumerator.EnumeratorDataDefinition;
+import modules.dataDefinition.impl.enumerator.MethodEnumDefinition;
+import modules.dataDefinition.impl.enumerator.protocolEnumeratorDataDefinition;
 import modules.dataDefinition.impl.number.DoubleDataDefinition;
 import modules.dataDefinition.impl.relation.RelationDataDefinition;
 import modules.dataDefinition.impl.string.StringDataDefinition;
@@ -21,7 +23,9 @@ public enum DataDefinitionRegistry implements DataDefinition {
     FILE(new FileDataDefinition()),
     LIST(new ListDataDefinition()),
     ENUMERATION(new EnumeratorDataDefinition()),
-    JASON(new JsonDataDefinition())
+    JASON(new JsonDataDefinition()),
+    PROTOCOL_ENUMERATOR(new protocolEnumeratorDataDefinition()),
+    METHOD_ENUM_ENUMERATION(new MethodEnumDefinition())
 
     ;
 

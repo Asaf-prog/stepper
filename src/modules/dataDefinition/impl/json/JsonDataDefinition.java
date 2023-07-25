@@ -5,6 +5,6 @@ import modules.dataDefinition.impl.enumerator.Enumerator;
 
 public class JsonDataDefinition  extends AbstractDataDefinition {
     public JsonDataDefinition() {
-        super("Jason", true, String.class);
+        super("Jason", true, JasonData.class);
     }
 }
