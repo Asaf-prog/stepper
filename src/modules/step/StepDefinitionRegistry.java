@@ -13,7 +13,10 @@ public enum StepDefinitionRegistry {
     CSV_EXPORTER(new CSVExporter()),
     FILES_CONTENT_EXTRACTOR(new FilesContentExtractor()),
     ZIPPER(new Zipper()),
-    COMMAND_LINE(new CommandLine())
+    COMMAND_LINE(new CommandLine()),
+    HTTP_CALL(new HTTPCall()),
+    JASON_DATA_EXTRACTOR(new JsonDataExtractor()),
+    TO_JSON(new ToJson())
 
     ;//this is the real steps
     private final StepDefinition stepDefinition;
