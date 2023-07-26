@@ -2,9 +2,7 @@ package services.user;
 
 import javafx.util.Pair;
 import services.stepper.FlowDefinitionDTO;
-
 import java.util.List;
-
 public class ContinuationConversionDTO {
     private List<Pair<String,String>> supplyData;
     private List<String> needToSupplyData;

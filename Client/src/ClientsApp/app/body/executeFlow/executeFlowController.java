@@ -322,7 +322,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             if (lastMandatory.getKey().equals(nameToSearch) ) {
                 return true;
             }
-
         }
         return false;
     }
@@ -385,7 +384,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public FlowDefinitionDTO getCurrentFlow() {
         return currentFlow;
     }
-
     private boolean existInData(String nameOfDD) {
         for (Pair<String, DataDefinitionDeclarationDTO> run : currentOptionalFreeInput) {
             if (run.getKey().equals(nameOfDD))
@@ -411,7 +409,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         freeInputsOptional = optionalIn;
         outputsOfLastFlow = outputs;
 //        this.lastFlow = lastFlow;
-        //todo remove when moving to server
     }
     private List<Pair<String, DataDefinitionDeclarationDTO>> getCurrentMandatoryFreeInput() {
         return currentMandatoryFreeInput;
@@ -656,7 +653,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                                     ToggleGroup group = new ToggleGroup();
                                     for(String nameOfFlow : ContinuationFromServlet){
                                         RadioButton button = new RadioButton(nameOfFlow);
-                                        button.setStyle("-fx-text-fill: #9c3b3b");
+                                        button.setStyle("-fx-text-fill: #9c913b");
                                         button.setOnAction(e ->{
                                             try{
                                                 handleButtonActionForContinuation(nameOfFlow,currentFlow.getName());
@@ -1237,13 +1234,13 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         Label label = new Label(dataSupply.getKey());
                         label.getStylesheets().add("app/management/style/darkTheme.css");
                         label.getStyleClass().add("inputLabel");
-                        label.setStyle("-fx-text-fill: white");
+                        label.setStyle("-fx-text-fill: #a89d1f");
                         HBox nameAndAddOrEdit = new HBox();
                         nameAndAddOrEdit.getChildren().add(label);
                         Label data = new Label(dataSupply.getValue());
                         data.getStylesheets().add("app/management/style/darkTheme.css");
                         data.getStyleClass().add("inputLabel");
-                        data.setStyle("-fx-text-fill: white");
+                        data.setStyle("-fx-text-fill: #a89d1f");
                         nameAndAddOrEdit.getChildren().add(data);
                         nameAndAddOrEdit.setSpacing(5);
                         mandatoryList.getChildren().add(nameAndAddOrEdit);
@@ -1253,13 +1250,13 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         Label label = new Label(dataSupply.getKey());
                         label.getStylesheets().add("app/management/style/darkTheme.css");
                         label.getStyleClass().add("inputLabel");
-                        label.setStyle("-fx-text-fill: white");
+                        label.setStyle("-fx-text-fill: #a89d1f");
                         HBox nameAndAddOrEdit = new HBox();
                         nameAndAddOrEdit.getChildren().add(label);
                         Label data = new Label(dataSupply.getValue());
                         data.getStylesheets().add("app/management/style/darkTheme.css");
                         data.getStyleClass().add("inputLabel");
-                        data.setStyle("-fx-text-fill: white");
+                        data.setStyle("-fx-text-fill: #a89d1f");
                         nameAndAddOrEdit.getChildren().add(data);
                         nameAndAddOrEdit.setSpacing(5);
                         optionalList.getChildren().add(nameAndAddOrEdit);
@@ -1308,6 +1305,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                }
             }
         }
+        optionalList.setSpacing(10);
         if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size() || mandatoryInputs.size() == freeInputsTemp.size())
             continuationExe.setDisable(false);
         mandatoryList.setSpacing(10);

@@ -48,10 +48,8 @@ public class bodyController {
     private MVC_controller controller;
     private FlowDefinitionDTO currentFlow;
     private mainControllerClient controllerClient;
-
     private bodyControllerDefinition lastBodyController=null;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
-
     private Client client;
     public void setMainController(mainController main) {
         this.main = main;
@@ -170,11 +168,7 @@ public class bodyController {
     public MVC_controller getMVC_controller(){
         return controller;
     }
-    public void handlerContinuation(FlowDefinitionDTO flow, List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                    List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,List<Pair<String, String>>optionalIn,
-                                    Map<String,Object> outputs,FlowDefinitionImpl currentFlow){
-        executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn,outputs,currentFlow);
-    }
+
     public void handlerContinuationFromServlet( DataTransfer transfer){
         executeExistFlowScreenOfContinuationServlet(transfer);
     }
@@ -187,23 +181,6 @@ public class bodyController {
             transfer.setUrl(url);
             transfer.setFxmlLoader(fxmlLoader);
             loadScreenWithCurrentFlowForContinuationServlet(transfer);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public void executeExistFlowScreenOfContinuation(FlowDefinitionDTO flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                                     List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
-                                                     List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
-        //setCurrentFlow(flow);
-
-        try {
-
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
-            fxmlLoader.setLocation(url);
-
-            loadScreenWithCurrentFlowForContinuation(fxmlLoader, url,flow,mandatory,optional,mandatoryIn,optionalIn,outputs,currentFlow);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -222,23 +199,6 @@ public class bodyController {
             setCurrentFlow(transfer.getDataListFromServlet().getTargetFlow());
             bodyController.setDataTransfer(transfer);
             bodyController.showForContinuationServlet();
-
-            bodyPane.getChildren().setAll(screen);
-        }
-        catch (IOException e) {
-            System.out.println("BASA3");
-        }
-    }
-    private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
-                                                          List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
-                                                          List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
-        try {
-            Parent screen = fxmlLoader.load(url.openStream());
-            bodyControllerForContinuation bodyController = fxmlLoader.getController();
-            bodyController.setCurrentFlowForContinuation(flow);
-            bodyController.setBodyControllerContinuation(this);
-            setCurrentFlow(flow);
-            bodyController.showForContinuation();
 
             bodyPane.getChildren().setAll(screen);
         }
@@ -307,9 +267,7 @@ public class bodyController {
                 errorMessageProperty.set("User name is empty. You can't login with empty user name");
                 return;
             }
-
             //noinspection ConstantConditions
-
             String userName = textField.getText();
             String finalUrl = HttpUrl
                     .parse(ClientConstants.LOGIN_PAGE)
@@ -319,7 +277,6 @@ public class bodyController {
                     .toString();
             updateHttpStatusLine("New request is launched for: " + finalUrl);
             ClientHttpClientUtil.runAsync(finalUrl, new Callback() {
-
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Platform.runLater(() ->
@@ -330,7 +287,6 @@ public class bodyController {
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     System.out.println(response.body().string());
                     response.close();
-
                 }
             });
         }
