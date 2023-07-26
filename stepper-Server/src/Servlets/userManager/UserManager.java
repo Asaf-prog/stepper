@@ -56,7 +56,6 @@ public class UserManager {
         }
         return null;
     }
-
     public StepperUser getUser(String username) {
         for (StepperUser user : usersSet) {
             if (user.getUsername().equals(username)) {
@@ -65,7 +64,6 @@ public class UserManager {
         }
         return null;
     }
-
     public boolean isUserManager(String username) {
 
         for (StepperUser user : usersSet) {
@@ -74,5 +72,11 @@ public class UserManager {
             }
         }
         return false;
+    }
+    public void addFlowExecution(String username, UUID uniqueId) {
+        StepperUser user = getUser(username);
+        if (user != null) {
+            user.addFlowExecution(uniqueId);
+        }
     }
 }

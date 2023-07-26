@@ -5,6 +5,7 @@ import modules.flow.execution.FlowExecution;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class StepperUser {
     private static final String DEFAULT_ROLE = "all-flows";
@@ -60,5 +61,8 @@ public class StepperUser {
 
     public void setManager(boolean manager) {
         isManager = manager;
+    }
+    public void addFlowExecution(UUID uniqueId) {
+        flowExecutionsIDs.add(uniqueId.toString());
     }
 }

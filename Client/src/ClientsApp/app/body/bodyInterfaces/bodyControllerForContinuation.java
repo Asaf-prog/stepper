@@ -12,7 +12,9 @@ import java.util.Map;
 
 public interface bodyControllerForContinuation {
     void showForContinuation();
+    void showForContinuationServlet();
     void setCurrentFlowForContinuation(FlowDefinitionDTO flow);
+    void setCurrentFlowForContinuationServlet(String flowName);
     void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclarationDTO>> mandatory,
                                         List<Pair<String, DataDefinitionDeclarationDTO>> optional,List<Pair<String, String>>mandatoryIn,
                                         List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow);

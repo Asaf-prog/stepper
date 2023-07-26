@@ -1,6 +1,7 @@
 package ClientsApp.app.body.executeFlow;
 
 import ClientsApp.app.Client.Client;
+import ClientsApp.app.body.DataTransfer;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
@@ -40,6 +41,7 @@ import services.stepper.FlowDefinitionDTO;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
 import services.stepper.other.ContinuationMappingDTO;
+import services.user.ContinuationConversionDTO;
 import util.ClientConstants;
 import util.http.ClientHttpClientUtil;
 
@@ -646,10 +648,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                             ResponseBody responseBody = response.body();
                             if (responseBody != null) {
                                 String bodyRes = responseBody.string();
-                                System.out.println(bodyRes);
                                 List<String> ContinuationFromServlet = gson.fromJson(bodyRes, new TypeToken<List<String>>() {
                                 }.getType());
-
                                 Platform.runLater(() -> {
                                     if (!continuationVbox.getChildren().isEmpty()) {
                                         continuationVbox.getChildren().clear();
@@ -661,7 +661,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                                         button.setStyle("-fx-text-fill: #9c3b3b");
                                         button.setOnAction(e ->{
                                             try{
-                                                handleButtonActionForContinuation(nameOfFlow);
+                                                handleButtonActionForContinuation(nameOfFlow,currentFlow.getName());
                                             }catch (Exception ex){
                                                 System.out.println("collapse");
                                             }
@@ -673,35 +673,47 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                                     continuationVbox.setVisible(true);
                                     continuationLabel.setText("Continuation for " + currentFlow.getName());
                                 });
-
-                            } else {//code 422
-
                             }
                         }
                     }
                 }
         );
-//        continuationVbox.getChildren().clear();
-//        ToggleGroup group = new ToggleGroup();
-//        for (Continuation continuation : currentFlow.getContinuations()) {
-//            //RadioButton button = new RadioButton(continuation.getTargetFlow());
-//            //button.setStyle("-fx-text-fill: white");
-//            button.setOnAction(e -> {
-//                try {
-//                    handleButtonActionForContinuation(continuation.getTargetFlow());
-//                } catch (Exception ex) {
-//                    System.out.println("Basa10");
-//                }
-//            });
-//            button.setToggleGroup(group);
-//            continuationVbox.getChildren().add(button);
-//        }
-//        continuationVbox.setSpacing(10);
-//        continuationVbox.setVisible(true);
-//        continuationLabel.setText("Continuation for " + currentFlow.getName());
-
     }
-    private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
+    private void handleButtonActionForContinuation(String nameOfTargetFlow,String nameOfCurrentFlow) throws Exception {
+        //in this function we get the output of the last flow and update the target flow
+        String finalUrl = HttpUrl
+                .parse(ClientConstants.FLOW_OUTPUTS)
+                .newBuilder()
+                .addQueryParameter("flowName", nameOfCurrentFlow)
+                .addQueryParameter("targetFlowName", nameOfTargetFlow)
+                .build()
+                .toString();
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Platform.runLater(() -> {//general error
+                            String msg = "something wrong with the continuation ";
+                        });
+                    }
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.code() == 200) {
+                            ResponseBody responseBody = response.body();
+                            if (responseBody != null) {
+                                String bodyRes = responseBody.string();
+                                System.out.println(bodyRes);
+                                ContinuationConversionDTO data = gson.fromJson(bodyRes,ContinuationConversionDTO.class);
+                                DataTransfer transfer = new DataTransfer(data,nameOfCurrentFlow,nameOfTargetFlow);
+                                body.handlerContinuationFromServlet(transfer);
+
+                            }
+                        }
+                    }
+                });
 //        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
 //        if (targetFlow != null) {
 //            ///need to add the list of the output of the current step
@@ -1238,4 +1250,25 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public void setClient(Client client){
         this.client = client;
     }
+    @Override
+    public void showForContinuationServlet(){
+
+            continuationExe.setVisible(true);
+            continuationExe.setDisable(true);
+            startExecute.setVisible(false);
+            flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());//ok
+            //first, create a list of mandatory and optional that the user need to supply
+            //secondly, create the component
+            ContinuationDTO continuation1 = null;//=> fulfil the data of the mapping to the flow
+            for (ContinuationDTO continuationToThisFlow: lastFlow.getContinuations()){
+                if (continuationToThisFlow.getTargetFlow().equals(currentFlow.getName()))
+                    continuation1 = continuationToThisFlow;
+            }
+            createVboxMandatoryAndOptionalWithInitValue(continuation1);
+    }
+    @Override
+    public void setCurrentFlowForContinuationServlet(String flowName){
+
+    }
+
 }

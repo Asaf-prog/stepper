@@ -28,6 +28,7 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
+import services.user.ContinuationConversionDTO;
 import util.ClientConstants;
 import util.http.ClientHttpClientUtil;
 
@@ -174,6 +175,23 @@ public class bodyController {
                                     Map<String,Object> outputs,FlowDefinitionImpl currentFlow){
         executeExistFlowScreenOfContinuation(flow,mandatory,optional,mandatoryIn, optionalIn,outputs,currentFlow);
     }
+    public void handlerContinuationFromServlet( DataTransfer transfer){
+        executeExistFlowScreenOfContinuationServlet(transfer);
+    }
+    public void executeExistFlowScreenOfContinuationServlet( DataTransfer transfer){
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource("executeFlow/executeFlowController.fxml");
+            fxmlLoader.setLocation(url);
+            transfer.setUrl(url);
+            transfer.setFxmlLoader(fxmlLoader);
+            loadScreenWithCurrentFlowForContinuationServlet(transfer);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void executeExistFlowScreenOfContinuation(FlowDefinitionDTO flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                      List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
                                                      List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
@@ -189,6 +207,28 @@ public class bodyController {
 
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    private void  loadScreenWithCurrentFlowForContinuationServlet(DataTransfer transfer){
+        try {
+           Parent screen = transfer.getFxmlLoader().load(transfer.getUrl().openStream());
+            bodyControllerForContinuation bodyController = transfer.getFxmlLoader().getController();
+            bodyController.setCurrentFlowForContinuationServlet(transfer.getFlowTargetName());
+            bodyController.setBodyControllerContinuation(this);
+
+          //  Parent screen = fxmlLoader.load(url.openStream());
+           // bodyControllerForContinuation bodyController = fxmlLoader.getController();
+            bodyController.setCurrentFlowForContinuation(transfer.getDataListFromServlet().getTargetFlow());
+            //bodyController.setBodyControllerContinuation(this);
+            // bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,this.currentFlow);
+            //todo 4
+            //setCurrentFlow(flow);
+            bodyController.showForContinuationServlet();
+
+            bodyPane.getChildren().setAll(screen);
+        }
+        catch (IOException e) {
+            System.out.println("BASA3");
         }
     }
     private void loadScreenWithCurrentFlowForContinuation(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
