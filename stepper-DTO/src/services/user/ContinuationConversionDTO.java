@@ -9,18 +9,23 @@ public class ContinuationConversionDTO {
     private List<Pair<String,String>> supplyData;
     private List<String> needToSupplyData;
     private FlowDefinitionDTO targetFlow;
-    public ContinuationConversionDTO(List<Pair<String,String>> supplyData, List<String> needToSupplyData,FlowDefinitionDTO targetFlow){
+    private FlowDefinitionDTO sourceFlow;
+    public ContinuationConversionDTO(List<Pair<String,String>> supplyData, List<String> needToSupplyData,FlowDefinitionDTO targetFlow,FlowDefinitionDTO sourceFlow){
         this.supplyData = supplyData;
         this.needToSupplyData = needToSupplyData;
         this.targetFlow = targetFlow;
+        this.sourceFlow = sourceFlow;
     }
-    List<String> getNeedToSupplyData(){
+    public List<String> getNeedToSupplyData(){
         return needToSupplyData;
     }
-    List<Pair<String,String>> getSupplyData(){
+    public List<Pair<String,String>> getSupplyData(){
         return supplyData;
     }
     public FlowDefinitionDTO getTargetFlow(){
         return targetFlow;
+    }
+    public FlowDefinitionDTO getSourceFlow() {
+        return sourceFlow;
     }
 }

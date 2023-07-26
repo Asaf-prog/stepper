@@ -53,9 +53,7 @@ public class MVC_controller {
             header.updateClient(isManager);
         });
     }
-
     public void executeFlow(FlowDefinitionDTO flow) {
-        //send to server flow name and free inputs
 
         List<Pair<String, String>> userInputs = flow.getUserInputs();
         String flowName = flow.getName();
@@ -79,16 +77,11 @@ public class MVC_controller {
                 //means execution over
                 if (response.code() == 200) {
                     System.out.println("success");
-                    //get flowExecutionDTO from server
-//                    String flowExecutionDTO = response.body().string();
-//                    FlowExecutionDTO flowExecutionDTO1 = gson.fromJson(flowExecutionDTO, FlowExecutionDTO.class);
-//
+
 //                    popupDetails();
 
                     //setProgressBar(task);
                     header.setDisableOnExecutionsHistory();
-                    //define new timer to check every 200 ms if the flow ended
-                    //if so, popup the details
                     Timer timer = new Timer();
                     String id=response.header("flowId");
                     timer.scheduleAtFixedRate(new TimerTask() {
@@ -102,13 +95,9 @@ public class MVC_controller {
                     System.out.println("fail");
                 }
                 response.close();
-
-
-
             }
         });
     }
-
     private boolean FlowEnded(String id, Timer timer) {
         //send to server the request
         Request request = new Request.Builder()
@@ -147,10 +136,8 @@ public class MVC_controller {
                // loader.setController(new ExecutionsDetails(id));
                 loader.setControllerFactory(controllerClass -> {
                         return new ExecutionsDetails(id);
-
                 });
                 try {
-
                     Parent root = loader.load();
                     Stage stage = new Stage();
                     stage.setTitle("Flow Details");
@@ -165,7 +152,6 @@ public class MVC_controller {
                     ex.printStackTrace();
                 }
             }
-
             private void VerySecretCode() {
                 String secretcode = "skvmbeoivnreonvoirvrev";
                 Compile(secretcode);
@@ -174,7 +160,6 @@ public class MVC_controller {
             private void Compile(String secretcode) {
                 //come this far ... eh?
             }
-
             private void setProgressBar(ExecutionTask task) {
                 int nextIndex = header.getNextFreeProgress();
                 ProgressBar progressBar = header.getNextProgressBar(nextIndex);
@@ -197,7 +182,6 @@ public class MVC_controller {
         });
         return false;
     }
-
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;
     }

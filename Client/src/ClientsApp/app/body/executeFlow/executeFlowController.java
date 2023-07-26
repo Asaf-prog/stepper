@@ -92,6 +92,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<String> fileName;// list of all the data definition that type of File
     private Gson gson = new Gson();
     private int indexOfLabel;
+    private DataTransfer transfer;
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
@@ -120,7 +121,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         assert continuationExe != null : "fx:id=\"continuationExe\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert flowNameLabel != null : "fx:id=\"flowNameLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
     }
-
     @Override
     public void onLeave() {
         for (Stage stage : stages) {
@@ -129,7 +129,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @Override
     public void show() {
-
         //get free inputs from server with init input
         //first of all, create a two list : mandatoryInputs and optionalInputs:
 
@@ -402,7 +401,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public void setCurrentFlowForContinuation(FlowDefinitionDTO flow) {
         currentFlow = flow;
     }
-
     @Override
     public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclarationDTO>> mandatory, List<Pair<String, DataDefinitionDeclarationDTO>> optional
             ,List<Pair<String, String>>mandatoryIn,
@@ -705,38 +703,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                             ResponseBody responseBody = response.body();
                             if (responseBody != null) {
                                 String bodyRes = responseBody.string();
-                                System.out.println(bodyRes);
                                 ContinuationConversionDTO data = gson.fromJson(bodyRes,ContinuationConversionDTO.class);
                                 DataTransfer transfer = new DataTransfer(data,nameOfCurrentFlow,nameOfTargetFlow);
-                                body.handlerContinuationFromServlet(transfer);
+                                Platform.runLater(() -> {//general error
+                                    body.handlerContinuationFromServlet(transfer);
+
+                                });
 
                             }
                         }
                     }
                 });
-//        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
-//        if (targetFlow != null) {
-//            ///need to add the list of the output of the current step
-//            FlowExecution flowThatCurrentFinish = getFlowExecutionByName(currentFlow.getName());
-//            if (flowThatCurrentFinish != null){
-//                Map<String,Object> outputs = flowThatCurrentFinish.getAllExecutionOutputs();
-//                if (currentMandatoryFreeInput == null){
-//                    System.out.println("null");
-//                }
-//                if (currentOptionalFreeInput == null){
-//                    System.out.println("null");
-//                }
-//                setTheNewInputsThatTheUserSupply();
-//                //todo remove // before adding all this to server side
-//                //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
-//            }
-//            else
-//                throw new RuntimeException();
-//        }
-//        else
-//            throw new Exception("Target flow is null");
-
-        //todo need to get this information from servlet
     }
     private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow) {
         List<FlowDefinitionImpl> flows = stepperData.getFlows();
@@ -862,14 +839,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             //disable app until the user close the window
         } catch (IllegalStateException | IOException ex) {
             VerySecretCode();
-            //todo remove@!!!
             ex.printStackTrace();
         }
     }
     private void VerySecretCode() {
         // :)
     }
-
     private FlowExecution getLastFlowExecution() {
         if (stepperData == null)
             stepperData = DataManager.getData();
@@ -1162,26 +1137,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @FXML
     void ContinuationExecution(ActionEvent event) {
-        //body.getMVC_controller().setFreeInputs(freeInputsTemp);
-        //todo send to server the free inputs and run the flow
-        
-        // body.getMVC_controller().executeFlow(currentFlow);
-        if (currentFlow.getContinuations().size() != 0) {
-            continuation.setDisable(false);
-        }
-        FlowExecution lastFlowExecution = getLastFlowExecution();
+        body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        currentFlow.setUserInputs(freeInputsTemp);
+         body.getMVC_controller().executeFlow(currentFlow);
         showDetails.setVisible(true);
-        // enablesDetails();
+         enablesDetails();
         showDetails.setDisable(false);
-
-        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                Platform.runLater(() -> {
-                    popupDetails();
-                });
-            }
-        });
     }
     @Override
     public void setBodyControllerContinuation(bodyController body){
@@ -1253,22 +1214,110 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @Override
     public void showForContinuationServlet(){
 
+            freeInputsTemp = new ArrayList<>();
             continuationExe.setVisible(true);
             continuationExe.setDisable(true);
             startExecute.setVisible(false);
             flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());//ok
-            //first, create a list of mandatory and optional that the user need to supply
-            //secondly, create the component
-            ContinuationDTO continuation1 = null;//=> fulfil the data of the mapping to the flow
-            for (ContinuationDTO continuationToThisFlow: lastFlow.getContinuations()){
-                if (continuationToThisFlow.getTargetFlow().equals(currentFlow.getName()))
-                    continuation1 = continuationToThisFlow;
+        List<Pair<String, DataDefinitionDeclarationDTO>> freeInputs= currentFlow.getFlowFreeInputs();
+        List<Pair<String,String>> dataThatSupply = transfer.getDataListFromServlet().getSupplyData();
+        List<String> needToSupply = transfer.getDataListFromServlet().getNeedToSupplyData();
+
+        List<Pair<String,DataDefinitionDeclarationDTO>> mandatoryInputs = new ArrayList<>();
+        for (Pair<String, DataDefinitionDeclarationDTO> freeInput : freeInputs){
+            if (freeInput.getValue().isMandatory())
+                mandatoryInputs.add(freeInput);
+        }
+        currentMandatoryFreeInput = mandatoryInputs;
+        // supply data
+        for (Pair<String,String> dataSupply : dataThatSupply){
+            for (Pair<String, DataDefinitionDeclarationDTO> freeInput : freeInputs){
+                if (dataSupply.getKey().equals(freeInput.getKey()) ){
+                    if ( freeInput.getValue().isMandatory()){
+                        Label label = new Label(dataSupply.getKey());
+                        label.getStylesheets().add("app/management/style/darkTheme.css");
+                        label.getStyleClass().add("inputLabel");
+                        label.setStyle("-fx-text-fill: white");
+                        HBox nameAndAddOrEdit = new HBox();
+                        nameAndAddOrEdit.getChildren().add(label);
+                        Label data = new Label(dataSupply.getValue());
+                        data.getStylesheets().add("app/management/style/darkTheme.css");
+                        data.getStyleClass().add("inputLabel");
+                        data.setStyle("-fx-text-fill: white");
+                        nameAndAddOrEdit.getChildren().add(data);
+                        nameAndAddOrEdit.setSpacing(5);
+                        mandatoryList.getChildren().add(nameAndAddOrEdit);
+                        freeInputsTemp.add(new Pair<>(dataSupply.getKey(),dataSupply.getValue()));
+                    }
+                    else {//optional
+                        Label label = new Label(dataSupply.getKey());
+                        label.getStylesheets().add("app/management/style/darkTheme.css");
+                        label.getStyleClass().add("inputLabel");
+                        label.setStyle("-fx-text-fill: white");
+                        HBox nameAndAddOrEdit = new HBox();
+                        nameAndAddOrEdit.getChildren().add(label);
+                        Label data = new Label(dataSupply.getValue());
+                        data.getStylesheets().add("app/management/style/darkTheme.css");
+                        data.getStyleClass().add("inputLabel");
+                        data.setStyle("-fx-text-fill: white");
+                        nameAndAddOrEdit.getChildren().add(data);
+                        nameAndAddOrEdit.setSpacing(5);
+                        optionalList.getChildren().add(nameAndAddOrEdit);
+                        freeInputsTemp.add(new Pair<>(dataSupply.getKey(),dataSupply.getValue()));
+                    }
+                }
             }
-            createVboxMandatoryAndOptionalWithInitValue(continuation1);
+        }
+        mandatoryList.setSpacing(10);
+
+        for (String getDataFromUser : needToSupply){
+            for (Pair<String, DataDefinitionDeclarationDTO> freeInput : freeInputs){
+               if (getDataFromUser.equals(freeInput.getKey())){
+                   if (freeInput.getValue().isMandatory()){
+                       TextField textField = new TextField();
+                       HBox nameAndAddOrEdit = new HBox();
+                       textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
+                       textField.setPromptText("Enter here");
+                       Button addButton = new Button("Save");
+                       addButton.getStylesheets().add("app/management/style/darkTheme.css");
+                       addButton.getStyleClass().add("inputButton");
+                       setButtonStyle(addButton);
+                       addButton.setOnAction(event -> handleButtonAction(addButton, textField, textField.getText(),
+                               freeInput.getKey(), freeInput.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                       nameAndAddOrEdit.getChildren().add(textField);
+                       nameAndAddOrEdit.getChildren().add(addButton);
+                       nameAndAddOrEdit.setSpacing(5);
+                       mandatoryList.getChildren().add(nameAndAddOrEdit);
+
+                   }else {// is optional
+                       TextField textField = new TextField();
+                       HBox nameAndAddOrEdit = new HBox();
+                       textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
+                       textField.setPromptText("Enter here");
+                       Button addButton = new Button("Save");
+                       addButton.getStylesheets().add("app/management/style/darkTheme.css");
+                       addButton.getStyleClass().add("inputButton");
+                       setButtonStyle(addButton);
+                       addButton.setOnAction(event -> handleButtonAction(addButton, textField, textField.getText(),
+                               freeInput.getKey(), freeInput.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,true));
+                       nameAndAddOrEdit.getChildren().add(textField);
+                       nameAndAddOrEdit.getChildren().add(addButton);
+                       nameAndAddOrEdit.setSpacing(5);
+                       optionalList.getChildren().add(nameAndAddOrEdit);
+                   }
+               }
+            }
+        }
+        if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size() || mandatoryInputs.size() == freeInputsTemp.size())
+            continuationExe.setDisable(false);
+        mandatoryList.setSpacing(10);
     }
     @Override
-    public void setCurrentFlowForContinuationServlet(String flowName){
-
+    public  void setLastFlowDTO(FlowDefinitionDTO lastFlow){
+            this.lastFlow = lastFlow;
     }
-
+    @Override
+    public void setDataTransfer(DataTransfer transfer){
+        this.transfer = transfer;
+    }
 }

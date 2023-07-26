@@ -213,16 +213,14 @@ public class bodyController {
         try {
            Parent screen = transfer.getFxmlLoader().load(transfer.getUrl().openStream());
             bodyControllerForContinuation bodyController = transfer.getFxmlLoader().getController();
-            bodyController.setCurrentFlowForContinuationServlet(transfer.getFlowTargetName());
             bodyController.setBodyControllerContinuation(this);
 
-          //  Parent screen = fxmlLoader.load(url.openStream());
-           // bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(transfer.getDataListFromServlet().getTargetFlow());
-            //bodyController.setBodyControllerContinuation(this);
+            bodyController.setLastFlowDTO(transfer.getDataListFromServlet().getSourceFlow());
             // bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,this.currentFlow);
-            //todo 4
-            //setCurrentFlow(flow);
+
+            setCurrentFlow(transfer.getDataListFromServlet().getTargetFlow());
+            bodyController.setDataTransfer(transfer);
             bodyController.showForContinuationServlet();
 
             bodyPane.getChildren().setAll(screen);
@@ -239,8 +237,6 @@ public class bodyController {
             bodyControllerForContinuation bodyController = fxmlLoader.getController();
             bodyController.setCurrentFlowForContinuation(flow);
             bodyController.setBodyControllerContinuation(this);
-           // bodyController.SetCurrentMandatoryAndOptional(mandatory,optional,mandatoryIn,optionalIn,outputs,this.currentFlow);
-            //todo 4
             setCurrentFlow(flow);
             bodyController.showForContinuation();
 

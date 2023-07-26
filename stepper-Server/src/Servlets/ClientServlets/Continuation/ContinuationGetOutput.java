@@ -63,8 +63,11 @@ public class ContinuationGetOutput extends HttpServlet {// this servlet need to 
             checkIfTheDataSupplyByTheOutputs(outputs);
             customContinuation(sourceFlowDefinition,nameOfTargetFlow,flowThatCurrentFinish);
             List<String> getDataFromUser = getDataThatNotSupplyByContinuation(targetFlowDefinition);
+
             FlowDefinitionDTO targetFlowDTO = Mapper.convertToFlowDefinitionDTO(targetFlowDefinition);
-            ContinuationConversionDTO listToRes = new ContinuationConversionDTO(suppliedData,getDataFromUser,targetFlowDTO);
+            FlowDefinitionDTO sourceFlowDTO = Mapper.convertToFlowDefinitionDTO(sourceFlowDefinition);
+
+            ContinuationConversionDTO listToRes = new ContinuationConversionDTO(suppliedData,getDataFromUser,targetFlowDTO,sourceFlowDTO);
             String json = new Gson().toJson(listToRes);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");

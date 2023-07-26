@@ -1,5 +1,6 @@
 package ClientsApp.app.body.bodyInterfaces;
 
+import ClientsApp.app.body.DataTransfer;
 import ClientsApp.app.body.bodyController;
 import javafx.util.Pair;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -14,9 +15,11 @@ public interface bodyControllerForContinuation {
     void showForContinuation();
     void showForContinuationServlet();
     void setCurrentFlowForContinuation(FlowDefinitionDTO flow);
-    void setCurrentFlowForContinuationServlet(String flowName);
+
     void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclarationDTO>> mandatory,
                                         List<Pair<String, DataDefinitionDeclarationDTO>> optional,List<Pair<String, String>>mandatoryIn,
                                         List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow);
     void setBodyControllerContinuation(bodyController body);
+    void setLastFlowDTO(FlowDefinitionDTO lastFlow);
+    void setDataTransfer(DataTransfer transfer);
 }
