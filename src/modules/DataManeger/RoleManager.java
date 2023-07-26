@@ -13,8 +13,8 @@ public class RoleManager {
 
     public RoleManager(){
         roles=new ArrayList<>();
-        roles.add(new Role("all-flows",flows));
-        roles.add(new Role("read-only",flows.subList(0,flows.size()-1)));
+        roles.add(new Role("all-flows",flows,"all available flows in the system (usually for managers)"));
+        roles.add(new Role("read-only",flows.subList(0,flows.size()-1),"all available flows that for read only (usually for employees)"));
 
 
 
@@ -22,8 +22,8 @@ public class RoleManager {
 
     public RoleManager(List<FlowDefinitionImpl> flows) {
         roles=new ArrayList<>();
-        roles.add(new Role("all-flows",flows));
-        roles.add(new Role("read-only",flows.subList(0,flows.size()-1)));
+        roles.add(new Role("all-flows",flows,"all available flows in the system (usually for managers)"));
+        roles.add(new Role("read-only",flows.subList(0,flows.size()-1),"all available flows that for read only (usually for employees)"));
 
 
     }
@@ -73,6 +73,20 @@ public class RoleManager {
         return role;
 
 
+    }
+
+    public void updateRoles(List<FlowDefinitionImpl> flows) {
+        //
+        for (Role role:roles){
+            if(role.getName().equals("all-flows")){
+                role.setNewFlows(flows);
+            }
+            else if(role.getName().equals("read-only")){
+                role.setNewFlows(flows.subList(0,flows.size()-1));//todo hendle read only
+            }else{
+                roles.remove(role);
+            }
+        }
     }
 }
 

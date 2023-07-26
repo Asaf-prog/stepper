@@ -186,7 +186,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
 
     }
 
-    private void checkIfCarriedOutContinuationToFlowThatNotExist(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
+    public void checkIfCarriedOutContinuationToFlowThatNotExist(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
         if (!checkContinuationCorrect(flows)){
             String name = getNameOFTheFlowThatNotExist(flows);
             String message = "The Flow "+ name +" is not exist.";
@@ -224,7 +224,7 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         }
         return null;
     }
-    private void checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
+    public void checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
         for (Continuation continuation:continuations) {
             for (ContinuationMapping mapping: continuation.getMappingList()){
                 if (!sameType(mapping.getSourceData()

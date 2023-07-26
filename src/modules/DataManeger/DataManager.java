@@ -157,10 +157,15 @@ public class DataManager {
     public void updateStepper(Stepper toAdd)throws Exception {
 
         //another validation of both flows
-        try{stepperData.setNewStepper(toAdd);}catch (Exception e){
-            throw new Exception("Stepper is not valid"+e.getMessage());
+        try{
+            stepperData.setNewStepper(toAdd);
+            stepperData.validateStepperContinuation();
+        }catch (Exception e){
+            throw new Exception("Stepper is not valid"+e.getMessage());//todo handle this exception
         }
+    }
 
-
+    public void updateRoles() {
+        roleManager.updateRoles(stepperData.getFlows());
     }
 }

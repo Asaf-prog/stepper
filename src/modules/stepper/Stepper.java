@@ -297,8 +297,31 @@ public class Stepper implements Serializable {
         for (FlowDefinitionImpl flow : flows) {
             if (flow.getName().equals(flowName))
                 return flow;
+
         }
         return null;
+    }
+    public void setNewStepper(Stepper toAdd) {
+        //validate flow duplicates
+        //remove duplicates that in toAdd
+        List<String> flowsNames = getFlowsName(flows);
+        for(FlowDefinitionImpl flow:toAdd.flows){
+            String name=flow.getName();
+            if (isContainName(flowsNames,name)){
+                toAdd.flows.remove(flow);
+            }
+
+        }
+        flows.addAll(toAdd.flows);
+        return;
+    }
+
+    private boolean isContainName(List<String> flowsNames, String name) {
+        for (String flowName : flowsNames) {
+            if (flowName.equals(name))
+                return true;
+        }
+        return false;
     }
 
     public List<String> getUsers() {
@@ -306,24 +329,7 @@ public class Stepper implements Serializable {
         return Arrays.asList("Asaf ha homo ", "Asaf ha mozez", "Saar  ha gever");
     }
 
-    public void setNewStepper(Stepper toAdd) {
-        //validate flow duplicates
-        //remove duplicates that in toAdd
-         List<String> flowsNames = getFlowsName(flows);
-        for(FlowDefinitionImpl flow:toAdd.flows){
-            //if flow.getname in flownames
 
-
-
-
-
-
-        }
-
-
-
-        return;
-    }
 
     private List<String> getFlowsName(List<FlowDefinitionImpl> flows) {
         List<String> res=new ArrayList<>();
@@ -346,6 +352,13 @@ public class Stepper implements Serializable {
         for (FlowDefinitionImpl flow : flows) {
             //flow.SetAllFlows(flows);
             flow.validateFlowStructureWithoutContinuation(flows);// todo maybe to move 2 func to stepper in order to avoid
+        }
+    }
+
+    public void validateStepperContinuation() throws FlowDefinitionException {
+        for (FlowDefinitionImpl flow : flows) {
+            flow.checkIfCarriedOutContinuationToFlowThatNotExist(flows);
+            flow.checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(flows);
         }
     }
 }

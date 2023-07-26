@@ -36,6 +36,8 @@ public class UploadXmlServlet extends HttpServlet {
                 DataManager dataManager1 = GetDataFromXML.fromStream2Stepper(res);
                 //send to servletContext
                 request.getServletContext().setAttribute("dataManager", dataManager1);
+                dataManager1.getStepperData().setXmlPath(getFileName(request.getPart("file")));
+
 
                 response.addHeader("url", dataManager1.getStepperData().getXmlPath());
 
@@ -46,6 +48,11 @@ public class UploadXmlServlet extends HttpServlet {
                 //send to servletContext
                 try{
                     dataManager.updateStepper(stepper);
+                    dataManager.updateRoles();
+                    dataManager.getStepperData().setXmlPath(getFileName(request.getPart("file")));
+                    response.addHeader("url", dataManager.getStepperData().getXmlPath());
+
+
                 }catch (Exception e){
                     System.out.println("failed to update stepper... :)");
                     throw new RuntimeException(e);

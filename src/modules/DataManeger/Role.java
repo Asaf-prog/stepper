@@ -17,6 +17,13 @@ public class Role {
 
 
     }
+    public Role(String name, List<FlowDefinitionImpl> flows,String description) {
+        this.name = name;
+        this.flows = flows;
+        this.description=description;
+
+
+    }
     public Role(String name, String description) {
         this.name = name;
         this.flows = new ArrayList<>();

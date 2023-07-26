@@ -27,7 +27,7 @@ public class GetAllRolesDTOsServlet extends HttpServlet {
         List<Role> roles=dataManager.getRoleManager().getRoles();
         List<RoleDTO> dtos=new ArrayList<>();
         for (Role role:roles){
-            dtos.add(new RoleDTO(role.getName(),role.getFlows()));
+            dtos.add(new RoleDTO(role.getName(),role.getFlows(),role.getDescription()));
         }
         resp.getWriter().println(gson.toJson(dtos));
 

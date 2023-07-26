@@ -344,8 +344,6 @@ public class RoleManagementController implements bodyControllerDefinition{
     @Override
     public void show() {
             initialize();
-
-
     }
 
     @Override

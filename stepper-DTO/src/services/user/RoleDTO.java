@@ -13,6 +13,17 @@ public class RoleDTO {
         private String description;
         private List<FlowDefinitionDTO> flows;
 
+    public RoleDTO(String name, List<FlowDefinitionImpl> flows, String description) {
+        List<FlowDefinitionDTO> flowDefinitionDTOS = new ArrayList<>();
+        for (FlowDefinitionImpl flowDefinition : flows) {
+            flowDefinitionDTOS.add(Mapper.convertToFlowDefinitionDTO(flowDefinition));
+        }
+        this.name = name;
+        this.flows = flowDefinitionDTOS;
+        this.description = description;
+
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
