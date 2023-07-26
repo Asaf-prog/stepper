@@ -28,17 +28,39 @@ public class UploadXmlServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            InputStream res=request.getPart("file").getInputStream();
-            DataManager dataManager=GetDataFromXML.fromStream2Stepper(res);
-            //send to servletContext
-            request.getServletContext().setAttribute("dataManager",dataManager);
+            DataManager dataManager = (DataManager) request.getServletContext().getAttribute("dataManager");
+            InputStream res = request.getPart("file").getInputStream();
+            if (dataManager == null) {//first time
 
-            response.addHeader("url",dataManager.getStepperData().getXmlPath());
 
-        } catch (Exception e) {
+                DataManager dataManager1 = GetDataFromXML.fromStream2Stepper(res);
+                //send to servletContext
+                request.getServletContext().setAttribute("dataManager", dataManager1);
+
+                response.addHeader("url", dataManager1.getStepperData().getXmlPath());
+
+            }else{//...
+                //compare same flows
+                //only add to dataManager new flows
+                Stepper stepper = GetDataFromXML.newFlowsToStepper(res);
+                //send to servletContext
+                try{
+                    dataManager.updateStepper(stepper);
+                }catch (Exception e){
+                    System.out.println("failed to update stepper... :)");
+                    throw new RuntimeException(e);
+                }
+
+
+
+
+
+            }
+        }catch (Exception e) {
             System.out.println("failed to upload xml... :)");
             throw new RuntimeException(e);
         }
+
 
     }
 

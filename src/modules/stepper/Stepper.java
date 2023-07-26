@@ -305,4 +305,47 @@ public class Stepper implements Serializable {
 //todo change to real users
         return Arrays.asList("Asaf ha homo ", "Asaf ha mozez", "Saar  ha gever");
     }
+
+    public void setNewStepper(Stepper toAdd) {
+        //validate flow duplicates
+        //remove duplicates that in toAdd
+         List<String> flowsNames = getFlowsName(flows);
+        for(FlowDefinitionImpl flow:toAdd.flows){
+            //if flow.getname in flownames
+
+
+
+
+
+
+        }
+
+
+
+        return;
+    }
+
+    private List<String> getFlowsName(List<FlowDefinitionImpl> flows) {
+        List<String> res=new ArrayList<>();
+        for (FlowDefinitionImpl flowDefinition : flows){
+            res.add(flowDefinition.getName());
+        }
+        return res;
+    }
+
+    public void validateStepperWithoutContinuation() throws FlowDefinitionException, StepperDefinitionException {//todo validation
+        for (FlowDefinitionImpl flowDefinition : flows) {
+            initializedInputAndOutput(flowDefinition.getSteps(), flowDefinition.getFlowLevelAliases());//automatic mapping
+            this.updateAliasesPerStep();
+            flowDefinition.setFinalNames();
+            flowDefinition.createFlowFreeInputs();//including one for user input
+            flowDefinition.setReadOnlyState();
+        }
+        //Stepper Validate
+        validateFlowsUniqueName();
+        for (FlowDefinitionImpl flow : flows) {
+            //flow.SetAllFlows(flows);
+            flow.validateFlowStructureWithoutContinuation(flows);// todo maybe to move 2 func to stepper in order to avoid
+        }
+    }
 }

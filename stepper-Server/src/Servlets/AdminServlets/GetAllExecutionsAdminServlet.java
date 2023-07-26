@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "get all executions",urlPatterns = "/getAllExecutions")
+@WebServlet(name = "get all Admin executions",urlPatterns = "/Admin/getAllExecutions")
 
-public class GetAllExecutionsServlet extends HttpServlet {
+public class GetAllExecutionsAdminServlet extends HttpServlet {
     Gson gson=new Gson();
 
     @Override
@@ -31,13 +31,8 @@ public class GetAllExecutionsServlet extends HttpServlet {
     }
 
     private List<FlowExecutionDTO> buildList(List<FlowExecution> flowExecutions) {
-        UserManager userManager=(UserManager) getServletContext().getAttribute("userManager");
-
-
         List<FlowExecutionDTO> flowExecutionDTOS=new ArrayList<>();
         for (FlowExecution flowExecution:flowExecutions){
-            if (userManager.isUserExists(flowExecution.getOwner())==false)//means that the user is not logged in!
-                continue;
             flowExecutionDTOS.add(Mapper.convertToFlowExecutionDTO(flowExecution));
         }
         return flowExecutionDTOS;

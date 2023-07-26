@@ -22,12 +22,14 @@ public class GetUserListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("get user list servlet...");
+        //System.out.println("get user list servlet...");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         UserManager userManager = (UserManager) getServletContext().getAttribute("userManager");
-        if (userManager == null) {
-            System.out.println("user manager is null");
+        if (userManager == null || userManager.getUsers().size()==0) {
+
+            resp.setStatus(204);
+
         } else {
 
             List<StepperUser> usernames = userManager.getUsers();

@@ -37,6 +37,17 @@ public class GetDataFromXML {
         return  new DataManager(stepperData);
 
     }
+    public static Stepper newFlowsToStepper(InputStream stream)throws Exception{
+        JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        STStepper stStepper  = (STStepper) jaxbUnmarshaller.unmarshal(new StreamSource(stream));//import all data from xml to stepperDemo
+        DeepCopy deepCopy = new DeepCopy(stStepper);
+        Stepper stepperData=deepCopy.copyAllDataInFields();//deep copy from stepperDemo to stepper
+        stepperData.validateStepperWithoutContinuation();
+        //sentToStepper(stepperData);
+        return  stepperData;
+
+    }
     private static void sentToStepper(Stepper stepperData) {DataManager dataManager = new DataManager(stepperData);}//the one and only data manager
 
     public static final String FILE_NAME = "/Users/cohen/Documents/GitHub/stepper/ex1.xml";

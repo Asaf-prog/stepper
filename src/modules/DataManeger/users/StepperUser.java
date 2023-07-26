@@ -12,6 +12,8 @@ public class StepperUser {
     private List<String> roles;//will change...
     private List<String> flowExecutionsIDs;
 
+    private String sessionId=null;
+
     private boolean isManager=false;
 
     public StepperUser(String username, List<String> role, List<String> flowExecutions) {
@@ -19,6 +21,13 @@ public class StepperUser {
         roles = role;
         this.flowExecutionsIDs = flowExecutions;
         isManager=false;
+    }
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public StepperUser(String username) {

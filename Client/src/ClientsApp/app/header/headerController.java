@@ -19,9 +19,13 @@ import mapper.Mapper;
 import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
+import util.ClientConstants;
+import util.http.ClientHttpClientUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,11 +161,23 @@ public class headerController {
     @FXML
     void closeApp(ActionEvent event) {
         Stage currentStage = (Stage) closeButton.getScene().getWindow();
+
         currentStage.close();
         Thread.currentThread().interrupt();
-        if (DataManager.getData() != null)
-            DataManager.getData().getExecutionManager().shutDown();
-        Platform.exit();
+        Request logMeOut = new Request.Builder().url(ClientConstants.LOGOUT).build();
+        ClientHttpClientUtil.runAsync(logMeOut, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed to log out");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                //bye bye
+                Platform.exit();
+            }
+        });
+
     }
     @FXML
     void setMyRoles(ActionEvent event) {
@@ -196,12 +212,16 @@ public class headerController {
     }
     public void updateRoles(List<String> roles){
         myRoles.clear();
+
+        //todo hendle empty roles
         String rolesString = "";
         for (String role : roles) {
             rolesString += role + ", ";
         }
         //replace last , with .
-        rolesString = rolesString.substring(0, rolesString.length() - 2);
+        if (rolesString.length() > 2)
+            rolesString = rolesString.substring(0, rolesString.length() - 2);
+
 
 
         myRoles.setText(rolesString);
@@ -611,8 +631,8 @@ public class headerController {
         ExecutionsHistory.setDisable(false);
         HBoxData.setVisible(true);
     }
-    public void setClient(String name, boolean theAdminExist){
-        this.client = new Client(name,theAdminExist);
+    public void setClient(String name){
+        this.client = new Client(name,true);
     }
     public Client getClient(){
         return client;

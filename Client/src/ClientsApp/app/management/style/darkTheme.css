@@ -148,3 +148,26 @@
 .toggle-switch .thumb:pressed {
     -fx-effect: none;
 }
+
+.loginButton {
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffc30e;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.loginButton:hover {
+    -fx-border-color: #ffc30e;
+    -fx-border-width: 2;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #ffc30e;
+    -fx-background-color: rgba(81, 255, 204, 0.76);
+    -fx-text-fill: #ffc30e;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}

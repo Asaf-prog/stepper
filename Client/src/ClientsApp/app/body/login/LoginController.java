@@ -67,7 +67,6 @@ public class LoginController implements bodyControllerForLogin {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                boolean theAdminExistInSystem = false;
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
                     Platform.runLater(() ->
@@ -76,7 +75,6 @@ public class LoginController implements bodyControllerForLogin {
                     response.close();
                 } else {
                     // need to take the list of the flowsName that's back from the Admin
-                    List<FlowDefinitionImpl>flows = null;
                     Platform.runLater(() -> {
                         body.getMain().getHeaderComponentController().setVisibleInformation();
                         try {
@@ -86,7 +84,7 @@ public class LoginController implements bodyControllerForLogin {
                             throw new RuntimeException(e);
                         }
                         //after we get the permission that we can add a new user to our system we crete the client object
-                        body.getMain().getHeaderComponentController().setClient(userName,theAdminExistInSystem);
+                        body.getMain().getHeaderComponentController().setClient(userName);
                         body.setClient(body.getMain().getHeaderComponentController().getClient());//set the data-member client in body class from header
                     });
 

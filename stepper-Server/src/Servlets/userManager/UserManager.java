@@ -9,6 +9,7 @@ public class UserManager {
         private  boolean isUpToDate = true;
 
         private final List<StepperUser> usersSet = new ArrayList<>();
+        private final List<StepperUser> loggedOutUsers = new ArrayList<>();
 
         public UserManager() {
 
@@ -29,7 +30,13 @@ public class UserManager {
 
     public synchronized void addUser(String username) {
             this.usersSet.add(new StepperUser(username));
+
         }
+    public synchronized void addUser(String username,String sessionId) {
+        this.usersSet.add(new StepperUser(username));
+        updateUserSessionId(username,sessionId);
+
+    }
 
         public synchronized void removeUser(String username) {
             this.usersSet.remove(username);
@@ -74,5 +81,32 @@ public class UserManager {
             }
         }
         return false;
+    }
+    public synchronized void updateUserSessionId(String username, String sessionId) {
+        StepperUser user = getUser(username);
+        if (user != null) {
+            user.setSessionId(sessionId);
+        }
+    }
+
+    public StepperUser getLoggedOutUser(String username) {
+        for (StepperUser user : loggedOutUsers) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public synchronized void logoutUser(String username) {
+        StepperUser user = getUser(username);
+        if (user != null) {
+            loggedOutUsers.add(user);
+            usersSet.remove(user);
+        }
+    }
+
+    public List<StepperUser> getLoggedOut() {
+            return loggedOutUsers;
     }
 }

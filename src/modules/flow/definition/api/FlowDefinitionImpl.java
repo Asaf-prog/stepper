@@ -161,11 +161,31 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
             checkIfTheFormalOutputsExist();//4.5
             checkIfAllConnectionsAreValid();
             //new validation for task two
+
             checkIfCarriedOutContinuationToFlowThatNotExist(flows);
             checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(flows);
             checkIfTheInitialValueExistInFlow();// check if the input-name exist in the list of the inputs of this flows
 
     }
+
+    @Override
+    public void validateFlowStructureWithoutContinuation(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
+        checkIfTwoInputsOfTheSameAlias();
+        uniqueOutputForStep();//4.1
+        checkIfMandatoryInputsAreNotUserFriendly();//4.2
+        checkIfWeDoCustomMappingOnStepThatNotExist();//4.3
+        checkIfWeDoCustomMappingOnDDThatNotExist();//4.3
+        checkIfExistAliasForFlowStepOrDataThatNotExist();//4.4
+        checkIfTheFormalOutputsExist();//4.5
+        checkIfAllConnectionsAreValid();
+        //new validation for task two
+
+//        checkIfCarriedOutContinuationToFlowThatNotExist(flows);
+//        checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(flows);
+        checkIfTheInitialValueExistInFlow();// check if the input-name exist in the list of the inputs of this flows
+
+    }
+
     private void checkIfCarriedOutContinuationToFlowThatNotExist(List<FlowDefinitionImpl> flows) throws FlowDefinitionException {
         if (!checkContinuationCorrect(flows)){
             String name = getNameOFTheFlowThatNotExist(flows);

@@ -284,6 +284,10 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         flowsToggleGroup = new ToggleGroup();
         if (client.getIsExist()) {
            //todo 1 !! get flow From server
+            //todo hendle no flows !!!
+            if (flows==null){
+                return;
+            }
             for (FlowDefinitionDTO flow : flows) {
                 RadioButton button = new RadioButton(flow.getName());
                 button.getStylesheets().add("app/management/style/darkTheme.css");

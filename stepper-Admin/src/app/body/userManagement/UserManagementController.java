@@ -89,7 +89,7 @@ public class UserManagementController implements bodyControllerDefinition {
     @FXML
     private ListView<RadioButton> usersList;
 
-    private List<StepperUser> currentUsers;
+    private List<StepperUser> currentUsers=new ArrayList<>();
     private Gson gson=new Gson();
     private StepperUser currentStepperUser=null;
     @FXML
@@ -117,7 +117,7 @@ public class UserManagementController implements bodyControllerDefinition {
         }catch (Exception e){
             //do nothing
         }
-        timer = new Timer(1000, e -> {
+        timer = new Timer(1500, e -> {
             setUpdater();
         });
         timer.start();
@@ -139,8 +139,18 @@ public class UserManagementController implements bodyControllerDefinition {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    //userlist empty
+
+                        if(usersList.getItems().size()>0)
+                            Platform.runLater(() -> {
+                            usersList.getItems().clear();
+                            });
+                    return;
+                }
 
                 String res = response.body().string();
+                try{
                 boolean isUpToDate = gson.fromJson(res, Boolean.class);
                 response.close();
                 //only if success
@@ -149,6 +159,9 @@ public class UserManagementController implements bodyControllerDefinition {
                         updateUsersList();
                     }
                 } else {
+                    //do nothing
+                }
+                }catch (Exception e){
                     //do nothing
                 }
             }
@@ -237,6 +250,15 @@ public class UserManagementController implements bodyControllerDefinition {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.code()!=200){
+                        System.out.println("user-list empty");
+                        if (usersList.getItems().size()>0)
+                            Platform.runLater(() -> {
+                                usersList.getItems().clear();
+                            });
+                        return;
+
+                    }
                     String usersJson = response.body().string();
                     response.close();
 
@@ -262,7 +284,13 @@ public class UserManagementController implements bodyControllerDefinition {
 
     private void DeltaUpdate(List<StepperUser> users) {
         List<String> newUsers = users.stream().map(StepperUser::getUsername).collect(Collectors.toList());
-        List<String> oldUsers = currentUsers.stream().map(StepperUser::getUsername).collect(Collectors.toList());
+        List<String> oldUsers;
+        if (currentUsers!=null){
+            oldUsers = currentUsers.stream().map(StepperUser::getUsername).collect(Collectors.toList());
+        }else {
+            oldUsers = new ArrayList<>();
+            currentUsers=new ArrayList<>();
+        }
         List<String> delta = newUsers.stream().filter(e -> !oldUsers.contains(e)).collect(Collectors.toList());
         if (delta.size() > 0) {
             //new user added
@@ -272,6 +300,7 @@ public class UserManagementController implements bodyControllerDefinition {
             //check if something is selected
             group=new ToggleGroup();
             for (RadioButton button:usersList.getItems()) {
+
                 if (oldUsers.contains(button.getText()))
                     button.setToggleGroup(group);
             }
@@ -300,10 +329,9 @@ public class UserManagementController implements bodyControllerDefinition {
 
 
                         });
-                usersList.getItems().add(button);
-
-
-
+                Platform.runLater(() -> {
+                    usersList.getItems().add(button);
+                });
             }
             if (selected!=null)
                 usersList.getItems().stream().filter(e -> e.getText().equals(selected)).findFirst().ifPresent(e -> usersList.getSelectionModel().select(e));

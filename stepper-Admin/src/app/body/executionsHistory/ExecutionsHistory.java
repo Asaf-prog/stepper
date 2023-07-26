@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.stepper.FlowExecutionDTO;
 import services.stepper.flow.StepUsageDeclarationDTO;
+import util.Constants;
 import util.http.HttpClientUtil;
 
 import java.io.IOException;
@@ -281,7 +282,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 //    }
     private void setupTable() {
         Request request = new Request.Builder()
-                .url(util.Constants.GET_TABLE_DATA)
+                .url(Constants.GET_TABLE_DATA_ADMIN)
                 .get()
                 .build();
 

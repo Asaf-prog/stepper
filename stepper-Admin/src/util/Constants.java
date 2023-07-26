@@ -59,7 +59,7 @@ public class Constants {
     public final static String XML_UPLOAD = FULL_SERVER_PATH + "/uploadXmlFile";//*********
     public static final String GET_FLOWS_FOR_ROLE = FULL_SERVER_PATH + "/getFlowsForRole";
 
-    public static final String GET_TABLE_DATA =FULL_SERVER_PATH + "/getAllExecutions";
+    public static final String GET_TABLE_DATA_ADMIN =FULL_SERVER_PATH + "/Admin/getAllExecutions";
 
     public final static String INIT_ADMIN_PAGE = FULL_SERVER_PATH + "/initAdmin";//*********
 
