@@ -1,5 +1,6 @@
 package Servlets.ClientServlets.execution;
 
+import Servlets.userManager.UserManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.ServletException;
@@ -105,6 +106,9 @@ public class ExecuteFlowServlet extends HttpServlet {
         flow.setUserInputs(freeInputsList);
 
         FlowExecution flowExecution = new FlowExecution(flow,username);
+        UserManager userManager = (UserManager) getServletContext().getAttribute("userManager");
+
+        userManager.addFlowExecution(username, flowExecution.getUniqueId());
         //flowExecution.setUserInputs();
         return flowExecution;
     }

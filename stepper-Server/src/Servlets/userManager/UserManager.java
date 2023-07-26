@@ -109,4 +109,11 @@ public class UserManager {
     public List<StepperUser> getLoggedOut() {
             return loggedOutUsers;
     }
+
+    public void addFlowExecution(String username, UUID uniqueId) {
+        StepperUser user = getUser(username);
+        if (user != null) {
+            user.addFlowExecution(uniqueId);
+        }
+    }
 }
