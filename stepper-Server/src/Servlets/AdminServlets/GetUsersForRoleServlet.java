@@ -29,14 +29,29 @@ public class GetUsersForRoleServlet  extends HttpServlet {
         }
         List<String> res=new ArrayList<>();
         UserManager userManager=(UserManager) getServletContext().getAttribute("userManager");
-        for (StepperUser user:userManager.getUsers()){
-            for (String role:user.getRoles()){
-                if (role.equals(roleName)){
-                   res.add(user.getUsername());
-                }
-            }
+        if (userManager==null){
+            resp.setStatus(400);
+            return;
         }
-        resp.getWriter().println(gson.toJson(res));
+        if (userManager.getUsers()!=null){
+            if (userManager.getUsers().size()!=0){
+                for (StepperUser user:userManager.getUsers()){
+                    for (String role:user.getRoles()){
+                        if (role.equals(roleName)){
+                            res.add(user.getUsername());
+                        }
+                    }
+                }
+                resp.getWriter().println(gson.toJson(res));
+            }else{
+                resp.setStatus(400);
+                return;
+            }
+        }else{
+            resp.setStatus(300);
+            return;
+        }
+
 
     }
 }

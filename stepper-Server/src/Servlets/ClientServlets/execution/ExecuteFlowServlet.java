@@ -40,8 +40,6 @@ public class ExecuteFlowServlet extends HttpServlet {
             resp.setStatus(400);
             return;
         }
-
-
         String username = SessionUtils.getUsername(req);
 
         String flowName = req.getHeader("flowName");
@@ -57,9 +55,6 @@ public class ExecuteFlowServlet extends HttpServlet {
         String id= flowExecution.getUniqueId().toString();
         resp.setHeader("flowId",id);
 
-
-        //put flowExecutionDTO in dataManager
-//        sendBackFlowExeDTO(resp, flowExecution); todo move to new servlet
         resp.setStatus(200);
 
     }

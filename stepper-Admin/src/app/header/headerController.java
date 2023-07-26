@@ -1,4 +1,5 @@
 package app.header;
+import ClientsApp.app.Client.Client;
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
 import app.management.style.StyleManager;
@@ -151,9 +152,27 @@ public class headerController {
         Stage currentStage = (Stage) closeButton.getScene().getWindow();
         currentStage.close();
         Thread.currentThread().interrupt();
-        if (DataManager.getData() != null)
-            DataManager.getData().getExecutionManager().shutDown();
-        Platform.exit();
+        Request request = new Request.Builder()
+                .url(Constants.ADMIN_LOGOUT)
+                .get()
+                .build();
+
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.exit();
+                System.exit(0);
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Platform.exit();
+                    System.exit(0);
+                }
+            }
+        });
+
+
     }
 
     @FXML
@@ -284,6 +303,37 @@ public class headerController {
         setCssScreenButtons();
         setVGrow();
         ifAlreadyLoaded();
+        checkOnlyOneAdmin();
+    }
+
+    private void checkOnlyOneAdmin() {
+
+        Request request = new Request.Builder().url(Constants.GET_IS_ONLY_ONE_ADMIN).build();
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String isOnlyOneAdmin = response.body().string();
+                response.body().close();
+                if (isOnlyOneAdmin.equals("false")) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error");
+                        alert.setContentText("You are the only admin in the system, you can't delete yourself");
+                        alert.showAndWait();
+                        Platform.exit();
+                    });
+                }//else do nothing all good with you my man :)
+
+            }
+        });
+
     }
 
     private void ifAlreadyLoaded() {
@@ -744,12 +794,14 @@ public class headerController {
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         if (response.code() != 200) {//because of redirect
+                            String error = response.header("errorMsg");
                             Platform.runLater(() -> {
+
                                 //present error message
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
-                                alert.setHeaderText("Error3");
-                                alert.setContentText("Something went wrong, please try again");
+                                alert.setHeaderText("Error loading XML file");
+                                alert.setContentText(error);
                                 alert.showAndWait();
                             });//todo check if stepper valid !!!
                         } else {
@@ -777,7 +829,7 @@ public class headerController {
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setHeaderText("An exception occurred4");
+                alert.setHeaderText("problem loading XML file");
                 alert.setContentText(e.getMessage());
                 alert.showAndWait();
             }
@@ -836,7 +888,6 @@ public class headerController {
                 return flow3ProgressLabel;
             case 4:
                 return flow4ProgressLabel;
-
         }
         return null;
     }

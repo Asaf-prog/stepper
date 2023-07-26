@@ -26,6 +26,8 @@ public class ClientConstants {
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
 
     public static final String IS_AUTHORIZED = FULL_SERVER_PATH + "/Client/isAuthorized";
+    public static final String GET_CLIENT_UPDATES = FULL_SERVER_PATH + "/Client/getClientUpdates";
+
 
     public static final String GET_TABLE_DATA_FOR_USER =FULL_SERVER_PATH+ "/Client/getTableDataForUser"; ;
     public static final String GET_ROLES_FOR_CLIENT = FULL_SERVER_PATH + "/getRolesForClient";

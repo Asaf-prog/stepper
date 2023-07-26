@@ -142,6 +142,7 @@ public class StatsScreen implements bodyControllerDefinition {
         PieChart pie= getPieChart(selectedFlow);
         chartsPane.getChildren().clear();
         chart2.getChildren().clear();
+        chart2.setAlignment(Pos.BOTTOM_CENTER);
         chart2.getChildren().add(barChart);
         chartsPane.setAlignment(Pos.BOTTOM_CENTER);
         chartsPane.getChildren().add(pie);
@@ -160,7 +161,9 @@ public class StatsScreen implements bodyControllerDefinition {
         //barChart.getStylesheets().add("charts.css");
         barChart.setTitle("Per Step Time Taken");
         barChart.setStyle(" -fx-font-size: 16");
-        barChart.setMinHeight(380);
+        barChart.setMinHeight(250);
+        barChart.setMaxHeight(250);
+
         //barChart.setMaxWidth(350);// Adjust the desired height of the chart
 
         // Set styling for title and axes labels

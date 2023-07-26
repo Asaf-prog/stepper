@@ -54,8 +54,9 @@ public class UploadXmlServlet extends HttpServlet {
 
 
                 }catch (Exception e){
-                    System.out.println("failed to update stepper... :)");
-                    throw new RuntimeException(e);
+                    response.setStatus(500);
+                    String msg = e.getMessage();
+                    response.addHeader("errorMsg", msg);
                 }
 
 
@@ -64,8 +65,9 @@ public class UploadXmlServlet extends HttpServlet {
 
             }
         }catch (Exception e) {
-            System.out.println("failed to upload xml... :)");
-            throw new RuntimeException(e);
+            response.setStatus(500);
+            String msg = e.getMessage();
+            response.addHeader("errorMsg", msg);
         }
 
 

@@ -12,6 +12,7 @@
           <option value="isManager" />
           <option value="roleName" />
           <option value="url" />
+          <option value="errorMsg" />
         </set>
       </option>
     </inspection_tool>

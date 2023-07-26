@@ -302,9 +302,13 @@ public class RoleManagementController implements bodyControllerDefinition{
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                List<String> users = gson.fromJson(response.body().string(), new TypeToken<List<String>>() {
-                }.getType());
+                if (response.code()!=200){
+                    usersList.getItems().clear();
+                }
+                String usersJson = response.body().string();
                 response.close();
+                List<String> users = gson.fromJson(usersJson, new TypeToken<List<String>>() {
+                }.getType());
                 if (users == null) {
                     return;
                 }

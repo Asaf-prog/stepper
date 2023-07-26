@@ -4,6 +4,7 @@ import ClientsApp.app.Client.Client;
 import ClientsApp.app.MVC_controller.MVC_controller;
 import ClientsApp.app.management.mainController;
 import ClientsApp.app.management.style.StyleManager;
+import com.google.gson.Gson;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import mapper.Mapper;
 import modules.DataManeger.DataManager;
+import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.stepper.Stepper;
 import okhttp3.*;
@@ -28,6 +30,8 @@ import util.http.ClientHttpClientUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class headerController {
     @FXML
@@ -79,6 +83,8 @@ public class headerController {
     private HBox menuHbox;
     @FXML
     private HBox HBoxData;
+    private Gson gson = new Gson();
+
 
     public String lastPressed = "none";
     private FlowDefinitionDTO currentFlow;
@@ -127,7 +133,61 @@ public class headerController {
         mainPane.setVisible(false);
         menuHbox.setVisible(false);
         setRoleBox();
+        //todo set timer refresher for client and if change change what needed
+        setTimerRefresher();
 
+    }
+
+    private void setTimerRefresher() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (client != null) {
+                    getUpdatedClient();
+                }
+            }
+        }, 0, 1500);
+    }
+
+    private void getUpdatedClient() {
+        Request request = new Request.Builder()
+                .url(ClientConstants.GET_CLIENT_UPDATES)
+                .addHeader("isManager", client.isManager())
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Gson gson = new Gson();
+                if (response.isSuccessful()) {//client needs to update
+                    String json = response.body().string();
+                    StepperUser updatedUser =gson.fromJson(json, StepperUser.class);
+                    response.close();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Client updated=updatedClient(updatedUser);
+                            client = updated;
+                            updateRoles(updatedUser.getRoles());
+                            updateClient(client.isManagerBoolean());
+
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
+    private Client updatedClient(StepperUser updatedUser) {
+
+        Client updatedClient = new Client(updatedUser);
+        return updatedClient;
     }
 
     private void setRoleBox() {
