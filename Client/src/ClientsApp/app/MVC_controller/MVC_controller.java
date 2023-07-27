@@ -195,7 +195,7 @@ public class MVC_controller {
                     progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
                     Label label = header.getNextLabel(nextIndex);
                     label.setText(id.substring(id.length()-4,id.length()));
-                    header.addProgress(progressBar,label,nextIndex);
+                    header.addProgress(progressBar, String.valueOf(label),nextIndex);
 
                 });
             }
