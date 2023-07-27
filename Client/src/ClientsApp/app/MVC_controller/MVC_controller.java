@@ -36,7 +36,7 @@ public class MVC_controller {
     private headerController header;
     private bodyController body;
     List<Pair<String, String>> freeInputs;
-    private String lastExeId=null;
+    private String lastExeId = null;
 
 
     private Gson gson = new Gson();
@@ -46,20 +46,23 @@ public class MVC_controller {
         this.header = header;
         this.body = body;
     }
-    public void updateRoles(List<String> roles){
+
+    public void updateRoles(List<String> roles) {
         Platform.runLater(() -> {
             header.updateRoles(roles);
         });
     }
-    public void updateClient(boolean isManager){
+
+    public void updateClient(boolean isManager) {
         Platform.runLater(() -> {
             header.updateClient(isManager);
         });
     }
 
-    public List<String> getCurrentRoles(){
+    public List<String> getCurrentRoles() {
         return header.getCurrentRoles();
     }
+
     public void executeFlow(FlowDefinitionDTO flow) {
 
         List<Pair<String, String>> userInputs = flow.getUserInputs();
@@ -79,6 +82,7 @@ public class MVC_controller {
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("fail");
             }
+
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 //means execution over
@@ -90,35 +94,36 @@ public class MVC_controller {
                     //setProgressBar(task);
                     header.setDisableOnExecutionsHistory();
                     Timer timer = new Timer();
-                    String id=response.header("flowId");
+                    String id = response.header("flowId");
                     timer.scheduleAtFixedRate(new TimerTask() {
                         @Override
                         public void run() {
                             //check if the flow ended
-                            FlowEnded(id,timer);
+                            FlowEnded(id, timer);
                         }
-                    }, 0, 200);
-                }else {
+                    }, 0, 450);
+                } else {
                     //user not authorized
-                        Platform.runLater(() -> {
-                            //popout error message
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setTitle("Error");
-                            alert.setHeaderText("---User not authorized 401 ---");
-                            alert.setContentText("you dont have permission to execute this flow");
-                            alert.setOnCloseRequest(event -> {
-                                body.showFlowDefinition();
-
-                            });
-                            alert.showAndWait();
-
+                    Platform.runLater(() -> {
+                        //popout error message
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("---User not authorized 401 ---");
+                        alert.setContentText("you dont have permission to execute this flow");
+                        alert.setOnCloseRequest(event -> {
+                            body.showFlowDefinition();
 
                         });
-                    }
+                        alert.showAndWait();
+
+
+                    });
+                }
                 response.close();
             }
         });
     }
+
     private boolean FlowEnded(String id, Timer timer) {
         //send to server the request
         Request request = new Request.Builder()
@@ -129,7 +134,7 @@ public class MVC_controller {
         ClientHttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-               // System.out.println("fail");
+                // System.out.println("fail");
 
             }
 
@@ -141,58 +146,73 @@ public class MVC_controller {
                         timer.cancel();
                         //open the option to continuation
                         //body.setContinuationButton();
+                        endProgressBar(id);
                         lastExeId = id;
                         popupDetails(id);
                     });
                     response.close();
 
-                } if (response.code() ==401) {
+                }
+                if (response.code() == 401) {
 
                     //probably processing
                     //update process
                     //String progress = response.header("progress");
                     Double progress = Double.parseDouble(response.header("progress"));
-                    setProgressBar(id,progress);
+                    setProgressBar(id, progress);
                 }
             }
         });
         return false;
     }
 
-            private void popupDetails(String id) {
-                FXMLLoader loader = new FXMLLoader(getClass()
-                        .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
-               // loader.setController(new ExecutionsDetails(id));
-                loader.setControllerFactory(controllerClass -> {
-                        return new ExecutionsDetails(id);
-                });
-                try {
-                    Parent root = loader.load();
-                    Stage stage = new Stage();
-                    stage.setTitle("Flow Details");
-                    //set icon as previous stage
-                    stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
-                    stage.setScene(new Scene(root, 1060, 365));
-                    stage.show();
-                    //disable app until the user close the window
-                } catch (IllegalStateException | IOException ex) {
-                    VerySecretCode();
-                    //todo remove@!!!
-                    ex.printStackTrace();
-                }
-            }
-            private void VerySecretCode() {
-                String secretcode = "skvmbeoivnreonvoirvrev";
-                Compile(secretcode);
-            }
+    private void endProgressBar(String id) {
+        int index = header.getProgressBarByID(id);
+        ProgressBar progressBar = header.getProgressBar(index);
+        Platform.runLater(() -> {
+            progressBar.setProgress(1.0);
+            progressBar.setStyle("-fx-accent: #00ff00;");
+        });
 
-            private void Compile(String secretcode) {
-                //come this far ... eh?
-            }
-            private void setProgressBar(String id, Double progress) {
-                int nextIndex = header.getNextFreeProgress();
-                ProgressBar progressBar = header.getNextProgressBar(nextIndex);
-                progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
+    }
+
+    private void popupDetails(String id) {
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
+        // loader.setController(new ExecutionsDetails(id));
+        loader.setControllerFactory(controllerClass -> {
+            return new ExecutionsDetails(id);
+        });
+        try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Flow Details");
+            //set icon as previous stage
+            stage.getIcons().add(new Image(("app/management/content/stepperIcon.png")));
+            stage.setScene(new Scene(root, 1060, 365));
+            stage.show();
+            //disable app until the user close the window
+        } catch (IllegalStateException | IOException ex) {
+            VerySecretCode();
+            //todo remove@!!!
+            ex.printStackTrace();
+        }
+    }
+
+    private void VerySecretCode() {
+        String secretcode = "skvmbeoivnreonvoirvrev";
+        Compile(secretcode);
+    }
+
+    private void Compile(String secretcode) {
+        //come this far ... eh?
+    }
+
+    private void setProgressBar(String id, Double progress) {
+        if (!inLast4Execution(id)) {
+            int nextIndex = header.getNextFreeProgress();
+            ProgressBar progressBar = header.getNextProgressBar(nextIndex);
+            progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
 //                progressBar.progressProperty().bind(progress);
 //                task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 //                    if (newValue) {
@@ -204,16 +224,29 @@ public class MVC_controller {
 //                        progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
 //                    }
 //                });
-                Label label = header.getNextLabel(nextIndex);
-                label.setText(id.substring(id.length()-4,id.length()));
-                 header.addProgress(progressBar,label,nextIndex);
-            }
+//            Label label = header.getNextLabel(nextIndex);
+//            label.setText(id.substring(id.length() - 4));
+            Platform.runLater(() -> {
+                header.addProgress(progressBar, id.substring(id.length() - 4), nextIndex);
+            });
+        } else {
+            //update progress
+            int index = header.getProgressBarByID(id);
+            ProgressBar progressBar = header.getProgressBar(index);
+            Platform.runLater(() -> {
+                progressBar.setProgress(progress);
+            });
 
-    public void setFreeInputs(List<Pair<String,String>> freeInputs){
+        }
+
+    }
+
+    public void setFreeInputs(List<Pair<String, String>> freeInputs) {
         this.freeInputs = freeInputs;
     }
-    public List<Pair<String,String>> getFreeInputs(){
-        return  freeInputs;
+
+    public List<Pair<String, String>> getFreeInputs() {
+        return freeInputs;
     }
 
     public String getLastExecutionId() {
@@ -222,5 +255,9 @@ public class MVC_controller {
 
     public void setCurrentRoles(List<String> roles) {
         header.setCurrentRoles(roles);
+    }
+
+    private boolean inLast4Execution(String id) {
+        return header.inLast4Execution(id);
     }
 }

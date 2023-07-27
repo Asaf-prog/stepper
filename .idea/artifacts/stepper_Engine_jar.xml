@@ -5,7 +5,6 @@
       <element id="module-output" name="stepper-Engine" />
       <element id="module-output" name="stepper-UI" />
       <element id="library" level="project" name="okHttp" />
-      <element id="library" level="project" name="google-gson-2" />
     </root>
   </artifact>
 </component>

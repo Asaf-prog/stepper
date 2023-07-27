@@ -27,6 +27,8 @@ public class ClientConstants {
     private final static String CONTEXT_PATH = "/stepper_server";
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static  String INIT_ADMIN = FULL_SERVER_PATH + "/initAdmin" ;
+    public static final String CHECK_PERMISSION = FULL_SERVER_PATH + "/Client/checkPermission";
+
 
     public static final String IS_AUTHORIZED = FULL_SERVER_PATH + "/Client/isAuthorized";
     public static final String GET_CLIENT_UPDATES = FULL_SERVER_PATH + "/Client/getClientUpdates";

@@ -146,6 +146,7 @@ public class FLowExecutor {
 
                 //update progress
                 progress.setValue((double)(i+1)/flowExecution.getFlowDefinition().getFlowSteps().size());
+                flowExecution.progress.setValue((double)(i+1)/flowExecution.getFlowDefinition().getFlowSteps().size());
                 // check if you should continue etc..
                 if (stepResult == StepResult.FAILURE && !step.skipIfFail()) {//means all flow failed
                     setRestOfStepsAsFailed(flowExeStatus, i,flowExecution);

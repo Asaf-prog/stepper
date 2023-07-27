@@ -55,7 +55,8 @@ public class Mapper {
         res.setAllExecutionOutputs(flowExecution.getAllExecutionOutputs());
         res.setExecutedBy(flowExecution.getOwner());
         res.setIsDone(flowExecution.isDone);
-        res.setProgress(flowExecution.getProgress());
+        res.setProgressProp(flowExecution.progress);
+
 
         //bind them
        // res.isDoneProperty().bind(flowExecution.isDoneProperty());

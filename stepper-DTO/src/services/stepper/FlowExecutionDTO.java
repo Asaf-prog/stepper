@@ -36,6 +36,9 @@ public class FlowExecutionDTO implements Serializable {
     public void setProgress(double progress) {
         this.progress.set(progress);
     }
+    public void setProgressProp(SimpleDoubleProperty progress) {
+        this.progress=progress;
+    }
 
     public void setIsDone(boolean isDone) {
         this.isDone.set(isDone);

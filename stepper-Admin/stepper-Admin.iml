@@ -7,13 +7,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="google-gson-2" level="project" />
     <orderEntry type="library" exported="" name="okHttp" level="project" />
     <orderEntry type="module" module-name="stepper-Engine" />
     <orderEntry type="module" module-name="stepper-Server" />
     <orderEntry type="module" module-name="stepper-DTO" />
     <orderEntry type="library" name="controlsfx-8.40.14" level="project" />
     <orderEntry type="module" module-name="stepper-Client" />
-    <orderEntry type="library" name="controlsfx-8.40.141" level="project" />
+    <orderEntry type="library" name="gson-2.8.8" level="project" />
+    <orderEntry type="library" name="jayson path" level="project" />
   </component>
 </module>
