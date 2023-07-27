@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class HttpClientUtil {
 
-    private final static ClientSimpleCookieManager simpleCookieManager = new ClientSimpleCookieManager();
+    private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
                     .cookieJar(simpleCookieManager)

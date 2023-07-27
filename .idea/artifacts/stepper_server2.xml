@@ -9,6 +9,11 @@
       <element id="library" level="project" name="gson-2.8.8" />
       <element id="library" level="project" name="okHttp" />
       <element id="artifact" artifact-name="stepper-Engine" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="controlsfx-8.40.14" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>
