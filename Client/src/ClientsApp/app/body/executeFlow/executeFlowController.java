@@ -108,7 +108,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         setBodyButtonStyle(continuationExe);
         setBodyButtonStyle(showDetails);
         setBodyButtonStyle(startExecute);
-
     }
     private void asserts() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
@@ -366,14 +365,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         optionalList.setSpacing(10);
     }
-
     private void setLabelStyle(Label data) {
         if (StyleManager.getCurrentTheme().equals("dark"))
             data.setStyle("-fx-text-fill: #ffff00; -fx-font-size: 16px;-fx-alignment: center;-fx-font-family: 'Arial Rounded MT Bold';");
         else
             data.setStyle("-fx-text-fill: black;-fx-font-size: 16px;-fx-alignment: center;-fx-font-family: 'Arial Rounded MT Bold';");
     }
-
     private Map<String,Object> getOutputsOfLastFlow(){
         return outputsOfLastFlow;
     }
@@ -413,50 +410,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<Pair<String, DataDefinitionDeclarationDTO>> getCurrentMandatoryFreeInput() {
         return currentMandatoryFreeInput;
     }
-
     private List<Pair<String, DataDefinitionDeclarationDTO>> getCurrentOptionalFreeInput() {
         return currentOptionalFreeInput;
-    }
-    private void optionalHandler(List<Pair<String, DataDefinitionDeclarationDTO>> optionalInputs) {
-        for (Pair<String, DataDefinitionDeclarationDTO> optional : optionalInputs) {
-            Label label = new Label(optional.getKey());
-            label.getStylesheets().add("app/management/style/darkTheme.css");
-            label.getStyleClass().add("inputLabel");
-            setLabelStyle(label);
-            TextField textField = new TextField();
-
-            textField.setStyle("-fx-alignment: center;-fx-border-radius: 10; -fx-font-size: 16");
-            textField.setPromptText("Enter here");
-
-            Button addButton = new Button("Save");
-            addButton.getStylesheets().add("app/management/style/darkTheme.css");
-            addButton.getStyleClass().add("inputButton");
-            setButtonStyle(addButton);
-            HBox nameAndAddOrEdit = new HBox();
-
-            textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
-                if (event.getCode() == KeyCode.ENTER) {
-                    event.consume();
-                }
-            });
-            if (!existInInitialValue(optional.getKey())) {
-                nameAndAddOrEdit.getChildren().add(textField);
-                nameAndAddOrEdit.getChildren().add(addButton);
-                nameAndAddOrEdit.setSpacing(10);
-
-                addButton.setOnAction(e -> handleButtonAction(addButton, textField, textField.getText(),
-                        optional.getKey(), optional.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit, true));
-
-                textField.setPromptText(optional.getValue().getUserString());
-                optionalList.getChildren().add(label);
-                optionalList.getChildren().add(nameAndAddOrEdit);
-                optionalList.setSpacing(10);
-            }
-            else {
-                String initData = getExistInInitialValue(optional.getKey());
-                freeInputsTemp.add(new Pair<>(optional.getKey(),initData));
-            }
-        }
     }
     private void createListOfFreeInputFromTypeFile(){
         String finalUrl = HttpUrl
@@ -510,8 +465,86 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+    private void optionalHandler(List<Pair<String, DataDefinitionDeclarationDTO>> optionalInputs) {
+        for (Pair<String, DataDefinitionDeclarationDTO> optional : optionalInputs) {
+            Label label = new Label(optional.getKey());
+            label.getStylesheets().add("app/management/style/darkTheme.css");
+            label.getStyleClass().add("inputLabel");
+            setLabelStyle(label);
+            TextField textField = new TextField();
+
+            textField.setStyle("-fx-alignment: center;-fx-border-radius: 10; -fx-font-size: 16");
+            textField.setPromptText("Enter here");
+
+            Button addButton = new Button("Save");
+            addButton.getStylesheets().add("app/management/style/darkTheme.css");
+            addButton.getStyleClass().add("inputButton");
+            setButtonStyle(addButton);
+            HBox nameAndAddOrEdit = new HBox();
+
+            textField.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    event.consume();
+                }
+            });
+            if (!existInInitialValue(optional.getKey())) {
+                if (optional.getKey().equals("METHOD")){
+                    ToggleGroup toggleGroup = new ToggleGroup();
+                    HBox hBoxToToggel = new HBox();
+                    textField.setVisible(false);
+
+                    RadioButton radioButtonGET = new RadioButton("GET");
+                    radioButtonGET.setToggleGroup(toggleGroup);
+                    radioButtonGET.setOnAction(event -> handleButtonAction(addButton, textField,"GET",
+                            optional.getKey(), optional.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                    radioButtonGET.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+
+                    RadioButton radioButtonPUT = new RadioButton("PUT");
+                    radioButtonPUT.setToggleGroup(toggleGroup);
+                    radioButtonPUT.setOnAction(event -> handleButtonAction(addButton, textField, "PUT",
+                            optional.getKey(), optional.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                    radioButtonPUT.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+
+                    RadioButton radioButtonPOST = new RadioButton("POST");
+                    radioButtonPOST.setToggleGroup(toggleGroup);
+                    radioButtonPOST.setOnAction(event -> handleButtonAction(addButton, textField,"POST",
+                            optional.getKey(), optional.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                    radioButtonPOST.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+
+                    RadioButton radioButtonDELETE = new RadioButton("DELETE");
+                    radioButtonDELETE.setToggleGroup(toggleGroup);
+                    radioButtonDELETE.setOnAction(event -> handleButtonAction(addButton, textField, "DELETE",
+                            optional.getKey(), optional.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                    radioButtonDELETE.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+
+                    hBoxToToggel.getChildren().addAll(radioButtonGET,radioButtonPUT,radioButtonPOST,radioButtonDELETE);
+                    hBoxToToggel.setSpacing(10);
+                    nameAndAddOrEdit.getChildren().add(hBoxToToggel);
+                    optionalList.getChildren().add(label);
+                    optionalList.getChildren().add(nameAndAddOrEdit);
+                    optionalList.setSpacing(10);
+                }
+                else {
+                    nameAndAddOrEdit.getChildren().add(textField);
+                    nameAndAddOrEdit.getChildren().add(addButton);
+                    nameAndAddOrEdit.setSpacing(10);
+
+                    addButton.setOnAction(e -> handleButtonAction(addButton, textField, textField.getText(),
+                            optional.getKey(), optional.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit, true));
+
+                    textField.setPromptText(optional.getValue().getUserString());
+                    optionalList.getChildren().add(label);
+                    optionalList.getChildren().add(nameAndAddOrEdit);
+                    optionalList.setSpacing(10);
+                }
+            }
+            else {
+                String initData = getExistInInitialValue(optional.getKey());
+                freeInputsTemp.add(new Pair<>(optional.getKey(),initData));
+            }
+        }
+    }
     private void mandatoryHandler(List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs) {
-        //createListOfFreeInputFromTypeFile();
         createListOfFreeInputFromFileName();
         for (Pair<String, DataDefinitionDeclarationDTO> mandatory : mandatoryInputs) {
             Label label = new Label(mandatory.getKey());
@@ -555,6 +588,25 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     RadioButton radioButtonUnZip = new RadioButton("UNZIP");
                     radioButtonUnZip.setToggleGroup(toggleGroup);
                     radioButtonUnZip.setOnAction(event -> handleButtonAction(addButton, textField, "UNZIP",
+                            mandatory.getKey(), mandatory.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+
+                    radioButtonUnZip.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+                    hBoxToToggel.getChildren().addAll(radioButtonZip,radioButtonUnZip);
+                    hBoxToToggel.setSpacing(10);
+                    nameAndAddOrEdit.getChildren().add(hBoxToToggel);
+
+                } else if (mandatory.getKey().equals("PROTOCOL")) {
+                    ToggleGroup toggleGroup = new ToggleGroup();
+                    HBox hBoxToToggel = new HBox();
+                    textField.setVisible(false);
+                    RadioButton radioButtonZip = new RadioButton("http");
+                    radioButtonZip.setToggleGroup(toggleGroup);
+                    radioButtonZip.setOnAction(event -> handleButtonAction(addButton, textField,"http",
+                            mandatory.getKey(), mandatory.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                    radioButtonZip.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
+                    RadioButton radioButtonUnZip = new RadioButton("https");
+                    radioButtonUnZip.setToggleGroup(toggleGroup);
+                    radioButtonUnZip.setOnAction(event -> handleButtonAction(addButton, textField, "https",
                             mandatory.getKey(), mandatory.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
 
                     radioButtonUnZip.setStyle("-fx-text-fill: #fffa3b; -fx-background-color: transparent");
@@ -704,7 +756,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                                 DataTransfer transfer = new DataTransfer(data,nameOfCurrentFlow,nameOfTargetFlow);
                                 Platform.runLater(() -> {//general error
                                     body.handlerContinuationFromServlet(transfer);
-
                                 });
 
                             }
@@ -863,16 +914,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
         if (nameOfDD.equals("OPERATION"))
             handleOperation(addButton, data, nameOfDD);
-        else {
+        else if (nameOfDD.equals("PROTOCOL") ||nameOfDD.equals("METHOD")) {
+            handleOperation(addButton, data, nameOfDD);
+        } else {
             if (addButton.getText().equals("Edit")) {
                 if (nameOfDD.equals("FOLDER_NAME") || existInFileName(nameOfDD)) {
                     if (nameOfDD.equals("FOLDER_NAME")){
                         handleEditFolderName(Hbox);
                     } else
                         editTheDataDefinitionThatWeWantToChange(addButton, textField, nameOfDD, Hbox);
-
                 } else {
-                    addButton.setText("Save");
+               //     addButton.setText("Save");
                     for (Pair<String, String> pair : freeInputsTemp) {
                         if (pair.getKey().equals(nameOfDD)) {
                             freeInputsTemp.remove(pair);
@@ -966,14 +1018,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
     }
     private void editTheDataDefinitionThatWeWantToChange(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
+        for (Pair<String, String> pair : freeInputsTemp) {
+            if (pair.getKey().equals(nameOfDD)) {
+                freeInputsTemp.remove(pair);
+                break;
+            }
+        }
         Platform.runLater(() -> {
             addButton.setText("Save");
-            for (Pair<String, String> pair : freeInputsTemp) {
-                if (pair.getKey().equals(nameOfDD)) {
-                    freeInputsTemp.remove(pair);
-                    break;
-                }
-            }
             // textField.clear();
             addButton.setText("Save");
             if (freeInputsTemp.size() != getSizeOfMandatoryList()) {
@@ -1046,7 +1098,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 button.setStyle(style));
     }
     private void validateInput(String data, String type, TextField textField, Button btn, String nameOfDD) {
-
         //build req for valid input servlet
         String finalUrl = HttpUrl
                 .parse(ClientConstants.VALIDATE_INPUT)

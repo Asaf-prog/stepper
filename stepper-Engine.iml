@@ -9,8 +9,36 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="stepper-UI" exported="" />
     <orderEntry type="module" module-name="stepper-DTO" exported="" />
-    <orderEntry type="library" exported="" name="google-gson-2" level="project" />
     <orderEntry type="library" exported="" name="jayson path" level="project" />
     <orderEntry type="library" exported="" name="okHttp" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/newjar/gson-2.8.8.jar!/" />
+          <root url="file://$USER_HOME$/Desktop" />
+          <root url="file://$USER_HOME$/Desktop" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Desktop/newjar/gson-2.8.8-sources.jar!/" />
+          <root url="file://$USER_HOME$/Desktop/interfacecheck" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/07. Threads/07. Threads/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/08. Java FX/08. Java FX/fromConsoleToJavaFX/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/08. Java FX/08. Java FX/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/09. Sockets/09. Sockets/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/12. http-client/12. http-client/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/Online Chat V3/Online Chat V3/ChatClient/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/Online Chat V3/Online Chat V3/ChatLogicEngine/src" />
+          <root url="file://$USER_HOME$/Desktop/javaExamples/Online Chat V3/Online Chat V3/chatWebApp/src" />
+          <root url="file://$USER_HOME$/Desktop/tomcatTestapache-tomcat-10.0.11/apache-tomcat-10.0.11/webapps/docs/appdev/sample/src" />
+          <root url="file://$USER_HOME$/Desktop/tomcatTestapache-tomcat-10.0.11/apache-tomcat-10.0.11/webapps/examples/WEB-INF/classes" />
+          <root url="file://$USER_HOME$/Desktop/tomcatTestapache-tomcat-10.0.11/apache-tomcat-10.0.11/webapps/examples/WEB-INF/jsp/applet" />
+          <root url="file://$USER_HOME$/Desktop/tomcatTestapache-tomcat-10.0.11/apache-tomcat-10.0.11/webapps/examples/jsp/plugin/applet" />
+          <root url="file://$USER_HOME$/Desktop/tomcatTestapache-tomcat-10.0.11/apache-tomcat-10.0.11/work/Catalina/localhost/ROOT" />
+          <root url="file://$USER_HOME$/Desktop/tomcatTestapache-tomcat-10.0.11/apache-tomcat-10.0.11/work/Catalina/localhost/manager" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/Desktop" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

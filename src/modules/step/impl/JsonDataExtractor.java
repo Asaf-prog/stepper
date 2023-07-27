@@ -1,6 +1,7 @@
 package modules.step.impl;
 
 import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import modules.dataDefinition.impl.DataDefinitionRegistry;
@@ -13,6 +14,8 @@ import modules.step.api.StepResult;
 import net.minidev.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonDataExtractor extends AbstractStepDefinition {
     public JsonDataExtractor() {
@@ -25,34 +28,52 @@ public class JsonDataExtractor extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
-        JsonData JSON = context.getDataValue("JSON", JsonData.class);
-        String JSON_PATH = context.getDataValue("JSON_PATH",String.class);
+        JsonData json = context.getDataValue("JSON", JsonData.class);
+        String json_path = context.getDataValue("JSON_PATH", String.class);
+
+        String jsonString = json.toString();
+
         StepResult res = StepResult.SUCCESS;
+
         try {
-            String jsonString = JSON.toString();
+            // Parse the JSON string
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
-            JSONArray extractedData = JsonPath.read(document, JSON_PATH);
-            StringBuilder dataThatExtract = new StringBuilder();
+
+            // Extract the data using JsonPath
+            Object resultVal = JsonPath.read(document, json_path);
+
+            List<Object> extractedData = new ArrayList<>();
+
+            if (resultVal instanceof List<?>) {
+                // The result is a list of values
+                extractedData = (List<Object>) resultVal;
+            } else {
+                // The result is a single value
+                extractedData.add(resultVal);
+            }
+
+            // Append the data with commas
+            StringBuilder result = new StringBuilder();
+           context.setLogsForStep("Json Data Extractor","About extract data from the Json");
+
             for (int i = 0; i < extractedData.size(); i++) {
-                dataThatExtract.append(extractedData.get(i));
+                result.append(extractedData.get(i).toString());
                 if (i < extractedData.size() - 1) {
-                    dataThatExtract.append(", ");
+                    result.append(", ");
                 }
             }
-            if(extractedData.size() == 0){// still end with successes
-                context.setLogsForStep("Json Data Extractor","No value found for json path "+ JSON_PATH);
-            }
-            else{
-                context.setLogsForStep("Json Data Extractor","Extracting data "+ JSON_PATH+". Value: "+ dataThatExtract);
-            }
-            context.storeDataValue("VALUE",dataThatExtract.toString());
-            context.addSummaryLine("Json Data Extractor","Data successfully extracted");
+            if(extractedData.size() == 0)
+                context.setLogsForStep("Json Data Extractor","No value found for json path " + json_path);
+            else
+                context.setLogsForStep("Json Data Extractor","Extracting data " + json_path + ". Value: " + result.toString());
 
-        }catch (PathNotFoundException e){
+            context.storeDataValue("VALUE", result.toString());
+            context.addSummaryLine("Json Data Extractor","Data successfully extracted");
+        } catch (InvalidPathException e) {
+            context.addSummaryLine("Json Data Extractor","Failure cause Invalid JsonPath expression: " + json_path);
             res = StepResult.FAILURE;
-            context.addSummaryLine("Json Data Extractor","Failure cause Invalid JsonPath ");
         }
-          return res;
+        return res;
     }
 }
 

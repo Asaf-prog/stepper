@@ -1,18 +1,14 @@
 package modules.dataDefinition.impl.json;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-
+import com.google.gson.*;
 import java.io.Serializable;
-
-public class JsonData implements Serializable {
-    private JsonObject jsonObject;
+import static com.google.gson.JsonParser.*;
+public class JsonData  implements Serializable{
+    private JsonElement jsonObject;
+    private Gson gson = new Gson();
     public JsonData(String json) throws JsonSyntaxException {
         //jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        Gson gson = new Gson();
-       Object o = gson.fromJson(json,Object.class);
          jsonObject = gson.fromJson(json, JsonObject.class);
+        jsonObject = JsonParser.parseString(json);
     }
     @Override
     public String toString(){
@@ -23,3 +19,4 @@ public class JsonData implements Serializable {
             return "Invalid Json";
     }
 }
+
