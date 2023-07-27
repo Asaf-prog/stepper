@@ -3,7 +3,7 @@ package modules.step.impl;
 import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.dataDefinition.impl.enumerator.MethodEnum;
 import modules.dataDefinition.impl.enumerator.Protocol;
-import modules.dataDefinition.impl.json.JasonData;
+import modules.dataDefinition.impl.json.JsonData;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
@@ -32,19 +32,16 @@ public class HTTPCall extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
         StepResult res = StepResult.SUCCESS;
-    try{
+        try{
         String Resource = context.getDataValue("RESOURCE",String.class);
         String Address = context.getDataValue("ADDRESS",String.class);
 
         Protocol Protocol = context.getDataValue("PROTOCOL", modules.dataDefinition.impl.enumerator.Protocol.class);
         Optional<MethodEnum> Method = Optional.ofNullable(context.getDataValue("METHOD",MethodEnum.class));
-        Optional<JasonData> Body = Optional.ofNullable(context.getDataValue("BODY",JasonData.class));
+        Optional<JsonData> Body = Optional.ofNullable(context.getDataValue("BODY", JsonData.class));
 
 
        // Protocol protocol = Protocol.orElse(Protocol.HTTP);
-
-
-
 
 
         String url = buildUrl(Protocol,Address,Resource);
@@ -52,10 +49,8 @@ public class HTTPCall extends AbstractStepDefinition {
                 .Builder().
                 url(url);
 
-
-
         MethodEnum method = Method.orElse(MethodEnum.GET);
-        JasonData body = Body.orElse(new JasonData("{}"));//Empty body
+        JsonData body = Body.orElse(new JsonData("{}"));//Empty body
 
         switch (method) {
             case GET:

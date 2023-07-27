@@ -4,7 +4,7 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import modules.dataDefinition.impl.DataDefinitionRegistry;
-import modules.dataDefinition.impl.json.JasonData;
+import modules.dataDefinition.impl.json.JsonData;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
@@ -25,7 +25,7 @@ public class JsonDataExtractor extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
-        JasonData JSON = context.getDataValue("JSON",JasonData.class);
+        JsonData JSON = context.getDataValue("JSON", JsonData.class);
         String JSON_PATH = context.getDataValue("JSON_PATH",String.class);
         StepResult res = StepResult.SUCCESS;
         try {
