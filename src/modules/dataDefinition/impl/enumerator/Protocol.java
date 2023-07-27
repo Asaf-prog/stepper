@@ -9,4 +9,7 @@ public enum Protocol implements Serializable {
     public String toString() {
         return this.name().toLowerCase();
     }
+    public String getProtocol(){
+        return this.name().toLowerCase();
+    }
 }

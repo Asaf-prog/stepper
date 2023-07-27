@@ -24,7 +24,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import util.ClientConstants;
-import util.http.ClientHttpClientUtil;
+import util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -99,7 +99,7 @@ public class AdminStepperApplication extends Application {
         Request request = new Request.Builder()
                 .url(ClientConstants.VALIDATE_ADMIN)
                 .build();
-        ClientHttpClientUtil.runAsync(request, new Callback() {
+        HttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->

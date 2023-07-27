@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="stepper-Admin:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/stepper_Admin_jar</output-path>
+  <artifact type="jar" build-on-make="true" name="stepper-Admin">
+    <output-path>$PROJECT_DIR$/out/artifacts/stepper_Admin</output-path>
     <root id="archive" name="stepper-Admin.jar">
       <element id="module-output" name="stepper-Admin" />
       <element id="module-output" name="stepper-Engine" />
@@ -15,6 +15,12 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/google-gson-2.1/gson-2.1-javadoc.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/google-gson-2.1/gson-2.1-sources.jar" path-in-jar="/" />
       <element id="library" level="project" name="okHttp" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/stepper-Admin/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="artifact" artifact-name="stepper-server" />
+      <element id="artifact" artifact-name="stepper-DTO" />
+      <element id="artifact" artifact-name="stepper-Engine" />
     </root>
   </artifact>
 </component>

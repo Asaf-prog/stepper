@@ -37,7 +37,6 @@ import services.stepper.FlowDefinitionDTO;
 import services.stepper.FlowExecutionDTO;
 import util.ClientConstants;
 import util.Constants;
-import util.http.ClientHttpClientUtil;
 import util.http.HttpClientUtil;
 
 import javax.swing.*;
@@ -400,7 +399,7 @@ public class UserManagementController implements bodyControllerDefinition {
                 .url(Constants.GET_ROLES_FOR_USER)
                 .addHeader("username", name)
                 .build();
-        ClientHttpClientUtil.runAsync(request, new Callback() {
+        HttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
@@ -422,7 +421,7 @@ public class UserManagementController implements bodyControllerDefinition {
                         .url(Constants.GET_FLOWS_FOR_ROLE)
                         .post(body)
                         .build();
-                ClientHttpClientUtil.runAsync(request, new Callback() {
+                HttpClientUtil.runAsync(request, new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() ->
@@ -467,7 +466,7 @@ public class UserManagementController implements bodyControllerDefinition {
                 .url(Constants.GET_ALL_ROLES)
                 .build();
 
-        ClientHttpClientUtil.runAsync(request, new Callback() {
+        HttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
@@ -571,7 +570,7 @@ public class UserManagementController implements bodyControllerDefinition {
                 .url(Constants.GET_USER)
                 .addHeader("username", username)
                 .build();
-        ClientHttpClientUtil.runAsync(request, new Callback() {
+        HttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
@@ -610,7 +609,7 @@ public class UserManagementController implements bodyControllerDefinition {
                         .url(Constants.GET_USER_EXECUTIONS)
                         .addHeader("username", name)
                         .build();
-                ClientHttpClientUtil.runAsync(request, new Callback() {
+                HttpClientUtil.runAsync(request, new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() ->
