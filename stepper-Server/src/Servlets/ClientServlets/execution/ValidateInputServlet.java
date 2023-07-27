@@ -37,13 +37,14 @@ public class ValidateInputServlet extends HttpServlet {
         }else if (type.equals("String")) {
             if (data.isEmpty()) {
                 String msg = "Please enter a String";
-                resp.addHeader("message",msg);
-                resp.setStatus(422);
-            }if (data.contains("?")) {
-                String msg = "Please enter a String without '?'";
-                resp.addHeader("message",msg);
+                resp.addHeader("message", msg);
                 resp.setStatus(422);
             }
+//            }if (data.contains("?")) {
+//                String msg = "Please enter a String without '?'";
+//                resp.addHeader("message",msg);
+//                resp.setStatus(422);
+//            }
         }else
             resp.setStatus(200);//means that the input is valid
     }

@@ -1,9 +1,8 @@
 package modules.step.impl;
 
 import modules.dataDefinition.impl.DataDefinitionRegistry;
-import modules.dataDefinition.impl.enumerator.Enumerator;
 import modules.dataDefinition.impl.enumerator.MethodEnum;
-import modules.dataDefinition.impl.enumerator.protocol;
+import modules.dataDefinition.impl.enumerator.Protocol;
 import modules.dataDefinition.impl.json.JasonData;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
@@ -16,9 +15,6 @@ import java.util.Optional;
 
 import okhttp3.*;
 
-import java.io.IOException;
-import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
-
 public class HTTPCall extends AbstractStepDefinition {
     public HTTPCall() {
 
@@ -26,7 +22,7 @@ public class HTTPCall extends AbstractStepDefinition {
 
         addInput(new DataDefinitionDeclarationImpl("RESOURCE", DataNecessity.MANDATORY, "Resource Name (include query parameters)", DataDefinitionRegistry.STRING));//full path    maybe need to change to listofFiles
         addInput(new DataDefinitionDeclarationImpl("ADDRESS", DataNecessity.MANDATORY, "Domain:Port", DataDefinitionRegistry.STRING));//full path
-        addInput(new DataDefinitionDeclarationImpl("PROTOCOL", DataNecessity.MANDATORY, "protocol", DataDefinitionRegistry.PROTOCOL_ENUMERATOR));//full path
+        addInput(new DataDefinitionDeclarationImpl("PROTOCOL", DataNecessity.MANDATORY, "Protocol", DataDefinitionRegistry.PROTOCOL_ENUMERATOR));//full path
         addInput(new DataDefinitionDeclarationImpl("METHOD", DataNecessity.OPTIONAL, "Method", DataDefinitionRegistry.METHOD_ENUM_ENUMERATION));//full path
         addInput(new DataDefinitionDeclarationImpl("BODY", DataNecessity.OPTIONAL, "Request Body", DataDefinitionRegistry.JASON));//full path
 
@@ -35,20 +31,27 @@ public class HTTPCall extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
-
+        StepResult res = StepResult.SUCCESS;
+        try{
         String Resource = context.getDataValue("RESOURCE",String.class);
         String Address = context.getDataValue("ADDRESS",String.class);
 
-        protocol Protocol = context.getDataValue("PROTOCOL", protocol.class);
+        Protocol Protocol = context.getDataValue("PROTOCOL", modules.dataDefinition.impl.enumerator.Protocol.class);
         Optional<MethodEnum> Method = Optional.ofNullable(context.getDataValue("METHOD",MethodEnum.class));
         Optional<JasonData> Body = Optional.ofNullable(context.getDataValue("BODY",JasonData.class));
 
-        StepResult res = StepResult.SUCCESS;
+
+       // Protocol protocol = Protocol.orElse(Protocol.HTTP);
+
+
+
 
         String url = buildUrl(Protocol,Address,Resource);
         Request.Builder requestBuilder = new Request
                 .Builder().
                 url(url);
+
+
 
         MethodEnum method = Method.orElse(MethodEnum.GET);
         JasonData body = Body.orElse(new JasonData("{}"));//Empty body
@@ -72,7 +75,7 @@ public class HTTPCall extends AbstractStepDefinition {
         }
         OkHttpClient client = new OkHttpClient();
         Call call = client.newCall(requestBuilder.build());
-        try{
+
             context.setLogsForStep("HTTP Call","About to invoke http request: " + Protocol + " | " + method + " | " + Address + " | " + Resource);
             Response response = call.execute();
             context.setLogsForStep("HTTP Call","Received Response. Status code: " + response.code());
@@ -87,7 +90,7 @@ public class HTTPCall extends AbstractStepDefinition {
         }
         return res;
     }
-    private String buildUrl(protocol Protocol,String Address,String Resource){
+    private String buildUrl(Protocol Protocol, String Address, String Resource){
         StringBuilder buildUrl = new StringBuilder();
         buildUrl.append(Protocol.toString())
                 .append("://")
