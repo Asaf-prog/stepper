@@ -132,7 +132,6 @@ public class MVC_controller {
                // System.out.println("fail");
 
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
@@ -158,7 +157,6 @@ public class MVC_controller {
         });
         return false;
     }
-
             private void popupDetails(String id) {
                 FXMLLoader loader = new FXMLLoader(getClass()
                         .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
@@ -190,25 +188,17 @@ public class MVC_controller {
                 //come this far ... eh?
             }
             private void setProgressBar(String id, Double progress) {
-                int nextIndex = header.getNextFreeProgress();
-                ProgressBar progressBar = header.getNextProgressBar(nextIndex);
-                progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
-//                progressBar.progressProperty().bind(progress);
-//                task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-//                    if (newValue) {
-//                        progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
-//                    }
-//                });
-//                task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-//                    if (newValue) {
-//                        progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
-//                    }
-//                });
-                Label label = header.getNextLabel(nextIndex);
-                label.setText(id.substring(id.length()-4,id.length()));
-                 header.addProgress(progressBar,label,nextIndex);
-            }
 
+                Platform.runLater(() -> {
+                    int nextIndex = header.getNextFreeProgress();
+                    ProgressBar progressBar = header.getNextProgressBar(nextIndex);
+                    progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
+                    Label label = header.getNextLabel(nextIndex);
+                    label.setText(id.substring(id.length()-4,id.length()));
+                    header.addProgress(progressBar,label,nextIndex);
+
+                });
+            }
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;
     }

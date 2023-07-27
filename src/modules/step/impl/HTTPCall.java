@@ -37,7 +37,8 @@ public class HTTPCall extends AbstractStepDefinition {
         String Resource = context.getDataValue("RESOURCE",String.class);
         String Address = context.getDataValue("ADDRESS",String.class);
 
-        Protocol Protocol = context.getDataValue("PROTOCOL",Protocol.class);
+        //Protocol Protocol = context.getDataValue("PROTOCOL",Protocol.class);
+        String Protocol ="https";
         Optional<MethodEnum> Method = Optional.ofNullable(context.getDataValue("METHOD",MethodEnum.class));
         Optional<JsonData> Body = Optional.ofNullable(context.getDataValue("BODY", JsonData.class));
 
@@ -71,22 +72,25 @@ public class HTTPCall extends AbstractStepDefinition {
         Call call = client.newCall(requestBuilder.build());
 
             context.setLogsForStep("HTTP Call","About to invoke http request: " + Protocol + " | " + method + " | " + Address + " | " + Resource);
+
             Response response = call.execute();
+
             context.setLogsForStep("HTTP Call","Received Response. Status code: " + response.code());
             context.addSummaryLine("HTTP Call","Received Response. Status code: " + response.code());
             context.storeDataValue("CODE",response.code());
             String responseBody = response.body() != null ? response.body().string() : "";
             context.storeDataValue("RESPONSE_BODY",responseBody);
 
-        }catch (IOException e){
+        }catch (Exception e ){
+            e.printStackTrace();
             context.addSummaryLine("HTTP Call","Step failed cause error occurred during the http call");
             res = StepResult.FAILURE;
         }
         return res;
     }
-    private String buildUrl(Protocol Protocol, String Address, String Resource){
+    private String buildUrl(String Protocol, String Address, String Resource){
         StringBuilder buildUrl = new StringBuilder();
-        buildUrl.append(Protocol.toString())
+        buildUrl.append(Protocol)
                 .append("://")
                 .append(Address)
                 .append(Resource);

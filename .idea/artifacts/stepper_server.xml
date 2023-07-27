@@ -14,15 +14,15 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="okHttp" />
-          <element id="library" level="project" name="google-gson-2" />
           <element id="library" level="application_server_libraries" name="Tomcat 10.0.11" />
-          <element id="library" level="project" name="controlsfx-8.40.141" />
           <element id="library" level="project" name="jayson path" />
+          <element id="library" level="project" name="controlsfx-8.40.141" />
+          <element id="file-copy" path="$USER_HOME$/Desktop/newjar/gson-2.8.8.jar" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />
-      <element id="library" level="project" name="google-gson-2" />
       <element id="library" level="project" name="okHttp" />
+      <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />
+      <element id="javaee-facet-resources" facet="stepper-Admin/web/Web" />
     </root>
   </artifact>
 </component>
