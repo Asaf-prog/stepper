@@ -137,6 +137,7 @@ public class MVC_controller {
                         timer.cancel();
                         //open the option to continuation
                         //body.setContinuationButton();
+                        endProgressBar(id);
                         lastExeId = id;
                         popupDetails(id);
                     });
@@ -146,15 +147,27 @@ public class MVC_controller {
 
                     //probably processing
                     //update process
-                    //String progress = response.header("progress");
+                    Platform.runLater(() -> {
                     Double progress = Double.parseDouble(response.header("progress"));
                     setProgressBar(id,progress);
+                    });
                 }
             }
         });
         return false;
     }
-            private void popupDetails(String id) {
+
+        private void endProgressBar(String id) {
+            int index = header.getProgressBarByID(id);
+            ProgressBar progressBar = header.getProgressBar(index);
+            Platform.runLater(() -> {
+                progressBar.setProgress(1.0);
+                progressBar.setStyle("-fx-accent: #00ff00;");
+            });
+
+        }
+
+    private void popupDetails(String id) {
                 FXMLLoader loader = new FXMLLoader(getClass()
                         .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
                 loader.setControllerFactory(controllerClass -> {
@@ -181,15 +194,22 @@ public class MVC_controller {
                 //come this far ... eh?
             }
             private void setProgressBar(String id, Double progress) {
+                    if (!header.inLast4Execution(id)) {
+                        int nextIndex = header.getNextFreeProgress();
+                        ProgressBar progressBar = header.getNextProgressBar(nextIndex);
+                        progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
+                        Platform.runLater(() -> {
+                            header.addProgress(progressBar, id.substring(id.length() - 4), nextIndex);
+                        });
+                    } else {
+                        //update progress
+                        int index = header.getProgressBarByID(id.substring(id.length() - 4));
+                        ProgressBar progressBar = header.getProgressBar(index);
+                        Platform.runLater(() -> {
+                            progressBar.setProgress(progress);
+                        });
 
-                Platform.runLater(() -> {
-                    int nextIndex = header.getNextFreeProgress();
-                    ProgressBar progressBar = header.getNextProgressBar(nextIndex);
-                    progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
-                    Label label = header.getNextLabel(nextIndex);
-                    label.setText(id.substring(id.length()-4,id.length()));
-                    header.addProgress(progressBar, String.valueOf(label),nextIndex);
-                });
+                }
             }
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;

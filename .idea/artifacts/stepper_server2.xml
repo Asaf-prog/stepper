@@ -8,7 +8,7 @@
       <element id="library" level="project" name="jayson path" />
       <element id="library" level="project" name="gson-2.8.8" />
       <element id="library" level="project" name="okHttp" />
-      <element id="artifact" artifact-name="stepper-Engine:jar" />
+      <element id="artifact" artifact-name="stepper-Engine" />
     </root>
   </artifact>
 </component>

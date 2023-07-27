@@ -320,7 +320,7 @@ public class headerController {
                 style4Bar = flow1ProgressBar.getStyle();
                 style4Label = flow1ProgressLabel.getStyle();
                 flow1ProgressBar.setProgress(progressBar.getProgress());
-                flow1ProgressLabel.setText( id);
+                flow1ProgressLabel.setText(id);
                 flow1ProgressBar.setStyle(style4Bar);
                 flow1ProgressLabel.setStyle(style4Label);
                 break;
