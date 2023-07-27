@@ -9,7 +9,9 @@ import app.management.style.StyleManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javafx.util.Duration;
 import javafx.util.Pair;
 import modules.dataDefinition.impl.relation.RelationData;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -109,6 +112,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private Gson gson = new Gson();
 
     private final List<Stage> stages = new ArrayList<>();
+    private Timeline timeline=null;
 
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
@@ -124,11 +128,140 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         ScrollPane scrollPane = new ScrollPane(logsVbox);
         scrollPane.setFitToWidth(true);
         setFilter2Table();
+
+        setTimer();
     }
+
+    private void setTimer() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+        Duration refreshInterval = Duration.seconds(3);
+        timeline = new Timeline(new KeyFrame(refreshInterval, event -> updateTableDataFromServer()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play(); // Start the timer
+    }
+
+    private void updateTableDataFromServer() {
+        Request request = new Request.Builder()
+                .url(Constants.GET_TABLE_DATA_ADMIN)
+                .get()
+                .build();
+
+        HttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Failed to get table data");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                String body = responseBody.string();
+                responseBody.close();
+
+                if (body == null || body.isEmpty()) {
+                    return;
+                }
+
+                try {
+                    List<FlowExecutionDTO> flowExecutionDTOS = gson.fromJson(body, new TypeToken<List<FlowExecutionDTO>>() {}.getType());
+                    if (flowExecutionDTOS == null) {
+                        return;
+                    }
+
+                    // Check if there are any updates
+                    if (isDataUpdated(flowExecutionDTOS)) {
+
+                        Platform.runLater(() -> {
+                            lastUpdatedExecutions = flowExecutionDTOS;
+                            executionCounterLabel.setText("There are " + flowExecutionDTOS.size() + " Flow Executions");
+
+                            final ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
+                            ToggleGroup group = new ToggleGroup();
+                            FlowExecutionResult flowExecutionResult;
+                            for (FlowExecutionDTO flowExecution : flowExecutionDTOS) {
+                                if (flowExecution.getFlowExecutionResult().equals("FAILURE")) {
+                                    flowExecutionResult = FlowExecutionResult.FAILURE;
+                                } else if (flowExecution.getFlowExecutionResult().equals("SUCCESS")) {
+                                    flowExecutionResult = FlowExecutionResult.SUCCESS;
+                                } else {
+                                    flowExecutionResult = FlowExecutionResult.WARNING;
+                                }
+
+                                FlowExecutionTableItem item = new FlowExecutionTableItem(flowExecution.getUniqueId(), flowExecution.getExecutedBy(), flowExecution.getFlowDefinition().getName(),
+                                        flowExecution.getStartTime(), flowExecutionResult);
+
+                                flowExecution.isDone.addListener((observable, oldValue, newValue) -> {
+                                    if (newValue) {
+                                        item.setResultFromExecutionResult(flowExecution.getFlowExecutionResult());
+                                        setResultColumn();
+                                    }
+                                });
+
+                                item.addToToggleGroup(group);
+                                data.add(item);
+                                tableItemEvents(group, item);
+                            }
+
+
+                            tableData.setItems(data);
+                            setResultColumn();
+                            allExecutions = data;
+
+
+                            FlowExecutionDTO selectedFlow = null;
+                            for (FlowExecutionDTO flowExecution : flowExecutionDTOS) {
+                                if (flowExecution.getUniqueId().equals(pickedExecution.getUniqueId())) {
+                                    selectedFlow = flowExecution;
+                                    break;
+                                }
+                            }
+
+                            if (selectedFlow != null) {
+                                // Update the UI to show the information of the selected flow execution
+                                updateLogs(selectedFlow);
+                                updateInputs(selectedFlow);
+                                updateOutputs(selectedFlow);
+                                updateTime(selectedFlow);
+                                updateLogsTree(selectedFlow);
+                            }
+
+
+                        });
+                    }
+
+                    response.close();
+                } catch (JsonSyntaxException e) {//do nothing when json is not valid
+                }
+            }
+        });
+
+}
+    private boolean isDataUpdated(List<FlowExecutionDTO> newExecutions) {
+        if (newExecutions.size() != lastUpdatedExecutions.size()) {
+            return true;
+        }
+
+        // Compare each FlowExecutionDTO to check for updates
+        for (int i = 0; i < newExecutions.size(); i++) {
+            FlowExecutionDTO newExecution = newExecutions.get(i);
+            FlowExecutionDTO oldExecution = lastUpdatedExecutions.get(i);
+            if (!newExecution.equals(oldExecution)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void onLeave() {
         for (Stage stage : stages) {
             stage.close();
+        }
+        if (timeline != null) {
+            timeline.stop();
         }
     }
 

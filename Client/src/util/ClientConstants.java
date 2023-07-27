@@ -1,6 +1,7 @@
 package util;
 
 import com.google.gson.Gson;
+import okhttp3.MediaType;
 
 import java.net.URL;
 
@@ -19,6 +20,8 @@ public class ClientConstants {
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
 
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/stepper_server";
@@ -28,7 +31,7 @@ public class ClientConstants {
     public static final String IS_AUTHORIZED = FULL_SERVER_PATH + "/Client/isAuthorized";
     public static final String GET_CLIENT_UPDATES = FULL_SERVER_PATH + "/Client/getClientUpdates";
 
-
+    public static final String IS_ROLES_CHANGED = FULL_SERVER_PATH + "/Client/isRolesChanged";
     public static final String GET_TABLE_DATA_FOR_USER =FULL_SERVER_PATH+ "/Client/getTableDataForUser"; ;
     public static final String GET_ROLES_FOR_CLIENT = FULL_SERVER_PATH + "/getRolesForClient";
     public static final String GET_IS_MANAGER = FULL_SERVER_PATH + "/Client/isManager";

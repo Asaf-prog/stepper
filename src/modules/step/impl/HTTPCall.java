@@ -32,7 +32,7 @@ public class HTTPCall extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
         StepResult res = StepResult.SUCCESS;
-        try{
+    try{
         String Resource = context.getDataValue("RESOURCE",String.class);
         String Address = context.getDataValue("ADDRESS",String.class);
 
@@ -42,6 +42,7 @@ public class HTTPCall extends AbstractStepDefinition {
 
 
        // Protocol protocol = Protocol.orElse(Protocol.HTTP);
+
 
 
 

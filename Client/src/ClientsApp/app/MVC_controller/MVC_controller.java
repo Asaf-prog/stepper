@@ -11,9 +11,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import modules.flow.execution.executionManager.tasks.ExecutionTask;
@@ -52,6 +54,10 @@ public class MVC_controller {
         Platform.runLater(() -> {
             header.updateClient(isManager);
         });
+    }
+
+    public List<String> getCurrentRoles(){
+        return header.getCurrentRoles();
     }
     public void executeFlow(FlowDefinitionDTO flow) {
 
@@ -92,8 +98,22 @@ public class MVC_controller {
                         }
                     }, 0, 200);
                 }else {
-                    System.out.println("fail");
-                }
+                    //user not authorized
+                        Platform.runLater(() -> {
+                            //popout error message
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("---User not authorized 401 ---");
+                            alert.setContentText("you dont have permission to execute this flow");
+                            alert.setOnCloseRequest(event -> {
+                                body.showFlowDefinition();
+
+                            });
+                            alert.showAndWait();
+
+
+                        });
+                    }
                 response.close();
             }
         });
@@ -191,5 +211,9 @@ public class MVC_controller {
 
     public String getLastExecutionId() {
         return lastExeId;
+    }
+
+    public void setCurrentRoles(List<String> roles) {
+        header.setCurrentRoles(roles);
     }
 }

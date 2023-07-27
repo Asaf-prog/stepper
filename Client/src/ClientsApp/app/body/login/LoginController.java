@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import modules.flow.definition.api.FlowDefinitionImpl;
@@ -67,10 +68,17 @@ public class LoginController implements bodyControllerForLogin {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() != 200) {
+                if (response.code() != 200) {//401...
                     String responseBody = response.body().string();
-                    Platform.runLater(() ->
-                            errorMessageProperty.set("Something went wrong: " + responseBody)
+                    Platform.runLater(() -> {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Username Exist...");
+                                alert.setHeaderText("Error username already exist");
+                                alert.setContentText("try again with different username");
+                                alert.showAndWait();
+
+                            }
+
                     );
                     response.close();
                 } else {

@@ -30,6 +30,9 @@ public class GetTableDataForUserServlet extends HttpServlet {
         resp.setContentType("application/json");
         StepperUser user=userManager.getUser(username);
         List<FlowExecutionDTO> res=buildList(dataManager.getStepperData().getFlowExecutions(),user);
+        if (res==null){
+            res=new ArrayList<>();
+        }
         resp.getWriter().println(gson.toJson(res));
 
     }

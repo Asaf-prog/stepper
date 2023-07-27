@@ -1,12 +1,10 @@
 package services.stepper;
 import com.google.gson.annotations.Expose;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.util.Pair;
+import org.intellij.lang.annotations.Flow;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -78,6 +76,29 @@ public class FlowExecutionDTO implements Serializable {
 
     public String getTotalTime() {
         return totalTime;
+    }
+    @Override
+    public boolean equals(Object actualFlowExecutionDTO){//deep compare
+
+        if(actualFlowExecutionDTO instanceof FlowExecutionDTO){
+            FlowExecutionDTO compareTo = (FlowExecutionDTO) actualFlowExecutionDTO;
+            if(this.uniqueId.equals(compareTo.uniqueId) &&
+                    this.flowDefinition.equals(compareTo.flowDefinition) &&
+                    this.summaryLines.equals(compareTo.summaryLines) &&
+                    this.logs.equals(compareTo.logs) &&
+                    this.startTime.equals(compareTo.startTime) &&
+                    this.totalTime.equals(compareTo.totalTime) &&
+                    this.flowExecutionResult.equals(compareTo.flowExecutionResult) &&
+                    this.executionFormalOutputs.equals(compareTo.executionFormalOutputs) &&
+                    this.allExecutionOutputs.equals(compareTo.allExecutionOutputs) &&
+                    this.userInputs.equals(compareTo.userInputs) &&
+                    this.executedBy.equals(compareTo.executedBy)){
+                return true;
+            }
+
+
+        }
+        return false;
     }
 
     public void setTotalTime(String totalTime) {
