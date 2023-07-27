@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import services.stepper.FlowDefinitionDTO;
 import services.user.RoleDTO;
 import util.Constants;
-import util.http.ClientHttpClientUtil;
 import util.http.HttpClientUtil;
 
 import javax.swing.*;
@@ -350,7 +349,7 @@ public class RoleManagementController implements bodyControllerDefinition{
                 .url(Constants.GET_ALL_FLOWS)
                 .build();
 
-        ClientHttpClientUtil.runAsync(request, new Callback() {
+        HttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->

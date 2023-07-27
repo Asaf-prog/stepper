@@ -24,15 +24,16 @@ import java.util.List;
 @MultipartConfig
 public class GetLastExecutionServlet extends HttpServlet {
     private Gson gson = new Gson();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //get dataManager from context
         DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");
         String flowId = req.getHeader("flowId");
-        FlowExecution execution = getLastExecutionForUser(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req),flowId);
+        FlowExecution execution = getLastExecutionForUser(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req), flowId);
         if (execution == null) {
-          //  Double prog=setProgress(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req),flowId);
-          //  ExecutionTask task=dataManager.getStepperData().getExecutionManager().getTaskById(flowId);
+            //  Double prog=setProgress(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req),flowId);
+            //  ExecutionTask task=dataManager.getStepperData().getExecutionManager().getTaskById(flowId);
 //todo maybe something with the progress bar
 
             resp.setStatus(400);
@@ -45,25 +46,6 @@ public class GetLastExecutionServlet extends HttpServlet {
         resp.setStatus(200);
 
     }
-        private void setProgressBar(ExecutionTask task) {
-            int nextIndex =1;// header.getNextFreeProgress(); todo get with quary prams
-//         //   ProgressBar progressBar = header.getNextProgressBar(nextIndex);
-//            progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
-//            progressBar.progressProperty().bind(task.getProgress());
-//            task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-//                if (newValue) {
-//                    progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
-//                }
-//            });
-//            task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-//                if (newValue) {
-//                    progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
-//                }
-//            });
-//            Label label = header.getNextLabel(nextIndex);
-//            label.setText(task.get4DigId());
-//            // header.addProgress(progressBar,label,nextIndex);
-        }
 
 
     private FlowExecution getLastExecutionForUser(List<FlowExecution> flowExecutions, String username, String flowId) {

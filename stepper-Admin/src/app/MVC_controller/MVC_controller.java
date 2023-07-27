@@ -14,9 +14,6 @@ import modules.flow.execution.executionManager.tasks.ExecutionTask;
 import modules.flow.execution.runner.FLowExecutor;
 
 import java.util.List;
-
-import static modules.DataManeger.DataManager.stepperData;
-
 public class MVC_controller {
     private mainController main;
     private  headerController header;
@@ -27,23 +24,6 @@ public class MVC_controller {
         this.main = main;
         this.header=header;
         this.body = body;
-    }
-    public void executeFlow(FlowDefinitionImpl flow){
-        FlowExecution flowTestExecution = null;
-        FLowExecutor fLowExecutor = new FLowExecutor();
-        flow.setUserInputs(getFreeInputs());
-        flowTestExecution = new FlowExecution(flow);
-        ExecutionManager ExeManager = stepperData.getExecutionManager();//get the one and only ExecutionManager
-        try {
-            ExecutionTask task = new ExecutionTask(flowTestExecution.getFlowDefinition().getName(),
-                    flowTestExecution.getUniqueId() , flowTestExecution, fLowExecutor);
-            setProgressBar(task);
-            ExeManager.executeTask(task);
-            header.setDisableOnExecutionsHistory();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }//finally {
-        stepperData.addFlowExecution(flowTestExecution);
     }
 
     private void setProgressBar(ExecutionTask task) {

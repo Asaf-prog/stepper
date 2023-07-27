@@ -313,14 +313,14 @@ public class headerController {
         scaleTransition.play();
 
     }
-    public void addProgress(ProgressBar progressBar, Label label,int free) {
+    public void addProgress(ProgressBar progressBar, String  id,int free) {
         String style4Bar, style4Label;
         switch (free) {
             case 1:
                 style4Bar = flow1ProgressBar.getStyle();
                 style4Label = flow1ProgressLabel.getStyle();
                 flow1ProgressBar.setProgress(progressBar.getProgress());
-                flow1ProgressLabel = label;
+                flow1ProgressLabel.setText( id);
                 flow1ProgressBar.setStyle(style4Bar);
                 flow1ProgressLabel.setStyle(style4Label);
                 break;
@@ -328,7 +328,7 @@ public class headerController {
                 style4Bar = flow2ProgressBar.getStyle();
                 style4Label = flow2ProgressLabel.getStyle();
                 flow2ProgressBar = progressBar;
-                flow2ProgressLabel = label;
+                flow2ProgressLabel.setText( id);
                 flow2ProgressBar.setStyle(style4Bar);
                 flow2ProgressLabel.setStyle(style4Label);
                 break;
@@ -336,7 +336,7 @@ public class headerController {
                 style4Bar = flow3ProgressBar.getStyle();
                 style4Label = flow3ProgressLabel.getStyle();
                 flow3ProgressBar = progressBar;
-                flow3ProgressLabel = label;
+                flow3ProgressLabel.setText( id);
                 flow3ProgressBar.setStyle(style4Bar);
                 flow3ProgressLabel.setStyle(style4Label);
                 break;
@@ -344,7 +344,7 @@ public class headerController {
                 style4Bar = flow4ProgressBar.getStyle();
                 style4Label = flow4ProgressLabel.getStyle();
                 flow4ProgressBar = progressBar;
-                flow4ProgressLabel = label;
+                flow4ProgressLabel.setText(id);
                 flow4ProgressBar.setStyle(style4Bar);
                 flow4ProgressLabel.setStyle(style4Label);
                 break;
@@ -729,5 +729,50 @@ public class headerController {
         }
         rolesString = rolesString.substring(0, rolesString.length() - 2);
         myRoles.setText(rolesString);
+
+    }
+
+    public int getProgressBarByID(String id) {
+        String label1 = flow1ProgressLabel.getText();
+        String label2 = flow2ProgressLabel.getText();
+        String label3 = flow3ProgressLabel.getText();
+        String label4 = flow4ProgressLabel.getText();
+        String last4=id.substring(id.length()-4);
+         if (label1.equals(last4)) {
+                return 1;
+         }else if (label2.equals(last4)) {
+                return 2;
+         }else if (label3.equals(last4)) {
+                return 3;
+         }else if (label4.equals(last4)) {
+                return 4;
+         }
+         return 1;
+    }
+
+    public ProgressBar getProgressBar(int index) {
+        switch (index) {
+            case 1:
+                return flow1ProgressBar;
+            case 2:
+                return flow2ProgressBar;
+            case 3:
+                return flow3ProgressBar;
+            case 4:
+                return flow4ProgressBar;
+        }
+        return null;
+    }
+
+    public boolean inLast4Execution(String id) {
+        String last4=id.substring(id.length()-4);
+        String label1 = flow1ProgressLabel.getText();
+        String label2 = flow2ProgressLabel.getText();
+        String label3 = flow3ProgressLabel.getText();
+        String label4 = flow4ProgressLabel.getText();
+        if (label1.equals(last4) || label2.equals(last4) || label3.equals(last4) || label4.equals(last4)) {
+            return true;
+        }
+        return false;
     }
 }

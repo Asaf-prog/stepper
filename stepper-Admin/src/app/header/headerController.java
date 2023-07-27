@@ -1,5 +1,4 @@
 package app.header;
-import ClientsApp.app.Client.Client;
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
 import app.management.style.StyleManager;
@@ -24,7 +23,6 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import util.ClientConstants;
 import util.Constants;
-import util.http.ClientHttpClientUtil;
 import util.http.HttpClientUtil;
 
 
@@ -786,7 +784,7 @@ public class headerController {
                         .build();
 
                 System.out.println(request.toString());
-                ClientHttpClientUtil.runAsync(request, new Callback() {
+                HttpClientUtil.runAsync(request, new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() -> System.out.println("Something went wrong: " + e.getMessage()));

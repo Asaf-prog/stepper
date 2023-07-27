@@ -1,5 +1,5 @@
 package app.body.executionsHistory.DataViewer;
-import ClientsApp.app.management.style.StyleManager;
+import app.management.style.StyleManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,7 +45,7 @@ public class DataViewerController {
 
     }
     private static void setTheme() {
-        ClientsApp.app.management.style.StyleManager.setTheme(StyleManager.getCurrentTheme());
+        StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     @FXML
     void initialize() {

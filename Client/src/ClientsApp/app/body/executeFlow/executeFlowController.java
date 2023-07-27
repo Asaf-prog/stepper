@@ -13,8 +13,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -109,7 +107,47 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         setBodyButtonStyle(continuationExe);
         setBodyButtonStyle(showDetails);
         setBodyButtonStyle(startExecute);
+        //check if user have premmision to execute flow
+
     }
+
+    private void checkPermission() {
+        if(currentFlow==null){
+            return;
+        }
+        Request request = new Request.Builder()
+                .url(ClientConstants.CHECK_PERMISSION)
+                .addHeader("flowName",currentFlow.getName())
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code()==200){
+                   //all good
+                }else{//401
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("You don't have permission to execute flow");
+                            alert.setContentText("Please contact your administrator");
+                            alert.showAndWait();
+                            body.showFlowDefinition();
+                        }
+                    });
+                }
+
+            }
+        });
+
+    }
+
     private void asserts() {
         assert startExecute != null : "fx:id=\"startExecute\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert mandatoryList != null : "fx:id=\"mandatoryList\" was not injected: check your FXML file 'executeFlowController.fxml'.";
@@ -133,6 +171,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         //first of all, create a two list : mandatoryInputs and optionalInputs:
 
         currentFlow=body.getCurrentFlow();
+        checkPermission();
         List<Pair<String, DataDefinitionDeclarationDTO>> freeInputs = currentFlow.getFlowFreeInputs();
         List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs = new ArrayList<>();
         List<Pair<String, DataDefinitionDeclarationDTO>> optionalInputs = new ArrayList<>();

@@ -36,7 +36,7 @@ public class FlowStatusCheckServlet extends HttpServlet {
             if (prog!=null)
                 resp.addHeader("progress",prog.toString());
             else
-                resp.addHeader("progress","0.2");
+                resp.addHeader("progress","0.0");
             // ExecutionTask task=dataManager.getStepperData().getExecutionManager().getTaskById(flowId);
             //todo maybe something with the progress bar
 

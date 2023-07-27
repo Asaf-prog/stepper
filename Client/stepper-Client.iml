@@ -8,22 +8,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="okHttp" level="project" />
-    <orderEntry type="module" module-name="stepper-Engine" />
     <orderEntry type="module" module-name="stepper-DTO" />
-    <orderEntry type="library" name="Tomcat 10.0.11" level="application_server_libraries" />
     <orderEntry type="library" name="controlsfx-8.40.14" level="project" />
     <orderEntry type="module" module-name="stepper-Server" />
-    <orderEntry type="library" name="controlsfx-8.40.141" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/newjar/gson-2.8.8.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/Desktop/newjar/gson-2.8.8-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="jayson path" level="project" />
+    <orderEntry type="library" name="gson-2.8.8" level="project" />
   </component>
 </module>

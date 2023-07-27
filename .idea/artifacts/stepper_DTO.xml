@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="stepper-DTO:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/stepper_DTO_jar</output-path>
-    <root id="archive" name="stepper-DTO_jar.war">
+  <artifact type="war" build-on-make="true" name="stepper-DTO">
+    <output-path>$PROJECT_DIR$/out/artifacts/stepper_DTO</output-path>
+    <root id="archive" name="stepper-DTO.war">
       <element id="module-output" name="stepper-DTO" />
       <element id="module-output" name="stepper-Engine" />
       <element id="module-output" name="stepper-UI" />
@@ -54,6 +54,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/google-gson-2.1/gson-2.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/google-gson-2.1/gson-2.1-javadoc.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/google-gson-2.1/gson-2.1-sources.jar" path-in-jar="/" />
+      <element id="artifact" artifact-name="stepper-Engine" />
     </root>
   </artifact>
 </component>

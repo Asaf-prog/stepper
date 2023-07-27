@@ -1,6 +1,4 @@
 package modules.flow.execution.context;
-import Menu.MenuException;
-import Menu.MenuExceptionItems;
 import javafx.util.Pair;
 import modules.dataDefinition.impl.enumerator.Enumerator;
 import modules.mappings.CustomMapping;
@@ -56,7 +54,7 @@ StepExecutionContextImpl implements StepExecutionContext {
     public void setSteps(List<StepUsageDeclaration> steps){this.steps = steps;}
 
     @Override
-    public void setUserInputs(FlowExecution flowExecution) throws MenuException {
+    public void setUserInputs(FlowExecution flowExecution) throws Exception {
         List<Pair<String, String>> userInputs = flowExecution.getFlowDefinition().getUserInputs();
         if (userInputs != null) {
             for (Pair<String, String> userInput : userInputs) {

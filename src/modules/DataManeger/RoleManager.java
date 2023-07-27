@@ -5,6 +5,7 @@ import modules.flow.definition.api.FlowDefinitionImpl;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoleManager {
     private static List<Role> roles;
@@ -13,8 +14,10 @@ public class RoleManager {
 
     public RoleManager(){
         roles=new ArrayList<>();
+
+        List<FlowDefinitionImpl> readonly =flows.stream().filter(flowDefinition -> flowDefinition.isReadOnly()).collect(Collectors.toList());
         roles.add(new Role("all-flows",flows,"all available flows in the system (usually for managers)"));
-        roles.add(new Role("read-only",flows.subList(0,flows.size()-1),"all available flows that for read only (usually for employees)"));
+        roles.add(new Role("read-only",readonly,"all available flows that for read only (usually for employees)"));
 
 
 

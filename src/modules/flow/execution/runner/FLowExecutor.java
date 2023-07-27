@@ -1,6 +1,4 @@
 package modules.flow.execution.runner;
-import Menu.MenuException;
-import Menu.MenuExceptionItems;
 import javafx.beans.property.DoubleProperty;
 import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -59,7 +57,7 @@ public class FLowExecutor {
         }
         catch (Exception e) {
             //System.out.println(e.getMessage());
-            throw new MenuException(MenuExceptionItems.EMPTY, "Error in executing flow "+flowExecution.getFlowDefinition().getName());
+
         }
         finally {
             if (checkIfFlowFailed!=true) {
@@ -146,6 +144,7 @@ public class FLowExecutor {
 
                 //update progress
                 progress.setValue((double)(i+1)/flowExecution.getFlowDefinition().getFlowSteps().size());
+                flowExecution.progress.setValue((double)(i+1)/flowExecution.getFlowDefinition().getFlowSteps().size());
                 // check if you should continue etc..
                 if (stepResult == StepResult.FAILURE && !step.skipIfFail()) {//means all flow failed
                     setRestOfStepsAsFailed(flowExeStatus, i,flowExecution);
@@ -166,7 +165,7 @@ public class FLowExecutor {
         }
         catch (Exception e) {
             //System.out.println(e.getMessage());
-            throw new MenuException(MenuExceptionItems.EMPTY, "Error in executing flow "+flowExecution.getFlowDefinition().getName());
+//            throw new MenuException(MenuExceptionItems.EMPTY, "Error in executing flow "+flowExecution.getFlowDefinition().getName());
         }
         finally {
             if (checkIfFlowFailed!=true) {
