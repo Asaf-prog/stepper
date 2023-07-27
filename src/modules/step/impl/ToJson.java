@@ -2,7 +2,7 @@ package modules.step.impl;
 
 import com.google.gson.JsonSyntaxException;
 import modules.dataDefinition.impl.DataDefinitionRegistry;
-import modules.dataDefinition.impl.json.JasonData;
+import modules.dataDefinition.impl.json.JsonData;
 import modules.flow.execution.context.StepExecutionContext;
 import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
@@ -24,7 +24,7 @@ public class ToJson extends AbstractStepDefinition {
         String content = context.getDataValue("CONTENT", String.class);
         StepResult res = StepResult.SUCCESS;
         try {
-            JasonData json = new JasonData(content);
+            JsonData json = new JsonData(content);
             context.storeDataValue("JSON", json);
             context.setLogsForStep("To Jason","Content is JSON string. Converting it to json…");
             context.addSummaryLine("To Json","Success to convert String to json!");
