@@ -31,19 +31,17 @@ public class HTTPCall extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) throws IOException {
-        StepResult res = StepResult.SUCCESS;
+        StepResult res;
         try{
+            res = StepResult.SUCCESS;
         String Resource = context.getDataValue("RESOURCE",String.class);
         String Address = context.getDataValue("ADDRESS",String.class);
 
-        Protocol Protocol = context.getDataValue("PROTOCOL", modules.dataDefinition.impl.enumerator.Protocol.class);
+        Protocol Protocol = context.getDataValue("PROTOCOL",Protocol.class);
         Optional<MethodEnum> Method = Optional.ofNullable(context.getDataValue("METHOD",MethodEnum.class));
         Optional<JsonData> Body = Optional.ofNullable(context.getDataValue("BODY", JsonData.class));
 
-
        // Protocol protocol = Protocol.orElse(Protocol.HTTP);
-
-
         String url = buildUrl(Protocol,Address,Resource);
         Request.Builder requestBuilder = new Request
                 .Builder().

@@ -39,6 +39,7 @@ import services.stepper.FlowDefinitionDTO;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
 import services.stepper.other.ContinuationMappingDTO;
+import services.stepper.other.InitialInputValuesDTO;
 import services.user.ContinuationConversionDTO;
 import util.ClientConstants;
 import util.http.ClientHttpClientUtil;
@@ -528,6 +529,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             });
             if (!existInInitialValue(optional.getKey())) {
                 if (optional.getKey().equals("METHOD")){
+                    //first of all add the default value "GET" if there is no action on this data
+                    addGetToList();
                     ToggleGroup toggleGroup = new ToggleGroup();
                     HBox hBoxToToggel = new HBox();
                     textField.setVisible(false);
@@ -582,6 +585,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 freeInputsTemp.add(new Pair<>(optional.getKey(),initData));
             }
         }
+    }
+    private void addGetToList(){
+        freeInputsTemp.add(new Pair<>("METHOD","GET"));
     }
     private void mandatoryHandler(List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs) {
         createListOfFreeInputFromFileName();
@@ -690,21 +696,20 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             addButton.setStyle(style1);
         });
     }
-
     private String getExistInInitialValue(String nameToSearchInKey){
         for (InitialInputValues initialInputValues: currentFlow.getORIGINALInitialInputValuesData()){
             if (initialInputValues.getInputName().equals(nameToSearchInKey))
                 return initialInputValues.getInitialValue();
         }
-//        todo 4
         return null;
     }
     private boolean existInInitialValue(String nameToSearchInKey){
-//        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
+        for (InitialInputValuesDTO initialInputValues: currentFlow.getInitialInputValuesData()){
+            if(initialInputValues.getName().equals(nameToSearchInKey))
+                return true;
 //            if (initialInputValues.getInputName().equals(nameToSearchInKey))
 //                return true;
-//        }
-        //todo 5 same as 4
+        }
         return false;
     }
     @FXML
