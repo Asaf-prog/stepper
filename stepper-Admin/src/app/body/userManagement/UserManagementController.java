@@ -43,7 +43,6 @@ import util.http.HttpClientUtil;
 import javax.swing.*;
 
 public class UserManagementController implements bodyControllerDefinition {
-
     @FXML
     private ListView<Label> executionsList;
     @FXML
@@ -52,20 +51,16 @@ public class UserManagementController implements bodyControllerDefinition {
     private ResourceBundle resources;
     @FXML
     private Label just4Style;
-
     @FXML
     private URL location;
-
     @FXML
     private Pane userInformationPane;
     String currentUser=null;
-
     @FXML
     private VBox assignedRolesVbox;
     @FXML
     private HBox hbox4list;
     private ListSelectionView<String> roleManagement;
-
     @FXML
     private VBox assignableRolesVbox;
 
@@ -123,7 +118,6 @@ public class UserManagementController implements bodyControllerDefinition {
         timer.start();
 
     }
-
     private void setUpdater() {
         //send req if the users has changed if so to update the list
         Request request = new Request.Builder()
@@ -136,7 +130,6 @@ public class UserManagementController implements bodyControllerDefinition {
                 System.out.println("failed to update user roles");
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
@@ -148,7 +141,6 @@ public class UserManagementController implements bodyControllerDefinition {
                             });
                     return;
                 }
-
                 String res = response.body().string();
                 try{
                 boolean isUpToDate = gson.fromJson(res, Boolean.class);
@@ -165,10 +157,8 @@ public class UserManagementController implements bodyControllerDefinition {
                     //do nothing
                 }
             }
-
         });
     }
-
     private void setSave() {
         saveChanges.setOnMouseEntered(event -> {
             style=saveChanges.getStyle();
@@ -189,21 +179,6 @@ public class UserManagementController implements bodyControllerDefinition {
             //todo check if manager in servlet if so cant change roles unless the change is change the manager role:(
 
             Boolean isManager = this.isManager.isSelected();
-//            if (isManager.booleanValue()==true){
-//                Tooltip tooltip = new Tooltip("Manager can't change roles");
-//                tooltip.setStyle("-fx-background-color: #0d7277; -fx-text-fill: white; -fx-font-size: 15px;");
-//
-//                // Assuming 'yourButton' represents the button where you want to show the tooltip.
-//                Tooltip.install(saveChanges, tooltip);
-//
-//                // Use PauseTransition to hide the tooltip after 1 second
-//                PauseTransition pause = new PauseTransition(Duration.seconds(1));
-//                pause.setOnFinished(event2 -> Tooltip.uninstall(saveChanges, tooltip));
-//                pause.play();
-//
-//                return;
-//            }
-
             Request request = new Request.Builder()
                     .url(Constants.UPDATE_USER_ROLES)//and isManager
                     .post(body)
@@ -227,7 +202,6 @@ public class UserManagementController implements bodyControllerDefinition {
                     if (response.isSuccessful()) {
                         Platform.runLater(() -> {
                             updateAccordingToUserDef(response.header("username"));
-
                         });
                     } else {
                         Platform.runLater(() -> {
@@ -247,7 +221,6 @@ public class UserManagementController implements bodyControllerDefinition {
                     System.out.println("failed to get users list");
                     e.printStackTrace();
                 }
-
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     if (response.code()!=200){
@@ -257,7 +230,6 @@ public class UserManagementController implements bodyControllerDefinition {
                                 usersList.getItems().clear();
                             });
                         return;
-
                     }
                     String usersJson = response.body().string();
                     response.close();
@@ -267,12 +239,10 @@ public class UserManagementController implements bodyControllerDefinition {
                     if (response.isSuccessful()) {
                         List<StepperUser> users = gson.fromJson(usersJson, new TypeToken<List<StepperUser>>() {
                         }.getType());
-
                         Platform.runLater(() -> {
                             DeltaUpdate(users);
                             currentUsers=users;
                         });
-
                     } else {
                         Platform.runLater(() -> {
                             JOptionPane.showMessageDialog(null, "Failed to get users list");
@@ -281,7 +251,6 @@ public class UserManagementController implements bodyControllerDefinition {
                 }
             });
         }
-
     private void DeltaUpdate(List<StepperUser> users) {
         List<String> newUsers = users.stream().map(StepperUser::getUsername).collect(Collectors.toList());
         List<String> oldUsers;
@@ -300,13 +269,10 @@ public class UserManagementController implements bodyControllerDefinition {
             //check if something is selected
             group=new ToggleGroup();
             for (RadioButton button:usersList.getItems()) {
-
                 if (oldUsers.contains(button.getText()))
                     button.setToggleGroup(group);
             }
-
             //add old users to toggle
-
 
             for (String user : delta) {
                 RadioButton button = new RadioButton(user);
@@ -325,9 +291,6 @@ public class UserManagementController implements bodyControllerDefinition {
                             currentStepperUser = stepperUser;
                             setIsManager(stepperUser);
                             button.setStyle(finalButtonStyle);
-
-
-
                         });
                 Platform.runLater(() -> {
                     usersList.getItems().add(button);
@@ -343,7 +306,6 @@ public class UserManagementController implements bodyControllerDefinition {
             });
         }
     }
-
     private String GetSelectedName(ListView<RadioButton> usersList) {
         RadioButton selected = usersList.getItems().stream().filter(e -> e.isSelected()).findFirst().orElse(null);
         if (selected != null) {
@@ -351,7 +313,6 @@ public class UserManagementController implements bodyControllerDefinition {
         }
         return null;
     }
-
     private List<String> getUsers() {
         Request request = new Request.Builder()
                 .url(Constants.USERS_LIST)
@@ -362,7 +323,6 @@ public class UserManagementController implements bodyControllerDefinition {
                 System.out.println("failed to get users list");
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String usersJson = response.body().string();
@@ -375,9 +335,6 @@ public class UserManagementController implements bodyControllerDefinition {
                     Platform.runLater(() -> {
                         updateUserList(users);
                     });
-
-
-
                 } else {
                     Platform.runLater(() -> {
                         JOptionPane.showMessageDialog(null, "Failed to get users list");
@@ -398,15 +355,11 @@ public class UserManagementController implements bodyControllerDefinition {
                 System.out.println("failed to get users list");
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String usersJson = response.body().string();
                 response.close();
-
-
                 //only if success
-
                 if (response.isSuccessful()) {
                     List<StepperUser> users = gson.fromJson(usersJson, new TypeToken<List<StepperUser>>() {
                     }.getType());
@@ -417,13 +370,9 @@ public class UserManagementController implements bodyControllerDefinition {
                     });
                 }
             }
-
         });
-
         return null;
     }
-
-
     private void asserts() {
         assert userInformationPane != null : "fx:id=\"userInformationPane\" was not injected: check your FXML file 'userManagement.fxml'.";
         assert assignedRolesVbox != null : "fx:id=\"assignedRolesVbox\" was not injected: check your FXML file 'userManagement.fxml'.";
@@ -481,7 +430,6 @@ public class UserManagementController implements bodyControllerDefinition {
 
                         );
                     }
-
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         if (response.code() != 200) {
@@ -524,11 +472,8 @@ public class UserManagementController implements bodyControllerDefinition {
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
                         System.out.println("Something went wrong: " + e.getMessage())
-
                 );
-
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 List<String>allRoles=getRolesFromResponse(response);
@@ -550,9 +495,7 @@ public class UserManagementController implements bodyControllerDefinition {
                     hbox4list.getChildren().clear();
                     hbox4list.getChildren().add(roleManagement);
                     roleManagement.setPrefWidth(hbox4list.getPrefWidth()-10);
-//                    roleManagement.setSourceHeader(label);
-//                    roleManagement.setTargetHeader(label2);
-                    roleManagement.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
+                  roleManagement.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
                     roleManagement.setStyle("-fx-font-size: 14px; -fx-font-family: 'Segoe UI Semibold'; -fx-pref-width: 900;");
 
                     // Optionally, you can listen for changes in the selections and update the assignedRoles list accordingly
@@ -564,8 +507,6 @@ public class UserManagementController implements bodyControllerDefinition {
             }
         });
     }
-
-
     private List<String> getRolesFromResponse(Response response) throws IOException {
         ResponseBody responseBody = response.body();
         if (responseBody != null) {
@@ -576,7 +517,6 @@ public class UserManagementController implements bodyControllerDefinition {
         }
         return null;
     }
-
 
     private void handleRespDef(@NotNull Response response) throws IOException {
         ResponseBody responseBody = response.body();
@@ -591,25 +531,18 @@ public class UserManagementController implements bodyControllerDefinition {
                     continue;
                 else{
                     flowsList.getItems().add(flow.getName());
-
-
                 }
             }
         }
 
-
-
     }//todo all need to be replaced with StepperUser
-
     private void updateUserList(List<StepperUser> users) {
         Toggle picked=group.getSelectedToggle();
         group.getToggles().clear();
         group=new ToggleGroup();
         usersList.getItems().clear();
-
         if (users==null)
             return;
-
         for (StepperUser user : users) {
             RadioButton button = new RadioButton(user.getUsername());
             button.getStyleClass().add("flowRadioButton");
@@ -632,7 +565,6 @@ public class UserManagementController implements bodyControllerDefinition {
 
         }
     }
-
     private void setIsManager(StepperUser user) {
         String username=user.getUsername();
         Request request = new Request.Builder()
@@ -644,11 +576,8 @@ public class UserManagementController implements bodyControllerDefinition {
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
                         System.out.println("Something went wrong: " + e.getMessage())
-
                 );
-
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String body = response.body().string();
@@ -689,7 +618,6 @@ public class UserManagementController implements bodyControllerDefinition {
 
                         );
                     }
-
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         if (response.code() != 200) {//because of redirect
@@ -715,8 +643,6 @@ public class UserManagementController implements bodyControllerDefinition {
                     }
                 });
             }
-
-
     private void handleRespExe(Response response) throws IOException {
         ResponseBody responseBody = response.body();
         executionsList.getItems().clear();
@@ -739,14 +665,12 @@ public class UserManagementController implements bodyControllerDefinition {
             }
         }
     }
-
     @Override
     public void onLeave() {
         if (timer!=null){
             timer.stop();
         }
     }
-
     @Override
     public void show() {
         initialize();
@@ -756,12 +680,10 @@ public class UserManagementController implements bodyControllerDefinition {
     public void setBodyController(bodyController body) {
         this.bodyController=body;
     }
-
     @Override
     public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
-
     @Override
     public void SetCurrentFlow(FlowDefinitionDTO flow) {
 

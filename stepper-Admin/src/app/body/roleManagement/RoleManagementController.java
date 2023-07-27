@@ -38,7 +38,6 @@ import util.http.HttpClientUtil;
 import javax.swing.*;
 
 public class RoleManagementController implements bodyControllerDefinition{
-
         @FXML
         private ListView<RadioButton> rolesList;
 
@@ -50,7 +49,6 @@ public class RoleManagementController implements bodyControllerDefinition{
 
         @FXML
         private ListView<String> usersList;
-
         @FXML
         private Label label;
 
@@ -63,7 +61,6 @@ public class RoleManagementController implements bodyControllerDefinition{
         @FXML
         private Button addRole;
         String style=null;
-
 
     private Gson gson = new Gson();
         private ListSelectionView<String> flowsManagement;
@@ -86,13 +83,11 @@ public class RoleManagementController implements bodyControllerDefinition{
             setNewRole();
 
         }
-
     private void setNewRole() {
         //add the role to the list
         addRole.setOnMouseClicked(event -> {
             showAddRoleDialog();
         });
-
     }
     private void showAddRoleDialog() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -143,7 +138,6 @@ public class RoleManagementController implements bodyControllerDefinition{
                 .url(Constants.ADD_ROLE)
                 .post(body)
                 .build();
-
         HttpClientUtil.runAsync(request, new Callback() {
 
             @Override
@@ -153,10 +147,7 @@ public class RoleManagementController implements bodyControllerDefinition{
                     updateRoles();
                 });
                 response.close();
-
-
             }
-
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
@@ -165,16 +156,11 @@ public class RoleManagementController implements bodyControllerDefinition{
 
             }
         });
-
-
     }
-
     private void setSave() {
         saveChanges.setOnMouseEntered(event -> {
             style=saveChanges.getStyle();
             saveChanges.setStyle(style+"-fx-background-color: #00ebf6;-fx-background-radius: 15;");
-
-
         });
         saveChanges.setOnMouseExited(event -> {
             saveChanges.setStyle(style);
@@ -185,7 +171,6 @@ public class RoleManagementController implements bodyControllerDefinition{
         addRole.setOnMouseEntered(event -> {
             style=addRole.getStyle();
             addRole.setStyle(style+"-fx-background-color: #00ebf6;-fx-background-radius: 15;");
-
 
         });
         addRole.setOnMouseClicked(event -> {
@@ -242,7 +227,6 @@ public class RoleManagementController implements bodyControllerDefinition{
                 System.out.println("failed to get roles list");
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String usersJson = response.body().string();
@@ -264,7 +248,6 @@ public class RoleManagementController implements bodyControllerDefinition{
             }
         });
     }
-
     private void updateRolesList() {
         rolesList.getItems().clear();
         ToggleGroup group = new ToggleGroup();
@@ -282,17 +265,14 @@ public class RoleManagementController implements bodyControllerDefinition{
             });
             rolesList.getItems().add(button);
             rolesList.getStylesheets().add(getClass().getResource("/app/management/style/lists.css").toExternalForm());
-
         }
     }
-
     private void updateDescription(String description) {
         Platform.runLater(() -> {
             roleDescription.setText(description);
             roleDescription.setWrapText(true);
         });
     }
-
     private void updateUsersList(RoleDTO role) {
         Request request = new Request.Builder()
                 .url(Constants.GET_USERS_FOR_ROLE)
@@ -331,7 +311,6 @@ public class RoleManagementController implements bodyControllerDefinition{
                 });
 
             }
-
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("failed to get users list");
@@ -378,9 +357,7 @@ public class RoleManagementController implements bodyControllerDefinition{
                         System.out.println("Something went wrong: " + e.getMessage())
 
                 );
-
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 List<String>allFlows=getFlowsFromResponse(response);
@@ -420,8 +397,6 @@ public class RoleManagementController implements bodyControllerDefinition{
             }
         });
     }
-
-
     private List<String> getFlowsFromResponse(Response response) throws IOException {
         ResponseBody responseBody = response.body();
         if (responseBody != null) {
