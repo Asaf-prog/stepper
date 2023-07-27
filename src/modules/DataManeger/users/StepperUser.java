@@ -71,7 +71,6 @@ public class StepperUser {
     public void setManager(boolean manager) {
         isManager = manager;
     }
-
     public void addFlowExecution(UUID uniqueId) {
         flowExecutionsIDs.add(uniqueId.toString());
     }

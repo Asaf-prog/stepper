@@ -17,7 +17,7 @@ public class GetAllRolesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //get dataManager from context
-        //if dataManager isnt null
+        //if dataManager is not null
         //get all roles from dataManager
         //add roles to response body
         DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");

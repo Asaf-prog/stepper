@@ -29,11 +29,9 @@ public class DataManager {
         roleManager = new RoleManager(stepperData.getFlows());
 
     }
-
     public DataManager() {
         stepperData = new Stepper();
        // this.userManager = new UserManager();
-
     }
 
     public RoleManager getRoleManager() {

@@ -1,6 +1,7 @@
 package ClientsApp.app.body.executeFlow;
 
 import ClientsApp.app.Client.Client;
+import ClientsApp.app.body.DataTransfer;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerExecuteFromHistory;
@@ -40,6 +41,7 @@ import services.stepper.FlowDefinitionDTO;
 import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
 import services.stepper.other.ContinuationMappingDTO;
+import services.user.ContinuationConversionDTO;
 import util.ClientConstants;
 import util.http.ClientHttpClientUtil;
 
@@ -90,6 +92,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     private List<String> fileName;// list of all the data definition that type of File
     private Gson gson = new Gson();
     private int indexOfLabel;
+    private DataTransfer transfer;
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
@@ -118,7 +121,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         assert continuationExe != null : "fx:id=\"continuationExe\" was not injected: check your FXML file 'executeFlowController.fxml'.";
         assert flowNameLabel != null : "fx:id=\"flowNameLabel\" was not injected: check your FXML file 'executeFlowController.fxml'.";
     }
-
     @Override
     public void onLeave() {
         for (Stage stage : stages) {
@@ -127,7 +129,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @Override
     public void show() {
-
         //get free inputs from server with init input
         //first of all, create a two list : mandatoryInputs and optionalInputs:
 
@@ -321,7 +322,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             if (lastMandatory.getKey().equals(nameToSearch) ) {
                 return true;
             }
-
         }
         return false;
     }
@@ -384,7 +384,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public FlowDefinitionDTO getCurrentFlow() {
         return currentFlow;
     }
-
     private boolean existInData(String nameOfDD) {
         for (Pair<String, DataDefinitionDeclarationDTO> run : currentOptionalFreeInput) {
             if (run.getKey().equals(nameOfDD))
@@ -400,7 +399,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     public void setCurrentFlowForContinuation(FlowDefinitionDTO flow) {
         currentFlow = flow;
     }
-
     @Override
     public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclarationDTO>> mandatory, List<Pair<String, DataDefinitionDeclarationDTO>> optional
             ,List<Pair<String, String>>mandatoryIn,
@@ -411,7 +409,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         freeInputsOptional = optionalIn;
         outputsOfLastFlow = outputs;
 //        this.lastFlow = lastFlow;
-        //todo remove when moving to server
     }
     private List<Pair<String, DataDefinitionDeclarationDTO>> getCurrentMandatoryFreeInput() {
         return currentMandatoryFreeInput;
@@ -646,10 +643,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                             ResponseBody responseBody = response.body();
                             if (responseBody != null) {
                                 String bodyRes = responseBody.string();
-                                System.out.println(bodyRes);
                                 List<String> ContinuationFromServlet = gson.fromJson(bodyRes, new TypeToken<List<String>>() {
                                 }.getType());
-
                                 Platform.runLater(() -> {
                                     if (!continuationVbox.getChildren().isEmpty()) {
                                         continuationVbox.getChildren().clear();
@@ -658,10 +653,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                                     ToggleGroup group = new ToggleGroup();
                                     for(String nameOfFlow : ContinuationFromServlet){
                                         RadioButton button = new RadioButton(nameOfFlow);
-                                        button.setStyle("-fx-text-fill: #9c3b3b");
+                                        button.setStyle("-fx-text-fill: #9c913b");
                                         button.setOnAction(e ->{
                                             try{
-                                                handleButtonActionForContinuation(nameOfFlow);
+                                                handleButtonActionForContinuation(nameOfFlow,currentFlow.getName());
                                             }catch (Exception ex){
                                                 System.out.println("collapse");
                                             }
@@ -673,58 +668,49 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                                     continuationVbox.setVisible(true);
                                     continuationLabel.setText("Continuation for " + currentFlow.getName());
                                 });
-
-                            } else {//code 422
-
                             }
                         }
                     }
                 }
         );
-//        continuationVbox.getChildren().clear();
-//        ToggleGroup group = new ToggleGroup();
-//        for (Continuation continuation : currentFlow.getContinuations()) {
-//            //RadioButton button = new RadioButton(continuation.getTargetFlow());
-//            //button.setStyle("-fx-text-fill: white");
-//            button.setOnAction(e -> {
-//                try {
-//                    handleButtonActionForContinuation(continuation.getTargetFlow());
-//                } catch (Exception ex) {
-//                    System.out.println("Basa10");
-//                }
-//            });
-//            button.setToggleGroup(group);
-//            continuationVbox.getChildren().add(button);
-//        }
-//        continuationVbox.setSpacing(10);
-//        continuationVbox.setVisible(true);
-//        continuationLabel.setText("Continuation for " + currentFlow.getName());
-
     }
-    private void handleButtonActionForContinuation(String nameOfTargetFlow) throws Exception {
-//        FlowDefinitionImpl targetFlow = getFlowByName(nameOfTargetFlow);
-//        if (targetFlow != null) {
-//            ///need to add the list of the output of the current step
-//            FlowExecution flowThatCurrentFinish = getFlowExecutionByName(currentFlow.getName());
-//            if (flowThatCurrentFinish != null){
-//                Map<String,Object> outputs = flowThatCurrentFinish.getAllExecutionOutputs();
-//                if (currentMandatoryFreeInput == null){
-//                    System.out.println("null");
-//                }
-//                if (currentOptionalFreeInput == null){
-//                    System.out.println("null");
-//                }
-//                setTheNewInputsThatTheUserSupply();
-//                //todo remove // before adding all this to server side
-//                //  body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
-//            }
-//            else
-//                throw new RuntimeException();
-//        }
-//        else
-//            throw new Exception("Target flow is null");
+    private void handleButtonActionForContinuation(String nameOfTargetFlow,String nameOfCurrentFlow) throws Exception {
+        //in this function we get the output of the last flow and update the target flow
+        String finalUrl = HttpUrl
+                .parse(ClientConstants.FLOW_OUTPUTS)
+                .newBuilder()
+                .addQueryParameter("flowName", nameOfCurrentFlow)
+                .addQueryParameter("targetFlowName", nameOfTargetFlow)
+                .build()
+                .toString();
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Platform.runLater(() -> {//general error
+                            String msg = "something wrong with the continuation ";
+                        });
+                    }
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.code() == 200) {
+                            ResponseBody responseBody = response.body();
+                            if (responseBody != null) {
+                                String bodyRes = responseBody.string();
+                                ContinuationConversionDTO data = gson.fromJson(bodyRes,ContinuationConversionDTO.class);
+                                DataTransfer transfer = new DataTransfer(data,nameOfCurrentFlow,nameOfTargetFlow);
+                                Platform.runLater(() -> {//general error
+                                    body.handlerContinuationFromServlet(transfer);
 
-        //todo need to get this information from servlet
+                                });
+
+                            }
+                        }
+                    }
+                });
     }
     private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow) {
         List<FlowDefinitionImpl> flows = stepperData.getFlows();
@@ -850,14 +836,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             //disable app until the user close the window
         } catch (IllegalStateException | IOException ex) {
             VerySecretCode();
-            //todo remove@!!!
             ex.printStackTrace();
         }
     }
     private void VerySecretCode() {
         // :)
     }
-
     private FlowExecution getLastFlowExecution() {
         if (stepperData == null)
             stepperData = DataManager.getData();
@@ -1150,26 +1134,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @FXML
     void ContinuationExecution(ActionEvent event) {
-        //body.getMVC_controller().setFreeInputs(freeInputsTemp);
-        //todo send to server the free inputs and run the flow
-        
-        // body.getMVC_controller().executeFlow(currentFlow);
-        if (currentFlow.getContinuations().size() != 0) {
-            continuation.setDisable(false);
-        }
-        FlowExecution lastFlowExecution = getLastFlowExecution();
+        body.getMVC_controller().setFreeInputs(freeInputsTemp);
+        currentFlow.setUserInputs(freeInputsTemp);
+         body.getMVC_controller().executeFlow(currentFlow);
         showDetails.setVisible(true);
-        // enablesDetails();
+         enablesDetails();
         showDetails.setDisable(false);
-
-        lastFlowExecution.isDoneProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                Platform.runLater(() -> {
-                    popupDetails();
-                });
-            }
-        });
     }
     @Override
     public void setBodyControllerContinuation(bodyController body){
@@ -1237,5 +1207,115 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     @Override
     public void setClient(Client client){
         this.client = client;
+    }
+    @Override
+    public void showForContinuationServlet(){
+
+            freeInputsTemp = new ArrayList<>();
+            continuationExe.setVisible(true);
+            continuationExe.setDisable(true);
+            startExecute.setVisible(false);
+            flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());//ok
+        List<Pair<String, DataDefinitionDeclarationDTO>> freeInputs= currentFlow.getFlowFreeInputs();
+        List<Pair<String,String>> dataThatSupply = transfer.getDataListFromServlet().getSupplyData();
+        List<String> needToSupply = transfer.getDataListFromServlet().getNeedToSupplyData();
+
+        List<Pair<String,DataDefinitionDeclarationDTO>> mandatoryInputs = new ArrayList<>();
+        for (Pair<String, DataDefinitionDeclarationDTO> freeInput : freeInputs){
+            if (freeInput.getValue().isMandatory())
+                mandatoryInputs.add(freeInput);
+        }
+        currentMandatoryFreeInput = mandatoryInputs;
+        // supply data
+        for (Pair<String,String> dataSupply : dataThatSupply){
+            for (Pair<String, DataDefinitionDeclarationDTO> freeInput : freeInputs){
+                if (dataSupply.getKey().equals(freeInput.getKey()) ){
+                    if ( freeInput.getValue().isMandatory()){
+                        Label label = new Label(dataSupply.getKey());
+                        label.getStylesheets().add("app/management/style/darkTheme.css");
+                        label.getStyleClass().add("inputLabel");
+                        label.setStyle("-fx-text-fill: #a89d1f");
+                        HBox nameAndAddOrEdit = new HBox();
+                        nameAndAddOrEdit.getChildren().add(label);
+                        Label data = new Label(dataSupply.getValue());
+                        data.getStylesheets().add("app/management/style/darkTheme.css");
+                        data.getStyleClass().add("inputLabel");
+                        data.setStyle("-fx-text-fill: #a89d1f");
+                        nameAndAddOrEdit.getChildren().add(data);
+                        nameAndAddOrEdit.setSpacing(5);
+                        mandatoryList.getChildren().add(nameAndAddOrEdit);
+                        freeInputsTemp.add(new Pair<>(dataSupply.getKey(),dataSupply.getValue()));
+                    }
+                    else {//optional
+                        Label label = new Label(dataSupply.getKey());
+                        label.getStylesheets().add("app/management/style/darkTheme.css");
+                        label.getStyleClass().add("inputLabel");
+                        label.setStyle("-fx-text-fill: #a89d1f");
+                        HBox nameAndAddOrEdit = new HBox();
+                        nameAndAddOrEdit.getChildren().add(label);
+                        Label data = new Label(dataSupply.getValue());
+                        data.getStylesheets().add("app/management/style/darkTheme.css");
+                        data.getStyleClass().add("inputLabel");
+                        data.setStyle("-fx-text-fill: #a89d1f");
+                        nameAndAddOrEdit.getChildren().add(data);
+                        nameAndAddOrEdit.setSpacing(5);
+                        optionalList.getChildren().add(nameAndAddOrEdit);
+                        freeInputsTemp.add(new Pair<>(dataSupply.getKey(),dataSupply.getValue()));
+                    }
+                }
+            }
+        }
+        mandatoryList.setSpacing(10);
+
+        for (String getDataFromUser : needToSupply){
+            for (Pair<String, DataDefinitionDeclarationDTO> freeInput : freeInputs){
+               if (getDataFromUser.equals(freeInput.getKey())){
+                   if (freeInput.getValue().isMandatory()){
+                       TextField textField = new TextField();
+                       HBox nameAndAddOrEdit = new HBox();
+                       textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
+                       textField.setPromptText("Enter here");
+                       Button addButton = new Button("Save");
+                       addButton.getStylesheets().add("app/management/style/darkTheme.css");
+                       addButton.getStyleClass().add("inputButton");
+                       setButtonStyle(addButton);
+                       addButton.setOnAction(event -> handleButtonAction(addButton, textField, textField.getText(),
+                               freeInput.getKey(), freeInput.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,false));
+                       nameAndAddOrEdit.getChildren().add(textField);
+                       nameAndAddOrEdit.getChildren().add(addButton);
+                       nameAndAddOrEdit.setSpacing(5);
+                       mandatoryList.getChildren().add(nameAndAddOrEdit);
+
+                   }else {// is optional
+                       TextField textField = new TextField();
+                       HBox nameAndAddOrEdit = new HBox();
+                       textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
+                       textField.setPromptText("Enter here");
+                       Button addButton = new Button("Save");
+                       addButton.getStylesheets().add("app/management/style/darkTheme.css");
+                       addButton.getStyleClass().add("inputButton");
+                       setButtonStyle(addButton);
+                       addButton.setOnAction(event -> handleButtonAction(addButton, textField, textField.getText(),
+                               freeInput.getKey(), freeInput.getValue().getDataDefinition().getTypeName(), nameAndAddOrEdit,true));
+                       nameAndAddOrEdit.getChildren().add(textField);
+                       nameAndAddOrEdit.getChildren().add(addButton);
+                       nameAndAddOrEdit.setSpacing(5);
+                       optionalList.getChildren().add(nameAndAddOrEdit);
+                   }
+               }
+            }
+        }
+        optionalList.setSpacing(10);
+        if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size() || mandatoryInputs.size() == freeInputsTemp.size())
+            continuationExe.setDisable(false);
+        mandatoryList.setSpacing(10);
+    }
+    @Override
+    public  void setLastFlowDTO(FlowDefinitionDTO lastFlow){
+            this.lastFlow = lastFlow;
+    }
+    @Override
+    public void setDataTransfer(DataTransfer transfer){
+        this.transfer = transfer;
     }
 }

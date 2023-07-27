@@ -23,7 +23,6 @@ import java.util.List;
 @WebServlet(name = "check Continuation",urlPatterns = "/Client/Continuation")
 @MultipartConfig
 public class continuationServlet extends HttpServlet {
-
     private static final Gson gson = new Gson();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
