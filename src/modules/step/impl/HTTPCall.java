@@ -37,8 +37,11 @@ public class HTTPCall extends AbstractStepDefinition {
         String Resource = context.getDataValue("RESOURCE",String.class);
         String Address = context.getDataValue("ADDRESS",String.class);
 
-        //Protocol Protocol = context.getDataValue("PROTOCOL",Protocol.class);
-        String Protocol ="https";
+        String Protocol = context.getDataValue("PROTOCOL",String.class);
+        //String Protocol ="https";
+            if (Protocol == null){
+                Protocol ="https";
+            }
         Optional<MethodEnum> Method = Optional.ofNullable(context.getDataValue("METHOD",MethodEnum.class));
         Optional<JsonData> Body = Optional.ofNullable(context.getDataValue("BODY", JsonData.class));
 

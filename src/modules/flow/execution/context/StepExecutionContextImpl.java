@@ -1,6 +1,7 @@
 package modules.flow.execution.context;
 import javafx.util.Pair;
 import modules.dataDefinition.impl.enumerator.Enumerator;
+import modules.dataDefinition.impl.enumerator.Protocol;
 import modules.mappings.CustomMapping;
 import modules.mappings.FlowLevelAlias;
 import modules.flow.definition.api.StepUsageDeclaration;
@@ -65,10 +66,9 @@ StepExecutionContextImpl implements StepExecutionContext {
                 if (val != null && val.getClass().equals(dataType)) {
                     dataValues.put(userInput.getKey(), val);//add to context by final name and input value
                 }
-//                else{
-//                    if (!userInput.getKey().equals("OPERATION"))//todo remove  this after handling operation
-//                        throw new MenuException(MenuExceptionItems.EMPTY," User input is not valid for input for " + userInput.getKey() + " with value " + userInput.getValue());
-//                }
+                if (userInput.getKey().equals("PROTOCOL")){
+                    dataValues.put(userInput.getKey(), userInput.getValue());
+                }
             }
         }
     }
@@ -96,8 +96,9 @@ StepExecutionContextImpl implements StepExecutionContext {
         if (dataType == Enumerator.class) {
             return(new Enumerator(value));
         }
-
-
+//        if (dataType == Protocol.class) {
+//            return(new Protocol(value));
+//        }
         return 0;
     }
 
@@ -124,6 +125,8 @@ StepExecutionContextImpl implements StepExecutionContext {
                     if (expectedDataType.isAssignableFrom(aValue.get().getClass()))
                         return expectedDataType.cast(aValue.get());
             }
+            if (dataName.equals("PROTOCOL"))
+                return expectedDataType.cast(dataValues.get(dataName));
             return null;
     }
         private String getCustomMapping (String nameAfterAliasing) {//check if is on custom mapping and return the source data name

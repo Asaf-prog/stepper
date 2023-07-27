@@ -34,7 +34,7 @@ public class ExecuteFlowServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //get dataManager from context
         DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");
-        //if dataManager isnt null
+        //if dataManager is not null
         if (dataManager == null) {
             resp.setStatus(400);
             return;

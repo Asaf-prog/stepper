@@ -85,9 +85,6 @@ public class MVC_controller {
                 if (response.code() == 200) {
                     System.out.println("success");
 
-//                    popupDetails();
-
-                    //setProgressBar(task);
                     header.setDisableOnExecutionsHistory();
                     Timer timer = new Timer();
                     String id=response.header("flowId");
@@ -160,7 +157,6 @@ public class MVC_controller {
             private void popupDetails(String id) {
                 FXMLLoader loader = new FXMLLoader(getClass()
                         .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
-               // loader.setController(new ExecutionsDetails(id));
                 loader.setControllerFactory(controllerClass -> {
                         return new ExecutionsDetails(id);
                 });
@@ -175,15 +171,12 @@ public class MVC_controller {
                     //disable app until the user close the window
                 } catch (IllegalStateException | IOException ex) {
                     VerySecretCode();
-                    //todo remove@!!!
-                    ex.printStackTrace();
                 }
             }
             private void VerySecretCode() {
                 String secretcode = "skvmbeoivnreonvoirvrev";
                 Compile(secretcode);
             }
-
             private void Compile(String secretcode) {
                 //come this far ... eh?
             }
@@ -196,7 +189,6 @@ public class MVC_controller {
                     Label label = header.getNextLabel(nextIndex);
                     label.setText(id.substring(id.length()-4,id.length()));
                     header.addProgress(progressBar, String.valueOf(label),nextIndex);
-
                 });
             }
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
