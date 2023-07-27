@@ -1,13 +1,14 @@
 package modules.dataDefinition.impl.json;
+
 import com.google.gson.*;
+
 import java.io.Serializable;
-import static com.google.gson.JsonParser.*;
+
 public class JsonData  implements Serializable{
     private JsonElement jsonObject;
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
     public JsonData(String json) throws JsonSyntaxException {
-        //jsonObject = JsonParser.parseString(json).getAsJsonObject();
-         jsonObject = gson.fromJson(json, JsonObject.class);
+        Object o = gson.fromJson(json,Object.class);
         jsonObject = JsonParser.parseString(json);
     }
     @Override
