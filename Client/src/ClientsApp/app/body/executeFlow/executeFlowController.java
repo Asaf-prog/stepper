@@ -1130,7 +1130,16 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     }
     public void showDetails(ActionEvent actionEvent){
-        showExecutionDetails(body.getMVC_controller().getLastExecutionId());
+        if (body.getMVC_controller().getLastExecutionId() != null) {
+            showExecutionDetails(body.getMVC_controller().getLastExecutionId());
+        }else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("No execution was made");
+            alert.showAndWait();
+        }
     }
     @FXML
     void ContinuationExecution(ActionEvent event) {

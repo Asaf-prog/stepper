@@ -1,8 +1,8 @@
 package services.stepper;
 import com.google.gson.annotations.Expose;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.util.Pair;
-import org.intellij.lang.annotations.Flow;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,9 +22,28 @@ public class FlowExecutionDTO implements Serializable {
     private List<Pair<String, String>> userInputs;
     private String executedBy;
     @Expose(deserialize = false)
+    private transient SimpleDoubleProperty progress = new SimpleDoubleProperty(0.0);
+    @Expose(deserialize = false)
     public transient SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
     // Constructors, getters, and setters
+
+
+    public double getProgress() {
+        return progress.get();
+    }
+
+    public void setProgress(double progress) {
+        this.progress.set(progress);
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone.set(isDone);
+    }
+
+    public SimpleDoubleProperty progressProperty() {
+        return progress;
+    }
 
     public UUID getUniqueId() {
         return uniqueId;
@@ -142,6 +161,10 @@ public class FlowExecutionDTO implements Serializable {
     }
     public void setValIsDone(boolean done) {
         this.isDone.setValue(done);
+    }
+
+    public SimpleBooleanProperty isDoneProperty() {
+        return isDone;
     }
 }
 

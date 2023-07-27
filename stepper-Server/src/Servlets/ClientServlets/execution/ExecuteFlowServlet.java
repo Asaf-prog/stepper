@@ -104,7 +104,7 @@ public class ExecuteFlowServlet extends HttpServlet {
         flow.setUserInputs(freeInputsList);
 
 
-        if (userHavePremission(flow,username,dataManager)) {
+        if (userHavePermission(flow,username,dataManager)) {
         FlowExecution flowExecution = new FlowExecution(flow,username);
         UserManager userManager = (UserManager) getServletContext().getAttribute("userManager");
 
@@ -115,7 +115,7 @@ public class ExecuteFlowServlet extends HttpServlet {
             return null;
     }
 
-    private boolean userHavePremission(FlowDefinitionImpl flow, String username, DataManager dataManager) {
+    private boolean userHavePermission(FlowDefinitionImpl flow, String username, DataManager dataManager) {
         UserManager userManager = (UserManager) getServletContext().getAttribute("userManager");
         StepperUser user = userManager.getUser(username);
         List<String> userRoles = user.getRoles();

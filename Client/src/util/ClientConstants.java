@@ -43,6 +43,7 @@ public class ClientConstants {
     public static final String VALIDATE_INPUT =FULL_SERVER_PATH + "/Client/validate";
     public static final String CHECK_CONTINUATION = FULL_SERVER_PATH + "/Client/Continuation";
     public static final String FLOW_ENDED =FULL_SERVER_PATH+ "/Client/flowEnded";
+    public static final String FLOW_STATUS_CHECK = FULL_SERVER_PATH+ "/Client/status-check";
     public static final String FLOW_OUTPUTS =FULL_SERVER_PATH+ "/Client/CreateContinuation";
     public static final String FILE_NAME = FULL_SERVER_PATH+"/Client/getFileTypeName";
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";

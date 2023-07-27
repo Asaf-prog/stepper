@@ -7,6 +7,7 @@ import ClientsApp.app.header.headerController;
 import ClientsApp.app.management.mainController;
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -121,34 +122,42 @@ public class MVC_controller {
     private boolean FlowEnded(String id, Timer timer) {
         //send to server the request
         Request request = new Request.Builder()
-                .url(ClientConstants.FLOW_ENDED)
+                .url(ClientConstants.FLOW_STATUS_CHECK)
                 .get()
                 .addHeader("flowId", id)
                 .build();
         ClientHttpClientUtil.runAsync(request, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.out.println("fail");
+               // System.out.println("fail");
 
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
+
                     Platform.runLater(() -> {
                         timer.cancel();
                         //open the option to continuation
                         //body.setContinuationButton();
+                        lastExeId = id;
                         popupDetails(id);
-                        lastExeId=id;
-
                     });
                     response.close();
 
-                } else {
+                } if (response.code() ==401) {
+
                     //probably processing
+                    //update process
+                    //String progress = response.header("progress");
+                    Double progress = Double.parseDouble(response.header("progress"));
+                    setProgressBar(id,progress);
                 }
             }
+        });
+        return false;
+    }
 
             private void popupDetails(String id) {
                 FXMLLoader loader = new FXMLLoader(getClass()
@@ -180,28 +189,26 @@ public class MVC_controller {
             private void Compile(String secretcode) {
                 //come this far ... eh?
             }
-            private void setProgressBar(ExecutionTask task) {
+            private void setProgressBar(String id, Double progress) {
                 int nextIndex = header.getNextFreeProgress();
                 ProgressBar progressBar = header.getNextProgressBar(nextIndex);
                 progressBar.setStyle("-fx-accent: #0049ff;-fx-border-radius: 25;");
-                progressBar.progressProperty().bind(task.getProgress());
-                task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                    if (newValue) {
-                        progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
-                    }
-                });
-                task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                    if (newValue) {
-                        progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
-                    }
-                });
+//                progressBar.progressProperty().bind(progress);
+//                task.isFailedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+//                    if (newValue) {
+//                        progressBar.setStyle("-fx-accent: #ff2929;-fx-border-radius: 25;");
+//                    }
+//                });
+//                task.isSuccessProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+//                    if (newValue) {
+//                        progressBar.setStyle("-fx-accent: #00ff00;-fx-border-radius: 25;");
+//                    }
+//                });
                 Label label = header.getNextLabel(nextIndex);
-                label.setText(task.get4DigId());
-                // header.addProgress(progressBar,label,nextIndex);
+                label.setText(id.substring(id.length()-4,id.length()));
+                 header.addProgress(progressBar,label,nextIndex);
             }
-        });
-        return false;
-    }
+
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;
     }
