@@ -19,8 +19,9 @@
         <element id="file-copy" path="$PROJECT_DIR$/stepper-Admin/src/META-INF/MANIFEST.MF" />
       </element>
       <element id="artifact" artifact-name="stepper-server" />
-      <element id="artifact" artifact-name="stepper-DTO" />
       <element id="artifact" artifact-name="stepper-Engine" />
+      <element id="module-output" name="stepper-DTO" />
+      <element id="library" level="project" name="controlsfx-8.40.14" />
     </root>
   </artifact>
 </component>

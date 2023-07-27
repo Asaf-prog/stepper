@@ -1,27 +1,21 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" build-on-make="true" name="stepper-server">
+  <artifact type="war" name="stepper_server">
     <output-path>$PROJECT_DIR$/out/artifacts/stepper_server</output-path>
-    <root id="root">
+    <root id="archive" name="stepper_server.war">
+      <element id="artifact" artifact-name="stepper-server" />
+      <element id="library" level="project" name="gson-2.8" />
+      <element id="library" level="project" name="controlsfx-8.40.14" />
+      <element id="library" level="project" name="jayson path" />
+      <element id="library" level="project" name="gson-2.8.8" />
+      <element id="library" level="project" name="okHttp" />
+      <element id="artifact" artifact-name="stepper-Engine" />
       <element id="directory" name="WEB-INF">
-        <element id="directory" name="classes">
-          <element id="module-output" name="stepper-Server" />
-          <element id="module-output" name="stepper-Client" />
-          <element id="module-output" name="stepper_GUI" />
-          <element id="module-output" name="stepper-Engine" />
-          <element id="module-output" name="stepper-UI" />
-          <element id="module-output" name="stepper-Admin" />
-          <element id="module-output" name="stepper-DTO" />
-        </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="okHttp" />
-          <element id="library" level="application_server_libraries" name="Tomcat 10.0.11" />
-          <element id="library" level="project" name="jayson path" />
-          <element id="library" level="project" name="gson-2.8.8" />
           <element id="library" level="project" name="controlsfx-8.40.14" />
+          <element id="library" level="project" name="gson-2.8.8" />
         </element>
       </element>
-      <element id="library" level="project" name="okHttp" />
-      <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />
+      <element id="module-output" name="stepper-DTO" />
     </root>
   </artifact>
 </component>

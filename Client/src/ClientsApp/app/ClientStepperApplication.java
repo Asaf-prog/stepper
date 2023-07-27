@@ -32,6 +32,7 @@ public class ClientStepperApplication extends Application {
         primaryStage.setTitle("Stepper Application");
         setLoading(primaryStage);
 
+
     }
 
     private void setLoading(Stage primaryStage) {
@@ -136,6 +137,7 @@ public class ClientStepperApplication extends Application {
         } catch (IOException e) {
            Properties  p = new Properties();
            p.setProperty("preload.time", "2000");
+            System.out.println("");
            return p ;
         }
         return config;
