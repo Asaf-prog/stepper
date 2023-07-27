@@ -1,6 +1,5 @@
 package modules.flow.execution;
 
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.util.Pair;
@@ -44,6 +43,18 @@ public class FlowExecution implements Serializable {//This class accumulates all
         in.defaultReadObject();
         isDone = new SimpleBooleanProperty(in.readBoolean());
     }
+
+    public void setProgress(double progress) {
+        this.progress.set(progress);
+    }
+
+    public double getProgress() {
+        return progress.get();
+    }
+    public SimpleDoubleProperty progressProperty() {
+        return progress;
+    }
+
     public List<Pair<String, String>> getUserInputs() {
         return userInputs;
     }
@@ -234,12 +245,16 @@ public class FlowExecution implements Serializable {//This class accumulates all
         isDone.setValue(true);
     }
 
-    public Observable isDoneProperty() {
+    public SimpleBooleanProperty isDoneProperty() {
         return isDone;
     }
 
     public boolean isDone() {
-        return isDone.getValue();
+        if (isDone == null)
+            return false;
+        if (isDone.get() == true)
+            return true;
+        return false;
     }
 }
 

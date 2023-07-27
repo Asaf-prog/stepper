@@ -26,6 +26,7 @@ public class Mapper {
         stepperDTO.setTPSize(stepper.getTPSize());
         stepperDTO.setXmlPath(stepper.getXmlPath());
 
+
         // Copy flowExecutions
         List<FlowExecutionDTO> flowExecutionDTOs = new ArrayList<>();
         for (FlowExecution flowExecution : stepper.getFlowExecutions()) {
@@ -54,6 +55,12 @@ public class Mapper {
         res.setAllExecutionOutputs(flowExecution.getAllExecutionOutputs());
         res.setExecutedBy(flowExecution.getOwner());
         res.setIsDone(flowExecution.isDone);
+        res.setProgress(flowExecution.getProgress());
+
+        //bind them
+       // res.isDoneProperty().bind(flowExecution.isDoneProperty());
+      //  res.progressProperty().bind(flowExecution.progressProperty());
+
 
         long time=flowExecution.getTotalTime().toMillis();
         res.setTotalTime(String.valueOf(time));

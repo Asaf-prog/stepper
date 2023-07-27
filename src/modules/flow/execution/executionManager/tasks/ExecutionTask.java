@@ -31,6 +31,10 @@ public class ExecutionTask implements Runnable , Serializable {
     @Override
     public void run() {
         try {
+            //bind flowExecution progress to task progress
+            flowExecution.progressProperty().addListener((observable, oldValue, newValue) -> {
+                progress.set(newValue.doubleValue());
+            });
             fLowExecutor.executeFlow(flowExecution , progress);
             if(flowExecution.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE))
                 isFailed.set(true);

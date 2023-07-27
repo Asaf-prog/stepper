@@ -13,6 +13,7 @@
           <option value="roleName" />
           <option value="url" />
           <option value="errorMsg" />
+          <option value="progress" />
         </set>
       </option>
     </inspection_tool>

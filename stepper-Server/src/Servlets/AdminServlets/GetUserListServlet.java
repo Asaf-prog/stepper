@@ -22,6 +22,7 @@ public class GetUserListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         //System.out.println("get user list servlet...");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");

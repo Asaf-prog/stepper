@@ -709,4 +709,25 @@ public class headerController {
     }
 
 
+    public List<String> getCurrentRoles() {
+        String roles = myRoles.getText();
+        if (roles.length() > 1) {
+            return new ArrayList<>();
+        }
+        String[] rolesArray = roles.split(",");
+        List<String> rolesList = new ArrayList<>();
+        for (String role : rolesArray) {
+            rolesList.add(role);
+        }
+        return rolesList;
+    }
+
+    public void setCurrentRoles(List<String> roles) {
+        String rolesString = "";
+        for (String role : roles) {
+            rolesString += role + " ,";
+        }
+        rolesString = rolesString.substring(0, rolesString.length() - 2);
+        myRoles.setText(rolesString);
+    }
 }

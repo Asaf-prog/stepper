@@ -47,7 +47,12 @@ public class UserManager {
         }
 
         public boolean isUserExists(String username) {
-            return this.usersSet.contains(username);
+            for (StepperUser user : usersSet) {
+                if (user.getUsername().equals(username)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
 

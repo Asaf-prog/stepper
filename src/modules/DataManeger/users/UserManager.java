@@ -31,7 +31,12 @@ public class UserManager {
     }
 
     public boolean isUserExists(String username) {
-        return users.contains(username);
+        for(StepperUser user : users) {
+            if(user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<String> getRolesForUser(String username) {

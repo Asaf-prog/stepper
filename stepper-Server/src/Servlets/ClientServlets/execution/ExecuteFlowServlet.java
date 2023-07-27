@@ -12,14 +12,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import javafx.util.Pair;
 import mapper.Mapper;
 import modules.DataManeger.DataManager;
+import modules.DataManeger.users.StepperUser;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import modules.flow.execution.FlowExecution;
 import modules.flow.execution.executionManager.ExecutionManager;
 import modules.flow.execution.executionManager.tasks.ExecutionTask;
 import modules.flow.execution.runner.FLowExecutor;
 import modules.stepper.Stepper;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import services.stepper.FlowExecutionDTO;
 import utils.SessionUtils;
 
@@ -51,6 +50,10 @@ public class ExecuteFlowServlet extends HttpServlet {
         List<Pair<String, String>> freeInputsList = gson.fromJson(freeInputs, typeToken.getType());
 
         FlowExecution flowExecution = CreateFlowExecution(freeInputsList, flowName, dataManager,username);
+        if (flowExecution == null) {//dont have premission to execute
+            resp.setStatus(401);
+            return;
+        }
         Execute(flowExecution, dataManager);
         String id= flowExecution.getUniqueId().toString();
         resp.setHeader("flowId",id);
@@ -100,12 +103,29 @@ public class ExecuteFlowServlet extends HttpServlet {
         FlowDefinitionImpl flow = stepperData.getFlowFromName(flowName);
         flow.setUserInputs(freeInputsList);
 
+
+        if (userHavePermission(flow,username,dataManager)) {
         FlowExecution flowExecution = new FlowExecution(flow,username);
         UserManager userManager = (UserManager) getServletContext().getAttribute("userManager");
 
         userManager.addFlowExecution(username, flowExecution.getUniqueId());
         //flowExecution.setUserInputs();
         return flowExecution;
+        }else
+            return null;
+    }
+
+    private boolean userHavePermission(FlowDefinitionImpl flow, String username, DataManager dataManager) {
+        UserManager userManager = (UserManager) getServletContext().getAttribute("userManager");
+        StepperUser user = userManager.getUser(username);
+        List<String> userRoles = user.getRoles();
+        for (String role : userRoles) {
+            if (dataManager.getRoleManager().getRoleByName(role).getFlows().contains(flow)){
+                return true;
+            }
+        }
+        return false;
+
     }
 
 }

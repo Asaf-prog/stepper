@@ -5,7 +5,6 @@ import ClientsApp.app.Client.Client;
 import ClientsApp.app.body.bodyInterfaces.bodyControllerDefinition;
 import ClientsApp.app.body.executionsHistory.continuation.ContinuationPopUp;
 import ClientsApp.app.body.executionsHistory.tableStuff.FlowExecutionTableItem;
-import Constants.Constants;
 import ClientsApp.app.body.bodyController;
 import ClientsApp.app.body.executionsHistory.DataViewer.DataViewerController;
 import ClientsApp.app.management.style.StyleManager;
@@ -13,7 +12,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,7 +53,9 @@ import services.stepper.flow.DataDefinitionDeclarationDTO;
 import services.stepper.flow.StepUsageDeclarationDTO;
 import services.stepper.other.ContinuationDTO;
 import util.ClientConstants;
+import util.Constants;
 import util.http.ClientHttpClientUtil;
+import util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -130,6 +134,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     private static void setTheme() {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
+    private Timeline timeline=null;
 
     @FXML
     void initialize() {
@@ -145,7 +150,218 @@ public class ExecutionsHistory implements bodyControllerDefinition {
         setFilter2Table();
         setBodyButtonStyle(execute);
         setBodyButtonStyle(continuation);
+
+        setTimer();
+
     }
+    private void getIsManager() {
+        Request request = new Request.Builder()
+                .url(ClientConstants.GET_IS_MANAGER)
+                .build();
+
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                if (responseBody == null) {
+                    return;
+                }
+                String bodyres = responseBody.string();
+                responseBody.close();
+                try{
+                    boolean isManager = Boolean.parseBoolean(bodyres);
+                    body.getMVC_controller().updateClient(isManager);
+                    Client updated=body.getClient();
+                    updated.setManager(isManager);
+                    body.setClient(updated);
+
+                }
+                catch (Exception e){
+                    System.out.println("failed to get the is manager");
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+        });
+
+
+
+    }
+    private void setTimer() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+        Duration refreshInterval = Duration.seconds(3);
+        timeline = new Timeline(new KeyFrame(refreshInterval, event -> updateTableDataFromServer()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play(); // Start the timer
+    }
+
+    private void updateTableDataFromServer() {
+        updateRoles();
+        getIsManager();
+        Request request = new Request.Builder()
+                .url(ClientConstants.GET_TABLE_DATA_FOR_USER)
+                .get()
+                .build();
+
+         ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Failed to get table data");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                String body = responseBody.string();
+                responseBody.close();
+
+                if (body == null || body.isEmpty()) {
+                    return;
+                }
+
+                try {
+                    List<FlowExecutionDTO> flowExecutionDTOS = gson.fromJson(body, new TypeToken<List<FlowExecutionDTO>>() {}.getType());
+                    if (flowExecutionDTOS == null) {
+                        return;
+                    }
+
+                    // Check if there are any updates
+                    if (isDataUpdated(flowExecutionDTOS)) {
+
+                        Platform.runLater(() -> {
+                            lastUpdatedExecutions = flowExecutionDTOS;
+                            executionCounterLabel.setText("There are " + flowExecutionDTOS.size() + " Flow Executions");
+
+                            final ObservableList<FlowExecutionTableItem> data = FXCollections.observableArrayList();
+                            ToggleGroup group = new ToggleGroup();
+                            FlowExecutionResult flowExecutionResult;
+                            for (FlowExecutionDTO flowExecution : flowExecutionDTOS) {
+                                if (flowExecution.getFlowExecutionResult().equals("FAILURE")) {
+                                    flowExecutionResult = FlowExecutionResult.FAILURE;
+                                } else if (flowExecution.getFlowExecutionResult().equals("SUCCESS")) {
+                                    flowExecutionResult = FlowExecutionResult.SUCCESS;
+                                } else {
+                                    flowExecutionResult = FlowExecutionResult.WARNING;
+                                }
+
+                                FlowExecutionTableItem item = new FlowExecutionTableItem(flowExecution.getUniqueId(), flowExecution.getExecutedBy(), flowExecution.getFlowDefinition().getName(),
+                                        flowExecution.getStartTime(), flowExecutionResult);
+
+                                flowExecution.isDone.addListener((observable, oldValue, newValue) -> {
+                                    if (newValue) {
+                                        item.setResultFromExecutionResult(flowExecution.getFlowExecutionResult());
+                                        setResultColumn();
+                                    }
+                                });
+
+                                item.addToToggleGroup(group);
+                                data.add(item);
+                                tableItemEvents(group, item);
+                            }
+
+                            tableData.setItems(data);
+                            setResultColumn();
+                            allExecutions = data;
+                            FlowExecutionDTO selectedFlow = null;
+                            if (pickedExecution!=null) {
+                                for (FlowExecutionDTO flowExecution : flowExecutionDTOS) {
+                                    if (flowExecution.getUniqueId().equals(pickedExecution.getUniqueId())) {
+                                        selectedFlow = flowExecution;
+                                        break;
+                                    }
+                                }
+                                if (selectedFlow != null) {
+                                    // Update the UI to show the information of the selected flow execution
+                                    updateLogs(selectedFlow);
+                                    updateInputs(selectedFlow);
+                                    updateOutputs(selectedFlow);
+                                    updateTime(selectedFlow);
+                                    updateLogsTree(selectedFlow);
+                                }
+                            }
+                        });
+                    }
+
+                    response.close();
+                } catch (JsonSyntaxException e) {
+                    //probably empty response which is fine
+                }
+            }
+        });
+
+    }
+
+    private void updateRoles() {
+        List<String> currRoles=body.getMVC_controller().getCurrentRoles();
+        String gsonRoles=gson.toJson(currRoles);
+        RequestBody bodyReq = RequestBody.create(gsonRoles, ClientConstants.JSON);
+        Request request = new Request.Builder()
+                .url(ClientConstants.IS_ROLES_CHANGED)
+                .post(bodyReq)
+                .build();
+        ClientHttpClientUtil.runAsync(request, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+               // System.out.println("Failed to get table data");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                String bodyResp = responseBody.string();
+                responseBody.close();
+                if (response.code() == HttpServletResponse.SC_NOT_MODIFIED) {//no changes
+                    return;
+                }
+
+                if (bodyResp == null || bodyResp.isEmpty()) {
+                    return;
+                }
+
+                try {
+                    List<String> roles = gson.fromJson(bodyResp, new TypeToken<List<String>>() {}.getType());
+                    if (roles == null) {
+                        return;
+                    }
+                    if(roles.size()>0){
+                        Platform.runLater(() -> {
+                            body.getMVC_controller().setCurrentRoles(roles);
+                        }
+                        );
+                    }
+                    response.close();
+                } catch (JsonSyntaxException e) {
+                    //probably empty response which is fine
+
+                }
+            }
+        });
+    }
+
+    private boolean isDataUpdated(List<FlowExecutionDTO> newExecutions) {
+        if (newExecutions.size() != lastUpdatedExecutions.size()) {
+            return true;
+        }
+
+        // Compare each FlowExecutionDTO to check for updates
+        for (int i = 0; i < newExecutions.size(); i++) {
+            FlowExecutionDTO newExecution = newExecutions.get(i);
+            FlowExecutionDTO oldExecution = lastUpdatedExecutions.get(i);
+            if (!newExecution.equals(oldExecution)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @FXML
     void onActionContinuation(ActionEvent event) {
         if (pickedExecution != null) {
@@ -197,6 +413,9 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     public void onLeave() {
         for (Stage stage : stages) {
             stage.close();
+        }
+        if (timeline != null) {
+            timeline.stop();
         }
     }
 
@@ -340,38 +559,8 @@ public class ExecutionsHistory implements bodyControllerDefinition {
                 button.setStyle(style));
 
     }
-
-//    private FlowDefinitionDTO getFlowFromName(String targetFlow) {
-//        for (FlowDefinitionImpl flowDefinition : stepperData.getFlows()) {
-//            if (flowDefinition.getName().equals(targetFlow))
-//                return flowDefinition;
-//        }
-//        return null;
-//    }
-
-    //    private void updateLogs(FlowExecution flowExecution,Stepper stepperData) {
-//        logsVbox.getChildren().clear();
-//        Label logsLabel = new Label();
-//        logsLabel.setText("   logs for flow with id : " + flowExecution.getUniqueId());
-//        logsLabel.setStyle("-fx-font-size: 14;" + LOG_LINE_STYLE);
-//        logsVbox.getChildren().add(logsLabel);
-//        logsVbox.getChildren().add(stepTree);
-//
-//
-//    }
-//    private void addLog(Pair<String, String> log) {
-//        Label newLog = new Label(log.getValue() + " : " + log.getKey());
-//        if(log.getValue().contains("ERROR"))
-//            newLog.setStyle(ERROR_LINE_STYLE+";-fx-font-size: 12;");
-//        else
-//            newLog.setStyle(LOG_LINE_STYLE+";-fx-font-size: 12;");
-//        logsVbox.getChildren().add(newLog);
-//    }
         private void setupTable() {
-//            Request request = new Request.Builder()
-//                    .url(ClientConstants.GET_TABLE_DATA_FOR_USER)
-//                    .get()
-//                    .build();
+
             Request request = new Request.Builder()
                     .url(ClientConstants.GET_TABLE_DATA_FOR_USER)
                     .build();
@@ -523,185 +712,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
             });
         }
 
-    //    private void updateLogsTree(FlowExecution selectedFlow) {
-//
-//        stepTree.getChildren().clear();
-//
-//        TreeView<String> stepTreeView = new TreeView<>();
-//        TreeItem<String> root = new TreeItem<>("Steps");
-//
-//        stepTreeView.setStyle("-fx-background-color: transparent; -fx-blend-mode: MULTIPLY;");
-//        stepTreeView.getStylesheets().add("app/management/style/darkTheme.css");
-//        stepTreeView.getStyleClass().add("tree");
-//
-//        stepTreeView.setRoot(root);
-//        for (StepUsageDeclaration step : selectedFlow.getFlowDefinition().getFlowSteps()) {
-//            TreeItem<String> stepRoot = new TreeItem<>(step.getFinalStepName());
-//            List<Pair<String, String>> logsPerStep = selectedFlow.getLogs().get(step.getFinalStepName());
-//            if (logsPerStep != null) {
-//                for (Pair<String, String> log : logsPerStep) {
-//                    if (log != null) {
-//                        TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
-//                        stepRoot.getChildren().add(logItem);
-//                    }
-//                }
-//            }
-//            stepTreeView.getRoot().getChildren().add(stepRoot);
-//            stepTreeView.setCellFactory(treeView -> {
-//                TreeCell<String> cell = new TreeCell<String>() {
-//                    @Override
-//                    protected void updateItem(String item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (empty || item == null) {
-//                            setText(null);
-//                            setGraphic(null);
-//                        } else {
-//                            setText(item);
-//                            setStyle("-fx-background-color: transparent; -fx-text-fill: #24ff21;"); // Set the style of each tree component
-//                        }
-//                    }
-//                };
-//                cell.setOnMouseClicked(event -> {
-//                    if (!cell.isEmpty()) {
-//                        TreeItem<String> treeItem = cell.getTreeItem();
-//                        if (treeItem != null) {
-//                            if (treeItem.isExpanded()) {
-//                                treeItem.setExpanded(false);
-//                            } else {
-//                                treeItem.setExpanded(true);
-//                            }
-//                        }
-//                    }
-//                });
-//                return cell;
-//            });
-//            stepTreeView.setShowRoot(false);
-//            stepTreeView.getStyleClass().add("logsTree");
-//
-//        }
-//        stepTree.getChildren().add(stepTreeView);
-//        //logScrollPane.setStyle("-fx-background-color: transparent;");
-//
-//    }
-//    private void addLogToTree(TreeView<String> stepItem, Pair<String, String> log) {
-//        TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
-//        stepItem.getRoot().getChildren().add(logItem);
-//    }
-//
-//    private void updateTime(FlowExecution selectedFlow) {
-//        exeTime.setDisable(false);
-//        exeTime.setVisible(true);
-//        exeTime.setText("Total-Time: "+selectedFlow.getTotalTime().toMillis()+" ms ");
-//    }
-//
-//    private void updateOutputs(FlowExecution selectedFlow) {
-//        Label title= (Label) this.outputsVbox.getChildren().get(0);
-//        Label title2= (Label) this.outputsVbox4Value.getChildren().get(0);
-//        this.outputsVbox4Value.getChildren().clear();
-//        this.outputsVbox.getChildren().clear();
-//        this.outputsVbox.getChildren().add(title);
-//        this.outputsVbox4Value.getChildren().add(title2);
-//        Map<String, Object> outputs=selectedFlow.getAllExecutionOutputs();
-//        if(outputs!=null) {
-//            for (Map.Entry<String, Object> entry : outputs.entrySet()) {
-//                Label newOutput = new Label(entry.getKey());
-//                Label outputValue = setLabelForOutput(entry.getValue(),entry.getKey());
-//                newOutput.getStyleClass().add("DDLabel");
-//                outputValue.getStyleClass().add("DDLabel");
-//                newOutput.setPrefWidth(outputsVbox.getPrefWidth());
-//                outputValue.setPrefWidth(outputsVbox4Value.getPrefWidth());
-//                newOutput.setPrefHeight(28);
-//                outputValue.setPrefHeight(28);
-//                this.outputsVbox4Value.getChildren().add(outputValue);
-//                this.outputsVbox.getChildren().add(newOutput);
-//            }
-//        }
-//
-//    }
-//
-//    private Label setLabelForOutput(Object value, String name) {
-//        Label result = new Label();
-//        if (value instanceof RelationData) {
-//            result.setText("Relation");
-//        }else if (value instanceof ArrayList) {//print an arraylist
-//            result.setText("List");
-//        }else if (value instanceof List) {
-//            result.setText("List");
-//        }else {
-//            result.setText(value.toString());
-//        }
-//        result.setOnMouseEntered(event -> {
-//            result.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
-//        });
-//        result.setOnMouseExited(event -> {
-//            result.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
-//        });
-//        result.setOnMouseClicked(event -> {
-//                    try {
-//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
-//                        Parent root = (Parent) loader.load();
-//                        DataViewerController controller = loader.getController();
-//
-//                        if (controller!=null ) {
-//                            controller.setData(value, name);
-//                            Stage stage = new Stage();
-//                            stages.add(stage);
-//                            stage.setTitle("Data Viewer");
-//                            stage.setScene(new Scene(root, 600, 400));
-//                            stage.show();
-//                        }
-//                    }  catch (IllegalStateException | IOException ex) {
-//                        // Handle the exception gracefully
-//                    }
-//                }
-//        );
-//        return result;
-//    }
-//    private void updateInputs(FlowExecution selectedFlow) {
-//        Label title= (Label) this.inputsVbox.getChildren().get(0);
-//        Label title2= (Label) this.inputsVbox4Value.getChildren().get(0);
-//        this.inputsVbox.getChildren().clear();
-//        this.inputsVbox4Value.getChildren().clear();
-//        this.inputsVbox.getChildren().add(title);
-//        this.inputsVbox4Value.getChildren().add(title2);
-//        List<Pair<String, String>> inputs=selectedFlow.getUserInputs();
-//        if(inputs!=null) {
-//            for (Pair<String, String> entry : inputs) {
-//                Label newInput = new Label(entry.getKey());
-//                Label inputValue = new Label(entry.getValue());
-//                inputValue.setOnMouseEntered(event -> {
-//                    inputValue.setStyle("-fx-border-color: blue; -fx-border-width: 3px;");
-//                });
-//                inputValue.setOnMouseExited(event -> {
-//                    inputValue.setStyle("-fx-border-color: #ffff00; -fx-border-width: 1px;");
-//                });
-//                inputValue.setOnMouseClicked(event -> {
-//                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataViewer/DataViewer.fxml"));
-//                            try {
-//                                Parent root = loader.load();
-//                                DataViewerController controller = loader.getController();
-//                                controller.setData(entry.getValue(), entry.getKey());
-//                                Stage stage = new Stage();
-//                                stages.add(stage);
-//                                stage.setTitle("Data Viewer");
-//                                stage.setScene(new Scene(root, 600, 400));
-//                                stage.show();
-//                            } catch (IllegalStateException | IOException ex) {
-//                                // Handle the exception gracefully
-//                            }
-//                        }
-//                );
-//                newInput.getStyleClass().add("DDLabel");
-//                inputValue.getStyleClass().add("DDLabel");
-//                newInput.setPrefWidth(inputsVbox.getPrefWidth());
-//                inputValue.setPrefWidth(inputsVbox4Value.getPrefWidth());
-//                newInput.setPrefHeight(28);
-//                inputValue.setPrefHeight(28);
-//                this.inputsVbox4Value.getChildren().add(inputValue);
-//                this.inputsVbox.getChildren().add(newInput);
-//            }
-//        }
-//    }
     private void updateLogs(FlowExecutionDTO flowExecution) {
         logsVbox.getChildren().clear();
         Label logsLabel = new Label();
