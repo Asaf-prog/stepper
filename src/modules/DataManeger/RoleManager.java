@@ -85,7 +85,7 @@ public class RoleManager {
                 role.setNewFlows(flows);
             }
             else if(role.getName().equals("read-only")){
-                role.setNewFlows(flows.subList(0,flows.size()-1));//todo hendle read only
+                role.setNewFlows(flows.subList(0,flows.size()-1));
             }else{
                 roles.remove(role);
             }

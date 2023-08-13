@@ -174,8 +174,6 @@ public class UserManagementController implements bodyControllerDefinition {
             RequestBody body = RequestBody.create(gson.toJson(newRoles), MediaType.parse("application/json"));
             String username = currentUser;
 
-            //todo move to servlet dah!
-            //todo check if manager in servlet if so cant change roles unless the change is change the manager role:(
 
             Boolean isManager = this.isManager.isSelected();
             Request request = new Request.Builder()
@@ -262,7 +260,6 @@ public class UserManagementController implements bodyControllerDefinition {
         List<String> delta = newUsers.stream().filter(e -> !oldUsers.contains(e)).collect(Collectors.toList());
         if (delta.size() > 0) {
             //new user added
-            //todo add to list
             //save previous selection
             String selected=GetSelectedName(usersList);
             //check if something is selected
@@ -391,8 +388,7 @@ public class UserManagementController implements bodyControllerDefinition {
     }
 
     private void updateAccordingToUserDef(String name) {
-        //todo add to body the roles list asssigned to user
-        //getlist of roles for user
+        //get list of roles for user
         //then update the list of roles and then send to get available flows
 
         Request request = new Request.Builder()
@@ -441,8 +437,6 @@ public class UserManagementController implements bodyControllerDefinition {
                                 alert.setContentText("Something went wrong, please try again");
                                 alert.showAndWait();
                             });
-
-                            //todo check if stepper valid !!!
                         } else {
                             Platform.runLater(() -> {
                                         try {
@@ -534,7 +528,7 @@ public class UserManagementController implements bodyControllerDefinition {
             }
         }
 
-    }//todo all need to be replaced with StepperUser
+    }
     private void updateUserList(List<StepperUser> users) {
         Toggle picked=group.getSelectedToggle();
         group.getToggles().clear();
@@ -654,7 +648,7 @@ public class UserManagementController implements bodyControllerDefinition {
                 Label add = new Label(flow.getUniqueId().toString());
                 add.getStyleClass().add("list-label");
                 //if execution is ended with error, text in red else in green
-                if (flow.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE.toString())) {//todo check if works
+                if (flow.getFlowExecutionResult().equals(FlowExecutionResult.FAILURE.toString())) {
                     add.setStyle(add.getStyle() + "-fx-text-fill: #ff1c1c;-fx-font-size: 12;");
                     executionsList.getItems().add(add);
                 } else {

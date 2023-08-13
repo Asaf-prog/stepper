@@ -85,7 +85,7 @@ public class ContinuationPopUp {
 
         FlowDefinitionDTO currentFlow = getFlowDefinitionImplByFlowExecution();
         MandatoryAndOptionalFreeInputWithDD(currentFlow);
-//todo possible move to server side
+
         //body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,currentFlow);
 
         stage.close();

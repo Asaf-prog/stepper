@@ -133,7 +133,7 @@ public class headerController {
         mainPane.setVisible(false);
         menuHbox.setVisible(false);
         setRoleBox();
-        //todo set timer refresher for client and if change change what needed
+
         setTimerRefresher();
 
     }
@@ -273,7 +273,6 @@ public class headerController {
     public void updateRoles(List<String> roles){
         myRoles.clear();
 
-        //todo hendle empty roles
         String rolesString = "";
         for (String role : roles) {
             rolesString += role + ", ";

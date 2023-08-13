@@ -33,7 +33,7 @@ public class FlowExecution implements Serializable {//This class accumulates all
     private String executedBy = null;
     public transient SimpleBooleanProperty isDone = new SimpleBooleanProperty(false);
 
-    public transient SimpleDoubleProperty progress=new SimpleDoubleProperty(0.0);//todo maybe ruin ex2
+    public transient SimpleDoubleProperty progress=new SimpleDoubleProperty(0.0);
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();

@@ -197,19 +197,13 @@ public class FlowDefinitionDTO implements Serializable {
 
     public  List<Pair<String, DataDefinitionDeclarationDTO>>  getFlowFreeInputs() {
         return freeInputs;
-        //todo change in order to work , need to add all of the stepper into the dto?
-
     }
-
     public List<InitialInputValues> getORIGINALInitialInputValuesData() {
         List<InitialInputValues> initialInputValues = new ArrayList<>();
         for (InitialInputValuesDTO initialInputValuesDTO : initialInputValuesData) {
             initialInputValues.add(new InitialInputValues(initialInputValuesDTO.getName(), initialInputValuesDTO.getValue()));
         }
         return initialInputValues;
-
     }
-
-
 }
 

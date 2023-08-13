@@ -34,7 +34,6 @@ public class GetLastExecutionServlet extends HttpServlet {
         if (execution == null) {
             //  Double prog=setProgress(dataManager.getStepperData().getFlowExecutions(), SessionUtils.getUsername(req),flowId);
             //  ExecutionTask task=dataManager.getStepperData().getExecutionManager().getTaskById(flowId);
-//todo maybe something with the progress bar
 
             resp.setStatus(400);
             return;

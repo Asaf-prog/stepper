@@ -426,7 +426,7 @@ public class headerController {
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
-                //DataManager.saveDataGui(file.getPath());//todo dont forget to remove
+                //DataManager.saveDataGui(file.getPath());
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");

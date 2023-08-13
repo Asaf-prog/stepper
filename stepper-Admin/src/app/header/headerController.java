@@ -801,7 +801,7 @@ public class headerController {
                                 alert.setHeaderText("Error loading XML file");
                                 alert.setContentText(error);
                                 alert.showAndWait();
-                            });//todo check if stepper valid !!!
+                            });
                         } else {
                             Platform.runLater(() -> {
                                 try {

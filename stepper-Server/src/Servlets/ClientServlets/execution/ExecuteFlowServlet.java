@@ -88,7 +88,7 @@ public class ExecuteFlowServlet extends HttpServlet {
 
             //setProgressBar(task);
             //header.setDisableOnExecutionsHistory();
-            //todo move back to on success
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }//finally {

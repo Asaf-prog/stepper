@@ -190,12 +190,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         optionalHandler(optionalInputs);
         setSizeOfMandatoryList(mandatoryInputs.size());
         flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
-        //todo 3 need to move into servlet
 
     }
     @Override
     public void showForContinuation() {
-        //todo 3 need to move into servlet
         continuationExe.setVisible(true);
         continuationExe.setDisable(true);
         startExecute.setVisible(false);
@@ -841,7 +839,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         showDetails.setDisable(true);
         continuation.setVisible(true);
         body.getMVC_controller().executeFlow(currentFlow);
-        //todo 6 same as 4
+
         if (currentFlow.getContinuations().size() != 0) {
             continuation.setDisable(false);
         }

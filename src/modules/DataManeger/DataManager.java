@@ -152,7 +152,7 @@ public class DataManager {
             stepperData.setNewStepper(toAdd);
             stepperData.validateStepperContinuation();
         }catch (Exception e){
-            throw new Exception("Stepper is not valid"+e.getMessage());//todo handle this exception
+            throw new Exception("Stepper is not valid"+e.getMessage());
         }
     }
 

@@ -39,7 +39,6 @@ public class StepUsageDeclarationDTO {
 
     private StepDefinitionDTO getDTOFromStepDefinition(StepDefinition stepDefinition) {
         StepDefinitionDTO stepDefinitionDTO = new StepDefinitionDTO(stepDefinition.getName(), stepDefinition.isReadonly());
-       //todo update input output
         return stepDefinitionDTO;
 
     }

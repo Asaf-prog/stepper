@@ -84,7 +84,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("problem with login-page client");//todo => remove before sub
+            System.out.println("problem with login-page client");
         }
     }
     private void loadScreen(FXMLLoader fxmlLoader,URL url) {
@@ -126,7 +126,7 @@ public class bodyController {
             System.out.println("");
         }
     }
-    private void loadScreenWithCurrentFlow(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow) {//todo possible to move to server
+    private void loadScreenWithCurrentFlow(FXMLLoader fxmlLoader,URL url,FlowDefinitionDTO flow) {
         try {
             Parent screen = fxmlLoader.load(url.openStream());
             bodyControllerDefinition bController = fxmlLoader.getController();

@@ -100,11 +100,9 @@ public class FlowExecutionTableItem {
         else
             this.result = "Failure";
 
-
     }
-
     public void setResultFromExecutionResult(String flowExecutionResult) {
-        if(flowExecutionResult.equals(FlowExecutionResult.SUCCESS))//todo check if work
+        if(flowExecutionResult.equals(FlowExecutionResult.SUCCESS))
             this.result = "Success";
         else if(flowExecutionResult.equals(FlowExecutionResult.WARNING))
             this.result = "Warning";

@@ -205,7 +205,7 @@ public class RoleManagementController implements bodyControllerDefinition{
                     roleDTO.setFlows(updatedRole.getFlows());//only if success
                     if (response.isSuccessful()) {
                         Platform.runLater(() -> {
-                            //updateRoles();//todo check if work
+                            //updateRoles();
                         });
                     } else {
                         Platform.runLater(() -> {

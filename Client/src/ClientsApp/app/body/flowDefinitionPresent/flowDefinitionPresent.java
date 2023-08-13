@@ -283,8 +283,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         setTheme();
         flowsToggleGroup = new ToggleGroup();
         if (client.getIsExist()) {
-           //todo 1 !! get flow From server
-            //todo hendle no flows !!!
             if (flows==null){
                 return;
             }
@@ -309,7 +307,6 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
         StyleManager.setTheme(StyleManager.getCurrentTheme());
     }
     private void handleButtonAction(FlowDefinitionDTO flow) {
-//todo remove // from below
         this.body.setButtonExecutionFromHeader(flow);
         ToggleGroup group = new ToggleGroup();
         executeButton.setDisable(false);
@@ -446,10 +443,8 @@ public class flowDefinitionPresent implements bodyControllerDefinition {
             TreeItem <String> branch = new TreeItem<>(data.getKey());
             TreeItem <String> branch1 = new TreeItem<>("Is Mandatory? "+data.getValue().isMandatory());
            // TreeItem <String> branch2 = new TreeItem<>("The type is: "+ data.getValue().dataDefinition().getTypeName());\
-            //todo add this whenever all dto ready
             TreeItem <String> branch3 = new TreeItem<>("User String: "+ data.getValue().getUserString());
             branch.getChildren().addAll(branch1,branch3);
-            //todo add branch 2 to ^^^^^
             rootItem.getChildren().addAll(branch);
         }
         rootItem.setExpanded(true);

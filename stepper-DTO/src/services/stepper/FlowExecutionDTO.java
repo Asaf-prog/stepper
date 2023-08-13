@@ -17,7 +17,7 @@ public class FlowExecutionDTO implements Serializable {
     private String startTime;
     private String totalTime;//in ms
     private String flowExecutionResult;
-    private Map<String, Object> executionFormalOutputs;//todo will have to change
+    private Map<String, Object> executionFormalOutputs;
     private Map<String, Object> allExecutionOutputs;
     private List<Pair<String, String>> userInputs;
     private String executedBy;
