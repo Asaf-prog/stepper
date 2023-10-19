@@ -127,7 +127,6 @@ public class bodyController {
     public void executeExistFlowScreenOfContinuation(FlowDefinitionImpl flow,List<Pair<String, DataDefinitionDeclaration>> mandatory,
                                                      List<Pair<String, DataDefinitionDeclaration>> optional,List<Pair<String, String>>mandatoryIn,
                                                      List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl currentFlow) {
-        //setCurrentFlow(flow);
 
         try {
 
@@ -156,7 +155,7 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("BASA3");
+            System.out.println("");
         }
     }
     public void handlerForExecuteFromStatisticScreen(List<Pair<String, String>> freeInputMandatory,List<Pair<String
@@ -179,7 +178,7 @@ public class bodyController {
             loadScreenFromHistory(fxmlLoader, url,flowDefinition,freeInputMandatory,freeInputOptional,freeInputsMandatoryWithDD,freeInputsOptionalWithDD);
 
         } catch (Exception e) {
-            System.out.println("BASA4");
+            System.out.println("");
         }
     }
     private void loadScreenFromHistory(FXMLLoader fxmlLoader,URL url,FlowDefinitionImpl flow,List<Pair<String, String>> freeInputMandatory,
@@ -197,14 +196,12 @@ public class bodyController {
             bodyPane.getChildren().setAll(screen);
         }
         catch (IOException e) {
-            System.out.println("BASA5");
+            System.out.println("");
         }
     }
     public void setButtonExecutionFromHeader(FlowDefinitionImpl flowDefinition){
         main.getHeaderComponentController().SetExecutionButtonVisible(flowDefinition);
         this.currentFlow = flowDefinition;
-
-
     }
     public void setBodyScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();

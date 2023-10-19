@@ -47,7 +47,6 @@ public class MVC_controller {
         }//finally {
         stepperData.addFlowExecution(flowTestExecution);
     }
-
     private void setProgressBar(ExecutionTask task) {
         int nextIndex = header.getNextFreeProgress();
         ProgressBar progressBar = header.getNextProgressBar(nextIndex);
@@ -65,9 +64,7 @@ public class MVC_controller {
         });
         Label label = header.getNextLabel(nextIndex);
         label.setText(task.get4DigId());
-       // header.addProgress(progressBar,label,nextIndex);
     }
-
 
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;
@@ -75,5 +72,4 @@ public class MVC_controller {
     public List<Pair<String,String>> getFreeInputs(){
         return  freeInputs;
     }
-
 }

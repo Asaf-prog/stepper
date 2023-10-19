@@ -23,7 +23,6 @@ public class GetTableDataForUserServlet extends HttpServlet {
     private Gson gson = new Gson();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //get sessionid
         UserManager userManager =(UserManager)req.getServletContext().getAttribute("userManager");
         String username = SessionUtils.getUsername(req);
         DataManager dataManager=(DataManager)req.getServletContext().getAttribute("dataManager");
@@ -36,7 +35,6 @@ public class GetTableDataForUserServlet extends HttpServlet {
         resp.getWriter().println(gson.toJson(res));
 
     }
-
     private List<FlowExecutionDTO> buildList(List<FlowExecution> flowExecutions, StepperUser user) {
         if (user.getIsManager()) {
             List<FlowExecutionDTO> flowExecutionDTOS = new ArrayList<>();

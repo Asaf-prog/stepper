@@ -18,9 +18,7 @@ import java.util.List;
 
 @WebServlet(name = "IsClientRolesChangedServlet", urlPatterns = {"/Client/isRolesChanged"})
 public class IsClientRolesChangedServlet extends HttpServlet {
-
     private Gson gson = new Gson();
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -37,6 +35,5 @@ public class IsClientRolesChangedServlet extends HttpServlet {
             resp.getWriter().write(newRoles);
             resp.setStatus(HttpServletResponse.SC_OK);
         }
-
     }
 }

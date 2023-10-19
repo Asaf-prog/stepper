@@ -127,39 +127,30 @@ public class AdminStepperApplication extends Application {
 
                         Platform.exit();
                     });
-
-
                 } else {
                     //continue
                 }
                 response.close();
-
             }
         });
         return false;
     }
-
             private static void setBounds(Stage primaryStage) {
                 primaryStage.initStyle(StageStyle.UNDECORATED);
                 ResizeHelper.addResizeListener(primaryStage);
             }
-
             private void showWindow(Stage primaryStage) {
                 primaryStage.setOpacity(1.0); // Make the window fully opaque
             }
-
             private void hideWindow(Stage primaryStage) {
                 primaryStage.setOpacity(0.99); // Make the window fully transparent
             }
-
-
             private static void setPrimaryStage(Stage primaryStage) {
                 primaryStage.setResizable(true);
                 primaryStage.setMaxWidth(1440);
                 primaryStage.setMaxHeight(960);
 
             }
-
             private void centerWindowOnScreen(Stage stage) {
                 Screen screen = Screen.getPrimary();
                 Rectangle2D bounds = screen.getVisualBounds();
@@ -174,15 +165,11 @@ public class AdminStepperApplication extends Application {
 
                 stage.setX(windowX);
                 stage.setY(windowY);
-
-
             }
-
             public static void main(String[] args) {
                 launch(args);
             }
-
-
+            
             private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
                 //Properties config = loadConfigProperties();
                 int preloadTime = 1800;

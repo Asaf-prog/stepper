@@ -25,7 +25,6 @@ import modules.stepper.Stepper;
 import java.io.File;
 
 public class headerController {
-
     @FXML
     private Button loadXMLbutton;
     @FXML
@@ -264,8 +263,6 @@ public class headerController {
 
     private void setMenuButtonGroup() {
         ToggleGroup group = new ToggleGroup();
-
-
     }
 
     private static void setTheme() {
@@ -387,9 +384,7 @@ public class headerController {
             scaleTransition.play();
             Statistics.setStyle(buttonStyle);
         });
-
     }
-
     @FXML
     void changeTheme(ActionEvent event) {
         if (themeToggle.isSelected()) {
@@ -402,7 +397,6 @@ public class headerController {
                 themeToggle.setStyle("-fx-background-color: transparent;-fx-text-fill: black;-fx-border-color: white;-fx-border-width: 1;-fx-border-radius: 20");
                 themeToggle.getStyleClass().remove("toggle-switch-dark");
                 themeToggle.getStyleClass().add("toggle-switch-light");
-
             }
         } else {
             Scene scene = themeToggle.getScene();
@@ -688,9 +682,7 @@ public class headerController {
             else
                 ExecutionsHistory.setDisable(true);
         }
-
     }
-
     public void makeExecutionButtonVisible() {
         menuHbox.getChildren().add(flowExecution);
         flowExecution.setVisible(true);

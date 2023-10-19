@@ -25,7 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class StepperApplication extends Application {
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         StyleManager onlyOne = new StyleManager();
@@ -33,7 +32,6 @@ public class StepperApplication extends Application {
         setLoading(primaryStage);
 
     }
-
     private void setLoading(Stage primaryStage) {
         Image icon = new Image("app/management/content/loader.png");
         ImageView imageView = new ImageView(icon);
@@ -51,13 +49,8 @@ public class StepperApplication extends Application {
         Scene preloadScene = new Scene(preloadLayout, 485, 245);
         primaryStage.setScene(preloadScene);
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        // Set stage bounds and show the stage
-        //setPrimaryStage(primaryStage);
-        //centerWindowOnScreen(primaryStage);
         setBounds(primaryStage);
         primaryStage.show();
-
-        // Simulate loading time
         simulatePreloadTime(primaryStage, progressBar);
     }
 
@@ -96,13 +89,10 @@ public class StepperApplication extends Application {
         stage.setX(windowX);
         stage.setY(windowY);
 
-
-
     }
     public static void main(String[] args) {
         launch(args);
     }
-
 
     private void simulatePreloadTime(Stage primaryStage, ProgressBar progressBar) {
         //Properties config = loadConfigProperties();
@@ -126,9 +116,8 @@ public class StepperApplication extends Application {
                     }
                 });
             }
-        }, preloadTime);//problems with scrifts
+        }, preloadTime);
     }
-
     private Properties loadConfigProperties() {
         Properties config = new Properties();
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {

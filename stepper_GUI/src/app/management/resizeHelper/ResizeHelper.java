@@ -18,11 +18,8 @@ public class ResizeHelper {
         scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeListener);
         scene.addEventHandler(MouseEvent.MOUSE_EXITED, resizeListener);
         scene.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, resizeListener);
-
         return resizeListener;
     }
-
-
     public static class ResizeListener implements EventHandler<MouseEvent> {
         private Stage stage;
         private Scene scene;
@@ -37,21 +34,16 @@ public class ResizeHelper {
         private double padBottom = 0;
         private double padLeft = 0;
 
-
         public ResizeListener(Stage stage) {
             this.stage = stage;
             this.scene = stage.getScene();
         }
-
-
         public void setPadding(Insets padding) {
             padTop = padding.getTop();
             padRight = padding.getRight();
             padBottom = padding.getBottom();
             padLeft = padding.getLeft();
         }
-
-
         @Override
         public void handle(MouseEvent mouseEvent) {
             EventType<? extends MouseEvent> mouseEventType = mouseEvent.getEventType();
@@ -108,7 +100,6 @@ public class ResizeHelper {
                         }
                     }
                 }
-
                 if (!Cursor.N_RESIZE.equals(cursorEvent) && !Cursor.S_RESIZE.equals(cursorEvent)) {
                     double minWidth = stage.getMinWidth() > (border * 2) ? stage.getMinWidth() : (border * 2);
                     if (Cursor.NW_RESIZE.equals(cursorEvent) || Cursor.W_RESIZE.equals(cursorEvent) || Cursor.SW_RESIZE.equals(cursorEvent)) {

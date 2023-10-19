@@ -22,7 +22,6 @@ public class PreLoader extends javafx.application.Preloader {
     private Stage stage;
     @FXML
     private AnchorPane anchorPane;
-
         @FXML
         void initialize() {
             assert progressBar != null : "fx:id=\"progressBar\" was not injected: check your FXML file 'PreLoader.fxml'.";
@@ -57,7 +56,6 @@ public class PreLoader extends javafx.application.Preloader {
             });
         }
     }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;

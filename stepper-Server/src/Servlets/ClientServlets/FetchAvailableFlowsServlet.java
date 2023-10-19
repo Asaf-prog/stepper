@@ -23,8 +23,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-//todo tomorrow : 1. add to the client the ability to get the flows from the server
-// 2. add the new client/getflows new servlet and check i we can present the flows in the client side
 
 @WebServlet(name = "getFlows Servlet",urlPatterns = "/Client/getFlows")
 @MultipartConfig

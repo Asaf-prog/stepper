@@ -477,8 +477,6 @@ public class ExecutionsHistory implements bodyControllerDefinition {
 
         }
         stepTree.getChildren().add(stepTreeView);
-        //logScrollPane.setStyle("-fx-background-color: transparent;");
-
     }
     private void addLogToTree(TreeView<String> stepItem, Pair<String, String> log) {
         TreeItem<String> logItem = new TreeItem<>(log.getValue() + " : " + log.getKey());
@@ -602,6 +600,7 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
     @Override
     public void show() {
+        return;
     }
     @Override
     public void setBodyController(bodyController body) {
@@ -609,11 +608,11 @@ public class ExecutionsHistory implements bodyControllerDefinition {
     }
     @Override
     public void setFlowsDetails(List<FlowDefinitionImpl> list) {
-
+        return;
     }
     @Override
     public void SetCurrentFlow(FlowDefinitionImpl flow) {
-
+        return;
     }
 }
 
