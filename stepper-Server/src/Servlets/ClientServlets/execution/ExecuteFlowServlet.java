@@ -70,9 +70,7 @@ public class ExecuteFlowServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
     private void Execute(FlowExecution flowExecution, DataManager dataManager) {
 
         Stepper stepperData = dataManager.getData();
@@ -83,20 +81,11 @@ public class ExecuteFlowServlet extends HttpServlet {
                     flowExecution.getUniqueId(), flowExecution, fLowExecutor);
             ExeManager.executeTask(task);
             stepperData.addFlowExecution(flowExecution);
-            //add task to ServletContext
-
-
-            //setProgressBar(task);
-            //header.setDisableOnExecutionsHistory();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }//finally {
-
-
-
     }
-
     private FlowExecution CreateFlowExecution(List<Pair<String, String>> freeInputsList, String flowName, DataManager dataManager, String username) {
 
         Stepper stepperData = dataManager.getData();

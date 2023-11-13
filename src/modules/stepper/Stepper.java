@@ -59,15 +59,6 @@ public class Stepper implements Serializable {
         return null;
 
     }
-//    public FlowExecutionDTO getFlowExecutionDTOById(UUID id){
-//        Optional<FlowExecution> res = flowExecutions.stream().filter(flowExecution -> flowExecution.getUniqueId().equals(id)).findFirst();
-//        if(res.isPresent()){
-//            return Mapper.convertToFlowExecutionDTO(res.get());
-//        }
-//        return null;
-//
-//    }
-
 
     public Stepper(){
         flows = new ArrayList<>();
@@ -326,11 +317,8 @@ public class Stepper implements Serializable {
 
     public List<String> getUsers() {
 
-        return Arrays.asList("Saar ha homo ", "Asaf ha mozez", "Asaf  ha gever");
+        return Arrays.asList(" ", "", "");
     }
-
-
-
     private List<String> getFlowsName(List<FlowDefinitionImpl> flows) {
         List<String> res=new ArrayList<>();
         for (FlowDefinitionImpl flowDefinition : flows){

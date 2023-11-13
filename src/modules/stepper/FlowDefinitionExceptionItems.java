@@ -21,12 +21,7 @@ public enum FlowDefinitionExceptionItems {
     TO_OPERATION_DATA_DEFINITION_YOU_MUST_FILL_ZIP_OR_UNZIP("to operation data definition you must fill zip or unzip")
     ;
 
-
-
-
     private final String message;
-
-
      FlowDefinitionExceptionItems(String message) {
         this.message = message;
     };
