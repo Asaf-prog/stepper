@@ -22,7 +22,6 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration , Serializ
     Map<String,String> inputFromNameToAlias; //<name,alias>
     Map<String,String> outputFromNameToAlias; //<name,alias>
     private StepResult stepResult;
-    //Ex2
     Map<String,String> inputFromAliasToName; //<alias,name>
     Map<String,String> outputFromAliasToName; //<alias,name>
 

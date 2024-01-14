@@ -178,11 +178,8 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
         checkIfExistAliasForFlowStepOrDataThatNotExist();//4.4
         checkIfTheFormalOutputsExist();//4.5
         checkIfAllConnectionsAreValid();
-        //new validation for task two
-
-//        checkIfCarriedOutContinuationToFlowThatNotExist(flows);
-//        checkIfWeDoContinuationToFlowWithSameTypeOfDataDefinition(flows);
-        checkIfTheInitialValueExistInFlow();// check if the input-name exist in the list of the inputs of this flows
+        // check if the input-name exist in the list of the inputs of this flows
+        checkIfTheInitialValueExistInFlow();
 
     }
 
@@ -644,7 +641,6 @@ public class FlowDefinitionImpl implements FlowDefinition, Serializable {
                 listInputs.add(step.getByKeyFromOutputMap(output.getName()));
             }
         }
-        //flowOfAllStepsOutputs = listInputs;
     }
     public boolean theirIsInputFromCustomMapping(StepUsageDeclaration step, List<String> listInputs , String nameToFind){
             for (CustomMapping custom : customMappings){

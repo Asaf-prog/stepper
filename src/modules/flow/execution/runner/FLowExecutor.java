@@ -14,8 +14,6 @@ import java.util.ArrayList;
 public class FLowExecutor {
     public void executeFlow(FlowExecution flowExecution) throws Exception {//This class implements the flow
 
-
-
         StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
         context.setUserInputs(flowExecution);//sets user inputs into the context
@@ -56,7 +54,6 @@ public class FLowExecutor {
             return;
         }
         catch (Exception e) {
-            //System.out.println(e.getMessage());
 
         }
         finally {
@@ -83,9 +80,10 @@ public class FLowExecutor {
 
     private void updateFlowExecution(FlowExecution flowExecution, StepExecutionContext context, ArrayList<StepResult> flowExeStatus, Instant flowStartTime, Instant flowEndTime) throws Exception {
             FlowExecutionResult flowExecutionResult = getFlowExecutionResult(flowExeStatus, flowExecution);
-            flowExecution.setFlowDuration(Duration.between(flowStartTime, flowEndTime));//update flow execution avg time
-            //maybe save the end time for calc the time occurred
-            UpdateFlowAvgTiming(Duration.between(flowStartTime, flowEndTime), flowExecution.getFlowDefinition());//update avg time of flow def
+            flowExecution.setFlowDuration(Duration.between(flowStartTime, flowEndTime));
+            //update flow execution avg time
+            UpdateFlowAvgTiming(Duration.between(flowStartTime, flowEndTime), flowExecution.getFlowDefinition());
+            //update avg time of flow def
             flowExecution.setFlowExecutionResult(flowExecutionResult);
             flowExecution.setFlowExecutionOutputs(context);
             flowExecution.setLogs(context.getLogs());
@@ -164,8 +162,7 @@ public class FLowExecutor {
             return;
         }
         catch (Exception e) {
-            //System.out.println(e.getMessage());
-//            throw new MenuException(MenuExceptionItems.EMPTY, "Error in executing flow "+flowExecution.getFlowDefinition().getName());
+
         }
         finally {
             if (checkIfFlowFailed!=true) {
@@ -174,7 +171,7 @@ public class FLowExecutor {
                 updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
 
             }
-            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));//if one step failed or warning the flow failed or warning
+            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));
 
             return;
         }

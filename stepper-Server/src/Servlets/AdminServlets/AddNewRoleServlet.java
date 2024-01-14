@@ -6,12 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import mapper.Mapper;
 import modules.DataManeger.DataManager;
 import modules.DataManeger.Role;
 import modules.DataManeger.RoleManager;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import services.user.RoleDTO;
 
 import java.io.IOException;

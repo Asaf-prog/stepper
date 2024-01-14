@@ -9,43 +9,6 @@
       <element id="module-output" name="stepper_GUI" />
       <element id="module-output" name="stepper-Server" />
       <element id="module-output" name="stepper-Client" />
-      <element id="dir-copy" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/bin/bootstrap.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/bin/tomcat-juli.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/bin/commons-daemon.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/el-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/jasper.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/jsp-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/catalina.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/ecj-4.20.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/jasper-el.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/jaspic-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-jni.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/catalina-ha.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/servlet-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-dbcp.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-jdbc.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-util.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/catalina-ant.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/catalina-ssi.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-coyote.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/websocket-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-cs.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-de.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-es.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-fr.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-ja.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-ko.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-ru.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/annotations-api.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/catalina-tribes.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-util-scan.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-websocket.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-pt-BR.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/tomcat-i18n-zh-CN.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/catalina-storeconfig.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/apache-tomcat-10.0.11/lib/jakartaee-migration-1.0.0-shaded.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/okHttp/okio-2.8.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/okHttp/okhttp-4.9.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/okHttp/annotations-13.0.jar" path-in-jar="/" />
@@ -56,6 +19,12 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/3rd/google-gson-2.1/gson-2.1-sources.jar" path-in-jar="/" />
       <element id="artifact" artifact-name="stepper-Engine" />
       <element id="artifact" artifact-name="stepper_server" />
+      <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="stepper-Server" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

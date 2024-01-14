@@ -1,11 +1,11 @@
 package modules.flow.execution.context;
+
 import javafx.util.Pair;
 import modules.dataDefinition.impl.enumerator.Enumerator;
-import modules.dataDefinition.impl.enumerator.Protocol;
-import modules.mappings.CustomMapping;
-import modules.mappings.FlowLevelAlias;
 import modules.flow.definition.api.StepUsageDeclaration;
 import modules.flow.execution.FlowExecution;
+import modules.mappings.CustomMapping;
+import modules.mappings.FlowLevelAlias;
 import modules.step.api.DataDefinitionDeclaration;
 
 import java.text.SimpleDateFormat;
@@ -96,10 +96,7 @@ StepExecutionContextImpl implements StepExecutionContext {
         if (dataType == Enumerator.class) {
             return(new Enumerator(value));
         }
-//        if (dataType == Protocol.class) {
-//            return(new Protocol(value));
-//        }
-        return 0;
+    return 0;
     }
 
     private Class<?> getDataTypeFromName(String key, List<Pair<String, DataDefinitionDeclaration>> flowFreeInputs) {
@@ -113,7 +110,8 @@ StepExecutionContextImpl implements StepExecutionContext {
     public <T> T getDataValue(String dataName ,Class<T> expectedDataType) {
 
             String nameAfterAliasing = inputOfCurrentStep.get(dataName);
-            String nameAfterCustomMapping =getCustomMapping(nameAfterAliasing);//check if is on custom mapping and return the source data
+            String nameAfterCustomMapping =getCustomMapping(nameAfterAliasing);
+            //check if is on custom mapping and return the source data
             if (nameAfterCustomMapping != null) {  //if after validation
                 Optional<Object> aValue = Optional.ofNullable(dataValues.get(nameAfterCustomMapping));
                 if (aValue.isPresent())
