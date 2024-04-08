@@ -62,13 +62,9 @@ public class AdminStepperApplication extends Application {
             Scene preloadScene = new Scene(preloadLayout, 485, 245);
             primaryStage.setScene(preloadScene);
             primaryStage.initStyle(StageStyle.UNDECORATED);
-            // Set stage bounds and show the stage
-            //setPrimaryStage(primaryStage);
-            //centerWindowOnScreen(primaryStage);
             setBounds(primaryStage);
             primaryStage.show();
 
-            // Simulate loading time
             simulatePreloadTime(primaryStage, progressBar);
         } else {
             // Display the appropriate message in an alert dialog
@@ -107,7 +103,6 @@ public class AdminStepperApplication extends Application {
 
                 );
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 //get boolean from header
@@ -192,7 +187,7 @@ public class AdminStepperApplication extends Application {
                             }
                         });
                     }
-                }, preloadTime);//problems with scrifts
+                }, preloadTime);
             }
 
             private Properties loadConfigProperties() {

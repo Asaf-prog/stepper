@@ -19,15 +19,12 @@ public class RoleManager {
         roles.add(new Role("all-flows",flows,"all available flows in the system (usually for managers)"));
         roles.add(new Role("read-only",readonly,"all available flows that for read only (usually for employees)"));
 
-
-
     }
 
     public RoleManager(List<FlowDefinitionImpl> flows) {
         roles=new ArrayList<>();
         roles.add(new Role("all-flows",flows,"all available flows in the system (usually for managers)"));
         roles.add(new Role("read-only",flows.subList(0,flows.size()-1),"all available flows that for read only (usually for employees)"));
-
 
     }
 
@@ -74,12 +71,10 @@ public class RoleManager {
         Role role=getRoleByName(roleName);
         role.setNewFlows(newFlows);
         return role;
-
-
     }
 
     public void updateRoles(List<FlowDefinitionImpl> flows) {
-        //
+
         for (Role role:roles){
             if(role.getName().equals("all-flows")){
                 role.setNewFlows(flows);

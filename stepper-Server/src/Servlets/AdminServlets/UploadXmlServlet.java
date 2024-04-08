@@ -22,16 +22,13 @@ import java.util.Scanner;
 public class UploadXmlServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //print to page hello world
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             DataManager dataManager = (DataManager) request.getServletContext().getAttribute("dataManager");
             InputStream res = request.getPart("file").getInputStream();
             if (dataManager == null) {//first time
-
 
                 DataManager dataManager1 = GetDataFromXML.fromStream2Stepper(res);
                 //send to servletContext
@@ -41,12 +38,10 @@ public class UploadXmlServlet extends HttpServlet {
 
                 response.addHeader("url", dataManager1.getStepperData().getXmlPath());
 
-            }else{//...
-                //compare same flows
-                //only add to dataManager new flows
+            }else {
                 Stepper stepper = GetDataFromXML.newFlowsToStepper(res);
-                //send to servletContext
-                try{
+
+                try {
                     dataManager.updateStepper(stepper);
                     dataManager.updateRoles();
                     dataManager.getStepperData().setXmlPath(getFileName(request.getPart("file")));
@@ -58,19 +53,12 @@ public class UploadXmlServlet extends HttpServlet {
                     String msg = e.getMessage();
                     response.addHeader("errorMsg", msg);
                 }
-
-
-
-
-
             }
         }catch (Exception e) {
             response.setStatus(500);
             String msg = e.getMessage();
             response.addHeader("errorMsg", msg);
         }
-
-
     }
 
     private void printPart(Part part, PrintWriter out) {

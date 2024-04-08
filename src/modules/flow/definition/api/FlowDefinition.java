@@ -20,14 +20,9 @@ public interface FlowDefinition {
 
     void validateFlowStructure(List<FlowDefinitionImpl> flows) throws FlowDefinitionException;//added due to the need to validate the flow continuation
 
-    //void validateFlowStructureWithoutContinuation(List<FlowDefinitionImpl> flows, List<String> flowNames) throws FlowDefinitionException;//added due to the need to validate the flow continuation
-
     void validateFlowStructureWithoutContinuation(List<FlowDefinitionImpl> flows) throws FlowDefinitionException;
 
-
     List<Pair<String, DataDefinitionDeclaration>> getFlowFreeInputs();
-
-   // StepExecutionContext setFreeInputs(StepExecutionContext context);
 
     void createFlowFreeInputs();
 

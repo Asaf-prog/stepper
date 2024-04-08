@@ -1,7 +1,6 @@
 package Servlets.AdminServlets;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +23,6 @@ public class ValidateAdminServlet extends HttpServlet {
             resp.addHeader("active","false");
             resp.setStatus(200);
         }
-
     }
 
     @Override

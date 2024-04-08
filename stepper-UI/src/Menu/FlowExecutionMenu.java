@@ -51,7 +51,6 @@ public class FlowExecutionMenu {
                     continue;
                 }
            catch (Exception e) {
-                    //System.out.println(e.getMessage());
                     throw new MenuException(MenuExceptionItems.EMPTY, " Error in flow Execution");
                 }
             }
@@ -77,7 +76,6 @@ public class FlowExecutionMenu {
             }
         }
     }
-
 
     private static boolean getUserInput(FlowDefinition flow) throws MenuException {
         String prompt = "Choose what to insert \n(0) Back \n(1) Mandatory inputs \n(2) Optional inputs \n(3) Done- and Execute ";

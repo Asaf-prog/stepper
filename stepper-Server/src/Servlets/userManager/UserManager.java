@@ -55,7 +55,6 @@ public class UserManager {
             return false;
         }
 
-
     public List<String> getRolesForUser(String username) {
         for (StepperUser user : usersSet) {
             if (user.getUsername().equals(username)) {
@@ -68,6 +67,7 @@ public class UserManager {
         }
         return null;
     }
+
     public StepperUser getUser(String username) {
         for (StepperUser user : usersSet) {
             if (user.getUsername().equals(username)) {
@@ -76,6 +76,7 @@ public class UserManager {
         }
         return null;
     }
+
     public boolean isUserManager(String username) {
 
         for (StepperUser user : usersSet) {
@@ -85,6 +86,7 @@ public class UserManager {
         }
         return false;
     }
+
     public synchronized void updateUserSessionId(String username, String sessionId) {
         StepperUser user = getUser(username);
         if (user != null) {
@@ -118,6 +120,6 @@ public class UserManager {
                 if (user != null) {
                     user.addFlowExecution(uniqueId);
                 }
-
     }
+
 }

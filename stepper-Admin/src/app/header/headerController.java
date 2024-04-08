@@ -1,4 +1,5 @@
 package app.header;
+
 import app.MVC_controller.MVC_controller;
 import app.management.mainController;
 import app.management.style.StyleManager;
@@ -21,10 +22,8 @@ import modules.DataManeger.DataManager;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import util.ClientConstants;
 import util.Constants;
 import util.http.HttpClientUtil;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -700,10 +699,6 @@ public class headerController {
             rotateTransition.setAutoReverse(false); // Disable auto-reverse
             rotateTransition.play(); // Start the rotation animation
         });
-//        buypremiumBtn.setStyle("fx-border-color: #ffffff");
-//        buypremiumBtn.setStyle("-fx-border-width: 2px");
-//        buypremiumBtn.setStyle("-fx-text-fill: #ffff00");
-//        buypremiumBtn.setStyle("-fx-background-color:  #24292e");
 
         loadData.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), loadData);
@@ -771,7 +766,6 @@ public class headerController {
         main.initialize();
         if (selectedFile != null) {
             try {
-                //build http request(okhttp) and send it to the server servlet
                 RequestBody body =
                         new MultipartBody.Builder()
                                 .addFormDataPart("file", selectedFile.getName(), RequestBody.create(selectedFile, MediaType
@@ -808,7 +802,7 @@ public class headerController {
                                     ActivateMenuButtons();
                                     String urlHeader = response.header("url");
                                     roleManagement.setDisable(false);
-                                    ExecutionsHistory.setDisable(false);//***
+                                    ExecutionsHistory.setDisable(false);
                                     loadXMLbutton.setText("Loaded:");
                                     loaded.setText(urlHeader);
                                     initializedData();
@@ -860,7 +854,6 @@ public class headerController {
         ExecutionsHistory.setDisable(false);
     }
     private void initializedData() {
-     //   main.setFlows(DataManager.getData().getFlows());
     }
     public ProgressBar getNextProgressBar(int free) {
         switch (free) {

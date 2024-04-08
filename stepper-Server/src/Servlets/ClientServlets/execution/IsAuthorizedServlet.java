@@ -31,8 +31,8 @@ public class IsAuthorizedServlet extends HttpServlet {
                 }
             }
             );
-
         }
+
         if (isAuthorized.get()) {
             resp.setStatus(200);
         } else {

@@ -24,9 +24,7 @@ public class PreLoader extends javafx.application.Preloader {
         void initialize() {
             assert progressBar != null : "fx:id=\"progressBar\" was not injected: check your FXML file 'PreLoader.fxml'.";
 
-
         }
- // stage.getIcons().add(new Image("app/management/content/aviadsIcon.png"));
 
     @Override
     public void handleProgressNotification(ProgressNotification pn) {

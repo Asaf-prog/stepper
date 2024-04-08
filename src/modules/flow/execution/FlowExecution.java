@@ -23,7 +23,7 @@ public class FlowExecution implements Serializable {//This class accumulates all
 
     private final FlowDefinition flowDefinition;
     private Map<String, String> summaryLines;
-    private Map<String, List<Pair<String, String>>> logs;//List<Pair<stepName,List<Pair<date Log occur,the actual log>>>
+    private Map<String, List<Pair<String, String>>> logs;
     private final Date startTime;
     private Duration totalTime;
     private FlowExecutionResult flowExecutionResult;
@@ -96,7 +96,7 @@ public class FlowExecution implements Serializable {//This class accumulates all
     public String getOwner() {
         return executedBy;
     }
-    public FlowExecution(FlowDefinition flowDefinition,String username) {// Here, I am referring to a specific flow for tracing.
+    public FlowExecution(FlowDefinition flowDefinition,String username) {
         this.uniqueId = GenerateUniqueID();//each flow execution has a unique id
         flowDefinition.addUsage();//for stats
         this.flowDefinition = flowDefinition;
@@ -154,7 +154,6 @@ public class FlowExecution implements Serializable {//This class accumulates all
             if (context.getDataValues().containsKey(key)) {
                 DataDefinition theExpectedDataType = GetExpectedDataType(key);
                 String tempKey = GetOriginalName(key);
-                //UpdateContextCurrentStep(context,key);
                 Map<String, String> currentString = getCurrentInput(key);
                 context.setInputOfCurrentStep(currentString);
                 executionFormalOutputs.put(key, context.getDataValue(tempKey, theExpectedDataType.getType()));
@@ -237,7 +236,6 @@ public class FlowExecution implements Serializable {//This class accumulates all
                     allExecutionOutputs.put(nameAfter, context.getDataValue(tempKey, theExpectedData.getType()));
                 }
             }
-
         }
     }
 

@@ -7,11 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.util.Pair;
-import modules.flow.definition.api.FlowDefinitionImpl;
-import modules.flow.execution.FlowExecution;
-import modules.flow.execution.executionManager.ExecutionManager;
 import modules.flow.execution.executionManager.tasks.ExecutionTask;
-import modules.flow.execution.runner.FLowExecutor;
 
 import java.util.List;
 public class MVC_controller {
@@ -43,16 +39,10 @@ public class MVC_controller {
         });
         Label label = header.getNextLabel(nextIndex);
         label.setText(task.get4DigId());
-       // header.addProgress(progressBar,label,nextIndex);
     }
-
     private void initAdmin(){
 
-
-
-
     }
-
 
     public void setFreeInputs(List<Pair<String,String>> freeInputs){
         this.freeInputs = freeInputs;

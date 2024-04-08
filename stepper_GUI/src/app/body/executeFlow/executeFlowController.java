@@ -40,7 +40,8 @@ import java.util.Map;
 
 import static modules.DataManeger.DataManager.stepperData;
 
-public class executeFlowController implements bodyControllerDefinition,bodyControllerForContinuation, bodyControllerExecuteFromHistory {
+public class executeFlowController implements bodyControllerDefinition,bodyControllerForContinuation,
+        bodyControllerExecuteFromHistory {
     @FXML
     private Button showDetails;
     @FXML
@@ -186,7 +187,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 else
                     throw new RuntimeException();
             }
-            else {//the user need to give us this data
+            else { //the user need to give us this data
                 TextField textField = new TextField();
                 textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
                 textField.setPromptText("Enter here");
@@ -383,9 +384,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
 
     @Override
-    public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory, List<Pair<String, DataDefinitionDeclaration>> optional
+    public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclaration>> mandatory, List<Pair<String,
+            DataDefinitionDeclaration>> optional
             ,List<Pair<String, String>>mandatoryIn,
-                                               List<Pair<String, String>>optionalIn, Map<String,Object> outputs,FlowDefinitionImpl lastFlow) {
+                                               List<Pair<String, String>>optionalIn,
+                                               Map<String,Object> outputs,FlowDefinitionImpl lastFlow) {
         currentMandatoryFreeInput = mandatory;
         currentOptionalFreeInput = optional;
         freeInputsMandatory = mandatoryIn;
@@ -559,7 +562,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
                 }
                 setTheNewInputsThatTheUserSupply();
-            body.handlerContinuation(targetFlow, currentMandatoryFreeInput, currentOptionalFreeInput,freeInputsMandatory,freeInputsOptional,outputs,targetFlow);
+            body.handlerContinuation(targetFlow,
+                    currentMandatoryFreeInput,
+                    currentOptionalFreeInput,
+                    freeInputsMandatory,
+                    freeInputsOptional,
+                    outputs,targetFlow);
         }
             else
                 throw new RuntimeException();
@@ -747,7 +755,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         button.setOnMouseExited(event ->
                 button.setStyle(style));
 
-
     }
 
     private boolean validateInput(String data, Class<?> type, TextField textField,Button btn) {
@@ -897,7 +904,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
     }
     @Override
     public void setFreeInputsMandatoryAndOptional(List<Pair<String, String>> freeInputMandatory,
-                                                  List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclaration>> freeInputsMandatoryWithDD
+                                                  List<Pair<String, String>> freeInputOptional,List<Pair<String,
+            DataDefinitionDeclaration>> freeInputsMandatoryWithDD
     ,List<Pair<String, DataDefinitionDeclaration>> freeInputsOptionalWithDD ){
 
         this.freeInputsMandatoryFromHistory = freeInputMandatory;

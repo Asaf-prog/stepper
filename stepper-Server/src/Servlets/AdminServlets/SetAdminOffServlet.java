@@ -11,7 +11,6 @@ import java.io.IOException;
 public class SetAdminOffServlet extends HttpServlet {
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-             //   boolean isAdminOn = (boolean) getServletContext().getAttribute("AdminOn");
                 boolean isAdminOn = false;
                 getServletContext().setAttribute("AdminOn",isAdminOn);
         }

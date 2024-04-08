@@ -2,18 +2,13 @@ package Servlets.ClientServlets.execution;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import mapper.Mapper;
 import modules.DataManeger.DataManager;
 import modules.flow.execution.FlowExecution;
-import modules.flow.execution.executionManager.tasks.ExecutionTask;
 import services.stepper.FlowExecutionDTO;
 import utils.SessionUtils;
 
@@ -37,7 +32,6 @@ public class FlowStatusCheckServlet extends HttpServlet {
                 resp.addHeader("progress",prog.toString());
             else
                 resp.addHeader("progress","0.0");
-            // ExecutionTask task=dataManager.getStepperData().getExecutionManager().getTaskById(flowId);
 
             resp.setStatus(401);
             return;
@@ -48,7 +42,6 @@ public class FlowStatusCheckServlet extends HttpServlet {
         String json = gson.toJson(flowExecutionDTO);
         resp.getWriter().write(json);
         resp.setStatus(200);
-
     }
 
     private boolean isLastExecutionDone(List<FlowExecution> flowExecutions, String username, String flowId) {
@@ -63,7 +56,6 @@ public class FlowStatusCheckServlet extends HttpServlet {
         }
         return false;
     }
-
 
     private FlowExecution getLastExecutionForUser(List<FlowExecution> flowExecutions, String username, String flowId) {
         if (flowExecutions == null  || flowExecutions.isEmpty()) {

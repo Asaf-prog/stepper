@@ -48,7 +48,5 @@ public class UpdateFlowsForRoleServlet extends HttpServlet {
             }
         }
         return res;
-
-
     }
 }

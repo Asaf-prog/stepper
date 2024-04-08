@@ -13,7 +13,6 @@ import java.io.IOException;
 @MultipartConfig
 public class ValidateInputServlet extends HttpServlet {
 
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String data=req.getParameter("userInput");
@@ -40,12 +39,7 @@ public class ValidateInputServlet extends HttpServlet {
                 resp.addHeader("message", msg);
                 resp.setStatus(422);
             }
-//            }if (data.contains("?")) {
-//                String msg = "Please enter a String without '?'";
-//                resp.addHeader("message",msg);
-//                resp.setStatus(422);
-//            }
-        }else
-            resp.setStatus(200);//means that the input is valid
+        } else
+            resp.setStatus(200);
     }
 }

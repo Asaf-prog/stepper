@@ -12,12 +12,11 @@ import java.util.Scanner;
 
 public class DataManager {
     public static Stepper stepperData;//the one and only steppe!!!
-    //UserManager userManager;
+
     RoleManager roleManager;
 
     public DataManager(Stepper stepperData) {
         this.stepperData = stepperData;
-        //this.userManager = new UserManager();
         roleManager = new RoleManager(stepperData.getFlows());
 
     }
@@ -50,21 +49,17 @@ public class DataManager {
 
 
     public static boolean saveData() throws Exception {
-//        String filename = "/Users/cohen/Documents/GitHub/stepper/data/stepperData";
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter the path to the data file");
         String filePath = input.nextLine();
         Optional<Path> path = Optional.ofNullable(Paths.get(filePath));
         if (!path.isPresent()) {
-//            throw new MenuException(MenuExceptionItems.EMPTY, " Invalid Path... back to main menu");
         }
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
             out.writeObject(stepperData);
             return true;
         } catch (IOException e) {
-//            throw new MenuException(MenuExceptionItems.EMPTY, " Stepper Data File wont created...(try enter good path to your file)");
         } catch (Exception e) {
-//            throw new MenuException(MenuExceptionItems.EMPTY, " unknown error..");
         }
         return false;
     }

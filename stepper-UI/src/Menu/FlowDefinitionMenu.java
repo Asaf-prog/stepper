@@ -47,8 +47,8 @@ public class FlowDefinitionMenu{
             }
 
         }
-
     }
+
     private static void GetUserInput(Stepper stepperData) throws MenuException {
         Scanner input = new Scanner(System.in);
         while(true) {

@@ -24,11 +24,11 @@ public class GetRolesServlet extends HttpServlet {
         if (username==null){
             resp.setStatus(400);
             return;
-}else{
+        }else {
             UserManager userManager= (UserManager) getServletContext().getAttribute("userManager");
             List<String> roles = userManager.getUser(username).getRoles();
             String rolesJson = gson.toJson(roles);
-            try(PrintWriter out = resp.getWriter()){
+            try (PrintWriter out = resp.getWriter()){
                 out.println(rolesJson);
                 out.flush();
             }

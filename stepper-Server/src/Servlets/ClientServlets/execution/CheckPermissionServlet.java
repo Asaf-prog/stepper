@@ -35,6 +35,5 @@ public class CheckPermissionServlet extends HttpServlet {
               }
         }
         resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
     }
 }

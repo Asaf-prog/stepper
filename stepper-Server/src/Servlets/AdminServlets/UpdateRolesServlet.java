@@ -9,10 +9,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import modules.DataManeger.DataManager;
-import modules.DataManeger.Role;
 import modules.DataManeger.RoleManager;
 import modules.DataManeger.users.StepperUser;
-import services.user.RoleDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +22,6 @@ public class UpdateRolesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //get list <String> of roles from body using gson
         String roleString = req.getReader().readLine();
         String username = req.getHeader("username");
         String isManager = req.getHeader("isManager");
@@ -38,7 +35,6 @@ public class UpdateRolesServlet extends HttpServlet {
             resp.setStatus(400);
             return;
         }else{
-            //add flows to response body
             resp.addHeader("username",username);
         }
     }
