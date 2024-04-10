@@ -21,6 +21,4 @@ public class GetIsAlreadyLoadedServlet extends HttpServlet {
             resp.getWriter().write(new Gson().toJson(true));
         }
     }
-
-
 }

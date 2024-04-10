@@ -10,7 +10,6 @@ import modules.DataManeger.DataManager;
 import modules.DataManeger.Role;
 import services.user.RoleDTO;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,5 @@ public class GetAllRolesDTOsServlet extends HttpServlet {
             dtos.add(new RoleDTO(role.getName(),role.getFlows(),role.getDescription()));
         }
         resp.getWriter().println(gson.toJson(dtos));
-
-
     }
 }

@@ -107,12 +107,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         setBodyButtonStyle(continuationExe);
         setBodyButtonStyle(showDetails);
         setBodyButtonStyle(startExecute);
-        //check if user have premmision to execute flow
-
+        //check if user have permission to execute flow
     }
 
     private void checkPermission() {
-        if(currentFlow==null){
+        if(currentFlow==null) {
             return;
         }
         Request request = new Request.Builder()
@@ -120,6 +119,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 .addHeader("flowName",currentFlow.getName())
                 .build();
         ClientHttpClientUtil.runAsync(request, new Callback() {
+
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
@@ -127,9 +127,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.code()==200){
+                if(response.code() == 200){
                    //all good
-                }else{//401
+                } else {
+                    //401
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -142,10 +143,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         }
                     });
                 }
-
             }
         });
-
     }
 
     private void asserts() {
@@ -190,8 +189,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         optionalHandler(optionalInputs);
         setSizeOfMandatoryList(mandatoryInputs.size());
         flowNameLabel.setText("Collect Input For Flow : "+getCurrentFlow().getName());
-
     }
+
     @Override
     public void showForContinuation() {
         continuationExe.setVisible(true);
@@ -207,6 +206,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         createVboxMandatoryAndOptionalWithInitValue(continuation1);
     }
+
     private void createVboxMandatoryAndOptionalWithInitValue(ContinuationDTO continuation){
         List<Pair<String, DataDefinitionDeclarationDTO>> freeInputs = getCurrentFlow().getFlowFreeInputs();
         List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs = new ArrayList<>();
@@ -223,6 +223,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         mandatoryHandlerForContinuation(continuation,mandatoryInputs);
         optionalHandlerForContinuation(continuation,optionalInputs);
     }
+
     private void mandatoryHandlerForContinuation(ContinuationDTO continuation,List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs){
         for (Pair<String, DataDefinitionDeclarationDTO> mandatory:mandatoryInputs){
             Label label = new Label(mandatory.getKey());
@@ -243,7 +244,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 else
                     throw new RuntimeException();
             }
-            else {//the user need to give us this data
+            else {
+                //the user need to give us this data
                 TextField textField = new TextField();
                 textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
                 textField.setPromptText("Enter here");
@@ -264,6 +266,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             continuationExe.setDisable(false);
         mandatoryList.setSpacing(10);
     }
+
     private String getDataThatSupplyAndUpdateTheListOfFreeInputsForOptional(ContinuationDTO continuation,String nameToSearch){
         if (existInInitialValue(nameToSearch)){
             return getExistInInitialValue(nameToSearch);
@@ -285,6 +288,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return null;
     }
+
     private boolean thisDataSupplyByFreeInputsOfLastFlowForOptional(String nameToSearch){
         for (Pair<String, String> lastMandatory:freeInputsOptional){
             if (lastMandatory.getKey().equals(nameToSearch))
@@ -292,6 +296,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     private String getDataThatSupplyAndUpdateTheListOfFreeInputs(ContinuationDTO continuation,String nameToSearch){
 
         if (existInInitialValue(nameToSearch)) {
@@ -299,7 +304,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             freeInputsTemp.add(new Pair<>(nameToSearch,data));
             return getExistInInitialValue(nameToSearch);
         }
-        else if (customMappingWithContinuation(nameToSearch,continuation)){//let search this data in the outputs of last flow
+        else if (customMappingWithContinuation(nameToSearch,continuation)){
+            //let search this data in the outputs of last flow
             for(ContinuationMappingDTO mapping: continuation.getMappingList()){
                 if (mapping.getTargetData().equals(nameToSearch)) {
                     freeInputsTemp.add(new Pair<>(nameToSearch,outputsOfLastFlow.get(mapping.getSourceData()).toString()));//add data to list of data
@@ -317,6 +323,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return null;
     }
+
     private String getData(String nameToSearch){
 //        for (InitialInputValues initialInputValues: currentFlow.getInitialInputValuesData()){
 //            if (initialInputValues.getInputName().equals(nameToSearch))
@@ -325,6 +332,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         //also need to move to the server
         return null;
     }
+
     private boolean thisDataSupplyByRecentFlow(String nameToSearch,ContinuationDTO continuation){
         if(outputsOfLastFlow.containsKey(nameToSearch) || thisDataSupplyByFreeInputsOfLastFlow(nameToSearch,continuation)||
                 customMappingWithContinuation(nameToSearch,continuation)||existInInitialValue(nameToSearch))
@@ -339,6 +347,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         else
             return false;
     }
+
     private boolean thisDataSupplyByFreeInputsOfLastFlowOptional(String nameToSearch){
         for (Pair<String, String> lastOptional:freeInputsOptional){
             if (lastOptional.getKey().equals(nameToSearch))
@@ -346,6 +355,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     private boolean customMappingWithContinuation(String nameToSearch,ContinuationDTO continuation){
 
         for(ContinuationMappingDTO mapping: continuation.getMappingList()){
@@ -354,6 +364,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     private boolean thisDataSupplyByFreeInputsOfLastFlow(String nameToSearch,ContinuationDTO continuation){
         for (Pair<String, DataDefinitionDeclarationDTO> lastMandatory: currentMandatoryFreeInput){
             if (lastMandatory.getKey().equals(nameToSearch) ) {
@@ -362,6 +373,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     private void optionalHandlerForContinuation(ContinuationDTO continuation,List<Pair<String, DataDefinitionDeclarationDTO>>optionalInputs ){
         for (Pair<String, DataDefinitionDeclarationDTO> optional:optionalInputs){
             Label label = new Label(optional.getKey());
@@ -384,7 +396,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 else
                     throw new RuntimeException();
             }
-            else {//the user need to give us this data
+            else {
+                //the user need to give us this data
                 TextField textField = new TextField();
                 textField.setStyle("-fx-alignment: center;-fx-border-radius: 10; -fx-font-size: 16");
                 textField.setPromptText("Enter here");
@@ -403,22 +416,27 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         optionalList.setSpacing(10);
     }
+
     private void setLabelStyle(Label data) {
         if (StyleManager.getCurrentTheme().equals("dark"))
             data.setStyle("-fx-text-fill: #ffff00; -fx-font-size: 16px;-fx-alignment: center;-fx-font-family: 'Arial Rounded MT Bold';");
         else
             data.setStyle("-fx-text-fill: black;-fx-font-size: 16px;-fx-alignment: center;-fx-font-family: 'Arial Rounded MT Bold';");
     }
+
     private Map<String,Object> getOutputsOfLastFlow(){
         return outputsOfLastFlow;
     }
+
     @Override
     public void SetCurrentFlow(FlowDefinitionDTO flow) {
         currentFlow = flow;
     }
+
     public FlowDefinitionDTO getCurrentFlow() {
         return currentFlow;
     }
+
     private boolean existInData(String nameOfDD) {
         for (Pair<String, DataDefinitionDeclarationDTO> run : currentOptionalFreeInput) {
             if (run.getKey().equals(nameOfDD))
@@ -430,10 +448,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     @Override
     public void setCurrentFlowForContinuation(FlowDefinitionDTO flow) {
         currentFlow = flow;
     }
+
     @Override
     public void SetCurrentMandatoryAndOptional(List<Pair<String, DataDefinitionDeclarationDTO>> mandatory, List<Pair<String, DataDefinitionDeclarationDTO>> optional
             ,List<Pair<String, String>>mandatoryIn,
@@ -443,14 +463,16 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         freeInputsMandatory = mandatoryIn;
         freeInputsOptional = optionalIn;
         outputsOfLastFlow = outputs;
-//        this.lastFlow = lastFlow;
     }
+
     private List<Pair<String, DataDefinitionDeclarationDTO>> getCurrentMandatoryFreeInput() {
         return currentMandatoryFreeInput;
     }
+
     private List<Pair<String, DataDefinitionDeclarationDTO>> getCurrentOptionalFreeInput() {
         return currentOptionalFreeInput;
     }
+
     private void createListOfFreeInputFromTypeFile(){
         String finalUrl = HttpUrl
                 .parse(ClientConstants.FILE_NAME)
@@ -459,7 +481,6 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 .build()
                 .toString();
         //dummy body
-        // RequestBody body = RequestBody.create("", MediaType.parse("application/json"));
         Request request = new Request.Builder()
                 .url(finalUrl)
                 .get()
@@ -487,6 +508,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
         );
     }
+
     private void createListOfFreeInputFromFileName(){
         fileName = new ArrayList<>();
         List<Pair<String, DataDefinitionDeclarationDTO>>  freeInput = getCurrentFlow().getFlowFreeInputs();
@@ -496,6 +518,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
     private boolean existInFileName(String name2Search){
         for (FileName n : FileName.values()){
             if (n.name().equalsIgnoreCase(name2Search))
@@ -503,6 +526,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;
     }
+
     private void optionalHandler(List<Pair<String, DataDefinitionDeclarationDTO>> optionalInputs) {
         for (Pair<String, DataDefinitionDeclarationDTO> optional : optionalInputs) {
             Label label = new Label(optional.getKey());
@@ -525,6 +549,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     event.consume();
                 }
             });
+
             if (!existInInitialValue(optional.getKey())) {
                 if (optional.getKey().equals("METHOD")){
                     //first of all add the default value "GET" if there is no action on this data
@@ -584,9 +609,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
     private void addGetToList(){
         freeInputsTemp.add(new Pair<>("METHOD","GET"));
     }
+
     private void mandatoryHandler(List<Pair<String, DataDefinitionDeclarationDTO>> mandatoryInputs) {
         createListOfFreeInputFromFileName();
         for (Pair<String, DataDefinitionDeclarationDTO> mandatory : mandatoryInputs) {
@@ -610,7 +637,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     event.consume();
                 }
             });
-            if (!existInInitialValue(mandatory.getKey())){//to this value in this current step there is no initial value
+
+            if (!existInInitialValue(mandatory.getKey())) {
+                //to this value in this current step there is no initial value
                 if (mandatory.getKey().equals("FOLDER_NAME") || existInFileName(mandatory.getKey())) {
                     textField.setEditable(false);
                     addButton.setText("Browse");
@@ -670,7 +699,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 mandatoryList.setSpacing(10);
 
             }
-            else {//to this value in this current step there is initial value
+            else {
+                //to this value in this current step there is initial value
                 String initData = getExistInInitialValue(mandatory.getKey());
                 freeInputsTemp.add(new Pair<>(mandatory.getKey(),initData));
             }
@@ -681,13 +711,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
 
     private void setButtonStyle(Button addButton) {
         if (StyleManager.getCurrentTheme().equals("dark")) {
-            addButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ffff00; -fx-font-size: 15; -fx-border-radius: 9; -fx-border-width: 2; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
+            addButton
+                    .setStyle("-fx-background-color: transparent; -fx-text-fill: #ffff00; -fx-font-size: 15; -fx-border-radius: 9; -fx-border-width: 2; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
         } else {
-            addButton.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;-fx-border-width: 2;-fx-border-radius: 9; -fx-font-size: 15; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
+            addButton
+                    .setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;-fx-border-width: 2;-fx-border-radius: 9; -fx-font-size: 15; -fx-border-color: #3760ff;-fx-font-family: 'Roboto';-fx-alignment: center-right;");
         }
         String style1 = addButton.getStyle();
-        addButton.setOnMouseEntered(e -> {
-            addButton.setStyle(style1+"-fx-background-color: #e600ff; -fx-text-fill: #000000; -fx-background-radius: 10; -fx-border-width: 2;");
+        addButton
+                .setOnMouseEntered(e -> {
+            addButton
+                    .setStyle(style1+"-fx-background-color: #e600ff; -fx-text-fill: #000000; -fx-background-radius: 10; -fx-border-width: 2;");
 
         });
         addButton.setOnMouseExited(e -> {
@@ -705,11 +739,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         for (InitialInputValuesDTO initialInputValues: currentFlow.getInitialInputValuesData()){
             if(initialInputValues.getName().equals(nameToSearchInKey))
                 return true;
-//            if (initialInputValues.getInputName().equals(nameToSearchInKey))
-//                return true;
         }
         return false;
     }
+
     @FXML
     void startContinuationAfterGetFreeInputs(ActionEvent event) {
 
@@ -768,6 +801,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
         );
     }
+
     private void handleButtonActionForContinuation(String nameOfTargetFlow,String nameOfCurrentFlow) throws Exception {
         //in this function we get the output of the last flow and update the target flow
         String finalUrl = HttpUrl
@@ -805,6 +839,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     }
                 });
     }
+
     private FlowDefinitionImpl getFlowByName(String nameOfTargetFlow) {
         List<FlowDefinitionImpl> flows = stepperData.getFlows();
         for (FlowDefinitionImpl targetFlow : flows) {
@@ -813,6 +848,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return null;
     }
+
     private FlowExecution getFlowExecutionByName(String nameOfCurrentFlow){
         Stepper stepperData = DataManager.getData();
         List<FlowExecution> flowExecutions = stepperData.getFlowExecutions();
@@ -824,12 +860,15 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return null;
     }
+
     private void setSizeOfMandatoryList(int size) {
         this.sizeOfMandatoryList = size;
     }
+
     public int getSizeOfMandatoryList() {
         return sizeOfMandatoryList;
     }
+
     @FXML
     void startExecuteAfterGetFreeInputs(ActionEvent event) {
         if (!isComeFromHistory)
@@ -850,10 +889,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         showDetails.setDisable(false);
         continuation.setDisable(false);
     }
+
     private void enablesDetails() {
         showDetails.setDisable(false);
         showDetails.setVisible(true);
     }
+
     private void setTheNewInputsThatTheUserSupply(){
         freeInputsMandatory = new ArrayList<>();
         freeInputsOptional = new ArrayList<>();
@@ -868,11 +909,13 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
     private void popupDetails() {
 
         showDetails.setDisable(false);
         showDetails.setVisible(true);
     }
+
     private void handleButtonActionForShowDetails() {
         String id =getLastExecutionId();
         FlowEnded(id);
@@ -909,10 +952,10 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         });
         return true;
     }
+
     private void showExecutionDetails(String id) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/ClientsApp/app/body/executeFlow/executionDetails/ExecutionsDetails.fxml"));
-        // loader.setController(new ExecutionsDetails(id));
         loader.setControllerFactory(controllerClass -> {
             return new ExecutionsDetails(id);
 
@@ -932,9 +975,11 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             ex.printStackTrace();
         }
     }
+
     private void VerySecretCode() {
         // :)
     }
+
     private FlowExecution getLastFlowExecution() {
         if (stepperData == null)
             stepperData = DataManager.getData();
@@ -942,6 +987,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             return stepperData.getFlowExecutions().get(stepperData.getFlowExecutions().size() - 1);
         return null;
     }
+
     private boolean nameOfDDExistInListOfFreeInputChangeData(String nameOfDD,String data){
         for (Pair<String, String> pair:freeInputsTemp){
             if (pair.getKey().equals(nameOfDD)) {
@@ -952,6 +998,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return false;// the data definition is  not exist
     }
+
     private void handleButtonAction(Button addButton, TextField textField, String data, String nameOfDD, String type, HBox Hbox,boolean isOptional) {
 
         if (nameOfDD.equals("OPERATION"))
@@ -966,25 +1013,27 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     } else
                         editTheDataDefinitionThatWeWantToChange(addButton, textField, nameOfDD, Hbox);
                 } else {
-               //     addButton.setText("Save");
                     for (Pair<String, String> pair : freeInputsTemp) {
                         if (pair.getKey().equals(nameOfDD)) {
                             freeInputsTemp.remove(pair);
                             break;
                         }
                     }
+
                     textField.clear();
                     addButton.setText("Save");
                     if (freeInputsTemp.size() != getSizeOfMandatoryList()) {
                         startExecute.setDisable(true);
                     }
                 }
-            } else {//equals to save, so it's the first time that we save the data of the user
+            } else {
+                //equals to save, so it's the first time that we save the data of the user
                 if (!data.isEmpty() && !(nameOfDD.equals("FOLDER_NAME") || existInFileName(nameOfDD))) {
                     validateInput(data, type,textField,addButton,nameOfDD);
 
                 } else if (nameOfDD.equals("FOLDER_NAME")|| existInFileName(nameOfDD)) {
-                    if (nameOfDD.equals("FOLDER_NAME")){//popUp For The Name Of The File
+                    if (nameOfDD.equals("FOLDER_NAME")){
+                        //popUp For The Name Of The File
 
                         firstTimeLoadFolderName(addButton, textField, nameOfDD, Hbox);
                     }else {
@@ -996,6 +1045,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
     private void firstTimeLOadPathOfFileThatWeWillGoingToCreate(Button addButton, TextField textField, String nameOfDD, HBox Hbox,boolean isOptional) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
@@ -1006,9 +1056,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional)
             startExecute.setDisable(false);
     }
+
     private void updateUserInterfaceWithTheNewPath(Button addButton, TextField textField, String nameOfDD, HBox Hbox, File selectedFile,boolean isOptional) {
         Platform.runLater(() -> {
-            // Alert alert = new Alert(Alert.AlertType.INFORMATION);
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Name Of File Dialog");
             dialog.setContentText("Name Of File:");
@@ -1024,23 +1074,23 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 addButton.setText("Edit");
                 int index = Hbox.getChildren().indexOf(textField);
                 indexOfLabel=index;
-                // Label label = new Label(selectedFile.toString());
                 Label label = new Label(fullPath);
                 label.getStylesheets().add("app/management/style/darkTheme.css");
                 label.getStyleClass().add("inputLabel");
                 label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
                 setLabelStyle(label);
                 Hbox.getChildren().set(index, label);
-                //textField.setText(selectedFile.toString());
                 textField.setText(fullPath);
                 checkUpdate(isOptional);
             });
         });
     }
+
     private void checkUpdate(boolean isOptional) {
         if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()&& !isOptional)
             startExecute.setDisable(false);
     }
+
     private void firstTimeLoadFolderName(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
@@ -1059,6 +1109,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             textField.setText(selectedFile.toString());
         }
     }
+
     private void editTheDataDefinitionThatWeWantToChange(Button addButton, TextField textField, String nameOfDD, HBox Hbox) {
         for (Pair<String, String> pair : freeInputsTemp) {
             if (pair.getKey().equals(nameOfDD)) {
@@ -1073,6 +1124,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             if (freeInputsTemp.size() != getSizeOfMandatoryList()) {
                 startExecute.setDisable(true);
             }
+
             DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setTitle("Choose Directory");
             File selectedFile = directoryChooser.showDialog(null);
@@ -1093,20 +1145,18 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     freeInputsTemp.add(new Pair<>(nameOfDD, fullPath));
 
                     addButton.setText("Edit");
-                    //int index = Hbox.getChildren().indexOf(Label);//**
-                    // Label label = new Label(selectedFile.toString());
                     Label label = new Label(fullPath);
                     label.getStylesheets().add("app/management/style/darkTheme.css");
                     label.getStyleClass().add("inputLabel");
                     label.setStyle("-fx-text-fill: yellow ; -fx-font-size: 12px");
                     setLabelStyle(label);
                     Hbox.getChildren().set( indexOfLabel,label);
-                    //textField.setText(selectedFile.toString());
                     textField.setText(fullPath);
                 });
             }
         });
     }
+
     private void handleEditFolderName(HBox Hbox) {
         String data;
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -1119,8 +1169,9 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             data = selectedDirectory.getAbsolutePath();//already valid
         }
     }
+
     private void handleOperation(Button addButton, String data, String nameOfDD) {
-        if (nameOfDDExistInListOfFreeInputChangeData(nameOfDD, data)){
+        if (nameOfDDExistInListOfFreeInputChangeData(nameOfDD, data)) {
             //we change to exist data-definition from zip to unzip and vice versa
             if (checkHowMandatoryInputsINFreeInputsTemp() == getSizeOfMandatoryList()) {
                 startExecute.setDisable(false);
@@ -1133,12 +1184,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             }
         }
     }
+
     private void setBodyButtonStyle(Button button) {
         button.setOnMouseEntered(event ->
                 button.setStyle(style+ "-fx-background-color: rgb(255,0,96); -fx-background-radius: 20;-fx-border-color: #566dff"));
         button.setOnMouseExited(event ->
                 button.setStyle(style));
     }
+
     private void validateInput(String data, String type, TextField textField, Button btn, String nameOfDD) {
         //build req for valid input servlet
         String finalUrl = HttpUrl
@@ -1184,6 +1237,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                     }
                 });
     }
+
     private static void setApropTooltip(TextField textField, String msg) {
         Tooltip tooltip = new Tooltip(msg);
         tooltip.setStyle("-fx-background-color: #ff0000; -fx-text-fill: #000000;");
@@ -1195,6 +1249,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         delay.play();
         textField.clear();
     }
+
     private int checkHowMandatoryInputsINFreeInputsTemp(){
         int counter = 0;
         for (Pair<String, String> data: freeInputsTemp){
@@ -1205,6 +1260,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return counter;
     }
+
     private int getIndexOfLabel(HBox hbox) {
         int index = 0;
         for (Node node : hbox.getChildren()) {
@@ -1214,14 +1270,17 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         }
         return index;
     }
+
     @Override
     public void setBodyController(bodyController body) {
         this.body = body;
     }
+
     @Override
     public void setFlowsDetails(List<FlowDefinitionDTO> list) {
 
     }
+
     public void showDetails(ActionEvent actionEvent){
         if (body.getMVC_controller().getLastExecutionId() != null) {
             showExecutionDetails(body.getMVC_controller().getLastExecutionId());
@@ -1234,6 +1293,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             alert.showAndWait();
         }
     }
+
     @FXML
     void ContinuationExecution(ActionEvent event) {
         body.getMVC_controller().setFreeInputs(freeInputsTemp);
@@ -1243,10 +1303,12 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
          enablesDetails();
         showDetails.setDisable(false);
     }
+
     @Override
     public void setBodyControllerContinuation(bodyController body){
         this.body = body;
     }
+
     @Override
     public void showFromHistory(){
         freeInputsTemp = new ArrayList<>();
@@ -1255,6 +1317,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         startExecute.setDisable(false);
         isComeFromHistory = true;
     }
+
     private void createComponentForOptionalFromHistory() {
         for (Pair<String,String> optional: freeInputsOptionalFromHistory) {
             Label label = new Label(optional.getKey());
@@ -1271,6 +1334,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             setLabelStyle(data);
         }
     }
+
     private void createComponentForMandatoryFromHistory() {
         for (Pair<String,String> mandatory: freeInputsMandatoryFromHistory) {
             Label label = new Label(mandatory.getKey());
@@ -1286,18 +1350,23 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
             freeInputsTemp.add(mandatory);
         }
     }
+
     @Override
     public void setBodyControllerFromHistory(bodyController body){
         this.body = body;
     }
+
     @Override
     public void SetCurrentFlowFromHistory(FlowDefinitionDTO flow){
         this.currentFlow = flow;
     }
+
     @Override
     public void setFreeInputsMandatoryAndOptional(List<Pair<String, String>> freeInputMandatory,
-                                                  List<Pair<String, String>> freeInputOptional,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD
-            ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ){
+                                                  List<Pair<String, String>> freeInputOptional,List<Pair<String,
+            DataDefinitionDeclarationDTO>> freeInputsMandatoryWithDD
+            ,List<Pair<String, DataDefinitionDeclarationDTO>> freeInputsOptionalWithDD ) {
+
         this.freeInputsMandatoryFromHistory = freeInputMandatory;
         this.freeInputsOptionalFromHistory = freeInputOptional;
         this.freeInputsMandatory = freeInputMandatory;
@@ -1306,12 +1375,14 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
         this.currentMandatoryFreeInput = freeInputsMandatoryWithDD;
         this.currentOptionalFreeInput = freeInputsOptionalWithDD;
     }
+
     @Override
     public void setClient(Client client){
         this.client = client;
     }
+
     @Override
-    public void showForContinuationServlet(){
+    public void showForContinuationServlet() {
 
             freeInputsTemp = new ArrayList<>();
             continuationExe.setVisible(true);
@@ -1348,7 +1419,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                         mandatoryList.getChildren().add(nameAndAddOrEdit);
                         freeInputsTemp.add(new Pair<>(dataSupply.getKey(),dataSupply.getValue()));
                     }
-                    else {//optional
+                    else {
+                        //optional
                         Label label = new Label(dataSupply.getKey());
                         label.getStylesheets().add("app/management/style/darkTheme.css");
                         label.getStyleClass().add("inputLabel");
@@ -1367,6 +1439,7 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                 }
             }
         }
+
         mandatoryList.setSpacing(10);
 
         for (String getDataFromUser : needToSupply){
@@ -1388,7 +1461,8 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                        nameAndAddOrEdit.setSpacing(5);
                        mandatoryList.getChildren().add(nameAndAddOrEdit);
 
-                   }else {// is optional
+                   }else {
+                       // is optional
                        TextField textField = new TextField();
                        HBox nameAndAddOrEdit = new HBox();
                        textField.setStyle("-fx-alignment: center;-fx-border-radius: 30; -fx-font-size: 16");
@@ -1407,17 +1481,21 @@ public class executeFlowController implements bodyControllerDefinition,bodyContr
                }
             }
         }
+        
         optionalList.setSpacing(10);
         if (checkHowMandatoryInputsINFreeInputsTemp() == mandatoryInputs.size() || mandatoryInputs.size() == freeInputsTemp.size())
             continuationExe.setDisable(false);
         mandatoryList.setSpacing(10);
     }
+
     @Override
     public  void setLastFlowDTO(FlowDefinitionDTO lastFlow){
             this.lastFlow = lastFlow;
     }
+
     @Override
     public void setDataTransfer(DataTransfer transfer){
         this.transfer = transfer;
     }
+
 }

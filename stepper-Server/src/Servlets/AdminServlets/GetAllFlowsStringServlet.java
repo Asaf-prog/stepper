@@ -17,7 +17,6 @@ import java.util.List;
 public class GetAllFlowsStringServlet extends HttpServlet {
     private Gson gson=new Gson();
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");
@@ -29,7 +28,5 @@ public class GetAllFlowsStringServlet extends HttpServlet {
 
         String json = gson.toJson(flowsNames);
         resp.getWriter().println(json);
-
-
     }
 }

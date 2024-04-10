@@ -1,5 +1,4 @@
 package modules.stepper;
- //import mapper.Mapper;
  import modules.flow.execution.executionManager.ExecutionManager;
  import modules.mappings.*;
  import modules.flow.definition.api.FlowDefinitionImpl;
@@ -20,9 +19,7 @@ public class Stepper implements Serializable {
     private List<FlowDefinitionImpl> flows;//all flows
     private Integer TPSize;//Thread pool size
     private  String XmlPath="";
-
     private ExecutionManager executionManager;//handle doing execution according to the thread pool size
-
 
     public Integer getTPSize() {
         return TPSize;
@@ -57,7 +54,6 @@ public class Stepper implements Serializable {
             return res.get();
         }
         return null;
-
     }
 
     public Stepper(){
@@ -195,7 +191,6 @@ public class Stepper implements Serializable {
         //Stepper Validate
         validateFlowsUniqueName();
         for (FlowDefinitionImpl flow : flows) {
-            //flow.SetAllFlows(flows);
             flow.validateFlowStructure(flows);
         }
     }
@@ -267,7 +262,7 @@ public class Stepper implements Serializable {
         for (FlowDefinitionImpl flow : flows) {
             for (FlowLevelAlias alias : flow.getFlowLevelAliases()) {
                 StepUsageDeclaration stepToAddTo =flow.getStepByName(alias.getSource());
-                if (stepToAddTo ==null)//step not found flow definition exception
+                if (stepToAddTo ==null)// step not found flow definition exception
                     throw new FlowDefinitionException(FlowDefinitionExceptionItems.STEP_IN_ALIAS_NOT_FOUND,alias.getSource());
                 else
                     stepToAddTo.addAlias(alias.getSourceData(),alias.getAlias());
@@ -296,12 +291,11 @@ public class Stepper implements Serializable {
         //validate flow duplicates
         //remove duplicates that in toAdd
         List<String> flowsNames = getFlowsName(flows);
-        for(FlowDefinitionImpl flow:toAdd.flows){
+        for(FlowDefinitionImpl flow:toAdd.flows) {
             String name=flow.getName();
-            if (isContainName(flowsNames,name)){
+            if (isContainName(flowsNames,name)) {
                 toAdd.flows.remove(flow);
             }
-
         }
         flows.addAll(toAdd.flows);
         return;
@@ -338,7 +332,6 @@ public class Stepper implements Serializable {
         //Stepper Validate
         validateFlowsUniqueName();
         for (FlowDefinitionImpl flow : flows) {
-            //flow.SetAllFlows(flows);
             flow.validateFlowStructureWithoutContinuation(flows);
         }
     }

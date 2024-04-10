@@ -2,14 +2,12 @@ package Servlets.AdminServlets;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mapper.Mapper;
 import modules.DataManeger.DataManager;
-import modules.flow.definition.api.FlowDefinition;
 import modules.flow.definition.api.FlowDefinitionImpl;
 import services.stepper.FlowDefinitionDTO;
 
@@ -41,7 +39,7 @@ public class GetFlowsForRoleServlet extends HttpServlet {
     private List<FlowDefinitionDTO> getFlowsForRole(List<String> roles, HttpServletResponse resp) {
         //get dataManager from context
         DataManager dataManager = (DataManager) getServletContext().getAttribute("dataManager");
-        //if dataManager isnt null
+        //if dataManager isn't null
         if (dataManager == null) {
             resp.setStatus(400);
             return null;
@@ -56,7 +54,6 @@ public class GetFlowsForRoleServlet extends HttpServlet {
                 return null;
             }
             i++;
-
         }
         return flowsDTO;
     }

@@ -9,6 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -19,6 +20,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="TomEE 10.0.11" level="application_server_libraries" />
     <orderEntry type="library" name="okHttp" level="project" />
     <orderEntry type="module" module-name="stepper-Client" />
     <orderEntry type="module" module-name="stepper-Engine" />
@@ -27,6 +29,5 @@
     <orderEntry type="library" name="jayson path" level="project" />
     <orderEntry type="library" name="gson-2.8.8" level="project" />
     <orderEntry type="library" name="controlsfx-8.40.14" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.11" level="application_server_libraries" />
   </component>
 </module>
