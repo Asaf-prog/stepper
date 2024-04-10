@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Stepper_Server:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/Stepper_Server_war</output-path>
+    <root id="archive" name="Stepper_Server_war.war">
+      <element id="artifact" artifact-name="stepper-Server:war exploded" />
+    </root>
+  </artifact>
+</component>
