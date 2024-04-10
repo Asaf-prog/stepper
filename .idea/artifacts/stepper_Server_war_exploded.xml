@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="stepper-Server:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/stepper_Server_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="stepper-Server" />
+          <element id="module-output" name="stepper-Client" />
+          <element id="module-output" name="stepper-DTO" />
+          <element id="module-output" name="stepper-Engine" />
+          <element id="module-output" name="stepper-Admin" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="okHttp" />
+          <element id="library" level="project" name="jayson path" />
+          <element id="library" level="project" name="gson-2.8.8" />
+          <element id="library" level="project" name="controlsfx-8.40.14" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="stepper-Server/web/Web" />
+    </root>
+  </artifact>
+</component>
