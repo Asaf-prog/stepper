@@ -449,8 +449,6 @@ public class UserManagementController implements bodyControllerDefinition {
                         }
                     }
                 });
-
-
             }
         });
     }
@@ -558,6 +556,7 @@ public class UserManagementController implements bodyControllerDefinition {
 
         }
     }
+    
     private void setIsManager(StepperUser user) {
         String username=user.getUsername();
         Request request = new Request.Builder()

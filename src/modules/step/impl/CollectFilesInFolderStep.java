@@ -1,5 +1,5 @@
 package modules.step.impl;
-import java.io.File;
+
 import modules.dataDefinition.impl.DataDefinitionRegistry;
 import modules.dataDefinition.impl.file.FileData;
 import modules.flow.execution.context.StepExecutionContext;
@@ -7,6 +7,8 @@ import modules.step.api.AbstractStepDefinition;
 import modules.step.api.DataDefinitionDeclarationImpl;
 import modules.step.api.DataNecessity;
 import modules.step.api.StepResult;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import static java.nio.file.Files.exists;
 
 public class CollectFilesInFolderStep extends AbstractStepDefinition {
@@ -79,7 +82,6 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                     return StepResult.FAILURE;
                 }
             }
-
             //converting to file data
             List<FileData> filesList = new ArrayList<>();
             for (File file : fileList) {

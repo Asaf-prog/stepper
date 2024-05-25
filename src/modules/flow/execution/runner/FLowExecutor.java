@@ -12,9 +12,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 public class FLowExecutor {
-    public void executeFlow(FlowExecution flowExecution) throws Exception {//This class implements the flow
+    public void executeFlow(FlowExecution flowExecution) throws Exception {
 
-        StepExecutionContext context = new StepExecutionContextImpl(); // actual object goes here...
+        StepExecutionContext context = new StepExecutionContextImpl();
         context.setSteps(flowExecution.getFlowDefinition().getFlowSteps());
         context.setUserInputs(flowExecution);//sets user inputs into the context
         ArrayList<StepResult> flowExeStatus = new ArrayList<>();//flow execution status
@@ -63,8 +63,7 @@ public class FLowExecutor {
                 updateFlowExecution(flowExecution, context, flowExeStatus, flowStartTime, flowEndTime);
 
             }
-            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));//if one step failed or warning the flow failed or warning
-
+            flowExecution.setFlowExecutionResult(getFlowExecutionResult(flowExeStatus, flowExecution));
             return;
         }
     }

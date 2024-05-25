@@ -35,20 +35,25 @@ public class bodyController {
     public void setMainController(mainController main) {
         this.main = main;
     }
+
     public void setMainControllerClient(mainControllerClient main) {
         this.controllerClient = main;
     }
+
     public void setMVCController(MVC_controller controller){
         this.controller = controller;
     }
+
     public void showStatsScreen(){
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("statsScreen/StatsScreen.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
+
     private void loadScreen(FXMLLoader fxmlLoader,URL url) {
         try {
+
             if (lastBodyController!=null) {
                 lastBodyController.onLeave();
             }
@@ -68,25 +73,30 @@ public class bodyController {
             e.printStackTrace();
         }
     }
-    public void showHistoryExe(){
+
+    public void showHistoryExe() {
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("executionsHistory/ExecutionsHistory.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
+
     public void showRoleManagement(){
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("roleManagement/roleManagement.fxml");
         fxmlLoader.setLocation(url);
         loadScreen(fxmlLoader, url);
     }
-    public void setCurrentFlow(FlowDefinitionDTO flow){
+
+    public void setCurrentFlow(FlowDefinitionDTO flow) {
         this.currentFlow = flow;
     }
-    public FlowDefinitionDTO getCurrentFlow(){
+
+    public FlowDefinitionDTO getCurrentFlow() {
         return currentFlow;
     }
-    public MVC_controller getMVC_controller(){
+
+    public MVC_controller getMVC_controller() {
         return controller;
     }
 
@@ -98,9 +108,9 @@ public class bodyController {
         bodyPane.getChildren().setAll(screen);
     }
 
-        public  mainController getMain(){
+    public  mainController getMain() {
         return   main;
-        }
+    }
 
     public void showUserManagement() {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -109,12 +119,9 @@ public class bodyController {
         loadScreen(fxmlLoader, url);
     }
 
-
     public void initAdminApp() {
         //set body to user management
         showUserManagement();
-
-
     }
 }
 
