@@ -31,7 +31,7 @@ Feel free to customize and enhance your workflows as per your unique requirement
 
 The Admin stepper application start to run
 
-![img_11.png](OneDrive/מסמכים/GitHub/stepper/imagesReadme/img_11.png)
+![img_11.png](./imagesReadme/img_11.png)
 
 Here the Admin need to load xml file that contain details about the flows and the steps with more details (aliasing and initial inputs etc.)
 ![img.png](OneDrive/מסמכים/GitHub/stepper/imagesReadme/img.png)
